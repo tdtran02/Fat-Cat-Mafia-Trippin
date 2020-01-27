@@ -7,8 +7,8 @@ https://codingthesmartway.com/the-mern-stack-tutorial-building-a-react-crud-appl
 
 # Express/node backend
 
-- Before you run backend for the first time, follow the steps to create a db in mongodb: 1. type mongo in command line 2. type "use trippin" in command line 3. now you can ctrl c to exit
-- Run nodemon server to start the backend
+- Before you run backend for the first time, follow the steps to create a db in mongodb: 1. type "mongo" in command line 2. type "use trippin" in command line 3. now you can ctrl c to exit 4. run "npm install"
+- Run "nodemon server" to start the backend
 - output should only have "Server is running on Port: 4000
   MongoDB database connection established successfully"
 
