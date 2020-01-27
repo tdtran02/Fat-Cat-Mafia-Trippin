@@ -1,3 +1,15 @@
+# Mongo
+
+- Run Mongod to start mongodb
+
+# Express/node backend
+
+- Run nodemon server to start the backend
+- output should only have "Server is running on Port: 4000
+  MongoDB database connection established successfully"
+
+# React
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
