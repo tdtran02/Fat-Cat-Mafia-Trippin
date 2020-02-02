@@ -72,7 +72,7 @@ todoRoutes.route("/add").post(function(req, res) {
 // + whatever id wanted to delete
 
 /* DELETE */
-todoRoutes.route('/delete/:id').delete(function(req, res) {
+todoRoutes.route("/delete/:id").delete(function(req, res) {
   Todo.findByIdAndRemove(req.params.id)
   .then(note => {
       if(!note) {
@@ -93,8 +93,8 @@ todoRoutes.route('/delete/:id').delete(function(req, res) {
   });
 });
 
-app.use('/todos', todoRoutes);
-app.delete('/todos/:id', todoRoutes);
+app.use("/todos", todoRoutes);
+app.delete("/todos/:id", todoRoutes);
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });
