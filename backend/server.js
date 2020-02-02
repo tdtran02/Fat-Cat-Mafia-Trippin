@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const todoRoutes = express.Router();
 const PORT = 4000;
 
-let Todo = require('./todo.model');
+let Todo = require('./models/todo.model');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,6 +18,7 @@ connection.once('open', function() {
     console.log("MongoDB database connection established successfully");
 })
 
+/* GET */
 todoRoutes.route('/').get(function(req, res) {
     Todo.find(function(err, todos) {
         if (err) {
@@ -65,8 +66,45 @@ todoRoutes.route('/add').post(function(req, res) {
         });
 });
 
-app.use('/todos', todoRoutes);
+// CRUD-Delete works 
+// Postman: select Delete
+// route: localhost:4000/todos/delete/
+// + whatever id wanted to delete
 
+/* DELETE */
+todoRoutes.route('/delete/:id').delete(function(req, res) {
+  Todo.findByIdAndRemove(req.params.id)
+  .then(note => {
+      if(!note) {
+          return res.status(404).send({
+              message: "Todos not found with id " + req.params.id
+          });
+      }
+      res.send({message: "Todos deleted successfully!"});
+  }).catch(err => {
+      if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+          return res.status(404).send({
+              message: "Todos not found with id " + req.params.id
+          });                
+      }
+      return res.status(500).send({
+          message: "Could not delete todos with id " + req.params.id
+      });
+  });
+});
+
+app.use('/todos', todoRoutes);
+app.delete('/todos/:id', todoRoutes);
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });
+
+/* UPDATE */
+todoRoutes.put('/:id', function(req, res, next) {
+  Todo.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+    if (err) return next(err);
+    res.json(post);
+  });
+});
+
+module.exports = todoRoutes;
