@@ -1,33 +1,44 @@
 {
-  "name": "trippin",
-  "version": "1.0.0",
-  "description": "Please read: https://codingthesmartway.com/the-mern-stack-tutorial-building-a-react-crud-application-from-start-to-finish-part-2/",
-  "main": "app.js",
+  "name": "my-trippin",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "bcrypt": "^3.0.7",
-    "bcryptjs": "^2.4.3",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^7.2.1",
     "body-parser": "^1.19.0",
-    "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
-    "ejs": "^3.0.1",
     "express": "^4.17.1",
-    "express-ejs-layouts": "^2.5.0",
-    "express-session": "^1.17.0",
-    "mongoose": "^5.8.11",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
+    "mongoose": "^5.8.10",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.2"
-  },
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tdtran02/trippin.git"
