@@ -12,4 +12,3 @@ const TripSchem = mongoose.model('tripchar', tripSchema);
 
 module.exports = TripSchem;
 
-var user = new TripSchem({})
