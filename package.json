@@ -11,19 +11,15 @@
     "cors": "^2.8.5",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
-<<<<<<< HEAD
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.17.0",
     "mongoose": "^5.8.11",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
-=======
-    "mongoose": "^5.8.10",
+    "passport-local": "^1.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0"
->>>>>>> ffd599d57ad14ddc5fc804620e1a9f95e4528ac8
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
@@ -41,4 +39,3 @@ function App() {
 }
 
 export default App;
->>>>>>> ffd599d57ad14ddc5fc804620e1a9f95e4528ac8
