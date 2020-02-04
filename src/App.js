@@ -1,9 +1,9 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Register from "./components/Register";
 import Signin from "./components/Signin";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -19,6 +19,9 @@ function App() {
               <li>
                 <Link to="/signin">Sign in</Link>
               </li>
+              <li>
+                <Link to="/home">Home</Link>
+              </li>
             </ul>
           </nav>
 
@@ -30,6 +33,9 @@ function App() {
             </Route>
             <Route path="/signin">
               <Signin />
+            </Route>
+            <Route path="/home">
+              <Home />
             </Route>
           </Switch>
         </div>
