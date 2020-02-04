@@ -1,47 +1,50 @@
-import React from "react";
-import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Register from "./components/Register";
-import Signin from "./components/Signin";
-import Home from "./components/Home";
+import React, { Component } from 'react';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import './App.css';
+import Register from './components/Register';
+import Login from './components/Login';
 
-function App() {
-  return (
-    <div className="App">
-      {/* home page */}
+class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      loginButton: 'active',
+      registerButton:'inactive'
+    }
+    this.changeClass = this.changeClass.bind(this);
+  }
+
+  changeClass(e){
+    if(e.target.id === 'login'){
+      this.setState({
+        loginButton: 'active',
+        registerButton:'inactive'
+      })
+    }else{
+      this.setState({
+        loginButton: 'inactive',
+        registerButton:'active'
+      })
+    }
+  }
+
+
+  render() {
+    const {loginButton, registerButton} = this.state;
+    return (
+      <div className="App">
+      <div className="auth-block">
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/register">Register</Link>
-              </li>
-              <li>
-                <Link to="/signin">Sign in</Link>
-              </li>
-              <li>
-                <Link to="/home">Home</Link>
-              </li>
-            </ul>
-          </nav>
 
-          {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route path="/signin">
-              <Signin />
-            </Route>
-            <Route path="/home">
-              <Home />
-            </Route>
-          </Switch>
-        </div>
+      <Link id="login" className={`btn ${loginButton}`} to="/login" onClick={this.changeClass}>Login</Link>
+      <Link id="register" className={`btn ${registerButton}`} to="/register" onClick={this.changeClass}>Register</Link>
+        <Route exact path="/login" component={Login}/>
+        <Route exact path="/register" component={Register} />
       </Router>
-    </div>
-  );
+      </div>
+      </div>
+    );
+  }
 }
 
 export default App;
