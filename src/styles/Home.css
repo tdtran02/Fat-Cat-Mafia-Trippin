@@ -1,9 +1,18 @@
-html {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.menu-container {
+    color: black;
     background-color: lightgrey;
-}
-.navbar {
+    padding: 20px 0;
     display: flex;
+    justify-content: center;
 }
-ul {
-    list-style-type: none;
+
+.menu {
+    border:1px solid #000;
+    width:900px;
 }

@@ -4,22 +4,18 @@ import "../styles/Home.css";
 export class Home extends Component {
     render() {
         return (
-            <html>
-                <head>
-                    <meta charset='UTF-8' />
-                    <title>Trippin</title>
-                </head>
-                <body>
-                    <div>
 
-                        <ul class="navbar">
-                            <li>Home</li>
-                            <li>Sign Out</li>
-                        </ul>
-
+            <div>
+                <div class="menu-container">
+                    <div class="menu">
+                        <div class="home">HOME</div>
+                        <div class="about">ABOUT</div>
+                        <div class="faq">FAQ</div>
                     </div>
-                </body>
-            </html>
+                </div>
+
+            </div>
+
         );
     }
 }
