@@ -5,7 +5,6 @@ describe('Saving user', function(){
 
     it('Saves a record to database', function(done){
         var usr = new UserChar({
-            user_id: 0001,
             first_name: 'Thuy',
             last_name: 'Tran',
             email: 'lilb3lazy@gmail.com',
