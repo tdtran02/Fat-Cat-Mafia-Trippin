@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../styles/Home.css";
 
+
 export class Home extends Component {
     render() {
         return (
@@ -8,13 +9,13 @@ export class Home extends Component {
 
 
                 <div class='content-container'>
-                    <div class='photo-grid'>
-                        <div class='photo-grid-item first-item'>
-
+                    <div class='content-grid'>
+                        <div class=' main'>
+                            <a class="edit" href="./MyAccount.js">Edit</a>
                         </div>
                         <div class='photo-grid-item'>
-                            <img src="https://cdn.dribbble.com/users/642843/screenshots/6428968/tokyo_trystram_2x.png" alt="city" styles="width: 100px; height: 300px;" />
                         </div>
+
 
                     </div>
                 </div>
