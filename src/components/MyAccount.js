@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-
+// Profile
+// Trip
+// Recommendation
+// Setting
+// Sign out
 class MyAccount extends Component {
     render() {
         return (
@@ -7,7 +11,6 @@ class MyAccount extends Component {
             <h1>Edit your page</h1>
           </div>
         );
-      }
+    }
 }
-
 export default MyAccount;

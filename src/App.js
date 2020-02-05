@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Email from "./components/ValidateEmail";
 import Home from "./components/Home";
+import MyAccount from "./components/MyAccount";
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
               </li>
               <li>
                 <Link to="/login">Sign in</Link>
+              </li>
+              <li>
+                <Link to="/MyAccount">My Account</Link>
               </li>
               <li>
                 <Link to="/email">Email</Link>
@@ -39,7 +43,9 @@ function App() {
             <Route path="/login">
               <Login />
             </Route>
-
+            <Route path="/my account">
+              <MyAccount />
+            </Route>
             <Route path="/email">
               <Email />
             </Route>
