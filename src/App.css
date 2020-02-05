@@ -1,38 +1,86 @@
-.App {
-  text-align: center;
+html, body, .App, #root{
+  height: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{
+  font-family: 'Montserrat', sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App{
   display: flex;
-  flex-direction: column;
+  width: 100%;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background: #e9e9e9;
 }
 
-.App-link {
-  color: #61dafb;
+.btn{
+  padding: .8em 20%;
+  text-decoration: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.active{
+  background: #00FFFF;
+  color: #f9f9f9;
+}
+.inactive{
+  background: #45515B;
+  color: #8AA79C;
+}
+
+.btn:hover{
+  background: #00FFFF;
+  color: #f9f9f9;
+  transition: all .4s linear;
+}
+.auth-block{
+  height: 60%;
+  width: 30%;
+  padding: 3em;
+  border-radius: .5em;
+  text-align: center;
+  color: #F9F9F6;
+  background: #24323D;
+}
+
+.login, .register{
+  opacity: 1;
+  animation: appear .5s linear; 
+}
+
+@keyframes appear{
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.title{
+  font-weight: 400;
+}
+
+.form{
+  background: none;
+  padding: .5em;
+  border: 1px solid #00FFFF;
+  color: #00FFFF;
+  margin: .5em;
+}
+
+.email, .password{
+  width: 90%;
+}
+
+.error{
+  outline: #c31111 solid 1px;
+  transition: all .4s linear;
+}
+
+.submit{
+  width: 95%;
+  margin-top: 1em;
+  padding: 1em;
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  color: #F9F9F6;
+  background: #00FFFF;
 }

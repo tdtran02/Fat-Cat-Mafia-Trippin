@@ -1,0 +1,9 @@
+html {
+    background-color: lightgrey;
+}
+.navbar {
+    display: flex;
+}
+ul {
+    list-style-type: none;
+}
