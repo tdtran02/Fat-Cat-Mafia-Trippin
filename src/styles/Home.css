@@ -1,11 +1,28 @@
-/*
-html {
-    background-color: lightgrey;
+
+
+.content-container {
+    display:flex;
+    justify-content: center;
 }
-.navbar {
+.photo-grid {
+    margin-top: 50px;
+    width: 900px;
     display: flex;
+    justify-content: center;
+    background-color: #e6e6e6;
+    flex-wrap: wrap;
 }
-ul {
-    list-style-type: none;
+
+.photo-grid-item {
+
+
+    width: 300px;
+    background-color: black;
 }
-*/
+
+img {
+    width: 300px;
+    border-radius: 4px;
+}
+
+

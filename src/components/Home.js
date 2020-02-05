@@ -4,22 +4,22 @@ import "../styles/Home.css";
 export class Home extends Component {
     render() {
         return (
-            <html>
-                <head>
-                    <meta charset='UTF-8' />
-                    <title>Trippin</title>
-                </head>
-                <body>
-                    <div>
+            <body>
 
-                        <ul class="navbar">
-                            <li>Home</li>
-                            <li>Sign Out</li>
-                        </ul>
+
+                <div class='content-container'>
+                    <div class='photo-grid'>
+                        <div class='photo-grid-item first-item'>
+
+                        </div>
+                        <div class='photo-grid-item'>
+                            <img src="https://cdn.dribbble.com/users/642843/screenshots/6428968/tokyo_trystram_2x.png" alt="city" styles="width: 100px; height: 300px;" />
+                        </div>
 
                     </div>
-                </body>
-            </html>
+                </div>
+            </body>
+
         );
     }
 }
