@@ -4,6 +4,13 @@ const USER = require("../models/user.model");
 
 LOGINROUTES.route("/user/login").post(function(req, res) {
   // email and password -encrypted
+
+  //   USER newUser = {
+  //     email: req.body.email,
+  //     first_name: req.body.first_name,
+  //     last_name: req.body.last_name,
+  //     password: req.body.password
+  //   };
   USER.findOne({ email: req.body.email })
     .then(user => {
       console.log(user);

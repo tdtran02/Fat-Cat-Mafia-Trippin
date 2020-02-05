@@ -1,9 +1,8 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Register from "./components/Register";
-import Signin from "./components/Signin";
+import Login from "./components/Login";
 import Email from "./components/ValidateEmail";
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
                 <Link to="/register">Register</Link>
               </li>
               <li>
-                <Link to="/signin">Sign in</Link>
+                <Link to="/login">Sign in</Link>
               </li>
               <li>
                 <Link to="/email">Email</Link>
@@ -33,14 +32,13 @@ function App() {
               <Register />
             </Route>
 
-            <Route path="/signin">
-              <Signin />
+            <Route path="/login">
+              <Login />
             </Route>
 
             <Route path="/email">
               <Email />
             </Route>
-
           </Switch>
         </div>
       </Router>
