@@ -14,6 +14,7 @@ export class Home extends Component {
                             <a class="edit" href="./MyAccount.js">Edit</a>
                         </div>
                         <div class='photo-grid-item'>
+                            <img src={require("./images/city.png")} alt="city" width="100" height="80" />
                         </div>
 
 
