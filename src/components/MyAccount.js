@@ -4,7 +4,7 @@ import React, { Component } from "react";
 // Recommendation
 // Setting
 // Sign out
-class MyAccount extends Component {
+export class MyAccount extends Component {
     render() {
         return (
           <div>

@@ -39,11 +39,10 @@ function App() {
             <Route path="/register">
               <Register />
             </Route>
-
             <Route path="/login">
               <Login />
             </Route>
-            <Route path="/my account">
+            <Route path="/myAccount">
               <MyAccount />
             </Route>
             <Route path="/email">
