@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Email from "./components/ValidateEmail";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
               <li>
                 <Link to="/email">Email</Link>
               </li>
+              <li>
+                <Link to="/home">Home</Link>
+              </li>
             </ul>
           </nav>
 
@@ -38,6 +42,10 @@ function App() {
 
             <Route path="/email">
               <Email />
+            </Route>
+
+            <Route path="/home">
+              <Home />
             </Route>
           </Switch>
         </div>
