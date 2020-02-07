@@ -1,32 +1,35 @@
 import React, { Component } from "react";
 
 export class ValidateEmail extends Component {
-    ValEmail(e){
-        let getEmail = document.getElementById("email");
-        console.log("Email: " + getEmail);
-    }
-
-  render() {
- //   var regexConst = new RegExp('^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z]*@[0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$')
-    return (
-        <div>
-                <form action = " ">
-                    <p>
-                        <label>Enter email: 
-                            <input type="email" myemail="myemail" id="email"></input>
-                        </label>                
-
-                        <button id="button" onClick={this.ValEmail}>Validate Email</button>
-
-                </p>
-                </form>
-        </div>
-        
-      
+    constructor(props) {
+        super(props);
+        this.state = {value: ''};
     
-        
-    );
-  }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+      }
+    
+      handleChange(event) {
+        this.setState({value: event.target.value});
+      }
+    
+      handleSubmit(event) {
+        alert(this.state.value + ' is valid.');
+        event.preventDefault();
+      }
+    
+      render() {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Enter email:
+              <input type="email" value={this.state.value} onChange={this.handleChange} />
+            </label>
+            <input type="submit" value="Validate" />
+          </form>
+        );
+      }
+    
 }
 
 export default ValidateEmail;
