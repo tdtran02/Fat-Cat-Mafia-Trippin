@@ -20,7 +20,7 @@ export class Home extends Component {
                                 <div class="buffer"></div>
                                 <div class="profile-text-buffer">
                                     <div class="edit-buffer">
-                                        <a class="edit" href="./MyAccount.js">EDIT</a>
+                                        <a class="edit" href="./MyAccount">EDIT</a>
                                     </div>
 
                                     <div class="profile-text">
