@@ -12,6 +12,7 @@
     justify-content: center;
     background-color: #279bbe;
     flex-wrap: wrap;
+    border-radius: 5px;
 }
 
 .main {
@@ -19,13 +20,57 @@
     width: 65%;
     display:flex;
     justify-content: flex-start;
+    border-radius: 5px;
+    flex-direction: column;
 }
 
-.photo-grid-item {
+.side-pic-container {
     width: 35%;
     background-color: #b2df6a;
+    border-radius: 5px;
 }
+.side-pic {
+    border-radius: 5px;
+}
+.profile-container {
+    height: 40%;
+    display:flex;
 
+    justify-content: center;
+
+   
+
+}
+.profile-pic-buffer {
+    display: flex;
+    width: 25%;
+    flex-direction: column;
+    justify-content: center;
+  
+}
+.profilepic {
+    height: 100px;
+    width: 100px;
+
+    border: 2px solid white;
+    border-radius: 5px;
+    
+}
+.buffer {
+    width:10%;
+}
+.profile-text-buffer {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   
+}
+.edit-buffer {
+    display:flex;
+    justify-content: flex-end;
+   height: 30%;
+}
 .edit {
     border: 1px solid white;
     border-radius: 3px;
@@ -36,11 +81,22 @@
     padding: 5px;
     text-align: center;
     text-decoration: none;
+   
+}
+
+.profile-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    color: white;
+    height: 30%
+  
 }
 
 img {
     height: 100%;
     width: 100%;
+
 }
 
 

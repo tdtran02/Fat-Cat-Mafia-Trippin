@@ -11,10 +11,29 @@ export class Home extends Component {
                 <div class='content-container'>
                     <div class='content-grid'>
                         <div class=' main'>
-                            <a class="edit" href="./MyAccount.js">Edit</a>
+                            <div class="profile-container">
+                                <div class="profile-pic-buffer">
+                                    <div class="profilepic">
+                                        <img src={require("./images/profilepic.png")} alt="city" width="100" height="80" />
+                                    </div>
+                                </div>
+                                <div class="buffer"></div>
+                                <div class="profile-text-buffer">
+                                    <div class="edit-buffer">
+                                        <a class="edit" href="./MyAccount.js">EDIT</a>
+                                    </div>
+
+                                    <div class="profile-text">
+                                        <div class="name">Tommy Traveller</div>
+                                        <div class="number-of-trips">Trips: 3</div>
+                                        <div class="view-friends-list">View Frends Lists</div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class='photo-grid-item'>
-                            <img src={require("./images/city.png")} alt="city" width="100" height="80" />
+                        <div class='side-pic-container'>
+                            <img class="side-pic" src={require("./images/city.png")} alt="city" width="100" height="80" />
                         </div>
 
 
