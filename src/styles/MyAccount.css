@@ -5,10 +5,10 @@
     justify-content: center;
 }
 
-.content-grid {
+.content-grid-myA {
     margin-top: 50px;
     width: 90%;
-    height: 500px;
+    height: 700px;
     display: flex;
     justify-content: center;
     background-color: #279bbe;
@@ -16,9 +16,9 @@
     border-radius: 5px;
 }
 
-.main {
+.main-myA {
     background-color: indigo;
-    height: 500px;
+    height: 700px;
     width: 65%;
     display:flex;
     justify-content: flex-start;
@@ -35,7 +35,7 @@
     border-radius: 5px;
 }
 .profile-container-myA {
-    height: 400px;
+    height: 650px;
     display:flex;
 
     justify-content: center;
