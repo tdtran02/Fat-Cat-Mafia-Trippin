@@ -1,0 +1,21 @@
+
+.container {
+
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
+.innercontainer {
+    width: 60%;
+
+
+
+}
+
+.profile-option {
+    border: 1px solid darkslategray;
+
+}
