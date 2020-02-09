@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import "../styles/Home.css";
+import MyAccount from './MyAccount.js';
+const mongoose = require("mongoose");
+
 
 
 export class Home extends Component {
     render() {
         return (
-            <body>
+            <div>
 
 
                 <div class='content-container'>
@@ -39,7 +42,7 @@ export class Home extends Component {
 
                     </div>
                 </div>
-            </body>
+            </div>
 
         );
     }

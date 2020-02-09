@@ -3,13 +3,6 @@ import "../styles/MyAccount.css";
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import { EditPhotoModal } from './EditPhotoModal';
 
-// Profile
-// Trip
-// Recommendation
-// Setting
-// Sign out
-
-
 
 
 export class MyAccount extends Component {
@@ -31,8 +24,8 @@ export class MyAccount extends Component {
         <div class='content-container'>
           <div class='content-grid'>
             <div class=' main'>
-              <div class="profile-container">
-                <div class="profile-pic-buffer">
+              <div class="profile-container-myA">
+                <div class="profile-pic-buffer-myA">
                   <div class="profilepic">
                     <img class="responsive" src={require("./images/profilepic.png")} alt="city" width="100" height="80" />
                   </div>
@@ -64,25 +57,28 @@ export class MyAccount extends Component {
                     <input type="text" />
                     <button>UPDATE</button>
 
+                    <form>
+                      <div class="phone">
+                        <label for="telNo">PHONE NUMBER </label>
+                        <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
+                        <span class="validity"></span>
+                      </div>
+                      <div>
+                        <button>UPDATE</button>
+                      </div>
+                    </form>
                   </div>
                 </div>
+
               </div>
+
             </div>
-            <div class='side-pic-container'>
-              <img class="responsive side-pic" src={require("./images/city.png")} alt="city" width="100" height="80" />
-            </div>
+
+
           </div>
+
         </div>
-        <form>
-          <div class="phone">
-            <label for="telNo">PHONE NUMBER </label>
-            <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
-            <span class="validity"></span>
-          </div>
-          <div>
-            <button>UPDATE</button>
-          </div>
-        </form>
+
         <div class="container">
           <div class="panel panel-primary">
             <div class="panel-heading">
@@ -129,7 +125,6 @@ export class MyAccount extends Component {
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete" async defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"></link>
         <script src="auto-complete.js"></script>
       </body>
     );

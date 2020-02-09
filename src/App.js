@@ -1,17 +1,23 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+//import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Email from "./components/ValidateEmail";
 import Home from "./components/Home";
 import MyAccount from "./components/MyAccount";
+import AppNavBar from './components/AppNavBar';
+
+import { Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
     <div className="App">
+      <AppNavBar />
       {/* home page */}
-      <Router>
+      {/*
+<Router>
         <div>
           <nav>
             <ul>
@@ -34,8 +40,8 @@ function App() {
           </nav>
 
           {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-          <Switch>
+            renders the first one that matches the current URL. }
+            <Switch>
             <Route path="/register">
               <Register />
             </Route>
@@ -55,8 +61,10 @@ function App() {
           </Switch>
         </div>
       </Router>
+          */}
     </div>
   );
 }
 
 export default App;
+

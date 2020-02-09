@@ -5,6 +5,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const ROUTER = express.Router();
 const PORT = 4000;
+/* const multer = require('multer');
+const upload = multer({ storage: storage }); */
+const fs = require('fs');
 
 // let Todo = require("./todo.model");
 // const USER = require("./models/user.model");
@@ -20,11 +23,27 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("Server is running on Port: " + PORT);
 });
 
 app.use(LOGINROUTES, ROUTER);
+
+/* const storage = multer.diskStorage({
+  destination: function (req, res, cb) {
+    cb(null, 'uploads/')
+  }
+}); */
+
+/* router.route('/img_data')
+  .post(upload.single('file'), function (req, res) {
+    var new_img = new Img;
+    new_img.img.data = fs.readFileSync(req.file.path)
+    new_img.img.contentType = 'image/jpeg';
+    new_img.save();
+
+    res.json({ message: 'New image added to the database!' });
+  }); */
 
 // todoRoutes.route("/").get(function(req, res) {
 //   console.log(">>>>>>");

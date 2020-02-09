@@ -4,6 +4,7 @@
     display:flex;
     justify-content: center;
 }
+
 .content-grid {
     margin-top: 50px;
     width: 90%;
@@ -17,6 +18,7 @@
 
 .main {
     background-color: indigo;
+    height: 500px;
     width: 65%;
     display:flex;
     justify-content: flex-start;
@@ -32,26 +34,27 @@
 .side-pic {
     border-radius: 5px;
 }
-.profile-container {
-    height: 40%;
+.profile-container-myA {
+    height: 400px;
     display:flex;
 
     justify-content: center;
-
+    background-color: black;
    
 
-}
-.profile-pic-buffer {
+} 
+ .profile-pic-buffer-myA {
     display: flex;
     width: 25%;
+    height: 100%;
     flex-direction: column;
     justify-content: center;
-  
-}
+
+} 
 .profilepic {
     height: 100px;
     width: 100px;
-
+    
     border: 2px solid white;
     border-radius: 5px;
     
@@ -83,11 +86,7 @@
     margin-top: 20px;
 }
 
-div{
-    margin-bottom: 10px;
-    position: relative;
-}
-  
+
 input[type="number"] {
     width: 100px;
 }

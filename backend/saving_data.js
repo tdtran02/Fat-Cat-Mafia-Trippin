@@ -1,17 +1,18 @@
 const assert = require('assert');
 const UserChar = require('../backend/models/user.model');
 
-describe('Saving user', function(){
+describe('Saving user', function () {
 
-    it('Saves a record to database', function(done){
+    it('Saves a record to database', function (done) {
         var usr = new UserChar({
             first_name: 'Thuy',
             last_name: 'Tran',
             email: 'lilb3lazy@gmail.com',
-            password: 'TrippinTest'
+            password: 'TrippinTest',
+            image: '/trippin/src/images/profilepic.png'
         });
 
-        usr.save().then(function(){
+        usr.save().then(function () {
             assert(usr.isNew === false);
             done();
         });
