@@ -14,7 +14,7 @@ export class Home extends Component {
                             <div class="profile-container">
                                 <div class="profile-pic-buffer">
                                     <div class="profilepic">
-                                        <img src={require("./images/profilepic.png")} alt="city" width="100" height="80" />
+                                        <img class="responsive" src={require("./images/profilepic.png")} alt="city" width="100" height="80" />
                                     </div>
                                 </div>
                                 <div class="buffer"></div>
@@ -33,7 +33,7 @@ export class Home extends Component {
 
                         </div>
                         <div class='side-pic-container'>
-                            <img class="side-pic" src={require("./images/city.png")} alt="city" width="100" height="80" />
+                            <img class="responsive side-pic" src={require("./images/city.png")} alt="city" width="100" height="80" />
                         </div>
 
 
