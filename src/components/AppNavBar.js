@@ -51,7 +51,9 @@ class AppNavBar extends Component {
                                     <NavItem>
                                         <NavLink tag={RRNavLink} exact to="/Register">Register</NavLink>
                                     </NavItem>
-
+                                    <NavItem>
+                                        <NavLink tag={RRNavLink} exact to="/Email">Email</NavLink>
+                                    </NavItem>
 
                                 </Nav>
 
