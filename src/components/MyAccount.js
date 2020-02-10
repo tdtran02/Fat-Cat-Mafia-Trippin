@@ -33,95 +33,124 @@ export class MyAccount extends Component {
                     <ButtonToolbar>
                       <Button variant="primary" onClick={() => this.setState({ editPhotoShow: true })}>
                         Change Photo
-      </Button>
-
+                      </Button>
                       <EditPhotoModal
                         show={this.state.editPhotoShow}
                         onHide={editModalClose}
                       />
                     </ButtonToolbar>
-
-
                   </div>
                 </div>
                 <div class="buffer"></div>
-                <div class="profile-text-buffer">
+                  <div class="profile-text-buffer">
+                    <div class="profile-text">
+                      <label for="full-name">NAME</label>
+                      <input type="text" />
+                      <button>UPDATE</button>
 
+                      <label for="email">EMAIL</label>
+                      <input type="text" />
+                      <button>UPDATE</button>
 
-                  <div class="profile-text">
-                    <label for="full-name">NAME</label>
-                    <input type="text" />
-                    <button>UPDATE</button>
-
-                    <label for="email">EMAIL</label>
-                    <input type="text" />
-                    <button>UPDATE</button>
-
-                    <form>
-                      <div class="phone">
-                        <label for="telNo">PHONE NUMBER </label>
-                        <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
-                        <span class="validity"></span>
-                      </div>
-                      <div>
-                        <button>UPDATE</button>
-                      </div>
-                    </form>
-                    <div class="container">
-                      <div class="panel panel-primary">
-                        <div class="panel-heading">
-                          <h3 class="panel-title">Address</h3>
+                      <form>
+                        <div class="phone">
+                          <label for="telNo">PHONE NUMBER </label>
+                          <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
+                          <span class="validity"></span>
                         </div>
-                        <div class="panel-body">
-                          <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text" class="form-control"></input>
-                          <br></br>
-                          <div id="address">
-                            <div class="row">
-                              <div class="col-md-6">
-                                <label class="control-label">Stress Address</label>
-                                <input class="form-control" id="stress_number" placeholder="Enter your street number and street name"></input>
+                        <div>
+                          <button>UPDATE</button>
+                        </div>
+                      </form>
+                      <div class="container">
+                        <div class="panel panel-primary">
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Address</h3>
+                          </div>
+                          <div class="panel-body">
+                            <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text" class="form-control"></input>
+                            <br></br>
+                            <div id="address">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <label class="control-label">Stress Address</label>
+                                  <input class="form-control" id="stress_number" placeholder="Enter your street number and street name"></input>
+                                </div>
+                                <div class="col-md-6">
+                                  <label class="control-label">Apt Number</label>
+                                  <input class="form-control" id="apt_number" placeholder="Enter your Apartment number"></input>
+                                </div>
                               </div>
-                              <div class="col-md-6">
-                                <label class="control-label">Apt Number</label>
-                                <input class="form-control" id="apt_number" placeholder="Enter your Apartment number"></input>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <label class="control-label">City</label>
+                                  <input class="form-control field" id="locality" placeholder="Enter your city"></input>
+                                </div>
+                                <div class="col-md-6">
+                                  <label class="control-label">State</label>
+                                  <input class="form-control" id="administrative_area_level_1" placeholder="Enter your State"></input>
+                                </div>
                               </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-6">
-                                <label class="control-label">City</label>
-                                <input class="form-control field" id="locality" placeholder="Enter your city"></input>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="control-label">State</label>
-                                <input class="form-control" id="administrative_area_level_1" placeholder="Enter your State"></input>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-6">
-                                <label class="cotrol-label">Zip Code</label>
-                                <input class="form-control" id="postal_code" placeholder="Enter your Zip Code"></input>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="control-label">Country</label>
-                                <input class="form-control" id="country" placeholder="Enter your country"></input>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <label class="cotrol-label">Zip Code</label>
+                                  <input class="form-control" id="postal_code" placeholder="Enter your Zip Code"></input>
+                                </div>
+                                <div class="col-md-6">
+                                  <label class="control-label">Country</label>
+                                  <input class="form-control" id="country" placeholder="Enter your country"></input>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
                     </div>
                   </div>
                 </div>
-
               </div>
-
             </div>
-
-
           </div>
-
         </div>
-
+        <div class="container">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">TRAVEL</h3>
+            </div>
+            <div class="panel-body">
+              <br></br>
+              <div id="location">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="control-label">Departure</label>
+                    <input class="form-control" id="departue_location" placeholder="City Country Depart"></input>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="control-label">Arrival</label>
+                    <input class="form-control" id="arrival_location" placeholder="City Country Arrive"></input>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <form>
+                      <label for="control-label">Start Date
+                        <input class="form-control" type="date" name="start-day" min="2020-02-10" max="2022-02-10"required></input>
+                        <span class="validity"></span>
+                      </label>
+                    </form>
+                  </div>
+                  <div class="col-md-6">
+                    <form>
+                      <label for="control-label">End Date
+                        <input class="form-control" type="date" name="end-day" min="2020-02-11" max="2022-02-11"required></input>
+                        <span class="validity"></span>
+                      </label>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete" async defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
