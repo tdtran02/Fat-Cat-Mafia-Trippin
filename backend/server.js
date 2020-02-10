@@ -5,12 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const ROUTER = express.Router();
 const PORT = 4000;
-/* const multer = require('multer');
-const upload = multer({ storage: storage }); */
-const fs = require('fs');
 
-// let Todo = require("./todo.model");
-// const USER = require("./models/user.model");
 const LOGINROUTES = require("./routes/login");
 
 app.use(cors());
@@ -29,11 +24,6 @@ app.listen(PORT, function () {
 
 app.use(LOGINROUTES, ROUTER);
 
-/* const storage = multer.diskStorage({
-  destination: function (req, res, cb) {
-    cb(null, 'uploads/')
-  }
-}); */
 
 /* router.route('/img_data')
   .post(upload.single('file'), function (req, res) {
