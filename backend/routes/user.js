@@ -6,7 +6,7 @@ const USER = require("../models/user.model");
 USERROUTES.route("/user/:id").get(function(req, res) {
   USER.findOne({ _id: req.params.id }).then(user => {
     if (user != null) {
-      res.status(400).json({
+      res.status(200).json({
         user: user
       });
     } else {

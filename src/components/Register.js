@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
-import Login from "./Login.js"
 const AXIOS = require("axios").default;
 
 class Register extends Component {
@@ -9,7 +8,8 @@ class Register extends Component {
     super(props);
 
     this.state = {
-      fullname: "",
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
       show_message: false
@@ -34,8 +34,8 @@ class Register extends Component {
     AXIOS.post("http://localhost:4000/user/register", {
       email: this.state.email,
       password: this.state.password,
-      first_name: this.state.full_name,
-      last_name: ""
+      first_name: this.state.first_name,
+      last_name: this.state.last_name
     })
       .then(response => {
         if (response.data.registered) {
@@ -63,9 +63,18 @@ class Register extends Component {
           <div className="name">
             <input
               type="text"
-              placeholder="Full Name"
-              name="fullname"
-              value={this.state.fullname}
+              placeholder="First Name"
+              name="first_name"
+              value={this.state.first_name}
+              onChange={this.update}
+            />
+          </div>
+          <div className="name">
+            <input
+              type="text"
+              placeholder="Last Name"
+              name="last_name"
+              value={this.state.last_name}
               onChange={this.update}
             />
           </div>
@@ -101,7 +110,7 @@ class Register extends Component {
           <input type="submit" value="Register" />
         </form>
 
-        <Link to="/Login">Login Here</Link>
+        <Link to="/login">Login Here</Link>
       </div>
     );
   }
