@@ -18,7 +18,7 @@ export class MyAccount extends Component {
     let editModalClose = () => this.setState({ editPhotoShow: false })
 
     return (
-      <body>
+      <div>
 
 
         <div class='content-container'>
@@ -49,11 +49,11 @@ export class MyAccount extends Component {
 
 
                   <div class="profile-text">
-                    <label for="full-name">NAME</label>
+                    <label htmlFor="full-name">NAME</label>
                     <input type="text" />
                     <button>UPDATE</button>
 
-                    <label for="email">EMAIL</label>
+                    <label htmlFor="email">EMAIL</label>
                     <input type="text" />
                     <button>UPDATE</button>
 
@@ -127,7 +127,7 @@ export class MyAccount extends Component {
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
         <script src="auto-complete.js"></script>
-      </body>
+      </div>
     );
   }
 }
