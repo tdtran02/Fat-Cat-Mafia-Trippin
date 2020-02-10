@@ -23,7 +23,7 @@ export class EditPhotoModal extends Component {
                 <Modal.Body>
                     <div class="container">
                         <div class="innercontainer">
-                            <button><img class="profile-option" src={require("./images/profile1.jpg")} alt="1" width="100px" height="100px" /></button>
+                            <button><img class="profile-option" src={require("./images/profile1.jpg")} onClick={this.props.changeProfilePic} alt="1" width="100px" height="100px" /></button>
                             <button><img class="profile-option" src={require("./images/profile2.jpg")} alt="2" width="100px" height="100px" /></button>
                             <button><img class="profile-option" src={require("./images/profile3.jpg")} alt="3" width="100px" height="100px" /></button>
                             <button><img class="profile-option" src={require("./images/profile4.jpg")} alt="4" width="100px" height="100px" /></button>
