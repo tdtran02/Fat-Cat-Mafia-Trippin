@@ -1,32 +1,47 @@
 const EXPRESS = require("express");
-const LOGINROUTES = EXPRESS.Router();
+const REGISTERROUTES = EXPRESS.Router();
 const USER = require("../models/user.model");
 
-LOGINROUTES.route("/user/login").post(function(req, res) {
-  // email and password -encrypted
+const BCRYPT = require("bcrypt");
+const SALTROUNDS = 10;
 
-  //   USER newUser = {
-  //     email: req.body.email,
-  //     first_name: req.body.first_name,
-  //     last_name: req.body.last_name,
-  //     password: req.body.password
-  //   };
-  USER.findOne({ email: req.body.email })
-    .then(user => {
-      console.log(user);
-      if (user.password == req.body.password) {
-        res.status(200).json({
-          response: "User logged in"
+REGISTERROUTES.route("/user/register").post(function(req, res) {
+  USER.findOne({ email: req.body.email }).then(user => {
+    if (user != null) {
+      res.status(400).json({
+        response: "Email is already linked with an account"
+      });
+    } else {
+      // hash the password
+      let HASH = BCRYPT.hashSync(req.body.password, SALTROUNDS);
+
+      let newUser = new USER({
+        email: req.body.email,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        password: HASH
+      });
+
+      newUser
+        .save()
+        .then(saved => {
+          if (saved != null) {
+            res.status(200).json({
+              response: "Registered",
+              registered: true
+            });
+          } else {
+            res.status(401).json({
+              response: "Register Failed",
+              registered: false
+            });
+          }
+        })
+        .catch(err => {
+          console.error("Error during register");
         });
-      } else {
-        res.status(401).json({
-          response: "Wrong password"
-        });
-      }
-    })
-    .catch(err => {
-      res.status(400).send("Failed to logins");
-    });
+    }
+  });
 });
 
-module.exports = LOGINROUTES;
+module.exports = REGISTERROUTES;

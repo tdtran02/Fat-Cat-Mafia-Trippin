@@ -1,8 +1,7 @@
-
 body {
   padding: 0px;
   margin: 0px;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
 }
 
 .container {
@@ -10,7 +9,7 @@ body {
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 30px;
 }
 
 .login,
@@ -29,7 +28,7 @@ body {
   text-align: center;
 }
 
-input[type='text'] {
+input[type="text"] {
   background-color: #e6e6e6;
   color: #827ffe;
   font-size: 16px;
@@ -39,7 +38,7 @@ input[type='text'] {
   padding: 20px 30px;
 }
 
-input[type='password'] {
+input[type="password"] {
   background-color: #e6e6e6;
   padding: 20px 30px;
   color: #827ffe;
@@ -49,7 +48,7 @@ input[type='password'] {
   width: 85%;
 }
 
-input[type='submit'] {
+input[type="submit"] {
   padding: 15px 0px;
   background-color: #827ffe;
   color: #fff;

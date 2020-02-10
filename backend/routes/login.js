@@ -2,23 +2,34 @@ const EXPRESS = require("express");
 const LOGINROUTES = EXPRESS.Router();
 const USER = require("../models/user.model");
 
+const BCRYPT = require("bcrypt");
+
 LOGINROUTES.route("/user/login").post(function(req, res) {
-  // email and password -encrypted
   USER.findOne({ email: req.body.email })
     .then(user => {
-      console.log(user);
-      if (user.password == req.body.password) {
+      const IS_RIGHT_PASSWORD = BCRYPT.compareSync(
+        req.body.password,
+        user.password
+      );
+      if (IS_RIGHT_PASSWORD) {
         res.status(200).json({
-          response: "User logged in"
+          response: "User logged in",
+          logged_in: true,
+          user: user
         });
       } else {
-        res.status(401).json({
-          response: "Wrong password"
+        res.status(200).json({
+          response: "Wrong password",
+          logged_in: false
         });
       }
     })
     .catch(err => {
-      res.status(400).send("Failed to logins");
+      console.error("Log in failed");
+      res.status(200).json({
+        response: "Log in failed",
+        logged_in: false
+      });
     });
 });
 
