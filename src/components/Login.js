@@ -1,68 +1,70 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      errors: {}
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
+	constructor(props) {
+		super(props);
 
-  handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
+		this.state = {
+			email: '',
+			password: ''
+		};
 
-  handleClick(e) {
-    e.preventDefault();
-    let { email, password } = this.state;
-    let err = {};
-    if (email === "" || password === "") {
-      err.password = password === "";
-      err.email = email === "";
-    }
-    this.setState({
-      errors: err
-    });
-  }
+		this.update = this.update.bind(this);
 
-  render() {
-    const { email, password, errors } = this.state;
-    return (
-      <div className="login">
-        <h1 className="title">Login</h1>
-        <form action="">
-          <input
-            type="email"
-            name="email"
-            className={`form email ${errors.email === true ? "error" : ""}`}
-            placeholder="Email*"
-            value={email}
-            onChange={this.handleChange}
-          />
-          <input
-            type="password"
-            name="password"
-            className={`form password ${
-              errors.password === true ? "error" : ""
-            }`}
-            placeholder="Password*"
-            value={password}
-            onChange={this.handleChange}
-          />
-          <input
-            type="button"
-            className="submit"
-            value="LOG IN"
-            onClick={this.handleClick}
-          />
-        </form>
-      </div>
-    );
-  }
+		this.displayLogin = this.displayLogin.bind(this);
+	}
+
+	update(e) {
+		let name = e.target.name;
+		let value = e.target.value;
+		this.setState({
+			[name]: value
+		});
+	}
+
+	displayLogin(e) {
+		e.preventDefault();
+		console.log('You are logged in');
+		console.log(this.state);
+		this.setState({
+			email: '',
+			password: ''
+		});
+	}
+
+	render() {
+		return (
+			<div className="login">
+				<form onSubmit={this.displayLogin}>
+					<h2>Login</h2>
+					<div className="username">
+						<input
+							type="text"
+							placeholder="Username..."
+							value={this.state.email}
+							onChange={this.update}
+							name="email"
+						/>
+					</div>
+
+					<div className="password">
+						<input
+							type="password"
+							placeholder="Password..."
+							value={this.state.password}
+							onChange={this.update}
+							name="password"
+						/>
+					</div>
+
+					<input type="submit" value="Login" />
+				</form>
+
+				<Link to="/register">Create an account</Link>
+			</div>
+		);
+	}
 }
 
 export default Login;

@@ -1,128 +1,65 @@
-/* 
-html, body, .App, #root{
-  height: 100%;
+
+body {
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Ubuntu', sans-serif;
 }
 
-body{
-  font-family: 'Montserrat', sans-serif;
-}
-
-.App{
-  width: 100%;
-  background: #f9f9f9;
-}
-
-.btn{
-  padding: .8em 20%;
-  text-decoration: none;
-}
-
-.active{
-  background: #00FFFF;
-  color: #f9f9f9;
-}
-.inactive{
-  background: #45515B;
-  color: #8AA79C;
-}
-
-.btn:hover{
-  background: #00FFFF;
-  color: #f9f9f9;
-  transition: all .4s linear;
-}
-.auth-block{
-  height: 60%;
-  width: 30%;
-  padding: 3em;
-  border-radius: .5em;
-  text-align: center;
-  color: #F9F9F6;
-  background: #24323D;
-}
-
-.login, .register{
-  opacity: 1;
-  animation: appear .5s linear; 
-}
-
-@keyframes appear{
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-.title{
-  font-weight: 400;
-}
-
-.form{
-  background: none;
-  padding: .5em;
-  border: 1px solid #00FFFF;
-  color: #00FFFF;
-  margin: .5em;
-}
-
-.email, .password{
-  width: 90%;
-}
-
-.error{
-  outline: #c31111 solid 1px;
-  transition: all .4s linear;
-}
-
-.submit{
-  width: 95%;
-  margin-top: 1em;
-  padding: 1em;
-  border: none;
-  cursor: pointer;
-  font-weight: 800;
-  color: #F9F9F6;
-  background: #00FFFF;
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing: border-box;
-}
-.navbar {
-  border: 3px solid black;
-  color:#fff;
-
-  float:right;
-}
-
-.menu {
-  border: 1px solid #fff;
-  width: 900px;
+.container {
   display: flex;
-  justify-content: space-around;
-
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-ul {
-  overflow: hidden;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: black;
+.login,
+.register {
+  width: 400px;
 }
 
-li {
-  float: right;
+.login h2,
+.register h2 {
+  font-size: 45px;
+  text-transform: uppercase;
+  text-align: center;
 }
 
-li a {
-  display: block;
-  padding: 16px;
-  color: white;
-  text-decoration: none;
+.login a {
+  text-align: center;
 }
 
-li a:hover {
-  background-color: #111111;
-} */
+input[type='text'] {
+  background-color: #e6e6e6;
+  color: #827ffe;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border: none;
+  width: 85%;
+  padding: 20px 30px;
+}
 
+input[type='password'] {
+  background-color: #e6e6e6;
+  padding: 20px 30px;
+  color: #827ffe;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border: none;
+  width: 85%;
+}
+
+input[type='submit'] {
+  padding: 15px 0px;
+  background-color: #827ffe;
+  color: #fff;
+  font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: none;
+  width: 100%;
+}
+
+.check {
+  font-size: 16px;
+}
