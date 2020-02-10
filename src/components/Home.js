@@ -33,6 +33,9 @@ export class Home extends Component {
                                     </div>
                                 </div>
                             </div>
+                            <div id="trips-container">
+                                <button id="create-trip-btn">CREATE A TRIP</button>
+                            </div>
 
                         </div>
                         <div class='side-pic-container'>
