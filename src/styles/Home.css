@@ -16,7 +16,7 @@
 }
 
 .main {
-    background-color: indigo;
+    background-color: slategray;
     width: 65%;
     display:flex;
     justify-content: flex-start;
@@ -37,7 +37,7 @@
     display:flex;
 
     justify-content: center;
-
+    background-color: slategray;
    
 
 }
@@ -58,6 +58,7 @@
 }
 .buffer {
     width:10%;
+
 }
 .profile-text-buffer {
     width: 55%;
@@ -70,6 +71,7 @@
     display:flex;
     justify-content: flex-end;
    height: 30%;
+
 }
 .edit {
     border: 1px solid white;
@@ -84,6 +86,12 @@
    
 }
 
+.edit:hover {
+    text-decoration: none;
+    background-color: #333333;
+    color:#f6f6f6;
+}
+
 .profile-text {
     display: flex;
     flex-direction: column;
@@ -91,6 +99,23 @@
     color: white;
     height: 30%
   
+}
+
+#trips-container {
+    display: flex;
+    justify-content: center;
+}
+
+#create-trip-btn {
+    background-color: steelblue;
+    border: 1px solid #f6f6f6;
+    padding: 10px;
+    margin-top: 50px;
+    color:#f6f6f6;
+    border-radius: 5px;;
+}
+#create-trip-btn:hover {
+    background-color: slateblue;
 }
 
 .responsive{
