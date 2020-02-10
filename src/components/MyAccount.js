@@ -2,8 +2,26 @@ import React, { Component } from "react";
 import "../styles/MyAccount.css";
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import { EditPhotoModal } from './EditPhotoModal';
+import Profile from './images/profilepic.png';
+import Profile1 from './images/profile1.jpg';
+import Profile2 from './images/profile2.jpg';
+import Profile3 from './images/profile3.jpg';
+import Profile4 from './images/profile4.jpg';
+import Profile5 from './images/profile5.jpg';
+import Profile6 from './images/profile6.jpg';
+import Profile7 from './images/profile7.jpg';
+import Profile8 from './images/profile8.jpg';
+import Profile9 from './images/profile9.jpg';
+import Profile10 from './images/profile10.jpg';
 
+function ChangePhoto() {
+  function handleClick(e) {
+    e.preventDefault();
+    document.getElementById("profile-pic-myA").src = { Profile10 };
+    console.log('The button was clicked.');
+  }
 
+}
 
 export class MyAccount extends Component {
 
@@ -15,8 +33,8 @@ export class MyAccount extends Component {
 
 
   render() {
-    let editModalClose = () => this.setState({ editPhotoShow: false })
-
+    let editModalClose = () => this.setState({ editPhotoShow: false });
+    let changeProfilePic = () => { document.getElementById('profile-pic-myA').src = Profile1; }
     return (
       <body>
 
@@ -27,7 +45,7 @@ export class MyAccount extends Component {
               <div class="profile-container-myA">
                 <div class="profile-pic-buffer-myA">
                   <div class="profilepic">
-                    <img class="responsive" src={require("./images/profilepic.png")} alt="city" width="100" height="80" />
+                    <img class="responsive" id="profile-pic-myA" src={Profile} alt="city" width="100" height="80" />
                   </div>
                   <div class="edit-pic">
                     <ButtonToolbar>
@@ -38,6 +56,7 @@ export class MyAccount extends Component {
                       <EditPhotoModal
                         show={this.state.editPhotoShow}
                         onHide={editModalClose}
+                        onClick={changeProfilePic}
                       />
                     </ButtonToolbar>
 
