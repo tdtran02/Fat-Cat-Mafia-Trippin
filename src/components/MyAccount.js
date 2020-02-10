@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../styles/MyAccount.css";
 import { Button, ButtonToolbar } from 'react-bootstrap';
+import EditPhoto from './EditPhotoModal.js';
 import { EditPhotoModal } from './EditPhotoModal';
 import Profile from './images/profilepic.png';
 import Profile1 from './images/profile1.jpg';
@@ -16,113 +17,163 @@ import Profile10 from './images/profile10.jpg';
 
 function ChangePhoto() {
   function handleClick(e) {
+
     e.preventDefault();
     document.getElementById("profile-pic-myA").src = { Profile10 };
-    console.log('The button was clicked.');
+    console.log();
   }
 
 }
 
 export class MyAccount extends Component {
 
+
   constructor(props) {
     super(props);
-    this.state = { editPhotoShow: false }
+    this.state = { editPhotoShow: false, option: '2' };
+    let photoID = null;
+    this.handler = this.handler.bind(this)
   }
 
-
+  handler() {
+    this.setState({
+      option: '7'
+    })
+  }
 
   render() {
     let editModalClose = () => this.setState({ editPhotoShow: false });
-    let changeProfilePic = () => { document.getElementById('profile-pic-myA').src = Profile1; }
+
+    let changeProfilePic = () => {
+
+      switch (this.state.option) {
+        case '1':
+          document.getElementById("profile-pic-myA").src = Profile1;
+          break;
+        case '2':
+          document.getElementById("profile-pic-myA").src = Profile2;
+          break
+        case '3':
+          document.getElementById("profile-pic-myA").src = Profile3;
+          break;
+        case '4':
+          document.getElementById("profile-pic-myA").src = Profile4;
+          break;
+        case '5':
+          document.getElementById("profile-pic-myA").src = Profile5;
+          break;
+        case '6':
+          document.getElementById("profile-pic-myA").src = Profile6;
+          break;
+        case '7':
+          document.getElementById("profile-pic-myA").src = Profile7;
+          break;
+        case '8':
+          document.getElementById("profile-pic-myA").src = Profile8;
+          break;
+        case '9':
+          document.getElementById("profile-pic-myA").src = Profile9;
+          break;
+        case '10':
+          document.getElementById("profile-pic-myA").src = Profile10;
+          break;
+      }
+
+
+    }
+
     return (
-      <body>
+      <div>
 
 
-        <div class='content-container'>
-          <div class='content-grid-myA'>
-            <div class=' main-myA'>
-              <div class="profile-container-myA">
-                <div class="profile-pic-buffer-myA">
-                  <div class="profilepic">
-                    <img class="responsive" id="profile-pic-myA" src={Profile} alt="city" width="100" height="80" />
+        <div className='content-container'>
+          <div className='content-grid-myA'>
+            <div className=' main-myA'>
+              <div className="profile-container-myA">
+                <div className="profile-pic-buffer-myA">
+                  <div className="profilepic">
+                    <img className="responsive" id="profile-pic-myA" src={Profile} alt="city" width="100" height="80" />
                   </div>
-                  <div class="edit-pic">
+                  <div className="edit-pic">
                     <ButtonToolbar>
-                      <Button variant="primary" onClick={() => this.setState({ editPhotoShow: true })}>
+                      <Button variant="primary" onClick={() => this.setState({ editPhotoShow: true, option: '3' })}>
                         Change Photo
                       </Button>
                       <EditPhotoModal
                         show={this.state.editPhotoShow}
                         onHide={editModalClose}
                         onClick={changeProfilePic}
+                        handler={this.handler}
                       />
                     </ButtonToolbar>
                   </div>
                 </div>
-                <div class="buffer"></div>
-                  <div class="profile-text-buffer">
-                    <div class="profile-text">
-                      <label for="full-name">NAME</label>
-                      <input type="text" />
-                      <button>UPDATE</button>
+                <div className="buffer"></div>
+                <div className="profile-text-buffer">
+                  <div className="profile-text">
+                    <label htmlFor="full-name">NAME</label>
+                    <input type="text" className="myA" />
+                    <button>UPDATE</button>
 
-                      <label for="email">EMAIL</label>
-                      <input type="text" />
-                      <button>UPDATE</button>
+                    <label htmlFor="email">EMAIL</label>
+                    <input type="text" className="myA" />
+                    <button>UPDATE</button>
 
-                      <form>
-                        <div class="phone">
-                          <label for="telNo">PHONE NUMBER </label>
-                          <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
-                          <span class="validity"></span>
+                    <form>
+                      <div className="phone">
+                        <label htmlFor="telNo">PHONE NUMBER </label>
+                        <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
+                        <span className="validity"></span>
+                      </div>
+                      <div>
+                        <button>UPDATE</button>
+                      </div>
+                    </form>
+                    <div className="container-form">
+                      <div className="panel panel-primary">
+                        <div className="panel-heading">
+                          <h3 className="panel-title">Address</h3>
                         </div>
-                        <div>
-                          <button>UPDATE</button>
-                        </div>
-                      </form>
-                      <div class="container">
-                        <div class="panel panel-primary">
-                          <div class="panel-heading">
-                            <h3 class="panel-title">Address</h3>
-                          </div>
-                          <div class="panel-body">
-                            <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text" class="form-control"></input>
-                            <br></br>
-                            <div id="address">
-                              <div class="row">
-                                <div class="col-md-6">
-                                  <label class="control-label">Stress Address</label>
-                                  <input class="form-control" id="stress_number" placeholder="Enter your street number and street name"></input>
-                                </div>
-                                <div class="col-md-6">
-                                  <label class="control-label">Apt Number</label>
-                                  <input class="form-control" id="apt_number" placeholder="Enter your Apartment number"></input>
-                                </div>
+                        <div className="panel-body">
+                          <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text" className="form-control"></input>
+                          <br></br>
+                          <div id="address">
+                            <div className="row">
+                              <div className="col-md-6">
+                                <label className="control-label">Street Address</label>
+                                <input className="form-control" id="stress_number" placeholder="Enter your street number and street name"></input>
                               </div>
-                              <div class="row">
-                                <div class="col-md-6">
-                                  <label class="control-label">City</label>
-                                  <input class="form-control field" id="locality" placeholder="Enter your city"></input>
-                                </div>
-                                <div class="col-md-6">
-                                  <label class="control-label">State</label>
-                                  <input class="form-control" id="administrative_area_level_1" placeholder="Enter your State"></input>
-                                </div>
+                              <div className="col-md-6">
+                                <label className="control-label">Apt Number</label>
+                                <input className="form-control" id="apt_number" placeholder="Enter your Apartment number"></input>
                               </div>
-                              <div class="row">
-                                <div class="col-md-6">
-                                  <label class="cotrol-label">Zip Code</label>
-                                  <input class="form-control" id="postal_code" placeholder="Enter your Zip Code"></input>
-                                </div>
-                                <div class="col-md-6">
-                                  <label class="control-label">Country</label>
-                                  <input class="form-control" id="country" placeholder="Enter your country"></input>
-                                </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6">
+                                <label className="control-label">City</label>
+                                <input className="form-control field" id="locality" placeholder="Enter your city"></input>
+                              </div>
+                              <div className="col-md-6">
+                                <label className="control-label">State</label>
+                                <input className="form-control" id="administrative_area_level_1" placeholder="Enter your State"></input>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6">
+                                <label className="cotrol-label">Zip Code</label>
+                                <input className="form-control" id="postal_code" placeholder="Enter your Zip Code"></input>
+                              </div>
+                              <div className="col-md-6">
+                                <label className="control-label">Country</label>
+                                <input className="form-control" id="country" placeholder="Enter your country"></input>
                               </div>
                             </div>
                           </div>
                         </div>
+                      </div>
+                      <div id="submit-btn">
+                        <button>SUBMIT CHANGES</button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -130,38 +181,38 @@ export class MyAccount extends Component {
             </div>
           </div>
         </div>
-        <div class="container">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              <h3 class="panel-title">TRAVEL</h3>
+        <div className="container-form">
+          <div className="panel panel-primary">
+            <div className="panel-heading">
+              <h3 className="panel-title">TRAVEL</h3>
             </div>
-            <div class="panel-body">
+            <div className="panel-body">
               <br></br>
               <div id="location">
-                <div class="row">
-                  <div class="col-md-6">
-                    <label class="control-label">Departure</label>
-                    <input class="form-control" id="departue_location" placeholder="City Country Depart"></input>
+                <div className="row">
+                  <div className="col-md-6">
+                    <label className="control-label">Departure</label>
+                    <input className="form-control" id="departue_location" placeholder="City Country Depart"></input>
                   </div>
-                  <div class="col-md-6">
-                    <label class="control-label">Arrival</label>
-                    <input class="form-control" id="arrival_location" placeholder="City Country Arrive"></input>
+                  <div className="col-md-6">
+                    <label className="control-label">Arrival</label>
+                    <input className="form-control" id="arrival_location" placeholder="City Country Arrive"></input>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-md-6">
+                <div className="row">
+                  <div className="col-md-6">
                     <form>
-                      <label for="control-label">Start Date
-                        <input class="form-control" type="date" name="start-day" min="2020-02-10" max="2022-02-10"required></input>
-                        <span class="validity"></span>
+                      <label htmlFor="control-label">Start Date
+                        <input className="form-control" type="date" name="start-day" min="2020-02-10" max="2022-02-10" required></input>
+                        <span className="validity"></span>
                       </label>
                     </form>
                   </div>
-                  <div class="col-md-6">
+                  <div className="col-md-6">
                     <form>
-                      <label for="control-label">End Date
-                        <input class="form-control" type="date" name="end-day" min="2020-02-11" max="2022-02-11"required></input>
-                        <span class="validity"></span>
+                      <label htmlFor="control-label">End Date
+                        <input className="form-control" type="date" name="end-day" min="2020-02-11" max="2022-02-11" required></input>
+                        <span className="validity"></span>
                       </label>
                     </form>
                   </div>
@@ -173,9 +224,9 @@ export class MyAccount extends Component {
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete" async defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossOrigin="anonymous"></script>
         <script src="auto-complete.js"></script>
-      </body>
+      </div>
     );
   }
 }

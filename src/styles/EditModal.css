@@ -1,5 +1,5 @@
 
-.container {
+.container-modal {
 
 
     display: flex;
@@ -19,3 +19,22 @@
     border: 1px solid darkslategray;
 
 }
+
+[type=radio] {
+    position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+[type=radio] + img {
+    cursor: pointer;
+  }
+
+  [type=radio]:checked + img {
+    outline: 2px solid #f00;
+  }
+
+  .pic-options {
+      margin:3px;
+  }
