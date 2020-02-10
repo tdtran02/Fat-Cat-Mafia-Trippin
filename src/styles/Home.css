@@ -1,103 +1,114 @@
-
-
 .content-container {
-    display:flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 .content-grid {
-    margin-top: 50px;
-    width: 90%;
-    height: 500px;
-    display: flex;
-    justify-content: center;
-    background-color: #279bbe;
-    flex-wrap: wrap;
-    border-radius: 5px;
+  margin-top: 50px;
+  width: 90%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  background-color: #279bbe;
+  flex-wrap: wrap;
+  border-radius: 5px;
 }
 
 .main {
-    background-color: indigo;
-    width: 65%;
-    display:flex;
-    justify-content: flex-start;
-    border-radius: 5px;
-    flex-direction: column;
+  background-color: slategray;
+  width: 65%;
+  display: flex;
+  justify-content: flex-start;
+  border-radius: 5px;
+  flex-direction: column;
+  /* height: 100px; */
 }
 
 .side-pic-container {
-    width: 35%;
-    background-color: #b2df6a;
-    border-radius: 5px;
+  width: 35%;
+  background-color: #b2df6a;
+  border-radius: 5px;
 }
 .side-pic {
-    border-radius: 5px;
+  border-radius: 5px;
 }
 .profile-container {
-    height: 40%;
-    display:flex;
+  height: 40%;
+  display: flex;
 
-    justify-content: center;
-
-   
-
+  justify-content: center;
+  background-color: slategray;
 }
 .profile-pic-buffer {
-    display: flex;
-    width: 25%;
-    flex-direction: column;
-    justify-content: center;
-  
+  display: flex;
+  width: 25%;
+  flex-direction: column;
+  justify-content: center;
 }
 .profilepic {
-    height: 100px;
-    width: 100px;
+  height: 100px;
+  width: 100px;
 
-    border: 2px solid white;
-    border-radius: 5px;
-    
+  border: 2px solid white;
+  border-radius: 5px;
 }
 .buffer {
-    width:10%;
+  width: 10%;
 }
 .profile-text-buffer {
-    width: 55%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-   
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .edit-buffer {
-    display:flex;
-    justify-content: flex-end;
-   height: 30%;
+  display: flex;
+  justify-content: flex-end;
+  height: 30%;
 }
 .edit {
-    border: 1px solid white;
-    border-radius: 3px;
-    width: 60px;
-    height: 35px;
-    color: white;
-    background-color: black;
-    padding: 5px;
-    text-align: center;
-    text-decoration: none;
-   
+  border: 1px solid white;
+  border-radius: 3px;
+  width: 60px;
+  height: 35px;
+  color: white;
+  background-color: black;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.edit:hover {
+  text-decoration: none;
+  background-color: #333333;
+  color: #f6f6f6;
 }
 
 .profile-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    color: white;
-    height: 30%
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  color: white;
+  height: 30%;
 }
 
-.responsive{
-    height: 100%;
-    width: 100%;
-
+#trips-container {
+  display: flex;
+  justify-content: center;
 }
 
+#create-trip-btn {
+  background-color: steelblue;
+  border: 1px solid #f6f6f6;
+  padding: 10px;
+  margin-top: 50px;
+  color: #f6f6f6;
+  border-radius: 5px;
+}
+#create-trip-btn:hover {
+  background-color: slateblue;
+}
 
-
+.responsive {
+  height: 100%;
+  width: 100%;
+}

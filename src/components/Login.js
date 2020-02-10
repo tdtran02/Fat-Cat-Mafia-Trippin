@@ -1,65 +1,87 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { Alert } from "react-bootstrap";
+const AXIOS = require("axios").default;
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       email: "",
       password: "",
-      errors: {}
+      show_message: false
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+
+    this.update = this.update.bind(this);
+
+    this.displayLogin = this.displayLogin.bind(this);
   }
 
-  handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
-  handleClick(e) {
-    e.preventDefault();
-    let { email, password } = this.state;
-    let err = {};
-    if (email === "" || password === "") {
-      err.password = password === "";
-      err.email = email === "";
-    }
+  update(e) {
+    let name = e.target.name;
+    let value = e.target.value;
     this.setState({
-      errors: err
+      [name]: value
     });
   }
 
+  displayLogin(e) {
+    e.preventDefault();
+    AXIOS.post("http://localhost:4000/user/login", {
+      email: this.state.email,
+      password: this.state.password
+    })
+      .then(response => {
+        if (response.data.logged_in) {
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          document.location.href = "/home";
+        } else {
+          this.setState({ show_message: true });
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
   render() {
-    const { email, password, errors } = this.state;
+    const ERROR_MESSAGE = (
+      <Alert key={1} variant="danger">
+        {localStorage.getItem("user")
+          ? localStorage.getItem("user").response
+          : "Logged in failed"}
+      </Alert>
+    );
     return (
       <div className="login">
-        <h1 className="title">Login</h1>
-        <form action="">
-          <input
-            type="email"
-            name="email"
-            className={`form email ${errors.email === true ? "error" : ""}`}
-            placeholder="Email*"
-            value={email}
-            onChange={this.handleChange}
-          />
-          <input
-            type="password"
-            name="password"
-            className={`form password ${
-              errors.password === true ? "error" : ""
-            }`}
-            placeholder="Password*"
-            value={password}
-            onChange={this.handleChange}
-          />
-          <input
-            type="button"
-            className="submit"
-            value="LOG IN"
-            onClick={this.handleClick}
-          />
+        <form onSubmit={this.displayLogin}>
+          <h2>Login</h2>
+          <div className="username">
+            <input
+              type="text"
+              placeholder="Username..."
+              value={this.state.email}
+              onChange={this.update}
+              name="email"
+            />
+          </div>
+
+          <div className="password">
+            <input
+              type="password"
+              placeholder="Password..."
+              value={this.state.password}
+              onChange={this.update}
+              name="password"
+            />
+          </div>
+
+          <input type="submit" value="Login" />
         </form>
+        {this.state.show_message ? ERROR_MESSAGE : ""}
+
+        <Link to="/register">Create an account</Link>
       </div>
     );
   }
