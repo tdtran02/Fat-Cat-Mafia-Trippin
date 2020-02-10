@@ -57,7 +57,7 @@ class AppNavBar extends Component {
     const LOGGED_OUT = (
       <Fragment>
         <NavItem>
-          <NavLink tag={RRNavLink} exact to="/LogIn">
+          <NavLink tag={RRNavLink} exact to="/Login">
             Log In
           </NavLink>
         </NavItem>

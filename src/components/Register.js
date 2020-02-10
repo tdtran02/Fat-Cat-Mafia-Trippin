@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
+import Login from "./Login.js"
 const AXIOS = require("axios").default;
 
 class Register extends Component {
@@ -97,10 +98,10 @@ class Register extends Component {
             />
           </div>
 
-          <input type="submit" value="Login" />
+          <input type="submit" value="Register" />
         </form>
 
-        <Link to="/">Login Here</Link>
+        <Link to="/Login">Login Here</Link>
       </div>
     );
   }
