@@ -3,13 +3,13 @@
 .content-container {
     display:flex;
     justify-content: center;
-    height: 700px;
+    height: 800px;
 }
 
 .content-grid-myA {
     margin-top: 50px;
     width: 90%;
-    height: 650px;
+    height: 800px;
     display: flex;
     justify-content: flex-start;
     background-color: #279bbe;
@@ -19,7 +19,7 @@
 
 .main-myA {
     background-color: indigo;
-    height: 650px;
+    height: 800px;
     width: 65%;
     display:flex;
     justify-content: flex-start;
@@ -36,7 +36,7 @@
     border-radius: 5px;
 }
 .profile-container-myA {
-    height: 650px;
+    height: 800px;
     display:flex;
 
     justify-content: center;
@@ -82,11 +82,20 @@
   
 }
 
+#submit-btn {
+    margin:30px;
+    display: flex;
+    justify-content: center;
+}
 
-.container {
+
+.container-form {
     margin-top: 20px;
 }
 
+.myA {
+    height: 10px;
+}
 
 input[type="number"] {
     width: 100px;
