@@ -90,6 +90,10 @@
   color: white;
   height: 30%;
 }
+.fullName {
+  display: flex;
+  
+}
 
 #trips-container {
   display: flex;

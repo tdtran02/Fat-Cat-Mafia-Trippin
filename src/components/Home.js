@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../styles/Home.css";
 import MyAccount from "./MyAccount.js";
 const AXIOS = require("axios").default;
-const mongoose = require("mongoose");
+
 
 
 let profilePicPath = localStorage.getItem("user");
@@ -74,12 +74,15 @@ export class Home extends Component {
                                     </div>
 
                                     <form className="profile-text">
-                                        <label>
-                                            <input type="text" value={`${this.state.first_name}`} />
-                                        </label>
-                                        <label>
-                                            <input type="text" value={`${this.state.last_name}`} />
-                                        </label>
+                                        <div className="fullName" >
+                                            <label>{`${this.state.first_name}`}
+
+                                            </label>
+                                            <label>{`${this.state.last_name}`}
+
+                                            </label>
+                                        </div>
+
 
                                         <div className="number-of-trips">Trips: 3</div>
                                         <div className="view-friends-list">View Frends Lists</div>

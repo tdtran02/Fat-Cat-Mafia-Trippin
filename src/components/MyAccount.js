@@ -15,6 +15,8 @@ import Profile8 from './images/profile8.jpg';
 import Profile9 from './images/profile9.jpg';
 import Profile10 from './images/profile10.jpg';
 
+const AXIOS = require("axios").default;
+
 function ChangePhoto() {
   function handleClick(e) {
 
@@ -33,10 +35,36 @@ export class MyAccount extends Component {
     this.state = {
       editPhotoShow: false,
       option: '2',
-      image: JSON.parse(localStorage.getItem('user')).image
+      image: JSON.parse(localStorage.getItem('user')).image,
+      id: "",
+      email: "",
+      first_name: "",
+      last_name: "",
+      _v: "",
+
     };
-    let photoID = null;
-    this.handler = this.handler.bind(this)
+    this.handler = this.handler.bind(this);
+    if (JSON.parse(localStorage.getItem('user')).image == null) {
+      //  this.setState({ image: "./images/profilepic.png" });
+      this.state = {
+        image: "./images/profilepic.png"
+      }
+    }
+  }
+  componentDidMount() {
+    //  console.log(this.state.user.email);
+    AXIOS.get('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id)
+      .then(response => {
+        console.log(response.data.user.email)
+        this.setState({ email: response.data.user.email })
+        this.setState({ first_name: response.data.user.first_name })
+        this.setState({ last_name: response.data.user.last_name })
+        console.log(JSON.stringify(this.state.user));
+        console.log(this.state.email);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
   }
 
   handler() {
