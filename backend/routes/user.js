@@ -29,20 +29,20 @@ USERROUTES.route("/user").get(function (req, res) {
   });
 });
 
-// USERROUTES.route("/user/:id").put(function (req, res) {
-//   /*  console.log(req.body.hi);
-//    console.log(req.params); */
+USERROUTES.route("/user/:id").put(function (req, res) {
+  /*  console.log(req.body.hi);
+   console.log(req.params); */
 
-//   USER.updateOne(
-//     { "_id": req.params.id },
-//     { $set: { "image": req.body.image } }
-//   )
-//     .then(response => {
-//       res.status(200).json({});
-//       console.log(response);
-//     })
-//     .catch(err => { console.log(err) });
-// });
+  USER.updateOne(
+    { _id: req.params.id },
+    { $set: { image: req.body.image } }
+  )
+    .then(response => {
+      res.status(200).json({});
+      console.log(response);
+    })
+    .catch(err => { console.log(err) });
+});
 
 
 
