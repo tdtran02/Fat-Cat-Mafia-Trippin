@@ -8,18 +8,21 @@ const mongoose = require("mongoose");
 let profilePicPath = localStorage.getItem("user");
 
 export class Home extends Component {
-    state = {
-        image: ""
+    constructor(props) {
+        super(props)
+        this.state = {
+            image: JSON.parse(localStorage.getItem('user')).image
+        }
+
     }
-    displayProfilePic() {
-        AXIOS.get("http://localhost:4000/user").then(res => {
-            const image = res.image;
-            console.log(image);
-            this.setState({ image });
-        })
-    }
+    /*  displayProfilePic() {
+         AXIOS.get("http://localhost:4000/user").then(res => {
+             const image = res.image;
+             console.log(image);
+             this.setState({ image });
+         })
+     } */
     render() {
-        console.log(this.state.image);
         return (
             <div>
                 <div className="content-container">
@@ -30,7 +33,7 @@ export class Home extends Component {
                                     <div className="profilepic">
                                         <img
                                             className="responsive"
-                                            src={require("./images/profilepic.png")}
+                                            src={require(`${this.state.image}`)}
                                             alt="city"
                                             width="100"
                                             height="80"

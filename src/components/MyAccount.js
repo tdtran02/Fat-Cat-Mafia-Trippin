@@ -30,7 +30,11 @@ export class MyAccount extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { editPhotoShow: false, option: '2' };
+    this.state = {
+      editPhotoShow: false,
+      option: '2',
+      image: JSON.parse(localStorage.getItem('user')).image
+    };
     let photoID = null;
     this.handler = this.handler.bind(this)
   }
@@ -92,7 +96,7 @@ export class MyAccount extends Component {
               <div className="profile-container-myA">
                 <div className="profile-pic-buffer-myA">
                   <div className="profilepic">
-                    <img className="responsive" id="profile-pic-myA" src={Profile} alt="city" width="100" height="80" />
+                    <img className="responsive" id="profile-pic-myA" src={require(`${this.state.image}`)} alt="city" width="100" height="80" />
                   </div>
                   <div className="edit-pic">
                     <ButtonToolbar>
@@ -181,7 +185,7 @@ export class MyAccount extends Component {
             </div>
           </div>
         </div>
-        <div className="container-form">
+        {/*     <div className="container-form">
           <div className="panel panel-primary">
             <div className="panel-heading">
               <h3 className="panel-title">TRAVEL</h3>
@@ -220,7 +224,7 @@ export class MyAccount extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete" async defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

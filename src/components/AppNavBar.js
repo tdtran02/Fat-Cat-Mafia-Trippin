@@ -43,17 +43,23 @@ class AppNavBar extends Component {
         document.location.href = "/";
     };
 
+
     render() {
         const LOGGED_IN = (
             <Fragment>
+                <NavItem>
+                    <NavLink tag={RRNavLink} exact to="/home">
+                        Home
+                    </NavLink>
+                </NavItem>
                 <NavItem style={{ cursor: "pointer" }}>
                     <NavLink>Logged in!</NavLink>
                 </NavItem>
                 <NavItem style={{ cursor: "pointer" }} onClick={this.logout}>
                     <NavLink>Log out</NavLink>
                 </NavItem>
-                <NavItem style={{ cursor: "pointer" }} onClick={this.logout}>
-                    <NavLink>Trip</NavLink>
+                <NavItem style={{ cursor: "pointer" }}>
+                    <NavLink tag={RRNavLink} exact to="/Trip">Trip</NavLink>
                 </NavItem>
             </Fragment>
         );
@@ -81,11 +87,7 @@ class AppNavBar extends Component {
                             <NavbarToggler onClick={this.toggle} />
                             <Collapse isOpen={this.state.isOpen} navbar>
                                 <Nav className="ml-auto" navbar>
-                                    <NavItem>
-                                        <NavLink tag={RRNavLink} exact to="/home">
-                                            Home
-                    </NavLink>
-                                    </NavItem>
+
                                     <NavItem>
                                         <NavLink tag={RRNavLink} exact to="/email">
                                             Email
