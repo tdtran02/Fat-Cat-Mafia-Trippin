@@ -117,11 +117,11 @@ export class MyAccount extends Component {
                   <div className="profile-text">
                     <label htmlFor="full-name">NAME</label>
                     <input type="text" className="myA" />
-                    <button>UPDATE</button>
+                    {/* <button>UPDATE</button> */}
 
-                    <label htmlFor="email">EMAIL</label>
-                    <input type="text" className="myA" />
-                    <button>UPDATE</button>
+                    {/*  <label htmlFor="email">EMAIL</label>
+                    <input type="text" className="myA" /> */}
+                    {/* <button>UPDATE</button> */}
 
                     <form>
                       <div className="phone">
@@ -133,7 +133,7 @@ export class MyAccount extends Component {
                         <button>UPDATE</button>
                       </div>
                     </form>
-                    <div className="container-form">
+                    {/* <div className="container-form">
                       <div className="panel panel-primary">
                         <div className="panel-heading">
                           <h3 className="panel-title">Address</h3>
@@ -178,7 +178,7 @@ export class MyAccount extends Component {
                       <div id="submit-btn">
                         <button>SUBMIT CHANGES</button>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

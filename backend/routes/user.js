@@ -3,7 +3,8 @@ const USERROUTES = EXPRESS.Router();
 
 const USER = require("../models/user.model");
 
-USERROUTES.route("/user/:id").get(function(req, res) {
+//find user by id
+USERROUTES.route("/user/:id").get(function (req, res) {
   USER.findOne({ _id: req.params.id }).then(user => {
     if (user != null) {
       res.status(200).json({
@@ -17,19 +18,33 @@ USERROUTES.route("/user/:id").get(function(req, res) {
   });
 });
 
-USERROUTES.route("/user/:id").put(function(req, res) {
-  console.log(req.body.hi);
-  console.log(req.params);
-
-  USER.updateOne(
-    { _id: req.params.id },
-    { $set: { first_name: req.body.picture } }
-  )
-    .then(response => {
-      res.status(200).json({});
-      console.log(response);
-    })
-    .catch(err => {});
+//get all users
+USERROUTES.route("/user").get(function (req, res) {
+  USER.find(function (err, user) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(user);
+    }
+  });
 });
+
+// USERROUTES.route("/user/:id").put(function (req, res) {
+//   /*  console.log(req.body.hi);
+//    console.log(req.params); */
+
+//   USER.updateOne(
+//     { "_id": req.params.id },
+//     { $set: { "image": req.body.image } }
+//   )
+//     .then(response => {
+//       res.status(200).json({});
+//       console.log(response);
+//     })
+//     .catch(err => { console.log(err) });
+// });
+
+
+
 
 module.exports = USERROUTES;

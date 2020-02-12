@@ -133,4 +133,7 @@ input:invalid + span::after {
 input:valid+span::after {
     content: '✓';
 }
+label {
+    margin-right: 15px;
+}
 
