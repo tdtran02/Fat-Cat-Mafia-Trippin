@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../styles/MyAccount.css";
 import { Button, ButtonToolbar } from 'react-bootstrap';
-import EditPhoto from './EditPhotoModal.js';
 import { EditPhotoModal } from './EditPhotoModal';
 /* import Profile from './images/profilepic.png';
 import Profile1 from './images/profile1.jpg';
@@ -81,36 +80,30 @@ export class MyAccount extends Component {
     var x = document.getElementById("myA-inputname").value;
     console.log(x);
 
-    /*    this.setState({ __v: this.state.__v++ });
-   
-       const update = {
-         _id: JSON.parse(localStorage.getItem('user'))._id,
-         //    email: JSON.parse(localStorage.getItem('user')).email,
-         first_name: this.state.first_name,
-         last_name: JSON.parse(localStorage.getItem('user')).last_name,
-         //    password: JSON.parse(localStorage.getItem('user')).password,
-         image: "./images/profilepic6.jpg",
-         __v: this.state.__v 
-  }*/
+    this.setState({ __v: this.state.__v++ });
 
-    /*   AXIOS.post('http://localhost:4000/user' + JSON.parse(localStorage.getItem('user'))._id, update)
-          .then(res => console.log(res.data)); */
+    const update = {
+      user: {
+        _id: JSON.parse(localStorage.getItem('user'))._id,
+        //    email: JSON.parse(localStorage.getItem('user')).email,
+        first_name: x,
+        last_name: JSON.parse(localStorage.getItem('user')).last_name,
+        //    password: JSON.parse(localStorage.getItem('user')).password,
+        image: "./images/profilepic6.jpg",
+        __v: this.state.__v
+      }
+
+    }
+    console.log(JSON.stringify(update));
+    AXIOS.put('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id, update)
+      .then(res => console.log(res.data))
+      .catch(err => { console.log(err) });
     e.preventDefault();
   }
-  /* 
-    handler() {
-      this.setState({
-        option: '7'
-      })
-    } */
+
 
   render() {
     let editModalClose = () => this.setState({ editPhotoShow: false });
-
-
-
-
-
 
     return (
       <div>
