@@ -3,7 +3,7 @@ import "../styles/MyAccount.css";
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import EditPhoto from './EditPhotoModal.js';
 import { EditPhotoModal } from './EditPhotoModal';
-import Profile from './images/profilepic.png';
+/* import Profile from './images/profilepic.png';
 import Profile1 from './images/profile1.jpg';
 import Profile2 from './images/profile2.jpg';
 import Profile3 from './images/profile3.jpg';
@@ -13,11 +13,11 @@ import Profile6 from './images/profile6.jpg';
 import Profile7 from './images/profile7.jpg';
 import Profile8 from './images/profile8.jpg';
 import Profile9 from './images/profile9.jpg';
-import Profile10 from './images/profile10.jpg';
+import Profile10 from './images/profile10.jpg'; */
 
 const AXIOS = require("axios").default;
 
-function ChangePhoto() {
+/* function ChangePhoto() {
   function handleClick(e) {
 
     e.preventDefault();
@@ -25,11 +25,9 @@ function ChangePhoto() {
     console.log();
   }
 
-}
+} */
 
 export class MyAccount extends Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -40,79 +38,79 @@ export class MyAccount extends Component {
       email: "",
       first_name: "",
       last_name: "",
-      _v: "",
+      __v: "",
 
     };
-    this.handler = this.handler.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.Click = this.onChange.bind(this);
+
     if (JSON.parse(localStorage.getItem('user')).image == null) {
-      //  this.setState({ image: "./images/profilepic.png" });
+
       this.state = {
         image: "./images/profilepic.png"
-      }
+      };
     }
-  }
+
+  };
   componentDidMount() {
     //  console.log(this.state.user.email);
     AXIOS.get('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id)
       .then(response => {
-        console.log(response.data.user.email)
-        this.setState({ email: response.data.user.email })
-        this.setState({ first_name: response.data.user.first_name })
-        this.setState({ last_name: response.data.user.last_name })
-        console.log(JSON.stringify(this.state.user));
-        console.log(this.state.email);
+        console.log(response.data.user.email);
+        this.setState({ email: response.data.user.email });
+        this.setState({ first_name: response.data.user.first_name });
+        this.setState({ last_name: response.data.user.last_name });
+        this.setState({ __v: response.data.user.__v });
+        console.log(this.state.first_name);
       })
       .catch(function (error) {
         console.log(error);
       })
-  }
 
-  handler() {
-    this.setState({
-      option: '7'
-    })
+  };
+
+  onChange(event) {
+    console.log(this.state.first_name)
+    console.log(event.target.value)
+    this.setState({ first_name: event.target.value });
+  };
+
+  handleSubmit(e) {
+
+    console.log("teestinggg");
+    var x = document.getElementById("myA-inputname").value;
+    console.log(x);
+
+    /*    this.setState({ __v: this.state.__v++ });
+   
+       const update = {
+         _id: JSON.parse(localStorage.getItem('user'))._id,
+         //    email: JSON.parse(localStorage.getItem('user')).email,
+         first_name: this.state.first_name,
+         last_name: JSON.parse(localStorage.getItem('user')).last_name,
+         //    password: JSON.parse(localStorage.getItem('user')).password,
+         image: "./images/profilepic6.jpg",
+         __v: this.state.__v 
+  }*/
+
+    /*   AXIOS.post('http://localhost:4000/user' + JSON.parse(localStorage.getItem('user'))._id, update)
+          .then(res => console.log(res.data)); */
+    e.preventDefault();
   }
+  /* 
+    handler() {
+      this.setState({
+        option: '7'
+      })
+    } */
 
   render() {
     let editModalClose = () => this.setState({ editPhotoShow: false });
 
-    let changeProfilePic = () => {
-
-      switch (this.state.option) {
-        case '1':
-          document.getElementById("profile-pic-myA").src = Profile1;
-          break;
-        case '2':
-          document.getElementById("profile-pic-myA").src = Profile2;
-          break
-        case '3':
-          document.getElementById("profile-pic-myA").src = Profile3;
-          break;
-        case '4':
-          document.getElementById("profile-pic-myA").src = Profile4;
-          break;
-        case '5':
-          document.getElementById("profile-pic-myA").src = Profile5;
-          break;
-        case '6':
-          document.getElementById("profile-pic-myA").src = Profile6;
-          break;
-        case '7':
-          document.getElementById("profile-pic-myA").src = Profile7;
-          break;
-        case '8':
-          document.getElementById("profile-pic-myA").src = Profile8;
-          break;
-        case '9':
-          document.getElementById("profile-pic-myA").src = Profile9;
-          break;
-        case '10':
-          document.getElementById("profile-pic-myA").src = Profile10;
-          break;
-      }
 
 
-    }
+
+
 
     return (
       <div>
@@ -134,7 +132,6 @@ export class MyAccount extends Component {
                       <EditPhotoModal
                         show={this.state.editPhotoShow}
                         onHide={editModalClose}
-                        onClick={changeProfilePic}
                         handler={this.handler}
                       />
                     </ButtonToolbar>
@@ -143,22 +140,23 @@ export class MyAccount extends Component {
                 <div className="buffer"></div>
                 <div className="profile-text-buffer">
                   <div className="profile-text">
-                    <label htmlFor="full-name">NAME</label>
-                    <input type="text" className="myA" />
-                    {/* <button>UPDATE</button> */}
+                    <form id="update" onSubmit={this.handleSubmit}>
+                      <label htmlFor="full-name">NAME</label>
+                      <input type="text" className="myA" id="myA-inputname" />
+                      {/* <button>UPDATE</button> */}
 
-                    {/*  <label htmlFor="email">EMAIL</label>
+                      {/*  <label htmlFor="email">EMAIL</label>
                     <input type="text" className="myA" /> */}
-                    {/* <button>UPDATE</button> */}
+                      {/* <button>UPDATE</button> */}
 
-                    <form>
-                      <div className="phone">
+
+                      {/* <div className="phone">
                         <label htmlFor="telNo">PHONE NUMBER </label>
                         <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
                         <span className="validity"></span>
-                      </div>
+                      </div> */}
                       <div>
-                        <button>UPDATE</button>
+                        <button >UPDATE</button>
                       </div>
                     </form>
                     {/* <div className="container-form">

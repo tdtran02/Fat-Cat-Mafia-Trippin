@@ -15,21 +15,17 @@ export class Home extends Component {
             email: "",
             first_name: "",
             last_name: "",
-            image: "",
+            image: "./images/profile1.jpg",
             _v: "",
         }
 
         if (JSON.parse(localStorage.getItem('user')).image == null) {
-            this.setState({ image: "./images/profile7.jpg" });
+
             this.state = {
-                image: "./images/profile7.jpg"
+                image: "./images/profilepic.png"
             }
         }
-        else {
-            this.state = {
-                image: JSON.parse(localStorage.getItem('user')).image
-            }
-        }
+
 
     }
     componentDidMount() {

@@ -32,10 +32,13 @@ USERROUTES.route("/user").get(function (req, res) {
 USERROUTES.route("/user/:id").put(function (req, res) {
   /*  console.log(req.body.hi);
    console.log(req.params); */
-
+  console.log(req.params);
+  console.log(req.body.user.image);
   USER.updateOne(
     { _id: req.params.id },
-    { $set: { image: req.body.image } }
+    {
+      $set: { image: req.body.user.image, first_name: req.body.user.first_name, last_name: req.body.user.last_name }
+    }
   )
     .then(response => {
       res.status(200).json({});
