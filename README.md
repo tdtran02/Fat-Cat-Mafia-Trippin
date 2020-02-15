@@ -1,3 +1,9 @@
+# APIs
+
+1. Login(post request with email: "", password: "): localhost:4000/user/login
+2. Register(post request with email: "", password: "", first_name: "", last_name: "): localhost:4000/user/register
+3. Get user information(get request with id parameter): localhost:4000/user/{id here}
+
 Please read:
 https://codingthesmartway.com/the-mern-stack-tutorial-building-a-react-crud-application-from-start-to-finish-part-2/
 
@@ -83,10 +89,10 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
-### CRUD 
+### CRUD
 
 https://codingthesmartway.com/the-mern-stack-tutorial-building-a-react-crud-application-from-start-to-finish-part-2/
 
-&& 
+&&
 
 https://www.callicoder.com/node-js-express-mongodb-restful-crud-api-tutorial/

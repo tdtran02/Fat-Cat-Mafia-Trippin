@@ -3,14 +3,15 @@
 .content-container {
     display:flex;
     justify-content: center;
+    height: 800px;
 }
 
 .content-grid-myA {
     margin-top: 50px;
     width: 90%;
-    height: 700px;
+    height: 800px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: #279bbe;
     flex-wrap: wrap;
     border-radius: 5px;
@@ -18,7 +19,7 @@
 
 .main-myA {
     background-color: indigo;
-    height: 700px;
+    height: 800px;
     width: 65%;
     display:flex;
     justify-content: flex-start;
@@ -35,7 +36,7 @@
     border-radius: 5px;
 }
 .profile-container-myA {
-    height: 650px;
+    height: 800px;
     display:flex;
 
     justify-content: center;
@@ -81,11 +82,20 @@
   
 }
 
+#submit-btn {
+    margin:30px;
+    display: flex;
+    justify-content: center;
+}
 
-.container {
+
+.container-form {
     margin-top: 20px;
 }
 
+.myA {
+    height: 10px;
+}
 
 input[type="number"] {
     width: 100px;
@@ -107,5 +117,23 @@ input:valid+span:after {
     padding-left: 5px;
     color: #009000;
 }
+label {
+    display: flex;
+    align-items: center;
+}
 
+span::after {
+    padding-left: 5px;
+}
+
+input:invalid + span::after {
+    content: '✖';
+}
+
+input:valid+span::after {
+    content: '✓';
+}
+label {
+    margin-right: 15px;
+}
 
