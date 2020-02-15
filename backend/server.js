@@ -9,7 +9,7 @@ const PORT = 4000;
 const upload = multer({ storage: storage }); */
 const fs = require("fs");
 
-const USER = require("./models/user.model");
+const FRIENDROUTES = require("./routes/friend");
 const LOGINROUTES = require("./routes/login");
 const REGISTEROUTES = require("./routes/register");
 const USERROUTES = require("./routes/user");
@@ -18,7 +18,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const db = require("./config_url").mongoURL;
-
+mongoose.set("useFindAndModify", false);
 mongoose
   .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected"))
@@ -31,6 +31,7 @@ app.listen(PORT, function() {
 app.use(LOGINROUTES, ROUTER);
 app.use(REGISTEROUTES, ROUTER);
 app.use(USERROUTES, ROUTER);
+app.use(FRIENDROUTES, ROUTER);
 
 /* const storage = multer.diskStorage({
   destination: function (req, res, cb) {
