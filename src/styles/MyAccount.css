@@ -50,6 +50,7 @@
     height: 100%;
     flex-direction: column;
     justify-content: center;
+   
 
 } 
 .profilepic {
@@ -67,8 +68,8 @@
     width: 55%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-   
+    justify-content: space-evenly;
+
 }
 .edit-pic{
     margin-top: 10px;
@@ -89,9 +90,9 @@
 }
 
 
-.container-form {
+/* .container-form {
     margin-top: 20px;
-}
+} */
 
 .myA {
     height: 10px;
@@ -120,6 +121,7 @@ input:valid+span:after {
 label {
     display: flex;
     align-items: center;
+
 }
 
 span::after {
@@ -133,11 +135,12 @@ input:invalid + span::after {
 input:valid+span::after {
     content: '✓';
 }
-label {
-    margin-right: 15px;
-}
+
 
 .done-btn{
     margin-top: 100px;
-
+    padding: 5px;
+}
+#update {
+    margin-top: 100px;
 }

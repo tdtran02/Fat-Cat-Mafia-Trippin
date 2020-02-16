@@ -1,7 +1,7 @@
 
 .container-modal {
 
-
+    
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -9,15 +9,27 @@
 }
 
 .innercontainer {
-    width: 60%;
-
-
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  
 
 }
-
+.horizontal {
+  display: flex;
+  justify-content: center;
+}
 .profile-option {
     border: 1px solid darkslategray;
 
+}
+.row{
+  display: flex;
+  justify-content: space-between;
+}
+
+.icons{
+  width: 50%;
 }
 
 [type=radio] {

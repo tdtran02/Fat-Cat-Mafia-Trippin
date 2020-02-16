@@ -135,6 +135,8 @@ export class MyAccount extends Component {
                         show={this.state.editPhotoShow}
                         onHide={editModalClose}
                         handler={this.handler}
+                        size="lg"
+                        style={{ maxWidth: '1600px', width: '80%' }}
                       />
                     </ButtonToolbar>
                   </div>
@@ -142,12 +144,15 @@ export class MyAccount extends Component {
                 <div className="buffer"></div>
                 <div className="profile-text-buffer">
                   <div className="profile-text">
-                    <h1 >EDIT PROFILE</h1>
+
                     <form id="update" onSubmit={this.handleSubmit}>
+                      <h2>EDIT PROFILE</h2>
                       <label htmlFor="full-name">FIRST NAME</label>
                       <input type="text" className="myA" id="myA-firstname" />
                       <label htmlFor="full-name">LAST NAME</label>
                       <input type="text" className="myA" id="myA-lastname" />
+                      <label htmlFor="full-name">HOMETOWN</label>
+                      <input type="text" className="myA" id="myA-location" />
                       {/* <button>UPDATE</button> */}
 
                       {/*  <label htmlFor="email">EMAIL</label>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../styles/Home.css";
 import MyAccount from "./MyAccount.js";
+import { ButtonToolbar, Button } from "react-bootstrap";
 const AXIOS = require("axios").default;
 
 
@@ -87,9 +88,10 @@ export class Home extends Component {
                                 </div>
                             </div>
                             <div id="trips-container">
-                                <button id="create-trip-btn"><a href="./Trip">
-                                    CREATE A TRIP
-                    </a></button>
+                                <ButtonToolbar>
+                                    <Button variant="outline-primary" href="/Trip" id="create-trip-btn">CREATE A TRIP</Button>
+                                </ButtonToolbar>
+
                             </div>
                         </div>
                         <div className="side-pic-container">
