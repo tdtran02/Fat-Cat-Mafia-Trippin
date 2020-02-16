@@ -9,7 +9,7 @@
 .content-grid-myA {
     margin-top: 50px;
     width: 90%;
-    height: 800px;
+    height: 500px;
     display: flex;
     justify-content: flex-start;
     background-color: #279bbe;
@@ -18,8 +18,8 @@
 }
 
 .main-myA {
-    background-color: indigo;
-    height: 800px;
+    background-color:slategray;
+    height: 500px;
     width: 65%;
     display:flex;
     justify-content: flex-start;
@@ -36,11 +36,11 @@
     border-radius: 5px;
 }
 .profile-container-myA {
-    height: 800px;
+    height: 500px;
     display:flex;
 
     justify-content: center;
-    background-color: black;
+    background-color: slategray;
    
 
 } 
@@ -137,3 +137,7 @@ label {
     margin-right: 15px;
 }
 
+.done-btn{
+    margin-top: 100px;
+
+}

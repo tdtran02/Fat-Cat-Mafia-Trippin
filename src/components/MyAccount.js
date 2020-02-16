@@ -78,7 +78,15 @@ export class MyAccount extends Component {
   handleSubmit(e) {
 
     console.log("teestinggg");
-    var x = document.getElementById("myA-inputname").value;
+    var x = document.getElementById("myA-firstname").value;
+    var y = document.getElementById("myA-lastname").value;
+    console.log(y);
+    if (x === "") {
+      x = JSON.parse(localStorage.getItem('user')).first_name;
+    }
+    if (y === "") {
+      y = JSON.parse(localStorage.getItem('user')).last_name;
+    }
     console.log(x);
 
     this.setState({ __v: this.state.__v++ });
@@ -88,7 +96,7 @@ export class MyAccount extends Component {
         _id: JSON.parse(localStorage.getItem('user'))._id,
         //    email: JSON.parse(localStorage.getItem('user')).email,
         first_name: x,
-        last_name: JSON.parse(localStorage.getItem('user')).last_name,
+        last_name: y,
         //    password: JSON.parse(localStorage.getItem('user')).password,
         image: "./images/profile6.jpg",
         __v: this.state.__v
@@ -120,7 +128,7 @@ export class MyAccount extends Component {
                   </div>
                   <div className="edit-pic">
                     <ButtonToolbar>
-                      <Button variant="primary" onClick={() => this.setState({ editPhotoShow: true, option: '3' })}>
+                      <Button variant="outline-light" onClick={() => this.setState({ editPhotoShow: true, option: '3' })}>
                         Change Photo
                       </Button>
                       <EditPhotoModal
@@ -134,9 +142,12 @@ export class MyAccount extends Component {
                 <div className="buffer"></div>
                 <div className="profile-text-buffer">
                   <div className="profile-text">
+                    <h1 >EDIT PROFILE</h1>
                     <form id="update" onSubmit={this.handleSubmit}>
-                      <label htmlFor="full-name">NAME</label>
-                      <input type="text" className="myA" id="myA-inputname" />
+                      <label htmlFor="full-name">FIRST NAME</label>
+                      <input type="text" className="myA" id="myA-firstname" />
+                      <label htmlFor="full-name">LAST NAME</label>
+                      <input type="text" className="myA" id="myA-lastname" />
                       {/* <button>UPDATE</button> */}
 
                       {/*  <label htmlFor="email">EMAIL</label>
@@ -149,9 +160,15 @@ export class MyAccount extends Component {
                         <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
                         <span className="validity"></span>
                       </div> */}
-                      <div>
-                        <button >UPDATE</button>
+                      <div className="buttons">
+                        <ButtonToolbar>
+                          <Button variant="outline-light" type="submit">
+                            UPDATE
+                      </Button>
+                        </ButtonToolbar>
+
                       </div>
+
                     </form>
                     {/* <div className="container-form">
                       <div className="panel panel-primary">
@@ -200,8 +217,22 @@ export class MyAccount extends Component {
                       </div>
                     </div> */}
                   </div>
+                  <ButtonToolbar className="done-btn">
+                    <Button href="/Home" type="submit" variant="outline-light" >
+                      DONE
+                      </Button>
+                  </ButtonToolbar>
                 </div>
               </div>
+            </div>
+            <div className="side-pic-container">
+              <img
+                className="responsive side-pic"
+                src={require("./images/city.png")}
+                alt="city"
+                width="100"
+                height="80"
+              />
             </div>
           </div>
         </div>
