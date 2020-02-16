@@ -15,7 +15,7 @@ export class Home extends Component {
             email: "",
             first_name: "",
             last_name: "",
-            image: "./images/profile1.jpg",
+            image: JSON.parse(localStorage.getItem('user')).image,
             _v: "",
         }
 
@@ -36,6 +36,7 @@ export class Home extends Component {
                 this.setState({ email: response.data.user.email })
                 this.setState({ first_name: response.data.user.first_name })
                 this.setState({ last_name: response.data.user.last_name })
+                this.setState({ image: response.data.user.image });
                 console.log(JSON.stringify(this.state.user));
                 console.log(this.state.email);
             })

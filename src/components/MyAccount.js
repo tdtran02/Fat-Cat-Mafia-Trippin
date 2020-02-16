@@ -60,6 +60,7 @@ export class MyAccount extends Component {
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
         this.setState({ __v: response.data.user.__v });
+        this.setState({ image: response.data.user.image });
         console.log(this.state.first_name);
       })
       .catch(function (error) {
@@ -89,7 +90,7 @@ export class MyAccount extends Component {
         first_name: x,
         last_name: JSON.parse(localStorage.getItem('user')).last_name,
         //    password: JSON.parse(localStorage.getItem('user')).password,
-        image: "./images/profilepic6.jpg",
+        image: "./images/profile6.jpg",
         __v: this.state.__v
       }
 
