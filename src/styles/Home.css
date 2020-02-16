@@ -90,6 +90,10 @@
   color: white;
   height: 30%;
 }
+.fullName {
+  display: flex;
+  
+}
 
 #trips-container {
   display: flex;
@@ -103,11 +107,18 @@
   margin-top: 50px;
   color: #f6f6f6;
   border-radius: 5px;
+  text-decoration: none;
 }
 #create-trip-btn:hover {
   background-color: slateblue;
+  color: white;
 }
-
+#create-trip-btn:visited{
+  text-decoration: none;
+}
+a {
+  text-decoration: none;
+}
 .responsive {
   height: 100%;
   width: 100%;
