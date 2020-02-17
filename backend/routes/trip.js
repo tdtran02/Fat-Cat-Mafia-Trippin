@@ -1,40 +1,32 @@
 const EXPRESS = require("express");
-const FRIENDROUTES = EXPRESS.Router();
-const FRIEND = require("../models/trip.model");
+const TRIPROUTES = EXPRESS.Router();
+const TRIP = require("../models/trip.model");
 const USER = require("../models/user.model");
 
-TRIPROUTES.route("/trip/:id").get(function(req, res) {
-  TRIP.findOne({ owner_id: req.params.id }).then(user => {
-    if (trip != null) {
-      res.status(200).json({
-        trip: trip
-      });
-    } else {
-      res.status(400).json({
-        trip: null
-      });
-    }
-  });
-});
+TRIPROUTES.route("/trip").post(function(req, res){
+    const T = new TRIP({
+        owner_id: req.body.owner_id,
+        destination: req.body.destination,
+        start_date: req.body.start_date,
+        end_date:req.body.end_dart
+    });
 
-TRIPROUTES.route("/trip/:id").put(function(req, res) {
-  console.log(req.body.hi);
-  console.log(req.params);
-
-  TRIP.updateOne(
-    { _id: req.params.id },
-    { $set: { destination: req.body.destination,
-    start_date,
-    end_date,
-    length} }
-  )
-    .then(response => {
-      res.status(200).json({
-        trip:req.body
-      });
-      console.log(response);
+    T.save()
+    .then(x=>{
+        res.status(200).json({
+            saved: true,
+            response_message: "Trip created!",
+            trip:x
+        });
     })
-    .catch(err => {});
+    .catch(err => {
+        //   console.error(err);
+          res.status(200).json({
+            saved: false,
+            response_message: "Creating trip failed!",
+            trip: null
+        });
+    });
 });
 
-module.exports = USERROUTES;
+module.exports = TRIPROUTES;

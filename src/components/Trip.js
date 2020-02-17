@@ -20,15 +20,15 @@ export class Trip extends Component {
         //this.Click = this.onChange.bind(this);
     };
     componentDidMount() {
-    AXIOS.get(
-        "http://localhost:4000/trip/" +
-        JSON.parse(localStorage.getItem("user"))._id
-    ).then(res => {
-        this.setState({ trip: res.data.trip });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        AXIOS.get(
+            "http://localhost:4000/trip/" +
+            JSON.parse(localStorage.getItem("user"))._id
+        ).then(res => {
+            this.setState({ trip: res.data.trip });
+        })
+        .catch(err => {
+            console.log(err);
+        });
     };
     tripOnChange(e){
         this.setState({destination: e.target.value});
@@ -40,6 +40,7 @@ export class Trip extends Component {
         }
     }*/
     onCreateFieldClick(e) {
+        const USER = JSON.parse(localStorage.getItem("user"));
         console.log("teestinggg");
         var x = document.getElementById("arrival_location").value;
         var y = document.getElementById("start-day").value;
@@ -66,7 +67,7 @@ export class Trip extends Component {
             }
         }
         console.log(JSON.stringify(update));
-        AXIOS.put('http://localhost:4000/trip/' + JSON.parse(localStorage.getItem('trip')).owner_id, update)
+        AXIOS.put('http://localhost:4000/trip/' + JSON.parse(localStorage.getItem('user'))._id, update)
         .then(res => console.log(res.data))
         .catch(err => { console.log(err) });
         e.preventDefault();
