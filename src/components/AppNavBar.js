@@ -10,6 +10,7 @@ import Home from "./Home";
 import MyAccount from "./MyAccount";
 import Trip from "./Trip";
 import Friends from "./Friends";
+import Trippin from "./Trippin";
 import {
   Collapse,
   Navbar,

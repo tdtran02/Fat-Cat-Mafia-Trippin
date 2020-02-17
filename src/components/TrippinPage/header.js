@@ -6,10 +6,10 @@ class Header extends Component {
      
       <header>
         <div className="head">
-            <h1>We Design,< br/>You Travel</h1>
+            <h1>We Design,< br/> You Travel</h1>
             <div>
-              <p>Integer posuere leo non erat ornare dictum id vitae magna. Proin consectetur iaculis nisi, ut convallis tortor tempor congue. Curabitur sit amet tempus felis. Duis tellus eros, pellentesque at rhoncus eu, maximus ut diam.</p>
-              <div><a className="contact" href="#">Get Started</a></div>
+              <p>I don't know what to write here so i'll just put some random things down just to make it more visual for the eyes.</p>
+              <div><a className="contact" href="#">Learn More</a></div>
             </div>
         </div>
        
