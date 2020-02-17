@@ -16,8 +16,9 @@ export class Home extends Component {
             email: "",
             first_name: "",
             last_name: "",
-            image: JSON.parse(localStorage.getItem('user')).image,
+            image: "./images/profilepic.png",
             _v: "",
+            hometown: ""
         }
 
         if (JSON.parse(localStorage.getItem('user')).image == null) {
@@ -37,9 +38,15 @@ export class Home extends Component {
                 this.setState({ email: response.data.user.email })
                 this.setState({ first_name: response.data.user.first_name })
                 this.setState({ last_name: response.data.user.last_name })
-                this.setState({ image: response.data.user.image });
+                if (response.data.user.image != null) {
+                    this.setState({ image: response.data.user.image });
+                }
+
+                if (response.data.user.hometown != null) {
+                    this.setState({ hometown: response.data.user.hometown })
+                }
                 console.log(JSON.stringify(this.state.user));
-                console.log(this.state.email);
+                console.log(this.state.hometown);
             })
             .catch(function (error) {
                 console.log(error);
@@ -73,12 +80,17 @@ export class Home extends Component {
 
                                     <form className="profile-text">
                                         <div className="fullName" >
+                                            <label id="same-line">NAME: </label>
                                             <label>{`${this.state.first_name}`}
 
                                             </label>
                                             <label>{`${this.state.last_name}`}
 
                                             </label>
+                                        </div>
+                                        <div className="hometown">
+                                            <label id="same-line">HOMETOWN: </label>
+                                            <label>{`${this.state.hometown}`}</label>
                                         </div>
 
 
@@ -89,7 +101,8 @@ export class Home extends Component {
                             </div>
                             <div id="trips-container">
                                 <ButtonToolbar>
-                                    <Button variant="outline-primary" href="/Trip" id="create-trip-btn">CREATE A TRIP</Button>
+                                    <Button variant="primary" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
+                                    <Button variant="primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
                                 </ButtonToolbar>
 
                             </div>

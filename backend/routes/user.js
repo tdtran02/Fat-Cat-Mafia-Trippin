@@ -37,7 +37,7 @@ USERROUTES.route("/user/:id").put(function (req, res) {
   USER.updateOne(
     { _id: req.params.id },
     {
-      $set: { image: req.body.user.image, first_name: req.body.user.first_name, last_name: req.body.user.last_name }
+      $set: { image: req.body.user.image, first_name: req.body.user.first_name, last_name: req.body.user.last_name, hometown: req.body.user.hometown }
     }
   )
     .then(response => {
