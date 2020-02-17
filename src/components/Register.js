@@ -81,7 +81,7 @@ class Register extends Component {
 
           <div className="email">
             <input
-              type="text"
+              type="email"
               placeholder="Enter your email"
               name="email"
               value={this.state.email}

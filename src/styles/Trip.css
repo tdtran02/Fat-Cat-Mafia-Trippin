@@ -1,0 +1,67 @@
+.background-container {
+    height: 1000px;
+    display:flex;
+    justify-content: center;
+    background-color: transparent;
+    background-image: url("trip_photo_1.png");
+    background-position: top center;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    background-size: 1500px;
+}
+.pic-background{
+    display:flex;
+    justify-content: left;
+    height: 1200px;
+    background-color: transparent;
+    column-count: 3;
+    column-gap: 30px;
+    row-gap: 30px
+}
+.container-form {
+    display:flex;
+    justify-content: center;
+    height: 500px;
+    column-count: 3;
+    column-gap: 50px;
+}
+.center {
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+}
+h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  color: white;
+}
+label {
+    display: flex;
+    align-items: center;
+    color: white;
+    size: 50px;
+}
+
+span::after {
+    padding-left: 5px;
+}
+
+input:invalid + span::after {
+    content: '✖';
+}
+
+input:valid+span::after {
+    content: '✓';
+}
+p {
+  font-size: 1.5em;
+  color: #FE7F88;
+  background-image: none;
+  background-color: transparent;
+}

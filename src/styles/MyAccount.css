@@ -9,7 +9,7 @@
 .content-grid-myA {
     margin-top: 50px;
     width: 90%;
-    height: 800px;
+    height: 500px;
     display: flex;
     justify-content: flex-start;
     background-color: #279bbe;
@@ -18,8 +18,8 @@
 }
 
 .main-myA {
-    background-color: indigo;
-    height: 800px;
+    background-color:slategray;
+    height: 500px;
     width: 65%;
     display:flex;
     justify-content: flex-start;
@@ -36,11 +36,11 @@
     border-radius: 5px;
 }
 .profile-container-myA {
-    height: 800px;
+    height: 500px;
     display:flex;
 
     justify-content: center;
-    background-color: black;
+    background-color: slategray;
    
 
 } 
@@ -50,6 +50,7 @@
     height: 100%;
     flex-direction: column;
     justify-content: center;
+   
 
 } 
 .profilepic {
@@ -67,8 +68,8 @@
     width: 55%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-   
+    justify-content: space-evenly;
+
 }
 .edit-pic{
     margin-top: 10px;
@@ -89,9 +90,9 @@
 }
 
 
-.container-form {
+/* .container-form {
     margin-top: 20px;
-}
+} */
 
 .myA {
     height: 10px;
@@ -120,6 +121,7 @@ input:valid+span:after {
 label {
     display: flex;
     align-items: center;
+
 }
 
 span::after {
@@ -133,7 +135,12 @@ input:invalid + span::after {
 input:valid+span::after {
     content: '✓';
 }
-label {
-    margin-right: 15px;
-}
 
+
+.done-btn{
+    margin-top: 100px;
+    padding: 5px;
+}
+#update {
+    margin-top: 100px;
+}

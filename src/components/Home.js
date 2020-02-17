@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../styles/Home.css";
 import MyAccount from "./MyAccount.js";
+import { ButtonToolbar, Button } from "react-bootstrap";
 const AXIOS = require("axios").default;
 
 
@@ -15,8 +16,9 @@ export class Home extends Component {
             email: "",
             first_name: "",
             last_name: "",
-            image: "./images/profile1.jpg",
+            image: "./images/profilepic.png",
             _v: "",
+            hometown: ""
         }
 
         if (JSON.parse(localStorage.getItem('user')).image == null) {
@@ -36,8 +38,15 @@ export class Home extends Component {
                 this.setState({ email: response.data.user.email })
                 this.setState({ first_name: response.data.user.first_name })
                 this.setState({ last_name: response.data.user.last_name })
+                if (response.data.user.image != null) {
+                    this.setState({ image: response.data.user.image });
+                }
+
+                if (response.data.user.hometown != null) {
+                    this.setState({ hometown: response.data.user.hometown })
+                }
                 console.log(JSON.stringify(this.state.user));
-                console.log(this.state.email);
+                console.log(this.state.hometown);
             })
             .catch(function (error) {
                 console.log(error);
@@ -71,12 +80,17 @@ export class Home extends Component {
 
                                     <form className="profile-text">
                                         <div className="fullName" >
+                                            <label id="same-line">NAME: </label>
                                             <label>{`${this.state.first_name}`}
 
                                             </label>
                                             <label>{`${this.state.last_name}`}
 
                                             </label>
+                                        </div>
+                                        <div className="hometown">
+                                            <label id="same-line">HOMETOWN: </label>
+                                            <label>{`${this.state.hometown}`}</label>
                                         </div>
 
 
@@ -86,9 +100,11 @@ export class Home extends Component {
                                 </div>
                             </div>
                             <div id="trips-container">
-                                <button id="create-trip-btn"><a href="./Trip">
-                                    CREATE A TRIP
-                    </a></button>
+                                <ButtonToolbar>
+                                    <Button variant="primary" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
+                                    <Button variant="primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
+                                </ButtonToolbar>
+
                             </div>
                         </div>
                         <div className="side-pic-container">

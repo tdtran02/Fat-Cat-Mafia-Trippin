@@ -3,9 +3,12 @@ const Schema = mongoose.Schema;
 
 //Creating Schema and Model for trip
 const tripSchema = new Schema({
+    owner_id: String,
+    // trip_id: String,
     destination: String,
-    date: Date,
-    length: Number
+    start_date: Date,
+    end_date:Date,
+    // length: Number
 });
 
 const TripSchem = mongoose.model('tripchar', tripSchema);

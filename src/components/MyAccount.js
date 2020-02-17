@@ -32,12 +32,13 @@ export class MyAccount extends Component {
     this.state = {
       editPhotoShow: false,
       option: '2',
-      image: JSON.parse(localStorage.getItem('user')).image,
+      image: "./images/profilepic.png",
       id: "",
       email: "",
       first_name: "",
       last_name: "",
       __v: "",
+      hometown: ""
 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -60,6 +61,13 @@ export class MyAccount extends Component {
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
         this.setState({ __v: response.data.user.__v });
+        if (response.data.user.image != null) {
+          this.setState({ image: response.data.user.image });
+        }
+
+        if (response.data.user.hometown != null) {
+          this.setState({ hometown: response.data.user.hometown })
+        }
         console.log(this.state.first_name);
       })
       .catch(function (error) {
@@ -77,20 +85,38 @@ export class MyAccount extends Component {
   handleSubmit(e) {
 
     console.log("teestinggg");
-    var x = document.getElementById("myA-inputname").value;
+    var x = document.getElementById("myA-firstname").value;
+    var y = document.getElementById("myA-lastname").value;
+    var z = document.getElementById("myA-hometown").value;
+    console.log(z);
+    if (x === "") {
+      x = JSON.parse(localStorage.getItem('user')).first_name;
+    }
+    if (y === "") {
+      y = JSON.parse(localStorage.getItem('user')).last_name;
+    }
+    if (z === "") {
+      if (JSON.parse(localStorage.getItem('user')).hometown == null) {
+        z = "";
+      }
+      else {
+        z = JSON.parse(localStorage.getItem('user')).hometown;
+      }
+    }
     console.log(x);
 
-    this.setState({ __v: this.state.__v++ });
+    this.setState({ __v: this.state.__v });
 
     const update = {
       user: {
         _id: JSON.parse(localStorage.getItem('user'))._id,
         //    email: JSON.parse(localStorage.getItem('user')).email,
         first_name: x,
-        last_name: JSON.parse(localStorage.getItem('user')).last_name,
+        last_name: y,
         //    password: JSON.parse(localStorage.getItem('user')).password,
-        image: "./images/profilepic6.jpg",
-        __v: this.state.__v
+        image: "./images/profile6.jpg",
+        __v: this.state.__v,
+        hometown: z
       }
 
     }
@@ -119,13 +145,15 @@ export class MyAccount extends Component {
                   </div>
                   <div className="edit-pic">
                     <ButtonToolbar>
-                      <Button variant="primary" onClick={() => this.setState({ editPhotoShow: true, option: '3' })}>
+                      <Button variant="outline-light" onClick={() => this.setState({ editPhotoShow: true, option: '3' })}>
                         Change Photo
                       </Button>
                       <EditPhotoModal
                         show={this.state.editPhotoShow}
                         onHide={editModalClose}
                         handler={this.handler}
+                        size="lg"
+                        style={{ maxWidth: '1600px', width: '80%' }}
                       />
                     </ButtonToolbar>
                   </div>
@@ -133,9 +161,15 @@ export class MyAccount extends Component {
                 <div className="buffer"></div>
                 <div className="profile-text-buffer">
                   <div className="profile-text">
+
                     <form id="update" onSubmit={this.handleSubmit}>
-                      <label htmlFor="full-name">NAME</label>
-                      <input type="text" className="myA" id="myA-inputname" />
+                      <h2>EDIT PROFILE</h2>
+                      <label htmlFor="full-name">FIRST NAME</label>
+                      <input type="text" className="myA" id="myA-firstname" />
+                      <label htmlFor="full-name">LAST NAME</label>
+                      <input type="text" className="myA" id="myA-lastname" />
+                      <label htmlFor="full-name">HOMETOWN</label>
+                      <input type="text" className="myA" id="myA-hometown" />
                       {/* <button>UPDATE</button> */}
 
                       {/*  <label htmlFor="email">EMAIL</label>
@@ -148,9 +182,15 @@ export class MyAccount extends Component {
                         <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
                         <span className="validity"></span>
                       </div> */}
-                      <div>
-                        <button >UPDATE</button>
+                      <div className="buttons">
+                        <ButtonToolbar>
+                          <Button variant="outline-light" type="submit">
+                            UPDATE
+                      </Button>
+                        </ButtonToolbar>
+
                       </div>
+
                     </form>
                     {/* <div className="container-form">
                       <div className="panel panel-primary">
@@ -199,8 +239,22 @@ export class MyAccount extends Component {
                       </div>
                     </div> */}
                   </div>
+                  <ButtonToolbar className="done-btn">
+                    <Button href="/Home" type="submit" variant="outline-light" >
+                      DONE
+                      </Button>
+                  </ButtonToolbar>
                 </div>
               </div>
+            </div>
+            <div className="side-pic-container">
+              <img
+                className="responsive side-pic"
+                src={require("./images/city.png")}
+                alt="city"
+                width="100"
+                height="80"
+              />
             </div>
           </div>
         </div>
