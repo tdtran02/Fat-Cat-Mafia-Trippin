@@ -32,12 +32,13 @@ export class MyAccount extends Component {
     this.state = {
       editPhotoShow: false,
       option: '2',
-      image: JSON.parse(localStorage.getItem('user')).image,
+      image: "./images/profilepic.png",
       id: "",
       email: "",
       first_name: "",
       last_name: "",
       __v: "",
+      hometown: ""
 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -60,7 +61,13 @@ export class MyAccount extends Component {
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
         this.setState({ __v: response.data.user.__v });
-        this.setState({ image: response.data.user.image });
+        if (response.data.user.image != null) {
+          this.setState({ image: response.data.user.image });
+        }
+
+        if (response.data.user.hometown != null) {
+          this.setState({ hometown: response.data.user.hometown })
+        }
         console.log(this.state.first_name);
       })
       .catch(function (error) {
@@ -80,16 +87,25 @@ export class MyAccount extends Component {
     console.log("teestinggg");
     var x = document.getElementById("myA-firstname").value;
     var y = document.getElementById("myA-lastname").value;
-    console.log(y);
+    var z = document.getElementById("myA-hometown").value;
+    console.log(z);
     if (x === "") {
       x = JSON.parse(localStorage.getItem('user')).first_name;
     }
     if (y === "") {
       y = JSON.parse(localStorage.getItem('user')).last_name;
     }
+    if (z === "") {
+      if (JSON.parse(localStorage.getItem('user')).hometown == null) {
+        z = "";
+      }
+      else {
+        z = JSON.parse(localStorage.getItem('user')).hometown;
+      }
+    }
     console.log(x);
 
-    this.setState({ __v: this.state.__v++ });
+    this.setState({ __v: this.state.__v });
 
     const update = {
       user: {
@@ -99,7 +115,8 @@ export class MyAccount extends Component {
         last_name: y,
         //    password: JSON.parse(localStorage.getItem('user')).password,
         image: "./images/profile6.jpg",
-        __v: this.state.__v
+        __v: this.state.__v,
+        hometown: z
       }
 
     }
@@ -152,7 +169,7 @@ export class MyAccount extends Component {
                       <label htmlFor="full-name">LAST NAME</label>
                       <input type="text" className="myA" id="myA-lastname" />
                       <label htmlFor="full-name">HOMETOWN</label>
-                      <input type="text" className="myA" id="myA-location" />
+                      <input type="text" className="myA" id="myA-hometown" />
                       {/* <button>UPDATE</button> */}
 
                       {/*  <label htmlFor="email">EMAIL</label>
