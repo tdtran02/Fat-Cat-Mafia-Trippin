@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import "../styles/MyAccount.css";
 import { Button, ButtonToolbar } from 'react-bootstrap';
-import EditPhoto from './EditPhotoModal.js';
 import { EditPhotoModal } from './EditPhotoModal';
-import Profile from './images/profilepic.png';
+/* import Profile from './images/profilepic.png';
 import Profile1 from './images/profile1.jpg';
 import Profile2 from './images/profile2.jpg';
 import Profile3 from './images/profile3.jpg';
@@ -13,9 +12,11 @@ import Profile6 from './images/profile6.jpg';
 import Profile7 from './images/profile7.jpg';
 import Profile8 from './images/profile8.jpg';
 import Profile9 from './images/profile9.jpg';
-import Profile10 from './images/profile10.jpg';
+import Profile10 from './images/profile10.jpg'; */
 
-function ChangePhoto() {
+const AXIOS = require("axios").default;
+
+/* function ChangePhoto() {
   function handleClick(e) {
 
     e.preventDefault();
@@ -23,64 +24,95 @@ function ChangePhoto() {
     console.log();
   }
 
-}
+} */
 
 export class MyAccount extends Component {
-
-
   constructor(props) {
     super(props);
-    this.state = { editPhotoShow: false, option: '2' };
-    let photoID = null;
-    this.handler = this.handler.bind(this)
+    this.state = {
+      editPhotoShow: false,
+      option: '2',
+      image: JSON.parse(localStorage.getItem('user')).image,
+      id: "",
+      email: "",
+      first_name: "",
+      last_name: "",
+      __v: "",
+
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.Click = this.onChange.bind(this);
+
+    if (JSON.parse(localStorage.getItem('user')).image == null) {
+
+      this.state = {
+        image: "./images/profilepic.png"
+      };
+    }
+
+  };
+  componentDidMount() {
+    //  console.log(this.state.user.email);
+    AXIOS.get('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id)
+      .then(response => {
+        console.log(response.data.user.email);
+        this.setState({ email: response.data.user.email });
+        this.setState({ first_name: response.data.user.first_name });
+        this.setState({ last_name: response.data.user.last_name });
+        this.setState({ __v: response.data.user.__v });
+        this.setState({ image: response.data.user.image });
+        console.log(this.state.first_name);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+
+  };
+
+  onChange(event) {
+    console.log(this.state.first_name)
+    console.log(event.target.value)
+    this.setState({ first_name: event.target.value });
+  };
+
+  handleSubmit(e) {
+
+    console.log("teestinggg");
+    var x = document.getElementById("myA-firstname").value;
+    var y = document.getElementById("myA-lastname").value;
+    console.log(y);
+    if (x === "") {
+      x = JSON.parse(localStorage.getItem('user')).first_name;
+    }
+    if (y === "") {
+      y = JSON.parse(localStorage.getItem('user')).last_name;
+    }
+    console.log(x);
+
+    this.setState({ __v: this.state.__v++ });
+
+    const update = {
+      user: {
+        _id: JSON.parse(localStorage.getItem('user'))._id,
+        //    email: JSON.parse(localStorage.getItem('user')).email,
+        first_name: x,
+        last_name: y,
+        //    password: JSON.parse(localStorage.getItem('user')).password,
+        image: "./images/profile6.jpg",
+        __v: this.state.__v
+      }
+
+    }
+    console.log(JSON.stringify(update));
+    AXIOS.put('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id, update)
+      .then(res => console.log(res.data))
+      .catch(err => { console.log(err) });
+    e.preventDefault();
   }
 
-  handler() {
-    this.setState({
-      option: '7'
-    })
-  }
 
   render() {
     let editModalClose = () => this.setState({ editPhotoShow: false });
-
-    let changeProfilePic = () => {
-
-      switch (this.state.option) {
-        case '1':
-          document.getElementById("profile-pic-myA").src = Profile1;
-          break;
-        case '2':
-          document.getElementById("profile-pic-myA").src = Profile2;
-          break
-        case '3':
-          document.getElementById("profile-pic-myA").src = Profile3;
-          break;
-        case '4':
-          document.getElementById("profile-pic-myA").src = Profile4;
-          break;
-        case '5':
-          document.getElementById("profile-pic-myA").src = Profile5;
-          break;
-        case '6':
-          document.getElementById("profile-pic-myA").src = Profile6;
-          break;
-        case '7':
-          document.getElementById("profile-pic-myA").src = Profile7;
-          break;
-        case '8':
-          document.getElementById("profile-pic-myA").src = Profile8;
-          break;
-        case '9':
-          document.getElementById("profile-pic-myA").src = Profile9;
-          break;
-        case '10':
-          document.getElementById("profile-pic-myA").src = Profile10;
-          break;
-      }
-
-
-    }
 
     return (
       <div>
@@ -92,18 +124,19 @@ export class MyAccount extends Component {
               <div className="profile-container-myA">
                 <div className="profile-pic-buffer-myA">
                   <div className="profilepic">
-                    <img className="responsive" id="profile-pic-myA" src={Profile} alt="city" width="100" height="80" />
+                    <img className="responsive" id="profile-pic-myA" src={require(`${this.state.image}`)} alt="city" width="100" height="80" />
                   </div>
                   <div className="edit-pic">
                     <ButtonToolbar>
-                      <Button variant="primary" onClick={() => this.setState({ editPhotoShow: true, option: '3' })}>
+                      <Button variant="outline-light" onClick={() => this.setState({ editPhotoShow: true, option: '3' })}>
                         Change Photo
                       </Button>
                       <EditPhotoModal
                         show={this.state.editPhotoShow}
                         onHide={editModalClose}
-                        onClick={changeProfilePic}
                         handler={this.handler}
+                        size="lg"
+                        style={{ maxWidth: '1600px', width: '80%' }}
                       />
                     </ButtonToolbar>
                   </div>
@@ -111,25 +144,38 @@ export class MyAccount extends Component {
                 <div className="buffer"></div>
                 <div className="profile-text-buffer">
                   <div className="profile-text">
-                    <label htmlFor="full-name">NAME</label>
-                    <input type="text" className="myA" />
-                    <button>UPDATE</button>
 
-                    <label htmlFor="email">EMAIL</label>
-                    <input type="text" className="myA" />
-                    <button>UPDATE</button>
+                    <form id="update" onSubmit={this.handleSubmit}>
+                      <h2>EDIT PROFILE</h2>
+                      <label htmlFor="full-name">FIRST NAME</label>
+                      <input type="text" className="myA" id="myA-firstname" />
+                      <label htmlFor="full-name">LAST NAME</label>
+                      <input type="text" className="myA" id="myA-lastname" />
+                      <label htmlFor="full-name">HOMETOWN</label>
+                      <input type="text" className="myA" id="myA-location" />
+                      {/* <button>UPDATE</button> */}
 
-                    <form>
-                      <div className="phone">
+                      {/*  <label htmlFor="email">EMAIL</label>
+                    <input type="text" className="myA" /> */}
+                      {/* <button>UPDATE</button> */}
+
+
+                      {/* <div className="phone">
                         <label htmlFor="telNo">PHONE NUMBER </label>
                         <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
                         <span className="validity"></span>
+                      </div> */}
+                      <div className="buttons">
+                        <ButtonToolbar>
+                          <Button variant="outline-light" type="submit">
+                            UPDATE
+                      </Button>
+                        </ButtonToolbar>
+
                       </div>
-                      <div>
-                        <button>UPDATE</button>
-                      </div>
+
                     </form>
-                    <div className="container-form">
+                    {/* <div className="container-form">
                       <div className="panel panel-primary">
                         <div className="panel-heading">
                           <h3 className="panel-title">Address</h3>
@@ -174,14 +220,28 @@ export class MyAccount extends Component {
                       <div id="submit-btn">
                         <button>SUBMIT CHANGES</button>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
+                  <ButtonToolbar className="done-btn">
+                    <Button href="/Home" type="submit" variant="outline-light" >
+                      DONE
+                      </Button>
+                  </ButtonToolbar>
                 </div>
               </div>
             </div>
+            <div className="side-pic-container">
+              <img
+                className="responsive side-pic"
+                src={require("./images/city.png")}
+                alt="city"
+                width="100"
+                height="80"
+              />
+            </div>
           </div>
         </div>
-        <div className="container-form">
+        {/*     <div className="container-form">
           <div className="panel panel-primary">
             <div className="panel-heading">
               <h3 className="panel-title">TRAVEL</h3>
@@ -220,7 +280,7 @@ export class MyAccount extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete" async defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
