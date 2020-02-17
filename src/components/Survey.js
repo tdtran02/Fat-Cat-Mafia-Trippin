@@ -2,34 +2,41 @@ import React, { Component } from "react";
 import {Modal, Button, Row, Col, Form} from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
+
+<<<<<<< HEAD
+export class Survey extends Component{
+=======
+
+//import Question from './components/Question';
 const AXIOS = require("axios").default;
 
-export class Survey extends Component{
+class Survey extends React.Component {
+>>>>>>> 7835166bf1a579f50d3f5ee70d4ffb95a650376d
     constructor(props) {
         super(props);
         this.state = {
             questions: [
-                {  
+                {
                     questionId: 1,
                     question: "What type of activities do you want to experience on this trip?",
                     answer: ''
                 },
-                {  
+                {
                     questionId: 2,
                     question: "Which location do you prefer to to explore other than the current location of the trip?",
                     answer: ''
                 },
-                {  
+                {
                     questionId: 3,
                     question: "What is type of cuisine are you interested in trying for this trip?",
                     answer: ''
                 },
-                {  
+                {
                     questionId: 4,
                     question: "What is your price level in term of ($-$$$$) sign?",
                     answer: ''
                 },
-                {  
+                {
                     questionId: 5,
                     question: "Is there anything else you'd like us to know?",
                     answer: ''
@@ -60,6 +67,7 @@ export class Survey extends Component{
         console.log(input);
     }
 
+<<<<<<< HEAD
     
 
     saveAnswer(e){
@@ -107,4 +115,11 @@ export class Survey extends Component{
     </Modal>
         );
     }
+=======
+    /* addQuestion(){
+        AXIOS.post("http://localhost:4000/survey",{
+            this.state.questions}
+        })
+    } */
+>>>>>>> 7835166bf1a579f50d3f5ee70d4ffb95a650376d
 }

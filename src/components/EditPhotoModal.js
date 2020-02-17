@@ -42,47 +42,47 @@ export class EditPhotoModal extends Component {
     }
 
     handleSubmit(event) {
-        if (event.target.value != null) {
-            event.preventDefault();
-            console.log(this.state.option);
-            let x = JSON.parse(localStorage.getItem('user'));
-            console.log(localStorage.getItem('user'));
-            x.image = this.state.image;
+        //  if (event.target.value != null) {
+        event.preventDefault();
+        console.log(this.state.option);
+        let x = JSON.parse(localStorage.getItem('user'));
+        console.log(localStorage.getItem('user'));
+        x.image = this.state.image;
 
 
-            //localStorage.setItem("user", JSON.stringify(x));
+        //localStorage.setItem("user", JSON.stringify(x));
 
-            //console.log(`You chose the ${this.state.option} pizza.`); 
-            let update = {
-                user: {
-                    _id: JSON.parse(localStorage.getItem('user'))._id,
-                    email: JSON.parse(localStorage.getItem('user')).email,
-                    first_name: JSON.parse(localStorage.getItem('user')).first_name,
-                    last_name: JSON.parse(localStorage.getItem('user')).last_name,
-                    password: JSON.parse(localStorage.getItem('user')).password,
-                    image: this.state.option,
-                    __v: JSON.parse(localStorage.getItem('user')).__v
-                }
-
+        //console.log(`You chose the ${this.state.option} pizza.`); 
+        let update = {
+            user: {
+                _id: JSON.parse(localStorage.getItem('user'))._id,
+                email: JSON.parse(localStorage.getItem('user')).email,
+                first_name: JSON.parse(localStorage.getItem('user')).first_name,
+                last_name: JSON.parse(localStorage.getItem('user')).last_name,
+                password: JSON.parse(localStorage.getItem('user')).password,
+                image: this.state.option,
+                __v: JSON.parse(localStorage.getItem('user')).__v
             }
-            console.log(update.user.toString);
 
-            AXIOS.put('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id, update)
-                .then(res => console.log(res.data))
-                .catch(err => { console.log(err) });
-
-
-            AXIOS.get('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id)
-                .then(response => {
-                    console.log(JSON.stringify(response.data.user))
-                    localStorage.setItem("user", JSON.stringify(response.data.user));
-                    document.location.href = "/MyAccount";
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
         }
-        if (this.state.selectedFile != "") {
+        console.log(update.user.toString);
+
+        AXIOS.put('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id, update)
+            .then(res => console.log(res.data))
+            .catch(err => { console.log(err) });
+
+
+        AXIOS.get('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id)
+            .then(response => {
+                console.log(JSON.stringify(response.data.user))
+                localStorage.setItem("user", JSON.stringify(response.data.user));
+                document.location.href = "/MyAccount";
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+        //   }
+        if (this.state.selectedFile !== "") {
             const data = new FormData();
             data.append('file', this.state.selectedFile);
         }

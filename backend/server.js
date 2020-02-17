@@ -13,7 +13,11 @@ const FRIENDROUTES = require("./routes/friend");
 const LOGINROUTES = require("./routes/login");
 const REGISTEROUTES = require("./routes/register");
 const USERROUTES = require("./routes/user");
+<<<<<<< HEAD
 const QUESTIONROUTES = require("./routes/question");
+=======
+const TRIPROUTES = require("./routes/trip");
+>>>>>>> 7835166bf1a579f50d3f5ee70d4ffb95a650376d
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -33,7 +37,11 @@ app.use(LOGINROUTES, ROUTER);
 app.use(REGISTEROUTES, ROUTER);
 app.use(USERROUTES, ROUTER);
 app.use(FRIENDROUTES, ROUTER);
+<<<<<<< HEAD
 app.use(QUESTIONROUTES, ROUTER);
+=======
+app.use(TRIPROUTES, ROUTER);
+>>>>>>> 7835166bf1a579f50d3f5ee70d4ffb95a650376d
 
 /* const storage = multer.diskStorage({
   destination: function (req, res, cb) {
