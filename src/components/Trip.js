@@ -148,7 +148,7 @@ export class Trip extends Component {
                         >Let's Go!</Button>
                         <Survey
                             show={this.state.addSurveyShow}
-                            onHide={addSurveyClose}
+                            onNext={addSurveyClose}
                             closeButton={addSurveyClose}
                         />
                     </ButtonToolbar>
