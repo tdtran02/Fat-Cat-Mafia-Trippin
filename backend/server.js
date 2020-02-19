@@ -13,6 +13,7 @@ const FRIENDROUTES = require("./routes/friend");
 const LOGINROUTES = require("./routes/login");
 const REGISTEROUTES = require("./routes/register");
 const USERROUTES = require("./routes/user");
+const QUESTIONROUTES = require("./routes/question");
 const TRIPROUTES = require("./routes/trip");
 
 app.use(cors());
@@ -33,7 +34,9 @@ app.use(LOGINROUTES, ROUTER);
 app.use(REGISTEROUTES, ROUTER);
 app.use(USERROUTES, ROUTER);
 app.use(FRIENDROUTES, ROUTER);
+app.use(QUESTIONROUTES, ROUTER);
 app.use(TRIPROUTES, ROUTER);
+
 
 /* const storage = multer.diskStorage({
   destination: function (req, res, cb) {
