@@ -50,16 +50,14 @@ export class Trip extends Component {
         console.log(x);
 
         const update = {
-            trip: {
                 owner_id: JSON.parse(localStorage.getItem('user'))._id,
                 //    email: JSON.parse(localStorage.getItem('user')).email,
                 destination: x,
                 start_date: y,
-                end_date: z,
-            }
+                end_date: z
         }
         console.log(JSON.stringify(update));
-        AXIOS.post('http://localhost:4000/trip/' + JSON.parse(localStorage.getItem('user'))._id, update)
+        AXIOS.post('http://localhost:4000/trip/', update)
         .then(res => console.log(res.data))
         .catch(err => { console.log(err) });
         e.preventDefault();
@@ -109,7 +107,7 @@ export class Trip extends Component {
                                         <div className="col-md-6">
                                             <form>
                                                 <label htmlFor="control-label">End Date
-                                                    <input className="form-control" type="date" id="end-day" min="2020-02-17" max="2022-02-17" required></input>
+                                                    <input className="form-control" type="date" id="end-day" min="2020-02-19" max="2022-02-19" required></input>
                                                     <span className="validity"></span>
                                                 </label>
                                             </form>
