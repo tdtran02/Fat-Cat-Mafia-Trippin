@@ -41,21 +41,12 @@ export class Trip extends Component {
         }
     }*/
     onCreateFieldClick(e) {
-        const USER = JSON.parse(localStorage.getItem("user"));
+        //const USER = JSON.parse(localStorage.getItem("trip"));
         console.log("teestinggg");
         var x = document.getElementById("arrival_location").value;
         var y = document.getElementById("start-day").value;
         var z = document.getElementById("end-day").value;
         console.log(y);
-        if (x === "") {
-            x = JSON.parse(localStorage.getItem('trip')).destination;
-        }
-        if (y === null) {
-            y = JSON.parse(localStorage.getItem('trip')).start_date;
-        }
-        if (z === null) {
-            z = JSON.parse(localStorage.getItem('trip')).end_date;
-        }
         console.log(x);
 
         const update = {
@@ -68,7 +59,7 @@ export class Trip extends Component {
             }
         }
         console.log(JSON.stringify(update));
-        AXIOS.put('http://localhost:4000/trip/' + JSON.parse(localStorage.getItem('user'))._id, update)
+        AXIOS.post('http://localhost:4000/trip/' + JSON.parse(localStorage.getItem('user'))._id, update)
         .then(res => console.log(res.data))
         .catch(err => { console.log(err) });
         e.preventDefault();
@@ -134,7 +125,7 @@ export class Trip extends Component {
                                     <div className="row">
                                         <div className="col-md-6">
                                             <Button className="ml-3" variant="info" onClick={this.onCreateFieldClick}>
-                                            Create
+                                                Create
                                             </Button>
                                         </div>
                                     </div>
@@ -142,18 +133,17 @@ export class Trip extends Component {
                             </div>
                         </form>
                     </div>
-                    <ButtonToolbar>
+                    {/*<ButtonToolbar>
                         <Button variant='primary'
                         onClick={() => this.setState({addSurveyShow: true})}
                         >Let's Go!</Button>
                         <Survey
                             show={this.state.addSurveyShow}
-                            onHide={addSurveyClose}
+                                onHide={addSurveyClose}
                             closeButton={addSurveyClose}
                         />
-                    </ButtonToolbar>
+                    </ButtonToolbar>*/}
                 </div>
-            </div>
             </div>
 
         );

@@ -3,15 +3,12 @@ import {Modal, Button, Row, Col, Form} from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
-<<<<<<< HEAD
+const AXIOS = require("axios").default;
 export class Survey extends Component{
-=======
+
 
 //import Question from './components/Question';
-const AXIOS = require("axios").default;
 
-class Survey extends React.Component {
->>>>>>> 7835166bf1a579f50d3f5ee70d4ffb95a650376d
     constructor(props) {
         super(props);
         this.state = {
@@ -67,8 +64,6 @@ class Survey extends React.Component {
         console.log(input);
     }
 
-<<<<<<< HEAD
-    
 
     saveAnswer(e){
         e.preventDefault();
@@ -115,11 +110,10 @@ class Survey extends React.Component {
     </Modal>
         );
     }
-=======
+
     /* addQuestion(){
         AXIOS.post("http://localhost:4000/survey",{
             this.state.questions}
         })
     } */
->>>>>>> 7835166bf1a579f50d3f5ee70d4ffb95a650376d
 }
