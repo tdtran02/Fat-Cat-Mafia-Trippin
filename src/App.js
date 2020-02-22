@@ -6,10 +6,10 @@ import Login from "./components/Login";
 import Email from "./components/ValidateEmail";
 import Home from "./components/Home";
 import MyAccount from "./components/MyAccount";
-import AppNavBar from './components/AppNavBar';
+import AppNavBar from "./components/AppNavBar";
 
-import { Route } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
                 <Link to="/MyAccount">My Account</Link>
               </li>
               <li>
-                <Link to="/email">Email</Link>
+                <Link to="/">Email</Link>
               </li>
               <li>
                 <Link to="/home">Home</Link>
@@ -45,8 +45,8 @@ function App() {
             <Route path="/register">
               <Register />
             </Route>
-            <Route path="/login">
-              <Login />
+            <Route path="/">
+              <Trippin />
             </Route>
             <Route path="/myAccount">
               <MyAccount />
@@ -67,4 +67,3 @@ function App() {
 }
 
 export default App;
-

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ListGroup, Form } from "react-bootstrap";
+import { Button, Alert, Form } from "react-bootstrap";
 import AXIOS from "axios";
 
 import "../styles/Friends.css";
@@ -11,8 +11,13 @@ class Friends extends Component {
     this.state = {
       friend: null,
       friend_list: [],
+      has_friends: false,
       incoming_pending_friends: [],
-      search_email: ""
+      has_friend_requests: false,
+      search_email: "",
+      search_message: "",
+      search_boolean: false,
+      search_alert_variant: ""
     };
   }
 
@@ -23,6 +28,12 @@ class Friends extends Component {
     )
       .then(res => {
         this.setState({ friend: res.data.friend });
+        if (res.data.confirmed_friends.length > 0) {
+          this.setState({ has_friends: true });
+        }
+        if (res.data.pending_friend_requests.length > 0) {
+          this.setState({ has_friend_requests: true });
+        }
         this.setState({
           friend_list: this.createList(res.data.confirmed_friends)
         });
@@ -41,6 +52,7 @@ class Friends extends Component {
 
   emailOnChange = e => {
     this.setState({ search_email: e.target.value });
+    this.setState({ search_boolean: false });
   };
 
   onSearchFieldClick = () => {
@@ -51,7 +63,13 @@ class Friends extends Component {
       adding_friend: this.state.search_email
     })
       .then(response => {
-        // do something with the response later
+        this.setState({ search_boolean: true });
+        this.setState({ search_message: response.data.respond_message });
+        if (response.data.added) {
+          this.setState({ search_alert_variant: "success" });
+        } else {
+          this.setState({ search_alert_variant: "warning" });
+        }
       })
       .catch(err => {
         console.log(err);
@@ -64,7 +82,6 @@ class Friends extends Component {
       user_id: this.state.friend.owner_id,
       adding_friend: this.state.friend.incoming_pending_friends[index]
     }).then(response => {
-      console.log(response);
       this.setState({
         friend_list: this.createList(response.data.confirmed_friends)
       });
@@ -78,7 +95,7 @@ class Friends extends Component {
 
   createList(list) {
     let elements = [];
-    for (var i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
       elements.push(
         <div className="col-md-3 col-sm-6" key={i}>
           <div className="friend-card">
@@ -91,19 +108,28 @@ class Friends extends Component {
               }}
             ></div>
             <div className="card-info">
-              <img
-                src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                alt="user"
-                className="profile-photo-lg"
-              />
+              {list[i].image ? (
+                <img
+                  src={require(`${list[i].image}`)}
+                  alt="user"
+                  className="profile-photo-lg"
+                />
+              ) : (
+                <img
+                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  alt="user"
+                  className="profile-photo-lg"
+                />
+              )}
+
               <div className="friend-info">
                 <span className="pull-right text-green">My Friend</span>
                 <h5>
-                  <p href="timeline.html" className="profile-link">
+                  <p className="profile-fonts">
                     {list[i].first_name} {list[i].last_name}
                   </p>
                 </h5>
-                <p>Description here</p>
+                <p className="profile-email-fonts">{list[i].email}</p>
               </div>
             </div>
           </div>
@@ -126,7 +152,7 @@ class Friends extends Component {
 
   createPendingList(list) {
     let elements = [];
-    for (var i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
       elements.push(
         <div className="col-md-3 col-sm-6" key={i}>
           <div className="friend-card">
@@ -139,11 +165,20 @@ class Friends extends Component {
               }}
             ></div>
             <div className="card-info">
-              <img
-                src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                alt="user"
-                className="profile-photo-lg"
-              />
+              {list[i].image ? (
+                <img
+                  src={require(`${list[i].image}`)}
+                  alt="user"
+                  className="profile-photo-lg"
+                />
+              ) : (
+                <img
+                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  alt="user"
+                  className="profile-photo-lg"
+                />
+              )}
+
               <div className="friend-info">
                 <span
                   className="pull-right text-green"
@@ -154,11 +189,11 @@ class Friends extends Component {
                   Accept Friend Request
                 </span>
                 <h5>
-                  <p href="timeline.html" className="profile-link">
+                  <p className="profile-fonts">
                     {list[i].first_name} {list[i].last_name}
                   </p>
                 </h5>
-                <p>Description here</p>
+                <p className="profile-email-fonts">{list[i].email}</p>
               </div>
             </div>
           </div>
@@ -180,6 +215,7 @@ class Friends extends Component {
   }
 
   render() {
+    let user = JSON.parse(localStorage.getItem("user"));
     return (
       <div className="container">
         <div className="create-post">
@@ -191,11 +227,19 @@ class Friends extends Component {
                   tableLayout: "fixed"
                 }}
               >
-                <img
-                  src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                  alt=""
-                  className="profile-photo-md"
-                />
+                {user.image ? (
+                  <img
+                    src={require(`${user.image}`)}
+                    alt=""
+                    className="profile-photo-md"
+                  />
+                ) : (
+                  <img
+                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                    alt=""
+                    className="profile-photo-md"
+                  />
+                )}
                 <Form.Group
                   style={{
                     display: "table-cell",
@@ -218,21 +262,34 @@ class Friends extends Component {
                   Add
                 </Button>
               </Form>
+              {this.state.search_boolean ? (
+                <Alert
+                  variant={this.state.search_alert_variant}
+                  style={{ marginBottom: "0", marginTop: "6px" }}
+                >
+                  {this.state.search_message}
+                </Alert>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
         <div className="row" style={{ width: "100%" }}>
           <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
-            <span
-              style={{
-                // borderBottom: "1px solid",
-                fontFamily: "Lemonada, cursive",
-                fontSize: "14px",
-                fontWeight: "normal"
-              }}
-            >
-              Pending Friend Requests
-            </span>
+            {this.state.has_friend_requests ? (
+              <span
+                style={{
+                  fontFamily: "Lemonada, cursive",
+                  fontSize: "14px",
+                  fontWeight: "normal"
+                }}
+              >
+                Pending Friend Requests
+              </span>
+            ) : (
+              <span></span>
+            )}
           </div>
           <div className="col-md-9"></div>
         </div>
@@ -243,15 +300,18 @@ class Friends extends Component {
 
         <div className="row" style={{ width: "100%" }}>
           <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
-            <span
-              style={{
-                // borderBottom: "1px solid",
-                fontFamily: "Lemonada, cursive",
-                fontSize: "14px"
-              }}
-            >
-              My Friends
-            </span>
+            {this.state.has_friends ? (
+              <span
+                style={{
+                  fontFamily: "Lemonada, cursive",
+                  fontSize: "14px"
+                }}
+              >
+                My Friends
+              </span>
+            ) : (
+              <span></span>
+            )}
           </div>
           <div className="col-md-9"></div>
         </div>
