@@ -20,7 +20,9 @@ REGISTERROUTES.route("/user/register").post(function(req, res) {
         email: req.body.email,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        password: HASH
+        password: HASH,
+        image: "./images/profile3.jpg",
+        hometown: null
       });
 
       newUser

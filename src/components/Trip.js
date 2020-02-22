@@ -1,77 +1,85 @@
 import React, { Component } from "react";
 import "../styles/Trip.css";
-import {Survey} from "./Survey"
-import { Button, ButtonToolbar } from 'react-bootstrap';
+import { Survey } from "./Survey";
+import { Button, ButtonToolbar } from "react-bootstrap";
+import { withRouter } from "react-router";
 const AXIOS = require("axios").default;
 
 export class Trip extends Component {
-
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            owner_id: "",
-            destination: "",
-            start_date: null,
-            end_date: null,
-            // length: null,
-        };
-    
-        //this.handleSubmit = this.handleSubmit.bind(this);
-        //this.Click = this.onChange.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      owner_id: "",
+      destination: "",
+      start_date: null,
+      end_date: null
+      // length: null,
     };
-    componentDidMount() {
-        AXIOS.get(
-            "http://localhost:4000/trip/" +
-            JSON.parse(localStorage.getItem("user"))._id
-        ).then(res => {
-            this.setState({ trip: res.data.trip });
-        })
-        .catch(err => {
-            console.log(err);
-        });
-    };
-    tripOnChange(e){
-        this.setState({destination: e.target.value});
-    }
-    /*onCreateFieldClick = () => {
+
+    //this.handleSubmit = this.handleSubmit.bind(this);
+    //this.Click = this.onChange.bind(this);
+  }
+  componentDidMount() {
+    AXIOS.get(
+      "http://localhost:4000/trip/" +
+        JSON.parse(localStorage.getItem("user"))._id
+    )
+      .then(res => {
+        this.setState({ trip: res.data.trip });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  tripOnChange(e) {
+    this.setState({ destination: e.target.value });
+  }
+  /*onCreateFieldClick = () => {
         const USER = JSON.parse(localStorage.getItem("user"));
         AXIOS.post("http://localhost:4000/trip/add", {
             user_id: USER._id,
         }
     }*/
-    onCreateFieldClick(e) {
-        //const USER = JSON.parse(localStorage.getItem("trip"));
-        console.log("teestinggg");
-        var x = document.getElementById("arrival_location").value;
-        var y = document.getElementById("start-day").value;
-        var z = document.getElementById("end-day").value;
-        console.log(y);
-        console.log(x);
+  onCreateFieldClick(e) {
+    //const USER = JSON.parse(localStorage.getItem("trip"));
+    console.log("teestinggg");
+    var x = document.getElementById("arrival_location").value;
+    var y = document.getElementById("start-day").value;
+    var z = document.getElementById("end-day").value;
+    console.log(y);
+    console.log(x);
 
-        const update = {
-                owner_id: JSON.parse(localStorage.getItem('user'))._id,
-                //    email: JSON.parse(localStorage.getItem('user')).email,
-                destination: x,
-                start_date: y,
-                end_date: z
-        }
-        console.log(JSON.stringify(update));
-        AXIOS.post('http://localhost:4000/trip/', update)
-        .then(res => console.log(res.data))
-        .catch(err => { console.log(err) });
-        e.preventDefault();
-    }
-    render() {
-        return (
-            <div className="background-container">
-                {/*<div>
+    const update = {
+      trip: {
+        owner_id: JSON.parse(localStorage.getItem("user"))._id,
+        //    email: JSON.parse(localStorage.getItem('user')).email,
+        destination: x,
+        start_date: y,
+        end_date: z
+      }
+    };
+    console.log(JSON.stringify(update));
+    AXIOS.post("http://localhost:4000/trip/", update)
+      .then(res => {
+        console.log(res.data.trip);
+        const REDIRECT_URL = "/trip/" + res.data.trip._id;
+        window.location = REDIRECT_URL;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    e.preventDefault();
+  }
+  render() {
+    return (
+      <div className="background-container">
+        {/*<div>
                     <img className="pic-background"
                     src={require("./images/trip_photo_2.png")}
                     alt="road"
                     />
                 </div>*/}
-                {/*<div className="container-form">
+        {/*<div className="container-form">
                     <div className="panel-heading">
                             <h3 className="panel-title">Start Your New Itinerary </h3>
                         </div>
@@ -114,24 +122,29 @@ export class Trip extends Component {
                                         </div>
                                     </div>
                                     {/*<div className="buttons">
+
                                         <ButtonToolbar>
                                         <Button variant="outline-light" type="submit">
                                             Create
                                         </Button>
                                         </ButtonToolbar>
                                     </div>*/}
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <Button className="ml-3" variant="info" onClick={this.onCreateFieldClick}>
-                                                Create
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <Button
+                        className="ml-3"
+                        variant="info"
+                        onClick={this.onCreateFieldClick}
+                      >
+                        Create
+                      </Button>
                     </div>
-                    {/*<ButtonToolbar>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          {/*<ButtonToolbar>
                         <Button variant='primary'
                         onClick={() => this.setState({addSurveyShow: true})}
                         >Let's Go!</Button>
@@ -141,14 +154,10 @@ export class Trip extends Component {
                             closeButton={addSurveyClose}
                         />
                     </ButtonToolbar>*/}
-                </div>
-            </div>
-
-        );
-    }
+        </div>
+      </div>
+    );
+  }
 }
 
-
-
 export default Trip;
-
