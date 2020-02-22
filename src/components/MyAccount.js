@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import "../styles/MyAccount.css";
-import { Button, ButtonToolbar } from 'react-bootstrap';
+import { Button, ButtonToolbar, Alert } from 'react-bootstrap';
 import { EditPhotoModal } from './EditPhotoModal';
 /* import Profile from './images/profilepic.png';
 import Profile1 from './images/profile1.jpg';
@@ -38,9 +38,12 @@ export class MyAccount extends Component {
       first_name: "",
       last_name: "",
       __v: "",
-      hometown: ""
+      hometown: "",
+      updateflag: false
 
     };
+
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.Click = this.onChange.bind(this);
 
@@ -83,7 +86,7 @@ export class MyAccount extends Component {
   };
 
   handleSubmit(e) {
-
+    alert("Your Profile Has Been Updated")
     console.log("teestinggg");
     var x = document.getElementById("myA-firstname").value;
     var y = document.getElementById("myA-lastname").value;
@@ -124,6 +127,8 @@ export class MyAccount extends Component {
     AXIOS.put('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id, update)
       .then(res => console.log(res.data))
       .catch(err => { console.log(err) });
+
+    this.setState({ updateflag: true });
     e.preventDefault();
   }
 
@@ -144,7 +149,7 @@ export class MyAccount extends Component {
                     <img className="responsive" id="profile-pic-myA" src={require(`${this.state.image}`)} alt="city" width="100" height="80" />
                   </div>
                   <div className="edit-pic">
-                    <ButtonToolbar>
+                    <ButtonToolbar >
                       <Button variant="outline-light" onClick={() => this.setState({ editPhotoShow: true, option: '3' })}>
                         Change Photo
                       </Button>
@@ -182,10 +187,14 @@ export class MyAccount extends Component {
                         <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
                         <span className="validity"></span>
                       </div> */}
-                      <div className="buttons">
-                        <ButtonToolbar>
-                          <Button variant="outline-light" type="submit">
+                      <div id="update-div">
+
+                        <ButtonToolbar id="btntb">
+                          <Button className="buttons" variant="primary" type="submit">
                             UPDATE
+                      </Button>
+                          <Button className="buttons" href="/Home" type="submit" variant="secondary" >
+                            BACK
                       </Button>
                         </ButtonToolbar>
 
@@ -240,9 +249,7 @@ export class MyAccount extends Component {
                     </div> */}
                   </div>
                   <ButtonToolbar className="done-btn">
-                    <Button href="/Home" type="submit" variant="outline-light" >
-                      DONE
-                      </Button>
+
                   </ButtonToolbar>
                 </div>
               </div>

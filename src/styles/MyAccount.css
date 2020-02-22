@@ -3,7 +3,7 @@
 .content-container {
     display:flex;
     justify-content: center;
-    height: 800px;
+
 }
 
 .content-grid-myA {
@@ -15,7 +15,7 @@
     background-color: #279bbe;
     flex-wrap: wrap;
     border-radius: 5px;
-}
+} 
 
 .main-myA {
     background-color:slategray;
@@ -136,11 +136,22 @@ input:valid+span::after {
     content: '✓';
 }
 
-
+.buttons {
+    margin-left: 20px;
+}
 .done-btn{
     margin-top: 100px;
     padding: 5px;
 }
-#update {
-    margin-top: 100px;
+#update-alert{
+    height: 50px;
+    text-align: center;
 }
+
+#update {
+    display: flex;
+    flex-direction: column;
+    margin-top: 200px;
+    height: 800px;
+}
+
