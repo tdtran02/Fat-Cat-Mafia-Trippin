@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, useState } from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { NavLink as RRNavLink } from "react-router-dom";
-import { NavLink } from "reactstrap";
+import { NavLink, Dropdown, DropdownMenu, DropdownToggle, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import { Route } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
@@ -21,6 +21,8 @@ import {
   NavItem,
   Container
 } from "reactstrap";
+import { DropdownButton } from "react-bootstrap";
+
 
 class AppNavBar extends Component {
   constructor(props) {
@@ -41,35 +43,34 @@ class AppNavBar extends Component {
     });
   };
 
+
   logout = () => {
     localStorage.removeItem("user");
     document.location.href = "/";
   };
 
+
+
   render() {
+
+
     const LOGGED_IN = (
       <Fragment>
-        <NavItem>
-          <NavLink tag={RRNavLink} exact to="/home">
-            Home
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink tag={RRNavLink} exact to="/friends">
-            Friends
-          </NavLink>
-        </NavItem>
-        <NavItem style={{ cursor: "pointer" }}>
+        <UncontrolledDropdown nav inNavbar>
+          <DropdownToggle nav caret></DropdownToggle>
+          <DropdownMenu right>
+            <DropdownItem href="/Home">HOME</DropdownItem>
+            <DropdownItem href="/MyAccount">EDIT</DropdownItem>
+            <DropdownItem href="/Friends">FRIENDS</DropdownItem>
+            <DropdownItem href="/Trip">CREATE A TRIP</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem onClick={this.logout} >LOG OUT</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+        {/*         <NavItem style={{ cursor: "pointer" }}>
           <NavLink>Logged in!</NavLink>
-        </NavItem>
-        <NavItem style={{ cursor: "pointer" }} onClick={this.logout}>
-          <NavLink>Log out</NavLink>
-        </NavItem>
-        <NavItem style={{ cursor: "pointer" }}>
-          <NavLink tag={RRNavLink} exact to="/Trip">
-            Trip
-          </NavLink>
-        </NavItem>
+        </NavItem> */}
+
       </Fragment>
     );
 
@@ -92,15 +93,16 @@ class AppNavBar extends Component {
         <Router>
           <Navbar color="dark" dark expand="sm" className="mb-5">
             <Container>
-              <NavbarBrand href="/">Trippin</NavbarBrand>
+              <NavbarBrand href="/">
+                <img
+                  src={require("./images/trippinicon.jpg")}
+                  width="30"
+                  height="30"
+                  className="d-inline-block align-top"
+                />  TRIPPIN</NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
-              <Collapse isOpen={this.state.isOpen} navbar>
+              <Collapse className='bg-dark' isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
-                  <NavItem>
-                    <NavLink tag={RRNavLink} exact to="/email">
-                      Email
-                    </NavLink>
-                  </NavItem>
                   {this.state.user ? LOGGED_IN : LOGGED_OUT}
                 </Nav>
               </Collapse>
