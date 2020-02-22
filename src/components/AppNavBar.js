@@ -107,9 +107,7 @@ class AppNavBar extends Component {
             </Container>
           </Navbar>
           <Switch>
-            <Route path="/trip/:id">
-              <CurrentTrip />
-            </Route>
+            <Route path="/trip/:id" exact component={CurrentTrip}></Route>
             <Route path="/trip">
               <Trip />
             </Route>
