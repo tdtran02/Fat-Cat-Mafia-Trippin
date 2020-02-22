@@ -7,6 +7,7 @@ TRIPROUTES.route("/trip").post(function(req, res){
     console.log(req.body)
     const T = new TRIP({
         owner_id: req.body.owner_id,
+        trip_name: req.body.trip_name,
         destination: req.body.destination,
         start_date: req.body.start_date,
         end_date:req.body.end_date
