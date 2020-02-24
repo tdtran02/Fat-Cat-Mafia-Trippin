@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../styles/Trip.css";
-import Survey from "./Survey";
+import { Survey } from "./Survey";
 import { Button, ButtonToolbar } from 'react-bootstrap';
 
 const AXIOS = require("axios").default;
@@ -16,6 +16,7 @@ export class Trip extends Component {
             start_date: null,
             end_date: null,
             // length: null,
+            addSurveyShow: false
         };
 
         //this.handleSubmit = this.handleSubmit.bind(this);
@@ -67,6 +68,7 @@ export class Trip extends Component {
         //e.preventDefault();
     }
     render() {
+        let addSurveyClose = () => this.setState({ addSurveyShow: false });
         return (
             <div className="background-container">
                 {/*<div>
