@@ -156,6 +156,16 @@ class CurrentTrip extends Component {
   }
 
   componentDidMount() {
+    AXIOS.get("http://localhost:4000/question/" + JSON.parse(localStorage.getItem('user')._id))
+      .then(res => {
+        console.log(res);
+      }
+
+      )
+      .catch(err => {
+        console.log(err);
+      });
+
     AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
       .then(res => {
         this.setState({ trip_locations: res.data.trip.trip_locations });

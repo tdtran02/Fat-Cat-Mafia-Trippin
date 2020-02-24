@@ -10,7 +10,8 @@ import Home from "./Home";
 import MyAccount from "./MyAccount";
 import Trip from "./Trip";
 import Friends from "./Friends";
-import Trippin from "./Trippin";
+import TRIPPIN from "./Trippin";
+import CurrentTrip from "./CurrentTrip";
 import { DropdownButton } from "react-bootstrap";
 import {
   Collapse,
@@ -108,6 +109,7 @@ class AppNavBar extends Component {
             </Container>
           </Navbar>
           <Switch>
+            <Route path="/trip/:id" exact component={CurrentTrip}></Route>
             <Route path="/trip">
               <Trip />
             </Route>
@@ -129,6 +131,9 @@ class AppNavBar extends Component {
 
             <Route path="/home">
               <Home />
+            </Route>
+            <Route path="/">
+              <TRIPPIN />
             </Route>
           </Switch>
         </Router>

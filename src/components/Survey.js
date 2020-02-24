@@ -125,12 +125,13 @@ export class Survey extends Component {
                     __v: 0
                 }
                 localStorage.setItem('trip', JSON.stringify(tripPUSH));
-                window.location = "/trip/5e541068f02d38ae72dd0a43"
+                window.location = ("/trip/" + tripPUSH.owner_id);
 
             })
             .catch(error => {
                 console.log(error)
-            })
+            });
+
 
     }
 
@@ -176,7 +177,7 @@ export class Survey extends Component {
                             </div>
                             {/*  </div> */}
                             <ButtonToolbar>
-                                <Button type="submit" href="trip/:id" >SAVE</Button>
+                                <Button onClick={this.handleSubmit}  >SAVE</Button>
                             </ButtonToolbar>
                         </form>
                     </div>
