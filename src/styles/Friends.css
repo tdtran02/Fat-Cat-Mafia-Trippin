@@ -41,3 +41,13 @@ img.profile-photo-lg {
 .text-green {
   color: #8dc63f;
 }
+
+.profile-fonts {
+  font-size: 20px;
+  color: black;
+}
+
+.profile-email-fonts {
+  font-size: 16px;
+  color: black;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../styles/Trip.css";
+import Survey from "./Survey";
 import { Button, ButtonToolbar } from 'react-bootstrap';
 const AXIOS = require("axios").default;
 
