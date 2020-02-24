@@ -168,6 +168,13 @@ class CurrentTrip extends Component {
       .catch(err => {
         console.error(err);
       });
+    /*     let trip = JSON.parse(localStorage.getItem('trip'));
+        this.setState({
+          trip_id: trip._id,
+          //  trip_locations: [],
+          //  trip_location_elements: [],
+          locations: trip.trip_locations */
+    //  })
   }
 
   toRecommendation(e, url) {
@@ -352,8 +359,8 @@ class CurrentTrip extends Component {
                   My Trip Locations
                 </span>
               ) : (
-                <span></span>
-              )}
+                  <span></span>
+                )}
               {this.state.trip_locations.length != 0
                 ? this.state.trip_location_elements
                 : ""}

@@ -3,35 +3,35 @@ const TRIPROUTES = EXPRESS.Router();
 const TRIP = require("../models/trip.model");
 const USER = require("../models/user.model");
 
-TRIPROUTES.route("/trip").post(function(req, res){
-    console.log(req.body)
-    const T = new TRIP({
-        owner_id: req.body.owner_id,
-        trip_name: req.body.trip_name,
-        destination: req.body.destination,
-        start_date: req.body.start_date,
-        end_date:req.body.end_date
-    });
-    T.save()
-    .then(x=>{
-        console.log(x)
-        res.status(200).json({
-            saved: true,
-            response_message: "Trip created!",
-            trip:x
-        });
+TRIPROUTES.route("/trip").post(function (req, res) {
+  console.log(req.body)
+  const T = new TRIP({
+    owner_id: req.body.owner_id,
+    trip_name: req.body.trip_name,
+    destination: req.body.destination,
+    start_date: req.body.start_date,
+    end_date: req.body.end_date
+  });
+  T.save()
+    .then(x => {
+      console.log(x)
+      res.status(200).json({
+        saved: true,
+        response_message: "Trip created!",
+        trip: x
+      });
     })
     .catch(err => {
-        //   console.error(err);
-          res.status(200).json({
-            saved: false,
-            response_message: "Creating trip failed!",
-            trip: null
-        });
+      //   console.error(err);
+      res.status(200).json({
+        saved: false,
+        response_message: "Creating trip failed!",
+        trip: null
+      });
     });
 });
 
-TRIPROUTES.route("/trip/:id").get(function(req, res) {
+TRIPROUTES.route("/trip/:id").get(function (req, res) {
   TRIP.find({ owner_id: req.params.id }).then(trip => {
     if (trip != null) {
       res.status(200).json({
@@ -42,10 +42,13 @@ TRIPROUTES.route("/trip/:id").get(function(req, res) {
         trip: null
       });
     }
-  });
+  })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
-TRIPROUTES.route("/trip/:id").delete(function(req, res) {
+TRIPROUTES.route("/trip/:id").delete(function (req, res) {
   TRIP.findByIdAndRemove({ _id: req.body._id }).then(trip => {
     if (trip != null) {
       res.status(200).json({
@@ -61,7 +64,7 @@ TRIPROUTES.route("/trip/:id").delete(function(req, res) {
 });
 
 // add a location to user's list
-TRIPROUTES.route("/trip/addtotriplocation").post(function(req, res) {
+TRIPROUTES.route("/trip/addtotriplocation").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     {
@@ -86,7 +89,7 @@ TRIPROUTES.route("/trip/addtotriplocation").post(function(req, res) {
 });
 
 // delete a location from user's list
-TRIPROUTES.route("/trip/deletefromtriplocations").post(function(req, res) {
+TRIPROUTES.route("/trip/deletefromtriplocations").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     {
@@ -111,7 +114,7 @@ TRIPROUTES.route("/trip/deletefromtriplocations").post(function(req, res) {
 });
 
 // get trip information based on trip id
-TRIPROUTES.route("/tripinfo/:trip_id").get(function(req, res) {
+TRIPROUTES.route("/tripinfo/:trip_id").get(function (req, res) {
   TRIP.findOne({ _id: req.params.trip_id }).then(trip => {
     console.log(trip);
     if (trip != null) {

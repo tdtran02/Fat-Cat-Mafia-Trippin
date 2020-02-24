@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../styles/Trip.css";
 import { Survey } from "./Survey"
 import { Button, ButtonToolbar } from 'react-bootstrap';
+
 const AXIOS = require("axios").default;
 
 export class Trip extends Component {
@@ -61,7 +62,10 @@ export class Trip extends Component {
         }
         console.log(JSON.stringify(update));
         AXIOS.post('http://localhost:4000/trip/', update)
-            .then(res => console.log(res.data))
+            .then(res => {
+                console.log(res.data);
+                localStorage.setItem("trip", JSON.stringify(res.data.trip));
+            })
             .catch(err => { console.log(err) });
         //e.preventDefault();
     }
@@ -131,9 +135,10 @@ export class Trip extends Component {
                                             </Button> */}
                                             <ButtonToolbar>
                                                 <Button variant='primary'
-                                                    onClick={this.onCreateFieldClick,() => {
+                                                    onClick={this.onCreateFieldClick, () => {
                                                         this.onCreateFieldClick();
-                                                        this.setState({ addSurveyShow: true });}}
+                                                        this.setState({ addSurveyShow: true });
+                                                    }}
                                                 >Let's Go!</Button>
                                                 <Survey
                                                     show={this.state.addSurveyShow}
