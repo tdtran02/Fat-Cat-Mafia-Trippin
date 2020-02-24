@@ -59,6 +59,7 @@ export class Home extends Component {
 
         AXIOS.get("http://localhost:4000/trip/" + JSON.parse(localStorage.getItem('user'))._id)
             .then(response => {
+            console.log(response);
             this.setState({ trip: response.data.trip });
             this.setState({
                 trip_list: this.createList(response.data.trip)
@@ -66,9 +67,15 @@ export class Home extends Component {
         });
     }
     onDeleteFieldClick(e, i) {
-        const OneTrip = this.state.trip_list[i];
+        console.log(i);
+        const OneTrip = this.state.trip[i];
+        console.log(OneTrip);
+        console.log(this.state.trip[i]);
         console.log("test");
-        AXIOS.delete("http://localhost:4000/trip/" + JSON.parse(localStorage.getItem('user'))._id, OneTrip)
+        console.log(JSON.parse(localStorage.getItem('user')))
+        const USER_ID = JSON.parse(localStorage.getItem('user'))._id;
+        console.log(USER_ID)
+        AXIOS.delete("http://localhost:4000/trip/" + USER_ID, {data: {trip:OneTrip}})
         .then(res => {
             console.log(res);
             this.setState({ trip: res.data.trip });
