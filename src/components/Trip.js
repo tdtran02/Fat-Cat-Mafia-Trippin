@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../styles/Trip.css";
-import { Survey } from "./Survey"
+import Survey from "./Survey";
 import { Button, ButtonToolbar } from 'react-bootstrap';
 
 const AXIOS = require("axios").default;
@@ -15,7 +15,6 @@ export class Trip extends Component {
             destination: "",
             start_date: null,
             end_date: null,
-            addSurveyShow: false
             // length: null,
         };
 
@@ -45,7 +44,6 @@ export class Trip extends Component {
     onCreateFieldClick(e) {
         //const USER = JSON.parse(localStorage.getItem("trip"));
         console.log("teestinggg");
-        var w = document.getElementById("trip_name").value;
         var x = document.getElementById("arrival_location").value;
         var y = document.getElementById("start-day").value;
         var z = document.getElementById("end-day").value;
@@ -55,7 +53,6 @@ export class Trip extends Component {
         const update = {
             owner_id: JSON.parse(localStorage.getItem('user'))._id,
             //    email: JSON.parse(localStorage.getItem('user')).email,
-            trip_name: w,
             destination: x,
             start_date: y,
             end_date: z
@@ -70,7 +67,6 @@ export class Trip extends Component {
         //e.preventDefault();
     }
     render() {
-        let addSurveyClose = () => this.setState({ addSurveyShow: false });
         return (
             <div className="background-container">
                 {/*<div>
@@ -92,11 +88,11 @@ export class Trip extends Component {
                         <form id="update" onSubmit={this.onCreateFieldClick}>
                             <div className="panel-body">
                                 <br></br>
-                                <div id="trip_info">
+                                <div id="location">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <label className="control-label">Trip Name</label>
-                                            <input className="form-control" id="trip_name" placeholder="A Name For Your Trip"></input>
+                                            <label className="control-label">Departure</label>
+                                            <input className="form-control" id="departue_location" placeholder="City Country Depart"></input>
                                         </div>
                                         <div className="col-md-6">
                                             <label className="control-label">Arrival</label>
@@ -152,7 +148,16 @@ export class Trip extends Component {
                             </div>
                         </form>
                     </div>
-
+                    {/*<ButtonToolbar>
+                        <Button variant='primary'
+                        onClick={() => this.setState({addSurveyShow: true})}
+                        >Let's Go!</Button>
+                        <Survey
+                            show={this.state.addSurveyShow}
+                                onHide={addSurveyClose}
+                            closeButton={addSurveyClose}
+                        />
+                    </ButtonToolbar>*/}
                 </div>
             </div>
 
