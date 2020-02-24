@@ -67,6 +67,7 @@ export class Home extends Component {
     }
     onDeleteFieldClick(e, i) {
         const OneTrip = this.state.trip_list[i];
+        console.log("test");
         AXIOS.delete("http://localhost:4000/trip/" + JSON.parse(localStorage.getItem('user'))._id, OneTrip)
         .then(res => {
             console.log(res);
@@ -85,14 +86,14 @@ export class Home extends Component {
       elements.push(
         <div className="col-md-3 col-sm-6" key={i}>
           <div className="trip-card">
-            <div
+            {/*<div
               className="img-responsive cover"
               style={{
                 height: "100px",
                 width: "400px",
                 backgroundColor: "#6495ED"
               }}
-            ></div>
+            ></div>*/}
             <div className="card-info">
               {list[i].image ? (
                 <img
