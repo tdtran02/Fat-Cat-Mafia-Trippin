@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { NavLink as RRNavLink } from "react-router-dom";
-import { NavLink } from "reactstrap";
+import { NavLink, Dropdown, DropdownMenu, DropdownToggle, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import { Route } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
@@ -11,6 +11,7 @@ import MyAccount from "./MyAccount";
 import Trip from "./Trip";
 import Friends from "./Friends";
 import Trippin from "./Trippin";
+import { DropdownButton } from "react-bootstrap";
 import {
   Collapse,
   Navbar,
@@ -48,27 +49,22 @@ class AppNavBar extends Component {
   render() {
     const LOGGED_IN = (
       <Fragment>
-        <NavItem>
-          <NavLink tag={RRNavLink} exact to="/home">
-            Home
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink tag={RRNavLink} exact to="/friends">
-            Friends
-          </NavLink>
-        </NavItem>
-        <NavItem style={{ cursor: "pointer" }}>
+        <UncontrolledDropdown nav inNavbar>
+          <DropdownToggle nav caret></DropdownToggle>
+          <DropdownMenu right>
+            <DropdownItem href="/Home">HOME</DropdownItem>
+            <DropdownItem href="/MyAccount">EDIT</DropdownItem>
+            <DropdownItem href="/Friends">FRIENDS</DropdownItem>
+            <DropdownItem href="/Trip">CREATE A TRIP</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem onClick={this.logout} >LOG OUT</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+
+        {/*         <NavItem style={{ cursor: "pointer" }}>
           <NavLink>Logged in!</NavLink>
-        </NavItem>
-        <NavItem style={{ cursor: "pointer" }} onClick={this.logout}>
-          <NavLink>Log out</NavLink>
-        </NavItem>
-        <NavItem style={{ cursor: "pointer" }}>
-          <NavLink tag={RRNavLink} exact to="/Trip">
-            Trip
-          </NavLink>
-        </NavItem>
+        </NavItem> */}
+
       </Fragment>
     );
 
@@ -93,13 +89,13 @@ class AppNavBar extends Component {
             <Container>
               <NavbarBrand href="/">Trippin</NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
-              <Collapse isOpen={this.state.isOpen} navbar>
+              <Collapse className="bg-dark" isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
-                  <NavItem>
+                  {/*                   <NavItem>
                     <NavLink tag={RRNavLink} exact to="/email">
                       Email
                     </NavLink>
-                  </NavItem>
+                  </NavItem> */}
                   {this.state.user ? LOGGED_IN : LOGGED_OUT}
                 </Nav>
               </Collapse>
