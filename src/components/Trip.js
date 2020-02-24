@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../styles/Trip.css";
-import Survey from "./Survey";
+import {Survey} from "./Survey"
 import { Button, ButtonToolbar } from 'react-bootstrap';
 const AXIOS = require("axios").default;
 
@@ -15,7 +15,6 @@ export class Trip extends Component {
             start_date: null,
             end_date: null,
             // length: null,
-            addSurveyShow: false
         };
     
         //this.handleSubmit = this.handleSubmit.bind(this);
@@ -63,7 +62,6 @@ export class Trip extends Component {
         .catch(err => { console.log(err) });
         e.preventDefault();
     }
-    
     render() {
         return (
             <div className="background-container">
@@ -124,24 +122,9 @@ export class Trip extends Component {
                                     </div>*/}
                                     <div className="row">
                                         <div className="col-md-6">
-                                           {/* <Button className="ml-3" variant="info" onClick={this.onCreateFieldClick}>
-                                                Let's Go!
+                                            <Button className="ml-3" variant="info" onClick={this.onCreateFieldClick}>
+                                                Create
                                             </Button>
-                                            */}
-                                            <Button variant="info" href="/Survey">
-                                                Let's Go!
-                                            </Button>
-                                            
-                                            {/*<Button className="ml-3" variant="info" onClick={()=> this.setState({addSurveyShow: true})}>
-                                                Let's Go!
-                                                <Survey
-                                                    show={this.state.addSurveyShow}
-                                                    />
-                                            </Button>
-                                            */}
-
-                        
-                                            
                                         </div>
                                     </div>
                                 </div>

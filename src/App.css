@@ -109,23 +109,7 @@ body {
   }
 }
 
-.App{
-  font-family: sans-serif;
-  text-align: center;
-}
-.selected{
-  background: #64E2E7 !important;
-}
-.options{
-  margin: auto;
-  padding: 8px;
-  border: 1px solid #000;
-  cursor: pointer;
-  width: 40%;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  background: white;
-}
+
 
 
 
