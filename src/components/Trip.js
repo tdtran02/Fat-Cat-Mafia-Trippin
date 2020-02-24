@@ -63,7 +63,7 @@ export class Trip extends Component {
         AXIOS.post('http://localhost:4000/trip/', update)
             .then(res => console.log(res.data))
             .catch(err => { console.log(err) });
-        e.preventDefault();
+        //e.preventDefault();
     }
     render() {
         let addSurveyClose = () => this.setState({ addSurveyShow: false });
@@ -131,7 +131,9 @@ export class Trip extends Component {
                                             </Button> */}
                                             <ButtonToolbar>
                                                 <Button variant='primary'
-                                                    onClick={() => this.setState({ addSurveyShow: true })}
+                                                    onClick={this.onCreateFieldClick,() => {
+                                                        this.onCreateFieldClick();
+                                                        this.setState({ addSurveyShow: true });}}
                                                 >Let's Go!</Button>
                                                 <Survey
                                                     show={this.state.addSurveyShow}
