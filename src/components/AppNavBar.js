@@ -87,7 +87,13 @@ class AppNavBar extends Component {
         <Router>
           <Navbar color="dark" dark expand="sm" className="mb-5">
             <Container>
-              <NavbarBrand href="/">Trippin</NavbarBrand>
+              <NavbarBrand href="/">
+                <img
+                  src={require("./images/trippinicon.jpg")}
+                  width="30"
+                  height="30"
+                  className="d-inline-block align-top"
+                /> Trippin</NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
               <Collapse className="bg-dark" isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
