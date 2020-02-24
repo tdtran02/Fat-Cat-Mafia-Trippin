@@ -46,8 +46,6 @@ TRIPROUTES.route("/trip/:id").get(function(req, res) {
 });
 
 TRIPROUTES.route("/trip/:id").delete(function(req, res) {
-    console.log("Hello")
-    console.log(req.body)
   TRIP.findOneAndDelete({ _id: req.body.trip._id }).then(trip => {
     if (trip != null) {
       res.status(200).json({

@@ -37,6 +37,7 @@ app.use(FRIENDROUTES, ROUTER);
 app.use(QUESTIONROUTES, ROUTER);
 app.use(TRIPROUTES, ROUTER);
 
+
 /* const storage = multer.diskStorage({
   destination: function (req, res, cb) {
     cb(null, 'uploads/')

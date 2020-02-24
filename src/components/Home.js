@@ -67,12 +67,11 @@ export class Home extends Component {
         });
     }
     onDeleteFieldClick(e, i) {
-        console.log(i);
+        //console.log(i);
         const OneTrip = this.state.trip[i];
-        console.log(OneTrip);
-        console.log(this.state.trip[i]);
-        console.log("test");
-        console.log(JSON.parse(localStorage.getItem('user')))
+        // console.log(OneTrip);
+        // console.log(this.state.trip[i]);
+        // console.log(JSON.parse(localStorage.getItem('user')))
         const USER_ID = JSON.parse(localStorage.getItem('user'))._id;
         console.log(USER_ID)
         AXIOS.delete("http://localhost:4000/trip/" + USER_ID, {data: {trip:OneTrip}})

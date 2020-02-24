@@ -10,7 +10,6 @@ import Home from "./Home";
 import MyAccount from "./MyAccount";
 import Trip from "./Trip";
 import Friends from "./Friends";
-import Survey from "./Survey";
 import Trippin from "./Trippin";
 import {
   Collapse,
@@ -70,7 +69,6 @@ class AppNavBar extends Component {
             Trip
           </NavLink>
         </NavItem>
-        
       </Fragment>
     );
 
@@ -108,9 +106,6 @@ class AppNavBar extends Component {
             </Container>
           </Navbar>
           <Switch>
-            <Route path="/survey">
-              <Survey />
-            </Route>
             <Route path="/trip">
               <Trip />
             </Route>
@@ -129,6 +124,7 @@ class AppNavBar extends Component {
             <Route path="/friends">
               <Friends />
             </Route>
+
             <Route path="/home">
               <Home />
             </Route>
