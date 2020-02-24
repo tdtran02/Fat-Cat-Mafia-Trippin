@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../styles/Trip.css";
-import {Survey} from "./Survey"
+import { Survey } from "./Survey"
 import { Button, ButtonToolbar } from 'react-bootstrap';
 const AXIOS = require("axios").default;
 
@@ -14,9 +14,10 @@ export class Trip extends Component {
             destination: "",
             start_date: null,
             end_date: null,
+            addSurveyShow: false
             // length: null,
         };
-    
+
         //this.handleSubmit = this.handleSubmit.bind(this);
         //this.Click = this.onChange.bind(this);
     };
@@ -27,12 +28,12 @@ export class Trip extends Component {
         ).then(res => {
             this.setState({ trip: res.data.trip });
         })
-        .catch(err => {
-            console.log(err);
-        });
+            .catch(err => {
+                console.log(err);
+            });
     };
-    tripOnChange(e){
-        this.setState({destination: e.target.value});
+    tripOnChange(e) {
+        this.setState({ destination: e.target.value });
     }
     /*onCreateFieldClick = () => {
         const USER = JSON.parse(localStorage.getItem("user"));
@@ -60,11 +61,12 @@ export class Trip extends Component {
         }
         console.log(JSON.stringify(update));
         AXIOS.post('http://localhost:4000/trip/', update)
-        .then(res => console.log(res.data))
-        .catch(err => { console.log(err) });
+            .then(res => console.log(res.data))
+            .catch(err => { console.log(err) });
         e.preventDefault();
     }
     render() {
+        let addSurveyClose = () => this.setState({ addSurveyShow: false });
         return (
             <div className="background-container">
                 {/*<div>
@@ -124,25 +126,26 @@ export class Trip extends Component {
                                     </div>*/}
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <Button className="ml-3" variant="info" onClick={this.onCreateFieldClick}>
+                                            {/* <Button className="ml-3" variant="info" onClick={this.onCreateFieldClick}>
                                                 Let's GO!
-                                            </Button>
+                                            </Button> */}
+                                            <ButtonToolbar>
+                                                <Button variant='primary'
+                                                    onClick={() => this.setState({ addSurveyShow: true })}
+                                                >Let's Go!</Button>
+                                                <Survey
+                                                    show={this.state.addSurveyShow}
+                                                    onHide={addSurveyClose}
+                                                    handler={this.handler}
+                                                />
+                                            </ButtonToolbar>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    {/*<ButtonToolbar>
-                        <Button variant='primary'
-                        onClick={() => this.setState({addSurveyShow: true})}
-                        >Let's Go!</Button>
-                        <Survey
-                            show={this.state.addSurveyShow}
-                                onHide={addSurveyClose}
-                            closeButton={addSurveyClose}
-                        />
-                    </ButtonToolbar>*/}
+
                 </div>
             </div>
 
