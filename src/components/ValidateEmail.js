@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export class ValidateEmail extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
           email: '',
           pattern: /^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z]*@[0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/,
@@ -38,6 +38,7 @@ export class ValidateEmail extends Component {
           alert("Enter password.");
         }
         event.preventDefault();
+        
       }
 
       sendEmail(event) {
@@ -58,7 +59,7 @@ export class ValidateEmail extends Component {
               </label>
                 <input type="submit" value="Validate" onChange={this.handleChange}/>
             </div>
-            
+          
           </form>
         );
       }
