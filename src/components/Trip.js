@@ -93,12 +93,12 @@ export class Trip extends Component {
                                 <div id="location">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <label className="control-label">Departure</label>
-                                            <input className="form-control" id="departue_location" placeholder="City Country Depart"></input>
+                                            <label className="control-label">Trip Name</label>
+                                            <input className="form-control" id="departue_location"></input>
                                         </div>
                                         <div className="col-md-6">
-                                            <label className="control-label">Arrival</label>
-                                            <input className="form-control" id="arrival_location" placeholder="City Country Arrive"></input>
+                                            <label className="control-label">Destination</label>
+                                            <input className="form-control" id="arrival_location"></input>
                                         </div>
                                     </div>
                                     <div className="row">
