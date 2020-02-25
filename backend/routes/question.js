@@ -96,4 +96,19 @@ QUESTIONROUTES.route("/question/:id").get((req, res) => {
 
 });
 
+QUESTIONROUTES.route("/question/:id").delete(function (req, res) {
+    QUESTION.findOneAndDelete({ _id: req.params.id }).then(question => {
+        if (question != null) {
+            res.status(200).json({
+                response_message: "Survey deleted!",
+                question: question
+            });
+        } else {
+            res.status(400).json({
+                trip: null
+            });
+        }
+    });
+});
+
 module.exports = QUESTIONROUTES;
