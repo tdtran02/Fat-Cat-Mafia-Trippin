@@ -124,8 +124,10 @@ export class Survey extends Component {
                     end_date: tripGET.end_date,
                     __v: 0
                 }
-                localStorage.setItem('trip', JSON.stringify(tripPUSH));
-                window.location = ("/trip/" + tripPUSH.owner_id);
+                console.log(response.data.survey);
+                localStorage.setItem('survey', JSON.stringify(response.data.survey));
+                console.log(JSON.parse(localStorage.getItem('user'))._id);
+                window.location = ("/trip/" + JSON.parse(localStorage.getItem('user'))._id);
 
             })
             .catch(error => {
@@ -177,7 +179,7 @@ export class Survey extends Component {
                             </div>
                             {/*  </div> */}
                             <ButtonToolbar>
-                                <Button onClick={this.handleSubmit}  >SAVE</Button>
+                                <Button onClick={this.handleSubmit} >SAVE</Button>
                             </ButtonToolbar>
                         </form>
                     </div>

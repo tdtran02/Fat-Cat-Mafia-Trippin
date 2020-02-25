@@ -156,9 +156,14 @@ class CurrentTrip extends Component {
   }
 
   componentDidMount() {
-    AXIOS.get("http://localhost:4000/question/" + JSON.parse(localStorage.getItem('user')._id))
+
+
+
+
+    AXIOS.get("http://localhost:4000/question/" + JSON.parse(localStorage.getItem('survey'))._id)
       .then(res => {
         console.log(res);
+        this.setState({ locations: res.data.recs });
       }
 
       )
@@ -166,7 +171,7 @@ class CurrentTrip extends Component {
         console.log(err);
       });
 
-    AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
+    /* AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
       .then(res => {
         this.setState({ trip_locations: res.data.trip.trip_locations });
         this.setState({
@@ -177,7 +182,7 @@ class CurrentTrip extends Component {
       })
       .catch(err => {
         console.error(err);
-      });
+      }); */
     /*     let trip = JSON.parse(localStorage.getItem('trip'));
         this.setState({
           trip_id: trip._id,

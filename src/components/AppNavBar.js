@@ -94,7 +94,7 @@ class AppNavBar extends Component {
                   width="30"
                   height="30"
                   className="d-inline-block align-top"
-                /> Trippin</NavbarBrand>
+                /> </NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
               <Collapse className="bg-dark" isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
