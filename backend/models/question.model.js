@@ -6,6 +6,9 @@ const questionSchema = new Schema({
    // questionId: Number,
    // question: String,
    // answer: String
+   trip_id: String,
+   user_id: String,
+   destination: String,
    questions: Array
 });
 
