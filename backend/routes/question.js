@@ -1,6 +1,7 @@
 const EXPRESS = require("express");
 const QUESTIONROUTES = EXPRESS.Router();
 const QUESTION = require("../models/question.model");
+const TRIP = require("../models/trip.model");
 const clientkey = require("../config_yelp").apiKey;
 const yelp = require("yelp-fusion");
 const client = yelp.client(clientkey);
@@ -55,28 +56,42 @@ QUESTIONROUTES.route("/question").get((req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(res);
       res.json(questions);
     }
   });
 });
 
-QUESTIONROUTES.route("/question/:id").get((req, res) => {
-  QUESTION.findOne({ trip_id: req.params.id })
+QUESTIONROUTES.route("/question/searchlocation").post((req, res) => {
+  let b;
+  QUESTION.findOne({ trip_id: req.body.trip_id })
     .then(questions => {
-      console.log(questions);
       if (questions != null) {
-        //  console.log(questions.destination);
+        let term = "";
+        if (req.body.search_term.length != 0) {
+          term = req.body.search_term;
+        }
         client
           .search({
-            term: "coffee",
+            term: term,
             location: questions.destination
           })
           .then(response => {
-            //  console.log(response.jsonBody.businesses);
+            b = response.jsonBody.businesses;
+
+            return TRIP.findOne({ _id: req.body.trip_id });
+          })
+          .then(res1 => {
+            for (let i = 0; i < b.length; i++) {
+              for (let j = 0; j < res1.trip_locations.length; j++) {
+                if (b[i].id == res1.trip_locations[j].id) {
+                  b.splice(i, 1);
+                }
+              }
+            }
             res.status(200).json({
               questions: questions,
-              recs: response.jsonBody.businesses
+              recs: b,
+              user_locations: res1.trip_locations
             });
           })
           .catch(e => {
@@ -84,7 +99,9 @@ QUESTIONROUTES.route("/question/:id").get((req, res) => {
           });
       } else {
         res.status(400).json({
-          questions: null
+          questions: null,
+          recs: [],
+          user_locations: []
         });
       }
     })

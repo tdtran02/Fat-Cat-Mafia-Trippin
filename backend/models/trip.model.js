@@ -8,8 +8,8 @@ const tripSchema = new Schema({
   destination: String,
   start_date: Date,
   end_date: Date,
-  // length: Number
-  trip_locations: Array
+  trip_locations: Array,
+  days: []
 });
 
 const TripSchem = mongoose.model("tripchar", tripSchema);
