@@ -10,7 +10,8 @@ TRIPROUTES.route("/trip").post(function(req, res) {
     trip_name: req.body.trip_name,
     destination: req.body.destination,
     start_date: req.body.start_date,
-    end_date: req.body.end_date
+    end_date: req.body.end_date,
+    days: req.body.days
   });
   T.save()
     .then(x => {
@@ -72,7 +73,6 @@ TRIPROUTES.route("/trip/addtotriplocation").post(function(req, res) {
       returnOriginal: false
     }
   ).then(trip => {
-    console.log(trip);
     if (trip != null) {
       res.status(200).json({
         updated: true,
@@ -112,10 +112,19 @@ TRIPROUTES.route("/trip/deletefromtriplocations").post(function(req, res) {
   });
 });
 
+TRIPROUTES.route("/tripinfo/addtodays").post(function(req, res) {
+  TRIP.findOneAndUpdate(
+    { _id: req.body.trip_id },
+    { days: req.body.days },
+    { returnOriginal: false }
+  ).then(r => {
+    res.status(200).json({ days: r.days });
+  });
+});
+
 // get trip information based on trip id
 TRIPROUTES.route("/tripinfo/:trip_id").get(function(req, res) {
   TRIP.findOne({ _id: req.params.trip_id }).then(trip => {
-    console.log(trip);
     if (trip != null) {
       res.status(200).json({
         // updated: true,
