@@ -42,7 +42,7 @@ class CurrentTrip extends Component {
             width: "400px",
             backgroundColor: "white",
             borderRadius: "5px",
-            margin: "100px auto ",
+            margin: "150px auto ",
             border: "1px solid transparent",
             boxSizing: "border-box",
             borderRadius: "20px",
@@ -60,10 +60,11 @@ class CurrentTrip extends Component {
 
               <Card.Body>
                 <Card.Title style={{
-                  textTransform: "uppercase"
-                }}><i class="fas fa-plane"></i>  {JSON.parse(localStorage.getItem('trip')).destination}</Card.Title>
-                <Card.Title><i class="fas fa-calendar-day"></i>  {this.state.start}</Card.Title>
-                <Card.Title><i class="fas fa-calendar-day"></i>  {this.state.end}</Card.Title>
+                  textTransform: "uppercase",
+                  marginTop: "5px"
+                }}><i class="fas fa-map-marker-alt"></i>  {JSON.parse(localStorage.getItem('trip')).destination}</Card.Title>
+                <Card.Title><i class="fas fa-plane-departure"></i>  {this.state.start}</Card.Title>
+                <Card.Title><i class="fas fa-plane-arrival"></i>  {this.state.end}</Card.Title>
                 <Card.Title style={{ marginTop: "50px" }}>TRAVEL BUDDIES:</Card.Title>
                 <InputGroup>
                   <FormControl
@@ -86,8 +87,9 @@ class CurrentTrip extends Component {
             color: "#6c757d"
           }}>
             <Button variant="info" style={{
-              float: "right",
-              marginTop: "50px"
+              float: "center",
+              marginTop: "50px",
+              boxShadow: "8px 8px 20px #000"
             }} onClick={this.showRecommendations}>Show Recommendations</Button>
           </div>
 
