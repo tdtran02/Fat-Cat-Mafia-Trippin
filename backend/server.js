@@ -15,6 +15,7 @@ const REGISTEROUTES = require("./routes/register");
 const USERROUTES = require("./routes/user");
 const QUESTIONROUTES = require("./routes/question");
 const TRIPROUTES = require("./routes/trip");
+const FORGOTPASSWORDROUTES = require("./routes/forgotPassword");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -36,6 +37,7 @@ app.use(USERROUTES, ROUTER);
 app.use(FRIENDROUTES, ROUTER);
 app.use(QUESTIONROUTES, ROUTER);
 app.use(TRIPROUTES, ROUTER);
+app.use(FORGOTPASSWORDROUTES, ROUTER);
 
 
 /* const storage = multer.diskStorage({

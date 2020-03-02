@@ -21,6 +21,7 @@ import TRIPPIN from "./Trippin";
 import CurrentTrip from "./CurrentTrip";
 import { DropdownButton } from "react-bootstrap";
 import Recommendation from "./Recommendation";
+import ForgotPassword from "./ForgotPassword";
 import {
   Collapse,
   Navbar,
@@ -88,6 +89,11 @@ class AppNavBar extends Component {
             Register
           </NavLink>
         </NavItem>
+        <NavItem>
+          <NavLink tag={RRNavLink} exact to="/ForgotPassword">
+            Forgot Password
+          </NavLink>
+        </NavItem>
       </Fragment>
     );
     return (
@@ -141,7 +147,9 @@ class AppNavBar extends Component {
             <Route path="/friends">
               <Friends />
             </Route>
-
+            <Route path="/forgotPassword">
+              <ForgotPassword />
+            </Route>
             <Route path="/home">
               <Home />
             </Route>
