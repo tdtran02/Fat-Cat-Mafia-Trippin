@@ -1,173 +1,228 @@
 import React, { Component } from "react";
 import "../styles/Trip.css";
 import { Survey } from "./Survey";
-import { Button, ButtonToolbar } from 'react-bootstrap';
+import { Button, ButtonToolbar, Form, Col, Row, Card } from "react-bootstrap";
 
 const AXIOS = require("axios").default;
 
 export class Trip extends Component {
-
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            owner_id: "",
-            destination: "",
-            start_date: null,
-            end_date: null,
-            // length: null,
-            addSurveyShow: false
-        };
-
-        //this.handleSubmit = this.handleSubmit.bind(this);
-        //this.Click = this.onChange.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      owner_id: "",
+      destination: "",
+      start_date: null,
+      end_date: null,
+      addSurveyShow: false
     };
-    componentDidMount() {
-        AXIOS.get(
-            "http://localhost:4000/trip/" +
-            JSON.parse(localStorage.getItem("user"))._id
-        ).then(res => {
-            this.setState({ trip: res.data.trip });
-        })
-            .catch(err => {
-                console.log(err);
-            });
-    };
-    tripOnChange(e) {
-        this.setState({ destination: e.target.value });
-    }
-    /*onCreateFieldClick = () => {
-        const USER = JSON.parse(localStorage.getItem("user"));
-        AXIOS.post("http://localhost:4000/trip/add", {
-            user_id: USER._id,
-        }
-    }*/
-    onCreateFieldClick(e) {
-        //const USER = JSON.parse(localStorage.getItem("trip"));
-        console.log("teestinggg");
-        var x = document.getElementById("arrival_location").value;
-        var y = document.getElementById("start-day").value;
-        var z = document.getElementById("end-day").value;
-        console.log(y);
-        console.log(x);
+  }
+  componentDidMount() {
+    AXIOS.get(
+      "http://localhost:4000/trip/" +
+        JSON.parse(localStorage.getItem("user"))._id
+    )
+      .then(res => {
+        this.setState({ trip: res.data.trip });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
-        const update = {
-            owner_id: JSON.parse(localStorage.getItem('user'))._id,
-            //    email: JSON.parse(localStorage.getItem('user')).email,
-            destination: x,
-            start_date: y,
-            end_date: z
-        }
-        console.log(JSON.stringify(update));
-        AXIOS.post('http://localhost:4000/trip/', update)
-            .then(res => {
-                console.log(res.data);
-                localStorage.setItem("trip", JSON.stringify(res.data.trip));
-            })
-            .catch(err => { console.log(err) });
-        //e.preventDefault();
+  // new Date("dateString") is browser-dependent and discouraged, so we'll write
+  // a simple parse function for U.S. date format (which does no error checking)
+  parseDate(str) {
+    var mdy = str.split("-");
+    return new Date(mdy[0], mdy[1] - 1, mdy[2]);
+  }
+
+  datediff(first, second) {
+    // Take the difference between the dates and divide by milliseconds per day.
+    // Round to nearest whole number to deal with DST.
+    return Math.round((second - first) / (1000 * 60 * 60 * 24));
+  }
+
+  onCreateFieldClick = e => {
+    e.preventDefault();
+    var x = document.getElementById("arrival_location").value;
+    var y = document.getElementById("start-day").value;
+    var z = document.getElementById("end-day").value;
+    var w = document.getElementById("trip-name").value;
+
+    let numOfDays = this.datediff(this.parseDate(y), this.parseDate(z));
+    let days = [];
+    for (let i = 1; i <= numOfDays; i++) {
+      days.push([]);
     }
-    render() {
-        let addSurveyClose = () => this.setState({ addSurveyShow: false });
-        return (
-            <div className="background-container">
-                {/*<div>
-                    <img className="pic-background"
-                    src={require("./images/trip_photo_2.png")}
-                    alt="road"
-                    />
-                </div>*/}
-                {/*<div className="container-form">
-                    <div className="panel-heading">
-                            <h3 className="panel-title">Start Your New Itinerary </h3>
-                        </div>
-                </div>*/}
-                <div className="container-form">
-                    <div className="panel panel-primary">
-                        <div className="panel-heading">
-                            <h3 className="panel-title">Itinerary</h3>
-                        </div>
-                        <form id="update" onSubmit={this.onCreateFieldClick}>
-                            <div className="panel-body">
-                                <br></br>
-                                <div id="location">
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <label className="control-label">Trip Name</label>
-                                            <input className="form-control" id="departue_location"></input>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <label className="control-label">Destination</label>
-                                            <input className="form-control" id="arrival_location"></input>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <form>
-                                                <label htmlFor="control-label">Start Date
-                                                    <input className="form-control" type="date" id="start-day" min="2020-02-16" max="2022-02-16" required></input>
-                                                    <span className="validity"></span>
-                                                </label>
-                                            </form>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <form>
-                                                <label htmlFor="control-label">End Date
-                                                    <input className="form-control" type="date" id="end-day" min="2020-02-19" max="2022-02-19" required></input>
-                                                    <span className="validity"></span>
-                                                </label>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    {/*<div className="buttons">
-                                        <ButtonToolbar>
-                                        <Button variant="outline-light" type="submit">
-                                            Create
-                                        </Button>
-                                        </ButtonToolbar>
-                                    </div>*/}
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            {/* <Button className="ml-3" variant="info" onClick={this.onCreateFieldClick}>
-                                                Let's GO!
-                                            </Button> */}
-                                            <ButtonToolbar>
-                                                <Button variant='primary'
-                                                    onClick={this.onCreateFieldClick, () => {
-                                                        this.onCreateFieldClick();
-                                                        this.setState({ addSurveyShow: true });
-                                                    }}
-                                                >Let's Go!</Button>
-                                                <Survey
-                                                    show={this.state.addSurveyShow}
-                                                    onHide={addSurveyClose}
-                                                    handler={this.handler}
-                                                />
-                                            </ButtonToolbar>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    {/*<ButtonToolbar>
-                        <Button variant='primary'
-                        onClick={() => this.setState({addSurveyShow: true})}
-                        >Let's Go!</Button>
-                        <Survey
-                            show={this.state.addSurveyShow}
-                                onHide={addSurveyClose}
-                            closeButton={addSurveyClose}
-                        />
-                    </ButtonToolbar>*/}
+
+    const update = {
+      owner_id: JSON.parse(localStorage.getItem("user"))._id,
+      //    email: JSON.parse(localStorage.getItem('user')).email,
+      destination: x,
+      start_date: y,
+      end_date: z,
+      trip_name: w,
+      days: days
+    };
+    AXIOS.post("http://localhost:4000/trip/", update)
+      .then(res => {
+        localStorage.setItem("trip", JSON.stringify(res.data.trip));
+
+        this.setState({ addSurveyShow: true });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    // e.preventDefault();
+  };
+  render() {
+    let addSurveyClose = () => this.setState({ addSurveyShow: false });
+    return (
+      <div
+        className="backgroundContainer"
+        style={{
+          backgroundImage: "url(https://source.unsplash.com/KMn4VEeEPR8)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          overflow: "auto"
+        }}
+      >
+        <div
+          style={{
+            width: "400px",
+            backgroundColor: "transparent",
+            borderRadius: "5px",
+            width: "500px",
+            margin: "100px auto",
+            border: "1px solid transparent",
+            boxSizing: "border-box",
+            borderRadius: "20px",
+            boxShadow: "8px 8px 50px #000",
+            color: "#6c757d"
+          }}
+        >
+          <Card
+            style={{
+              border: "transparent",
+              borderRadius: "20px",
+              backgroundColor: "transparent"
+            }}
+          >
+            <Card.Body>
+              <Card.Title className="text-center">Create a Trip</Card.Title>
+              <form className="form-trip" onSubmit={this.onCreateFieldClick}>
+                <div className="form-label-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="trip-name"
+                    placeholder="Trip Name"
+                    required
+                    style={{
+                      width: "100%",
+                      backgroundColor: "white",
+                      border: "1px solid #CED4DA",
+                      backgroundColor: "transparent",
+                      color: "#6c757d"
+                    }}
+                  />
+                  <label htmlFor="trip-name" style={{ color: "#6c757d" }}>
+                    Trip Name
+                  </label>
                 </div>
-            </div>
+                <div className="form-label-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="arrival_location"
+                    placeholder="Destination"
+                    required
+                    style={{
+                      width: "100%",
+                      backgroundColor: "white",
+                      border: "1px solid #CED4DA",
+                      backgroundColor: "transparent",
+                      color: "#6c757d"
+                    }}
+                  />
+                  <label
+                    htmlFor="arrival_location"
+                    style={{ color: "#6c757d" }}
+                  >
+                    Destination
+                  </label>
+                </div>
+                <div className="form-label-group">
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="start-day"
+                    placeholder="startdate"
+                    required
+                    style={{
+                      width: "100%",
+                      backgroundColor: "white",
+                      border: "1px solid #CED4DA",
+                      backgroundColor: "transparent",
+                      color: "#6c757d"
+                    }}
+                  />
+                  <label htmlFor="startdate" style={{ color: "#6c757d" }}>
+                    Start Date
+                  </label>
+                </div>
+                <div className="form-label-group">
+                  <input
+                    type="date"
+                    className="form-control"
+                    placeholder="enddate"
+                    required
+                    style={{
+                      width: "100%",
+                      backgroundColor: "white",
+                      border: "1px solid #CED4DA",
+                      backgroundColor: "transparent",
+                      color: "#6c757d"
+                    }}
+                    id="end-day"
+                  />
+                  <label htmlFor="enddate" style={{ color: "#6c757d" }}>
+                    End Date
+                  </label>
+                </div>
+                <ButtonToolbar>
+                  <button
+                    className="btn btn-lg btn-primary btn-block text-uppercase"
+                    type="submit"
+                    style={{ backgroundColor: "transparent" }}
+                    // onClick={
+                    //     this.onCreateFieldClick();
+                    // }
+                  >
+                    Create
+                  </button>
+                  <Survey
+                    show={this.state.addSurveyShow}
+                    onHide={addSurveyClose}
+                    handler={this.handler}
+                  />
+                </ButtonToolbar>
 
-        );
-    }
+                {/* <button
+                  className="btn btn-lg btn-primary btn-block text-uppercase"
+                  type="submit"
+                  style={{ backgroundColor: "transparent" }}
+                >
+                  Create
+                </button> */}
+              </form>
+            </Card.Body>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 }
 
-
-
 export default Trip;
-

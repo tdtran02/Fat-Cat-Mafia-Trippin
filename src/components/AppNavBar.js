@@ -1,7 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { NavLink as RRNavLink } from "react-router-dom";
-import { NavLink, Dropdown, DropdownMenu, DropdownToggle, DropdownItem, UncontrolledDropdown } from "reactstrap";
+import {
+  NavLink,
+  Dropdown,
+  DropdownMenu,
+  DropdownToggle,
+  DropdownItem,
+  UncontrolledDropdown
+} from "reactstrap";
 import { Route } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
@@ -13,6 +20,7 @@ import Friends from "./Friends";
 import TRIPPIN from "./Trippin";
 import CurrentTrip from "./CurrentTrip";
 import { DropdownButton } from "react-bootstrap";
+import Recommendation from "./Recommendation";
 import {
   Collapse,
   Navbar,
@@ -58,14 +66,13 @@ class AppNavBar extends Component {
             <DropdownItem href="/Friends">FRIENDS</DropdownItem>
             <DropdownItem href="/Trip">CREATE A TRIP</DropdownItem>
             <DropdownItem divider />
-            <DropdownItem onClick={this.logout} >LOG OUT</DropdownItem>
+            <DropdownItem onClick={this.logout}>LOG OUT</DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
 
         {/*         <NavItem style={{ cursor: "pointer" }}>
           <NavLink>Logged in!</NavLink>
         </NavItem> */}
-
       </Fragment>
     );
 
@@ -86,7 +93,7 @@ class AppNavBar extends Component {
     return (
       <div style={{ height: "100px !important" }}>
         <Router>
-          <Navbar color="dark" dark expand="sm" className="mb-5">
+          <Navbar color="dark" dark expand="sm">
             <Container>
               <NavbarBrand href="/">
                 <img
@@ -94,7 +101,8 @@ class AppNavBar extends Component {
                   width="30"
                   height="30"
                   className="d-inline-block align-top"
-                /> </NavbarBrand>
+                />{" "}
+              </NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
               <Collapse className="bg-dark" isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
@@ -109,6 +117,11 @@ class AppNavBar extends Component {
             </Container>
           </Navbar>
           <Switch>
+            <Route
+              path="/trip/:id/recommendations"
+              exact
+              component={Recommendation}
+            ></Route>
             <Route path="/trip/:id" exact component={CurrentTrip}></Route>
             <Route path="/trip">
               <Trip />

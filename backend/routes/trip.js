@@ -3,18 +3,19 @@ const TRIPROUTES = EXPRESS.Router();
 const TRIP = require("../models/trip.model");
 const USER = require("../models/user.model");
 
-TRIPROUTES.route("/trip").post(function (req, res) {
-  console.log(req.body)
+TRIPROUTES.route("/trip").post(function(req, res) {
+  console.log(req.body);
   const T = new TRIP({
     owner_id: req.body.owner_id,
     trip_name: req.body.trip_name,
     destination: req.body.destination,
     start_date: req.body.start_date,
-    end_date: req.body.end_date
+    end_date: req.body.end_date,
+    days: req.body.days
   });
   T.save()
     .then(x => {
-      console.log(x)
+      console.log(x);
       res.status(200).json({
         saved: true,
         response_message: "Trip created!",
@@ -31,7 +32,7 @@ TRIPROUTES.route("/trip").post(function (req, res) {
     });
 });
 
-TRIPROUTES.route("/trip/:id").get(function (req, res) {
+TRIPROUTES.route("/trip/:id").get(function(req, res) {
   TRIP.find({ owner_id: req.params.id }).then(trip => {
     if (trip != null) {
       res.status(200).json({
@@ -45,7 +46,7 @@ TRIPROUTES.route("/trip/:id").get(function (req, res) {
   });
 });
 
-TRIPROUTES.route("/trip/:id").delete(function (req, res) {
+TRIPROUTES.route("/trip/:id").delete(function(req, res) {
   TRIP.findOneAndDelete({ _id: req.params.id }).then(trip => {
     if (trip != null) {
       res.status(200).json({
@@ -61,7 +62,8 @@ TRIPROUTES.route("/trip/:id").delete(function (req, res) {
 });
 
 // add a location to user's list
-TRIPROUTES.route("/trip/addtotriplocation").post(function (req, res) {
+TRIPROUTES.route("/trip/addtotriplocation").post(function(req, res) {
+  // console.log(req.body);
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     {
@@ -86,7 +88,7 @@ TRIPROUTES.route("/trip/addtotriplocation").post(function (req, res) {
 });
 
 // delete a location from user's list
-TRIPROUTES.route("/trip/deletefromtriplocations").post(function (req, res) {
+TRIPROUTES.route("/trip/deletefromtriplocations").post(function(req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     {
@@ -110,10 +112,19 @@ TRIPROUTES.route("/trip/deletefromtriplocations").post(function (req, res) {
   });
 });
 
+TRIPROUTES.route("/tripinfo/addtodays").post(function(req, res) {
+  TRIP.findOneAndUpdate(
+    { _id: req.body.trip_id },
+    { days: req.body.days },
+    { returnOriginal: false }
+  ).then(r => {
+    res.status(200).json({ days: r.days });
+  });
+});
+
 // get trip information based on trip id
-TRIPROUTES.route("/tripinfo/:trip_id").get(function (req, res) {
+TRIPROUTES.route("/tripinfo/:trip_id").get(function(req, res) {
   TRIP.findOne({ _id: req.params.trip_id }).then(trip => {
-    console.log(trip);
     if (trip != null) {
       res.status(200).json({
         // updated: true,
