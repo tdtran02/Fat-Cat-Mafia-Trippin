@@ -31,7 +31,6 @@ class Recommendation extends React.Component {
     };
   }
   componentDidMount() {
-    console.log(this.state.trip_id);
     AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
       .then(res => {
         // localStorage.setItem("trip", JSON.stringify(res.data.trip));
@@ -333,8 +332,10 @@ class Recommendation extends React.Component {
     return (
       <div id="backgroundRecommendation" style={{ width: "100%" }}>
         {this.state.loading ? (
+          // loading
           LoadingBar
         ) : (
+          // not loading
           <span>
             <div class="searchbar">
               <input
@@ -345,6 +346,7 @@ class Recommendation extends React.Component {
               />
               <div class="search"></div>
             </div>
+
             {this.state.location_elements.length != 0 ? (
               <h1
                 style={{
@@ -374,7 +376,7 @@ class Recommendation extends React.Component {
               ""
             )}
             {this.state.trip_location_elements.length != 0 ? (
-              <h1
+              <div
                 style={{
                   fontFamily: "Roboto, sans-serif",
                   fontSize: "20px",
@@ -383,8 +385,19 @@ class Recommendation extends React.Component {
                   width: "80%"
                 }}
               >
-                My Trip Locations
-              </h1>
+                <span>My Trip Locations</span>
+                <a
+                  style={{
+                    fontSize: "12px",
+
+                    marginTop: "10px",
+                    float: "right"
+                  }}
+                  href="./schedule"
+                >
+                  Arrange Trip Schedule
+                </a>
+              </div>
             ) : (
               ""
             )}

@@ -22,6 +22,7 @@ import CurrentTrip from "./CurrentTrip";
 import { DropdownButton } from "react-bootstrap";
 import Recommendation from "./Recommendation";
 import ForgotPassword from "./ForgotPassword";
+import Schedule from "./Schedule";
 import {
   Collapse,
   Navbar,
@@ -123,6 +124,7 @@ class AppNavBar extends Component {
             </Container>
           </Navbar>
           <Switch>
+            <Route path="/trip/:id/schedule" exact component={Schedule}></Route>
             <Route
               path="/trip/:id/recommendations"
               exact
