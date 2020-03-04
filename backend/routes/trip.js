@@ -4,7 +4,7 @@ const TRIP = require("../models/trip.model");
 const USER = require("../models/user.model");
 
 TRIPROUTES.route("/trip").post(function(req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   const T = new TRIP({
     owner_id: req.body.owner_id,
     trip_name: req.body.trip_name,
