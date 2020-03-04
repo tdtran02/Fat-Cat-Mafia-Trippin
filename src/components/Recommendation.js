@@ -12,7 +12,7 @@ import AXIOS from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import "../styles/Recommendation.css";
+import "../styles/Recommendation.scss";
 
 class Recommendation extends React.Component {
   constructor(props) {
@@ -26,7 +26,8 @@ class Recommendation extends React.Component {
       search_term: "",
       days: [],
       days_elements: [],
-      daylist: []
+      daylist: [],
+      loading: true
     };
   }
   componentDidMount() {
@@ -56,6 +57,7 @@ class Recommendation extends React.Component {
             "delete"
           )
         });
+        this.setState({ loading: false });
         console.log(this.state);
       })
       .catch(err => {
@@ -72,6 +74,7 @@ class Recommendation extends React.Component {
             style={{
               overflowY: "auto",
               margin: "0 auto",
+              marginBottom: "5px",
               width: "300px",
               minHeight: "300px",
               borderRadius: "0px",
@@ -164,6 +167,7 @@ class Recommendation extends React.Component {
   }
 
   addToTripLocations(e, i) {
+    this.setState({ loading: true });
     AXIOS.post("http://localhost:4000/trip/addtotriplocation", {
       trip_id: this.state.trip_id,
       trip_location: this.state.locations[i]
@@ -186,6 +190,7 @@ class Recommendation extends React.Component {
         this.setState({
           location_elements: this.createList(this.state.locations, "add")
         });
+        this.setState({ loading: false });
       })
       .catch(err => {
         console.error(err);
@@ -193,6 +198,7 @@ class Recommendation extends React.Component {
   }
 
   deleteTripLocation(e, i) {
+    this.setState({ loading: true });
     AXIOS.post("http://localhost:4000/trip/deletefromtriplocations", {
       trip_id: this.state.trip_id,
       trip_location: this.state.trip_locations[i]
@@ -215,6 +221,7 @@ class Recommendation extends React.Component {
         this.setState({
           location_elements: this.createList(this.state.locations, "add")
         });
+        this.setState({ loading: false });
       })
       .catch(err => {
         console.error(err);
@@ -247,6 +254,29 @@ class Recommendation extends React.Component {
     }
     return stars;
   }
+  onChangeSearch = e => {
+    this.setState({ search_term: e.target.value });
+  };
+
+  searchLocation = e => {
+    if (e.key === "Enter") {
+      this.setState({ loading: true });
+      AXIOS.post("http://localhost:4000/question/searchlocation", {
+        trip_id: this.state.trip_id,
+        search_term: this.state.search_term
+      })
+        .then(r => {
+          this.setState({ locations: r.data.recs });
+          this.setState({
+            location_elements: this.createList(this.state.locations, "add")
+          });
+          this.setState({ loading: false });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  };
   render() {
     let settings = {
       dots: true,
@@ -283,60 +313,96 @@ class Recommendation extends React.Component {
       ]
     };
 
+    const LoadingBar = (
+      <div id="cupcake" class="box">
+        <span class="letter">L</span>
+
+        <div class="cupcakeCircle box">
+          <div class="cupcakeInner box">
+            <div class="cupcakeCore box"></div>
+          </div>
+        </div>
+
+        <span class="letter box">A</span>
+        <span class="letter box">D</span>
+        <span class="letter box">I</span>
+        <span class="letter box">N</span>
+        <span class="letter box">G</span>
+      </div>
+    );
     return (
       <div id="backgroundRecommendation" style={{ width: "100%" }}>
-        {/* recommedations */}
-        {this.state.location_elements.length != 0 ? (
-          <h1
-            style={{
-              fontFamily: "Roboto, sans-serif",
-              fontSize: "20px",
-              fontWeight: "normal",
-              margin: "0 auto 15px auto",
-              width: "80%"
-            }}
-          >
-            My Recommendations
-          </h1>
+        {this.state.loading ? (
+          LoadingBar
         ) : (
-          <span></span>
-        )}
-        {this.state.location_elements.length != 0 ? (
-          <Slider {...settings} style={{ width: "80%", margin: "0 auto" }}>
-            {this.state.location_elements}
-          </Slider>
-        ) : (
-          ""
-        )}
-        {/* user locations */}
-        {this.state.trip_location_elements.length != 0 ? (
-          <h1
-            style={{
-              fontFamily: "Roboto, sans-serif",
-              fontSize: "20px",
-              fontWeight: "normal",
-              margin: "30px auto 15px auto",
-              width: "80%"
-            }}
-          >
-            My Trip Locations
-          </h1>
-        ) : (
-          ""
-        )}
-        {this.state.trip_location_elements.length != 0 ? (
-          <Slider
-            className="placeholderhere"
-            {...settings}
-            style={{
-              width: "80%",
-              margin: "0 auto"
-            }}
-          >
-            {this.state.trip_location_elements}
-          </Slider>
-        ) : (
-          ""
+          <span>
+            <div class="searchbar">
+              <input
+                type="text"
+                placeholder="Search..."
+                onKeyDown={this.searchLocation}
+                onChange={this.onChangeSearch}
+              />
+              <div class="search"></div>
+            </div>
+            {this.state.location_elements.length != 0 ? (
+              <h1
+                style={{
+                  fontFamily: "Roboto, sans-serif",
+                  fontSize: "20px",
+                  fontWeight: "normal",
+                  margin: "0 auto 15px auto",
+                  width: "80%"
+                }}
+              >
+                My Recommendations
+              </h1>
+            ) : (
+              <span></span>
+            )}
+            {this.state.location_elements.length != 0 ? (
+              <Slider
+                {...settings}
+                style={{
+                  width: "80%",
+                  margin: "0 auto"
+                }}
+              >
+                {this.state.location_elements}
+              </Slider>
+            ) : (
+              ""
+            )}
+            {this.state.trip_location_elements.length != 0 ? (
+              <h1
+                style={{
+                  fontFamily: "Roboto, sans-serif",
+                  fontSize: "20px",
+                  fontWeight: "normal",
+                  margin: "30px auto 15px auto",
+                  width: "80%"
+                }}
+              >
+                My Trip Locations
+              </h1>
+            ) : (
+              ""
+            )}
+            {this.state.trip_location_elements.length != 0 ? (
+              <Slider
+                className="placeholderhere"
+                {...settings}
+                style={{
+                  width: "80%",
+                  margin: "0 auto"
+                }}
+              >
+                {this.state.trip_location_elements}
+              </Slider>
+            ) : (
+              ""
+            )}
+          </span>
         )}
       </div>
     );
