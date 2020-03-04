@@ -2,6 +2,8 @@
 
 backend/config_url.js
 backend/config_yelp.js
+backend/sender.js
+backend/config_stub.js
 # dependencies
 /node_modules
 /.pnp

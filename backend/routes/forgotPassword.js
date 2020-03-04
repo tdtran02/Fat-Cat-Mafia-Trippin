@@ -5,6 +5,7 @@ const FORGOTPASSWORDROUTES = EXPRESS.Router();
 const USER = require("../models/user.model");
 const nodemailer = require("nodemailer");
 const cred = require("process");
+const sender = require("../sender.js");
 
 require('dotenv').config();
 
@@ -27,15 +28,18 @@ FORGOTPASSWORDROUTES.route("/forgotPassword").post(function(req, res){
 
         const transporter = nodemailer.createTransport({
           service: 'gmail',
+          pool: true,
+          host: "smtp.example.com",
+          port: 465,
+          secure: true,
           auth: {
-            /*user: `${process.env.MAIL_USERNAME}`,
-            pass: `${process.env.MAIL_PASSWORD}`,*/
-            
+            user: sender.MAIL_USERNAME,
+            pass: sender.MAIL_PASSWORD
           },
         });
 
         const mailOptions = {
-          from: "Trippin Webapp Service",
+          from: 'Trippin Webapp Service <trippinwebapp@gmail.com>',
           to: `${user.email}`,
           subject: 'Link To Reset Password',
           text:
