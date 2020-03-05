@@ -87,12 +87,20 @@ export class Home extends Component {
         console.error(err);
       })
   }
+
+  tripPage() {
+    console.log("/trip/" + document.getElementById('linktoCurrentPage').value);
+    window.location =
+      "/trip/" + document.getElementById('linktoCurrentPage').value;
+  }
   createList(list) {
     let elements = [];
     for (let i = 0; i < list.length; i++) {
       elements.push(
         <div className="col-md-3 col-sm-6" key={i}>
-          <div className="trip-card">
+          <div className="trip-card" style={{
+
+          }}>
             {/*<div
               className="img-responsive cover"
               style={{
@@ -101,7 +109,7 @@ export class Home extends Component {
                 backgroundColor: "#6495ED"
               }}
             ></div>*/}
-            <div className="card-info">
+            <div className="card-info" style={{ width: "150px", border: "solid black 3px", backgroundColor: "gray", borderRadius: "20px" }}>
               {list[i].image ? (
                 <img
                   src={require(`${list[i].image}`)}
@@ -109,25 +117,33 @@ export class Home extends Component {
                   className="trip-photo-lg"
                 />
               ) : (
-                  <img
+                  <a href={`/trip/${list[i]._id}`}><img
                     src={require("./images/trip_profile_photo.png")}
-                    width="150"
-                    height="150"
+                    width="120"
+                    height="120"
                     alt="trip"
                     className="trip-photo-lg"
-                  />
+
+                    style={{ border: "solid black 1px", margin: "12px 0 0 12px" }}
+                  /></a>
                 )}
 
-              <div className="trip-info">
-                <span className="pull-right text-green">My Trip</span>
+              <div className="trip-info" >
+
                 <h5>
-                  <p className="trip-fonts">
+                  <Button href={`/trip/${list[i]._id}`} className="trip-fonts" style={{
+                    textDecoration: "none",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    borderRadius: "20px",
+                  }}>
                     {list[i].trip_name}
-                  </p>
+                  </Button>
                 </h5>
                 <p className="trip_destination">{list[i].destination}</p>
-                <div className="trip-deletion">
-                  <Button className="ml-3" variant="info" onClick={e => { this.onDeleteFieldClick(e, i); }}>
+                <div className="trip-deletion" style={{ width: "150px" }}>
+                  <Button className="ml-3" variant="info" style={{}}
+                    onClick={e => { this.onDeleteFieldClick(e, i); }}>
                     Delete
                     </Button>
                 </div>

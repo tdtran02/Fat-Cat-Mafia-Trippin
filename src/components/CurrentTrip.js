@@ -24,6 +24,42 @@ class CurrentTrip extends Component {
     window.location = "/trip/" + this.state.trip_id + "/recommendations";
   };
 
+  addBuddy() {
+    const USER = JSON.parse(localStorage.getItem('user'));
+    const TRIP = JSON.parse(localStorage.getItem('trip'));
+    //TODO: get list of all users, find matching id to email or name?
+    //get list of current user's friends
+    AXIOS.get("http://localhost:4000/user")
+      .then(res => {
+        let users = res.data;
+        console.log(document.getElementById('buddyemail').value)
+        for (const item in users) {
+          if (item.email == document.getElementById('buddyemail')) {
+            console.log('MATCH!');
+            break;
+          }
+        }
+        console.log(res);
+      }
+      ).catch(err => {
+        console.log(err)
+      }
+
+      )
+    AXIOS.get("http://localhost:4000/friend/" + USER._id)
+      .then(res => {
+        console.log(res);
+      }
+      ).catch(err => {
+        console.log(err)
+      }
+
+      )
+    //TODO: see if user and buddy are already friends
+    // if they are, add friend to trip
+    //send an invite to friend
+  }
+
 
 
   render() {
@@ -66,12 +102,12 @@ class CurrentTrip extends Component {
                 <Card.Title><i class="fas fa-plane-departure"></i>  {this.state.start}</Card.Title>
                 <Card.Title><i class="fas fa-plane-arrival"></i>  {this.state.end}</Card.Title>
                 <Card.Title style={{ marginTop: "50px" }}>TRAVEL BUDDIES:</Card.Title>
-                <InputGroup>
+                <InputGroup id="buddyemail">
                   <FormControl
                     placeholder="username"
                     aria-label="username" />
                   <InputGroup.Append>
-                    <Button variant="outline-success">INVITE</Button>
+                    <Button variant="outline-success" onClick={this.addBuddy}>INVITE</Button>
                   </InputGroup.Append>
                 </InputGroup>
               </Card.Body>
