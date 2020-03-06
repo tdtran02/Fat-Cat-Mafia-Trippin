@@ -64,21 +64,24 @@ class CurrentTrip extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ height: "100%" }}>
         <div className="image-container" style={{
+          height: "100%",
           backgroundImage: "url(https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundAttachment: "fixed",
           overflow: "auto",
-          display: "flex",
-          flexDirection: "vertical"
+          display: "flex"
+
+
         }}>
           <div className="trip-info" style={{
             width: "400px",
             backgroundColor: "white",
             borderRadius: "5px",
-            margin: "150px auto ",
+            margin: "auto",
             border: "1px solid transparent",
             boxSizing: "border-box",
             borderRadius: "20px",

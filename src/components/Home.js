@@ -99,7 +99,7 @@ export class Home extends Component {
       elements.push(
         <div className="col-md-3 col-sm-6" key={i}>
           <div className="trip-card" style={{
-
+            margin: "0 10px 10px 10px"
           }}>
             {/*<div
               className="img-responsive cover"

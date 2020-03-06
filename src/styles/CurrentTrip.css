@@ -1,4 +1,17 @@
-.login-icon {
+body, html {
+  height: 100%
+}
+.image-container {
+  background-image: url("https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg");
+  background-repeat: "no-repeat";
+  background-size: "100%";
+  background-position: "center";
+  overflow: "auto";
+  display: "flex";
+  flex-direction: "vertical";
+  height: "100%"
+}
+/* .login-icon {
   display: inline-block;
   font-size: 40px;
   line-height: 50px;
@@ -8,4 +21,4 @@
   height: 50px;
   text-align: center;
   vertical-align: bottom;
-}
+} */
