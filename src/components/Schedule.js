@@ -55,7 +55,9 @@ class Schedule extends Component {
         });
 
         console.log(res.data.trip);
+        console.log(res.data.trip);
 
+        this.setState({ days: res.data.trip.days });
         this.setState({ loading: false });
       })
       .catch(err => {
@@ -320,13 +322,13 @@ class Schedule extends Component {
 
   getDaysDraggableList(list) {
     const elements = [];
-    // for (let i = 0; i < list.length; i++) {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < list.length; i++) {
+      // for (let i = 0; i < 5; i++) {
       const per_day = [];
       //   for (let j = 0; j < list[i].length; j++) {
       for (let j = 0; j < 5; j++) {
         per_day.push(
-          <Draggable draggableId={i.toString()} index={i}>
+          <Draggable draggableId={i.toString()} index={i} key={i}>
             {provided => (
               <div
                 ref={provided.innerRef}
@@ -335,7 +337,7 @@ class Schedule extends Component {
                 className="draggable"
               >
                 {/* {list[i].name} */}
-                haha
+                day {i + 1}
                 {provided.placeholder}
               </div>
             )}
@@ -375,35 +377,35 @@ class Schedule extends Component {
       dots: true,
       infinite: false,
       speed: 500,
-      slidesToShow: 4,
-      slidesToScroll: 4,
-      initialSlide: 0
-      //   responsive: [
-      //     {
-      //       breakpoint: 1600,
-      //       settings: {
-      //         slidesToShow: 3,
-      //         slidesToScroll: 3,
-      //         infinite: true,
-      //         dots: true
-      //       }
-      //     },
-      //     {
-      //       breakpoint: 1100,
-      //       settings: {
-      //         slidesToShow: 2,
-      //         slidesToScroll: 2,
-      //         initialSlide: 2
-      //       }
-      //     },
-      //     {
-      //       breakpoint: 800,
-      //       settings: {
-      //         slidesToShow: 1,
-      //         slidesToScroll: 1
-      //       }
-      //     }
-      //   ]
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      initialSlide: 0,
+      responsive: [
+        {
+          breakpoint: 1600,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: true
+          }
+        },
+        {
+          breakpoint: 1100,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            initialSlide: 2
+          }
+        },
+        {
+          breakpoint: 800,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
     };
 
     let USERLIST;
@@ -417,13 +419,14 @@ class Schedule extends Component {
 
     let x = this.getDaysDraggableList(this.state.days);
     console.log(x);
+    console.log(this.state.days);
     let DAYLIST = this.getDaysDroppable(x);
     console.log(DAYLIST);
 
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <div style={{ backgroundColor: "yellow" }}>
-          <div
+        {/* <div style={{ backgroundColor: "yellow" }}> */}
+        {/* <div
             style={{
               width: "300px",
               backgroundColor: "red"
@@ -497,10 +500,9 @@ class Schedule extends Component {
               </Carousel.Caption>
             </Carousel.Item>
           </Carousel>
-        </div>
-        {/* <span
+        </div> */}
+        <span
           style={{
-        
             width: "300px",
             backgroundColor: "red"
           }}
@@ -508,24 +510,25 @@ class Schedule extends Component {
           {USERLIST}
         </span>
 
-        <span
+        {/* <span
           style={{
             width: "1000px",
             background: "yellow",
             margin: "0 auto"
           }}
+        > */}
+        <Slider
+          className="placeholderhere"
+          {...settings}
+          style={{
+            width: "80%",
+            margin: "0 auto",
+            background: "yellow"
+          }}
         >
-          <Slider
-            className="placeholderhere"
-            {...settings}
-            style={{
-              width: "80%",
-              margin: "0 auto"
-            }}
-          >
-            {DAYLIST}
-          </Slider>
-        </span> */}
+          {DAYLIST}
+        </Slider>
+        {/* </span> */}
 
         {/* <Droppable droppableId="2" style={{ overflow: "scroll" }}>
           {provided => (
