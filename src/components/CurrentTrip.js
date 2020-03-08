@@ -87,57 +87,61 @@ class CurrentTrip extends Component {
 
 
         }}>
-          <div className="trip-info" style={{
-            width: "400px",
-            backgroundColor: "white",
-            borderRadius: "5px",
-            height: "375px",
-            margin: "100px",
-            border: "1px solid transparent",
-            boxSizing: "border-box",
-            borderRadius: "20px",
-            boxShadow: "8px 8px 50px #000",
-            color: "#6c757d"
+          <div style={{
+            display: "flex", flexDirection: "column"
           }}>
+            <div className="trip-info" style={{
+              width: "400px",
+              backgroundColor: "white",
+              borderRadius: "5px",
+              height: "375px",
+              margin: "100px",
+              border: "1px solid transparent",
+              boxSizing: "border-box",
+              borderRadius: "20px",
+              boxShadow: "8px 8px 50px #000",
+              color: "#6c757d"
+            }}>
 
-            <Card
-              style={{
-                borderRadius: "20px",
-                backgroundColor: "transparent"
-              }}
-            >
-              <Card.Header as="h3" style={{ textTransform: "uppercase" }}>{JSON.parse(localStorage.getItem('trip')).trip_name}</Card.Header>
+              <Card
+                style={{
+                  borderRadius: "20px",
+                  backgroundColor: "transparent"
+                }}
+              >
+                <Card.Header as="h3" style={{ textTransform: "uppercase" }}>{JSON.parse(localStorage.getItem('trip')).trip_name}</Card.Header>
 
-              <Card.Body>
-                <Card.Title style={{
-                  textTransform: "uppercase",
-                  marginTop: "5px"
-                }}><i class="fas fa-map-marker-alt"></i>  {JSON.parse(localStorage.getItem('trip')).destination}</Card.Title>
-                <Card.Title><i class="fas fa-plane-departure"></i>  {this.state.start}</Card.Title>
-                <Card.Title><i class="fas fa-plane-arrival"></i>  {this.state.end}</Card.Title>
-                <Card.Title style={{ marginTop: "50px" }}>TRAVEL BUDDIES:</Card.Title>
-                <InputGroup id="buddyemail">
-                  <FormControl
-                    placeholder="username"
-                    aria-label="username" />
-                  <InputGroup.Append>
-                    <Button variant="outline-success" onClick={this.addBuddy}>INVITE</Button>
-                  </InputGroup.Append>
-                </InputGroup>
-                <Button variant="warning" style={{
-                  margin: "10px 0 0 110px"
+                <Card.Body>
+                  <Card.Title style={{
+                    textTransform: "uppercase",
+                    marginTop: "5px"
+                  }}><i class="fas fa-map-marker-alt"></i>  {JSON.parse(localStorage.getItem('trip')).destination}</Card.Title>
+                  <Card.Title><i class="fas fa-plane-departure"></i>  {this.state.start}</Card.Title>
+                  <Card.Title><i class="fas fa-plane-arrival"></i>  {this.state.end}</Card.Title>
+                  <Card.Title style={{ marginTop: "50px" }}>TRAVEL BUDDIES:</Card.Title>
+                  <InputGroup id="buddyemail">
+                    <FormControl
+                      placeholder="username"
+                      aria-label="username" />
+                    <InputGroup.Append>
+                      <Button variant="outline-success" onClick={this.addBuddy}>INVITE</Button>
+                    </InputGroup.Append>
+                  </InputGroup>
+                  <Button variant="warning" style={{
+                    margin: "10px 0 0 110px"
 
-                }} onClick={() => this.setState({ createPost: true })}>MAKE A POST</Button>
-                <CreatePost
-                  show={this.state.createPost}
-                  onHide={postModalClose}
-                  handler={this.handler}
+                  }} onClick={() => this.setState({ createPost: true })}>MAKE A POST</Button>
+                  <CreatePost
+                    show={this.state.createPost}
+                    onHide={postModalClose}
+                    handler={this.handler}
 
-                  style={{ maxWidth: '1600px', width: '80%' }} />
-              </Card.Body>
-            </Card>
+                    style={{ maxWidth: '1600px', width: '80%' }} />
+                </Card.Body>
+              </Card>
 
 
+            </div>
           </div>
           <div style={{
             width: "300px",
