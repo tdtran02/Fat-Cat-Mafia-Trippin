@@ -8,8 +8,8 @@ import Footer from "./TrippinPage/footer";
 class Trippin extends Component {
   render() {
     return (
-      <div className="container">
-       
+      <div className="container" >
+
         <Header />
         <Main />
         <Footer />

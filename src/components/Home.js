@@ -141,8 +141,8 @@ export class Home extends Component {
                   </Button>
                 </h5>
                 <p className="trip_destination">{list[i].destination}</p>
-                <div className="trip-deletion" style={{ width: "150px" }}>
-                  <Button className="ml-3" variant="info" style={{}}
+                <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
+                  <Button className="ml-3" variant="info" style={{ marginLeft: "40px" }}
                     onClick={e => { this.onDeleteFieldClick(e, i); }}>
                     Delete
                     </Button>

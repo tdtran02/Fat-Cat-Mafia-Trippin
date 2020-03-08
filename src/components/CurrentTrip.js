@@ -7,6 +7,9 @@ import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
 import AXIOS from "axios";
+import { CreatePost } from './CreatePost';
+
+
 
 class CurrentTrip extends Component {
   constructor(props) {
@@ -15,9 +18,13 @@ class CurrentTrip extends Component {
     this.state = {
       trip_id: this.props.match.params.id,
       start: JSON.parse(localStorage.getItem('trip')).start_date.substring(0, 10),
-      end: JSON.parse(localStorage.getItem('trip')).end_date.substring(0, 10)
+      end: JSON.parse(localStorage.getItem('trip')).end_date.substring(0, 10),
+      createPost: false
     };
   }
+
+
+
 
   showRecommendations = () => {
     console.log(this.state.trip_id);
@@ -63,8 +70,11 @@ class CurrentTrip extends Component {
 
 
   render() {
+    let postModalClose = () => this.setState({ createPost: false });
     return (
+
       <div style={{ height: "100%" }}>
+
         <div className="image-container" style={{
           height: "100%",
           backgroundImage: "url(https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg)",
@@ -81,7 +91,8 @@ class CurrentTrip extends Component {
             width: "400px",
             backgroundColor: "white",
             borderRadius: "5px",
-            margin: "auto",
+            height: "375px",
+            margin: "100px",
             border: "1px solid transparent",
             boxSizing: "border-box",
             borderRadius: "20px",
@@ -113,6 +124,16 @@ class CurrentTrip extends Component {
                     <Button variant="outline-success" onClick={this.addBuddy}>INVITE</Button>
                   </InputGroup.Append>
                 </InputGroup>
+                <Button variant="warning" style={{
+                  margin: "10px 0 0 110px"
+
+                }} onClick={() => this.setState({ createPost: true })}>MAKE A POST</Button>
+                <CreatePost
+                  show={this.state.createPost}
+                  onHide={postModalClose}
+                  handler={this.handler}
+
+                  style={{ maxWidth: '1600px', width: '80%' }} />
               </Card.Body>
             </Card>
 
@@ -131,6 +152,7 @@ class CurrentTrip extends Component {
               boxShadow: "8px 8px 20px #000"
             }} onClick={this.showRecommendations}>Show Recommendations</Button>
           </div>
+
 
         </div>
 

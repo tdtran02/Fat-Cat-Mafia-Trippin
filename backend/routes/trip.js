@@ -12,7 +12,8 @@ TRIPROUTES.route("/trip").post(function (req, res) {
     start_date: req.body.start_date,
     end_date: req.body.end_date,
     days: req.body.days,
-    buddies: req.body.buddies
+    buddies: req.body.buddies,
+    posts: req.body.posts
   });
   T.save()
     .then(x => {
