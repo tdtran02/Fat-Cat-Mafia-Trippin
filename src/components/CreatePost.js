@@ -29,19 +29,18 @@ export class CreatePost extends Component {
             postArr.push(document.getElementById("comment").value);
         }
 
-        const update = {
+        const comment = {
             owner_id: JSON.parse(localStorage.getItem("user"))._id,
-            //    email: JSON.parse(localStorage.getItem('user')).email,
-            destination: trip.destination,
-            start_date: trip.start_date,
-            end_date: trip.end_date,
-            trip_name: trip.trip_name,
-            days: trip.days,
-            posts: postArr
+            first_name: JSON.parse(localStorage.getItem("user")).first_name,
+            last_name: JSON.parse(localStorage.getItem("user")).last_name,
+            user_pic: JSON.parse(localStorage.getItem("user")).image,
+            trip_id: JSON.parse(localStorage.getItem("trip"))._id,
+            text: document.getElementById("comment").value,
+            date: Date.now()
         };
-        AXIOS.post("http://localhost:4000/trip/", update)
+        AXIOS.post("http://localhost:4000/comment", comment)
             .then(res => {
-                localStorage.setItem("trip", JSON.stringify(res.data.trip));
+
 
                 this.setState({ addSurveyShow: true });
             })

@@ -20,32 +20,53 @@ class CurrentTrip extends Component {
       start: JSON.parse(localStorage.getItem('trip')).start_date.substring(0, 10),
       end: JSON.parse(localStorage.getItem('trip')).end_date.substring(0, 10),
       createPost: false,
-      posts: []
+      //posts: []
+      comment_id: "",
+      user_id: "",
+      comment: "",
+      comment_date: "",
+      user: {}
     };
   }
 
   componentDidMount() {
-    this.setState({ posts: this.createPostCards() });
+    AXIOS.get('http://localhost:4000/comment/' + JSON.parse(localStorage.getItem('trip'))._id)
+      .then(response => {
+        if (response !== 'undefined') {
+          console.log(response.data.comment[0]);
+          this.setState({ comment_id: response.data.comment[0]._id });
+          this.setState({ comment: response.data.comment[0].text });
+          this.setState({ comment_date: response.data.comment[0].date });
+          this.setState({ posts: this.createPostCards(response.data.comment) });
+        }
+
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
 
 
   }
 
-  createPostCards() {
+  createPostCards(list) {
     let elements = [];
-    if (JSON.parse(localStorage.getItem('trip')).posts != null) {
 
-      let posts = JSON.parse(localStorage.getItem('trip')).posts;
-      let user = JSON.parse(localStorage.getItem('user'))
-      for (let i = 0; i < posts.length; i++) {
-        elements.push(
-          <div  >
-            <div className="post-card" style={{
-              margin: "0 10px 10px 10px",
-              backgroundColor: "white",
-              borderRadius: "20px",
-              margin: "15px 0"
-            }}>
-              {/*<div
+
+    //let posts = JSON.parse(localStorage.getItem('trip')).posts;
+    //let user = JSON.parse(localStorage.getItem('user'))
+    for (let i = 0; i < list.length; i++) {
+
+
+      elements.push(
+        <div key={i} >
+          <div className="post-card" style={{
+            margin: "0 10px 10px 10px",
+            backgroundColor: "white",
+            borderRadius: "20px",
+            margin: "15px 0"
+          }}>
+            {/*<div
               className="img-responsive cover"
               style={{
                 height: "100px",
@@ -53,27 +74,31 @@ class CurrentTrip extends Component {
                 backgroundColor: "#6495ED"
               }}
             ></div>*/}
-              <Card
-                style={{
-                  borderRadius: "20px",
-                  backgroundColor: "transparent"
-                }}
-              >
-                <Card.Header as="h3" style={{ textTransform: "uppercase" }}>POST</Card.Header>
+            <Card
+              style={{
+                borderRadius: "20px",
+                backgroundColor: "transparent"
+              }}
+            >
+              <Card.Header as="h5" style={{
+                textTransform: "uppercase",
+              }} > <img src={require(`${list[i].user_pic}`)} style={{
+                width: "40px", height: "40px", marginRight: "20px"
+              }} />{list[i].first_name}</Card.Header>
 
-                <Card.Body>
+              <Card.Body>
 
-                  <p>{posts[i]}</p>
+                <p>{list[i].text}</p>
 
 
-                </Card.Body>
-              </Card>
-            </div>
+              </Card.Body>
+            </Card>
           </div>
-        )
-      }
-
+        </div>
+      )
     }
+
+
     return elements;
   }
 
