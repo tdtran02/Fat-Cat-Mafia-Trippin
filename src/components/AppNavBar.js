@@ -98,7 +98,7 @@ class AppNavBar extends Component {
       </Fragment>
     );
     return (
-      <div style={{ height: "100px !important" }}>
+      <div style={{ height: "100%" }}>
         <Router>
           <Navbar color="dark" dark expand="sm">
             <Container>

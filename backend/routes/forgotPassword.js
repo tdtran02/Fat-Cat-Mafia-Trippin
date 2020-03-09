@@ -28,6 +28,10 @@ FORGOTPASSWORDROUTES.route("/forgotPassword").post(function(req, res){
 
         const transporter = nodemailer.createTransport({
           service: 'gmail',
+          pool: true,
+          host: "smtp.example.com",
+          port: 465,
+          secure: true,
           auth: {
             user: sender.MAIL_USERNAME,
             pass: sender.MAIL_PASSWORD
