@@ -48,6 +48,8 @@ export class CreatePost extends Component {
             .catch(err => {
                 console.log(err);
             });
+        window.location =
+            "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
     }
 
     render() {
@@ -73,7 +75,7 @@ export class CreatePost extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" type="submit" onClick={this.handleClick}>POST</Button>
-                    <Button variant="secondary" onClick={this.props.onHide}>CLOSE</Button>
+
                 </Modal.Footer>
             </Modal>
 

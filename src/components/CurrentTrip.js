@@ -19,11 +19,63 @@ class CurrentTrip extends Component {
       trip_id: this.props.match.params.id,
       start: JSON.parse(localStorage.getItem('trip')).start_date.substring(0, 10),
       end: JSON.parse(localStorage.getItem('trip')).end_date.substring(0, 10),
-      createPost: false
+      createPost: false,
+      posts: []
     };
   }
 
+  componentDidMount() {
+    this.setState({ posts: this.createPostCards() });
 
+
+  }
+
+  createPostCards() {
+    let elements = [];
+    if (JSON.parse(localStorage.getItem('trip')).posts != null) {
+
+      let posts = JSON.parse(localStorage.getItem('trip')).posts;
+      let user = JSON.parse(localStorage.getItem('user'))
+      for (let i = 0; i < posts.length; i++) {
+        elements.push(
+          <div  >
+            <div className="post-card" style={{
+              margin: "0 10px 10px 10px",
+              backgroundColor: "white",
+              borderRadius: "20px",
+              margin: "15px 0"
+            }}>
+              {/*<div
+              className="img-responsive cover"
+              style={{
+                height: "100px",
+                width: "400px",
+                backgroundColor: "#6495ED"
+              }}
+            ></div>*/}
+              <Card
+                style={{
+                  borderRadius: "20px",
+                  backgroundColor: "transparent"
+                }}
+              >
+                <Card.Header as="h3" style={{ textTransform: "uppercase" }}>POST</Card.Header>
+
+                <Card.Body>
+
+                  <p>{posts[i]}</p>
+
+
+                </Card.Body>
+              </Card>
+            </div>
+          </div>
+        )
+      }
+
+    }
+    return elements;
+  }
 
 
   showRecommendations = () => {
@@ -140,6 +192,7 @@ class CurrentTrip extends Component {
                 </Card.Body>
               </Card>
 
+              <div >{this.state.posts}</div>
 
             </div>
           </div>
