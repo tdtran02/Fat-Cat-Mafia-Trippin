@@ -76,6 +76,7 @@ QUESTIONROUTES.route("/question/searchlocation").post((req, res) => {
             location: questions.destination
           })
           .then(response => {
+            console.log(response.jsonBody.businesses);
             b = response.jsonBody.businesses;
 
             return TRIP.findOne({ _id: req.body.trip_id });
@@ -83,6 +84,9 @@ QUESTIONROUTES.route("/question/searchlocation").post((req, res) => {
           .then(res1 => {
             for (let i = 0; i < b.length; i++) {
               for (let j = 0; j < res1.trip_locations.length; j++) {
+                if (b[i] == undefined) {
+                  break;
+                }
                 if (b[i].id == res1.trip_locations[j].id) {
                   b.splice(i, 1);
                 }

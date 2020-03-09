@@ -18,6 +18,21 @@ USERROUTES.route("/user/:id").get(function (req, res) {
   });
 });
 
+//find user by email
+USERROUTES.route("/useremail/:email").get(function (req, res) {
+  USER.findOne({ email: req.params.email }).then(user => {
+    if (user != null) {
+      res.status(200).json({
+        user: user
+      });
+    } else {
+      res.status(400).json({
+        user: null
+      });
+    }
+  });
+});
+
 //get all users
 USERROUTES.route("/user").get(function (req, res) {
   USER.find(function (err, user) {

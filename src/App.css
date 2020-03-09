@@ -4,6 +4,10 @@ body {
   font-family: "Ubuntu", sans-serif;
 }
 
+html {
+  height: 100%;
+}
+
 .container {
   display: flex;
   flex-flow: row wrap;
@@ -108,10 +112,3 @@ body {
     margin-left: -15rem;
   }
 }
-
-
-
-
-
-
-
