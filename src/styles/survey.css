@@ -1,0 +1,170 @@
+h4.survey-progress{
+    color: white;
+    text-align: center;
+}
+
+h3.survey-title{
+    text-align:center;
+    color:white;
+    font-size:2.14rem;
+}
+
+.survey-header{
+    background-image: url("/src/components/images/city.png"); 
+    background-position:bottom, center;
+    background-size: 100%, 100%;
+    background-repeat: no-repeat;
+}
+.survey{
+    background-image: url("/images/s1body.jpg");
+    min-height:65vh;
+    padding-top: 7.14rem;
+    margin-bottom:7.14rem;
+}
+
+label{
+    color: #01B4FB;
+    font-size: 1rem;
+    margin-bottom: 0.714rem;
+    display:block;
+    font-weight: 400;
+    text-align: left;
+    width: 100%;
+
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    background: #FFF no-repeat 95% center;
+    background-size: 0.6428571429rem;
+    border: 0.0714285714rem solid #E0EAF3;
+    border-radius: 0.2857142857rem;
+    box-shadow: inset 0 0.071rem 0.21rem 0 #E0EAF3;
+    color: #869CB2;
+    display: block;
+    font-size: 1rem;
+    height: 2.714rem;
+    margin-bottom: 0.714rem;
+    padding: 0.357rem 0.5rem;
+    text-indent: 0.01px;
+    text-overflow: "";
+    width: 100%;
+}
+
+.survey-form input[type="text"]{
+
+    border: none;
+    box-shadow: none;
+    color: #2E4255;
+    font-size: 1.57rem;
+    height: 3.92rem;
+    margin-bottom: 1.42rem;
+}
+
+input[type="text"]{
+    border: 0.071rem solid #E0EAF3;
+    border-radius: 0.28rem;
+    box-shadow: inset 0 0.071rem 0.214rem 0 #E0EAF3;
+    color: #869CB2;
+    font-size: 1rem;
+    height: 2.714rem;
+    margin-bottom: 0.71rem;
+    outline: none;
+    padding-left: 0.714rem;
+    width: 100%;
+}
+
+
+
+/*Next Buttom*/
+.survey .action-buttons .button {
+    border-radius: 2.14rem;
+}
+
+.survey .action-buttons a {
+    box-shadow: 0 0.214rem 0.428rem #E3EBF3;
+    font-size: 20px;
+}
+
+.button.form-step, .button.start-step, .button.booking, input[type="submit"].form-step, input[type="submit"].start-step, input[type="submit"].booking {
+    font-size: 1.57rem;
+    font-weight: 400;
+    min-width: 12.142rem;
+    text-align: left;
+}
+
+.button, input[type="submit"] {
+    background: #01B4FB;
+    border: none;
+    border-radius: 0.285rem;
+    box-shadow: 0 0.142rem 0 0 #0190c8;
+    color: #FFF;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 1.071rem;
+}
+
+a{
+    color: #869CB2;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+a {
+    background-color: transparent;
+    color: inherit;
+    display: inline-block;
+    text-decoration: none;
+    -webkit-text-decoration-skip: objects;
+}
+
+.survey .action-buttons {
+    padding-top: 2.142rem;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+.survey .survey-wrapper, .survey .survey-form {
+    background: #FFF;
+    border-radius: 0.285rem;
+    box-shadow: 0 0.142rem 0.285rem #E3EBF3;
+    display: block;
+    font-size: 1.142rem;
+    font-weight: 500;
+    margin: 0 auto;
+    padding: 1.428rem 1.428rem 4.285rem 1.428rem;
+    width: 50%;
+  }
+  
+  
+  .survey-wrapper, .survey-form {
+    box-shadow: 0 0.428rem 0.928rem 0 #E2ECF0;
+    position: relative;
+  }
+  
+  form, label{
+  
+    margin: 0;
+      padding: 0;
+      font-size: 100%;
+      font: inherit;
+      vertical-align: baseline;
+  
+  }
+  
+  

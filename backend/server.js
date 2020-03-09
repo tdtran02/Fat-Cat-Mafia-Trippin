@@ -15,6 +15,9 @@ const REGISTEROUTES = require("./routes/register");
 const USERROUTES = require("./routes/user");
 const QUESTIONROUTES = require("./routes/question");
 const TRIPROUTES = require("./routes/trip");
+const FORGOTPASSWORDROUTES = require("./routes/forgotPassword");
+const COMMENTROUTES = require("./routes/comment");
+const TRIPBUDDYROUTES = require("./routes/tripbuddy");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -26,7 +29,7 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("Server is running on Port: " + PORT);
 });
 
@@ -36,6 +39,9 @@ app.use(USERROUTES, ROUTER);
 app.use(FRIENDROUTES, ROUTER);
 app.use(QUESTIONROUTES, ROUTER);
 app.use(TRIPROUTES, ROUTER);
+app.use(FORGOTPASSWORDROUTES, ROUTER);
+app.use(COMMENTROUTES, ROUTER);
+app.use(TRIPBUDDYROUTES, ROUTER);
 
 
 /* const storage = multer.diskStorage({
