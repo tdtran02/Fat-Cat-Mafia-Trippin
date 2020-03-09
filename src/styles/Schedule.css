@@ -1,0 +1,12 @@
+.droppable {
+  width: 200px;
+  min-height: 600px;
+  max-height: 1000px;
+  border: 1px black solid;
+  overflow: scroll;
+}
+
+.draggable {
+  margin: 3px;
+  /* border: 1px solid black; */
+}
