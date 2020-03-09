@@ -43,6 +43,21 @@ TRIPBUDDYROUTES.route("/buddy/:trip_id").get(function (req, res) {
         });
 });
 
+TRIPBUDDYROUTES.route("/buddypending/:buddy_id").get(function (req, res) {
+    TRIPBUDDY.find({ buddy_id: req.params.buddy_id })
+        .then(tripbuddy => {
+            if (tripbuddy != null) {
+                res.status(200).json({
+                    tripbuddy: tripbuddy
+                })
+            } else {
+                res.status(400).json({
+                    tripbuddy: null
+                })
+            }
+        });
+});
+
 
 
 module.exports = TRIPBUDDYROUTES;

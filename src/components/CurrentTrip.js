@@ -30,6 +30,7 @@ class CurrentTrip extends Component {
   }
 
   componentDidMount() {
+
     AXIOS.get('http://localhost:4000/comment/' + JSON.parse(localStorage.getItem('trip'))._id)
       .then(response => {
         if (response !== 'undefined') {
@@ -54,7 +55,7 @@ class CurrentTrip extends Component {
 
     //let posts = JSON.parse(localStorage.getItem('trip')).posts;
     //let user = JSON.parse(localStorage.getItem('user'))
-    for (let i = 0; i < list.length; i++) {
+    for (let i = list.length - 1; i >= 0; i--) {
 
 
       elements.push(
