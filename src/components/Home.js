@@ -88,11 +88,12 @@ export class Home extends Component {
       })
   }
 
-  tripPage() {
-    console.log("/trip/" + document.getElementById('linktoCurrentPage').value);
-    window.location =
-      "/trip/" + document.getElementById('linktoCurrentPage').value;
+  updateLocalTrip(e, i) {
+    console.log(i);
+    localStorage.setItem('trip', JSON.stringify(i));
   }
+
+
   createList(list) {
     let elements = [];
     for (let i = 0; i < list.length; i++) {
@@ -117,7 +118,7 @@ export class Home extends Component {
                   className="trip-photo-lg"
                 />
               ) : (
-                  <a href={`/trip/${list[i]._id}`}><img
+                  <a onClick={e => { this.updateLocalTrip(e, list[i]) }} href={`/trip/${list[i]._id}`}><img
                     src={require("./images/trip_profile_photo.png")}
                     width="120"
                     height="120"
@@ -131,7 +132,7 @@ export class Home extends Component {
               <div className="trip-info" >
 
                 <h5>
-                  <Button href={`/trip/${list[i]._id}`} className="trip-fonts" style={{
+                  <Button id="linkbtn" onClick={e => { this.updateLocalTrip(e, list[i]) }} href={`/trip/${list[i]._id}`} className="trip-fonts" style={{
                     textDecoration: "none",
                     backgroundColor: "transparent",
                     border: "none",
