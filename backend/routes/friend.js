@@ -49,7 +49,7 @@ FRIENDROUTES.route("/friend/:id").get(function(req, res) {
     });
 });
 
-// add a friend
+// add a
 FRIENDROUTES.route("/friend/add").post(function(req, res) {
   USER.findOne({ email: req.body.adding_friend }).then(user => {
     // found the user, let add
