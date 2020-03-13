@@ -22,7 +22,11 @@ import CurrentTrip from "./CurrentTrip";
 import { DropdownButton } from "react-bootstrap";
 import Recommendation from "./Recommendation";
 import ForgotPassword from "./ForgotPassword";
+
+import ResetPassword from "./ResetPassword";
+//import UpdatePasswordViaEmail from "./UpdatePasswordViaEmail";
 import Schedule from "./Schedule";
+
 import {
   Collapse,
   Navbar,
@@ -152,6 +156,12 @@ class AppNavBar extends Component {
             <Route path="/forgotPassword">
               <ForgotPassword />
             </Route>
+            <Route path="/resetPassword">
+              <ResetPassword />
+            </Route>
+            {/* <Route path="/updatePasswordViaEmail">
+              <UpdatePasswordViaEmail />
+            </Route> */}
             <Route path="/home">
               <Home />
             </Route>

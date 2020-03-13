@@ -2,8 +2,9 @@ const EXPRESS = require("express");
 const TRIPROUTES = EXPRESS.Router();
 const TRIP = require("../models/trip.model");
 const USER = require("../models/user.model");
+const FRIEND = require("../models/friend.model");
 
-TRIPROUTES.route("/trip").post(function(req, res) {
+TRIPROUTES.route("/trip").post(function (req, res) {
   // console.log(req.body);
   const T = new TRIP({
     owner_id: req.body.owner_id,
@@ -34,7 +35,18 @@ TRIPROUTES.route("/trip").post(function(req, res) {
     });
 });
 
-TRIPROUTES.route("/trip/:id").get(function(req, res) {
+
+TRIPROUTES.route("/trip/addbuddy").post(function (req, res) {
+  FRIEND.findOne({ owner_id: req.body.owner_id })
+    .then(user => {
+      let friends = user.confirmed_friends;
+      if (friends.email == req.body.buddy) {
+
+      }
+    })
+})
+
+TRIPROUTES.route("/trip/:id").get(function (req, res) {
   TRIP.find({ owner_id: req.params.id }).then(trip => {
     if (trip != null) {
       res.status(200).json({
@@ -48,7 +60,21 @@ TRIPROUTES.route("/trip/:id").get(function(req, res) {
   });
 });
 
-TRIPROUTES.route("/trip/:id").delete(function(req, res) {
+TRIPROUTES.route("/tripid/:id").get(function (req, res) {
+  TRIP.find({ _id: req.params.id }).then(trip => {
+    if (trip != null) {
+      res.status(200).json({
+        trip: trip
+      });
+    } else {
+      res.status(400).json({
+        trip: null
+      });
+    }
+  });
+});
+
+TRIPROUTES.route("/trip/:id").delete(function (req, res) {
   TRIP.findOneAndDelete({ _id: req.params.id }).then(trip => {
     if (trip != null) {
       res.status(200).json({

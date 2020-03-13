@@ -2,6 +2,7 @@
 
 backend/config_url.js
 backend/config_yelp.js
+backend/config_tm.js
 backend/sender.js
 backend/config_stub.js
 # dependencies

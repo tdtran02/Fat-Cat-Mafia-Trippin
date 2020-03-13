@@ -27,6 +27,7 @@
     "react-scripts": "3.3.0",
     "react-slick": "^0.25.2",
     "reactstrap": "^8.4.1",
+    "ticketmaster": "^2.0.4",
     "slick-carousel": "^1.8.1",
     "tsutils": "^3.17.1",
     "typescript": "^3.7.0-dev.20190928",

@@ -19,11 +19,88 @@ class CurrentTrip extends Component {
       trip_id: this.props.match.params.id,
       start: JSON.parse(localStorage.getItem('trip')).start_date.substring(0, 10),
       end: JSON.parse(localStorage.getItem('trip')).end_date.substring(0, 10),
-      createPost: false
+      createPost: false,
+      //posts: []
+      comment_id: "",
+      user_id: "",
+      comment: "",
+      comment_date: "",
+      user: {}
     };
   }
 
+  componentDidMount() {
 
+    AXIOS.get('http://localhost:4000/comment/' + JSON.parse(localStorage.getItem('trip'))._id)
+      .then(response => {
+        if (response !== 'undefined') {
+          this.setState({ comment_id: response.data.comment[0]._id });
+          this.setState({ comment: response.data.comment[0].text });
+          this.setState({ comment_date: response.data.comment[0].date });
+          this.setState({ posts: this.createPostCards(response.data.comment) });
+        }
+
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
+
+
+  }
+
+  createPostCards(list) {
+    let elements = [];
+
+
+    //let posts = JSON.parse(localStorage.getItem('trip')).posts;
+    //let user = JSON.parse(localStorage.getItem('user'))
+    for (let i = list.length - 1; i >= 0; i--) {
+
+
+      elements.push(
+        <div key={i} >
+          <div className="post-card" style={{
+            margin: "0 10px 10px 10px",
+            backgroundColor: "white",
+            borderRadius: "20px",
+            margin: "15px 0"
+          }}>
+            {/*<div
+              className="img-responsive cover"
+              style={{
+                height: "100px",
+                width: "400px",
+                backgroundColor: "#6495ED"
+              }}
+            ></div>*/}
+            <Card
+              style={{
+                borderRadius: "20px",
+                backgroundColor: "transparent"
+              }}
+            >
+              <Card.Header as="h5" style={{
+                textTransform: "uppercase",
+              }} > <img src={require(`${list[i].user_pic}`)} style={{
+                width: "40px", height: "40px", marginRight: "20px"
+              }} />{list[i].first_name}</Card.Header>
+
+              <Card.Body>
+
+                <p>{list[i].text}</p>
+
+
+              </Card.Body>
+            </Card>
+          </div>
+        </div>
+      )
+    }
+
+
+    return elements;
+  }
 
 
   showRecommendations = () => {
@@ -31,37 +108,32 @@ class CurrentTrip extends Component {
     window.location = "/trip/" + this.state.trip_id + "/recommendations";
   };
 
-  addBuddy() {
-    const USER = JSON.parse(localStorage.getItem('user'));
-    const TRIP = JSON.parse(localStorage.getItem('trip'));
-    //TODO: get list of all users, find matching id to email or name?
-    //get list of current user's friends
-    AXIOS.get("http://localhost:4000/user")
-      .then(res => {
-        let users = res.data;
-        console.log(document.getElementById('buddyemail').value)
-        for (const item in users) {
-          if (item.email == document.getElementById('buddyemail')) {
-            console.log('MATCH!');
-            break;
-          }
-        }
-        console.log(res);
-      }
-      ).catch(err => {
-        console.log(err)
-      }
+  getUserId() {
+    let buddyid = "";
+    AXIOS.get("http://localhost:4000/useremail/" + document.getElementById('buddyemail').value)
+      .then(response => {
+        buddyid = response.data.user._id;
+        console.log(buddyid);
+        //  this.addBuddy(buddyid);
+      }).catch(err => {
+        console.log(err);
+      })
 
-      )
-    AXIOS.get("http://localhost:4000/friend/" + USER._id)
+  }
+
+  addBuddy(buddyid) {
+
+    const buddy = {
+      owner_id: JSON.parse(localStorage.getItem("user"))._id,
+      trip_id: JSON.parse(localStorage.getItem("trip"))._id,
+      buddy_id: buddyid
+    }
+    AXIOS.post('http://localhost:4000/buddy', buddy)
       .then(res => {
         console.log(res);
-      }
-      ).catch(err => {
-        console.log(err)
-      }
-
-      )
+      }).catch(err => {
+        console.log(err);
+      })
     //TODO: see if user and buddy are already friends
     // if they are, add friend to trip
     //send an invite to friend
@@ -94,7 +166,7 @@ class CurrentTrip extends Component {
               width: "400px",
               backgroundColor: "white",
               borderRadius: "5px",
-              height: "375px",
+              height: "395px",
               margin: "100px",
               border: "1px solid transparent",
               boxSizing: "border-box",
@@ -119,16 +191,16 @@ class CurrentTrip extends Component {
                   <Card.Title><i class="fas fa-plane-departure"></i>  {this.state.start}</Card.Title>
                   <Card.Title><i class="fas fa-plane-arrival"></i>  {this.state.end}</Card.Title>
                   <Card.Title style={{ marginTop: "50px" }}>TRAVEL BUDDIES:</Card.Title>
-                  <InputGroup id="buddyemail">
-                    <FormControl
+                  <InputGroup >
+                    <FormControl id="buddyemail"
                       placeholder="username"
                       aria-label="username" />
                     <InputGroup.Append>
-                      <Button variant="outline-success" onClick={this.addBuddy}>INVITE</Button>
+                      <Button variant="outline-success" onClick={this.getUserId}>INVITE</Button>
                     </InputGroup.Append>
                   </InputGroup>
                   <Button variant="warning" style={{
-                    margin: "10px 0 0 110px"
+                    marginTop: "30px"
 
                   }} onClick={() => this.setState({ createPost: true })}>MAKE A POST</Button>
                   <CreatePost
@@ -140,6 +212,7 @@ class CurrentTrip extends Component {
                 </Card.Body>
               </Card>
 
+              <div >{this.state.posts}</div>
 
             </div>
           </div>
