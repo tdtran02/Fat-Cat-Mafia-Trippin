@@ -10,11 +10,15 @@ import {
   Carousel
 } from "react-bootstrap";
 import AXIOS from "axios";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import "../styles/Schedule.css";
+import "../styles/Schedule.scss";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import $ from "jquery";
+import "slick-carousel";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 class Schedule extends Component {
   constructor(props) {
@@ -32,32 +36,20 @@ class Schedule extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
   }
 
-  onDragEnd = result => {
-    // the item was dropped!
-    console.log(result);
-    console.log("hi");
-    console.log(this.state.trip_locations);
-    let new_order = this.state.trip_locations.splice(
-      result.destination.index,
-      0,
-      this.state.trip_locations.splice(result.source.index, 1)[0]
-    );
-    this.setState({ trip_loations: new_order });
-    console.log(this.state);
-  };
-
   componentDidMount() {
     AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
       .then(res => {
         this.setState({ trip_locations: res.data.trip.trip_locations });
         this.setState({
-          trip_location_elements: this.createList(this.state.trip_locations)
+          trip_location_elements: this.getUserLocationsDroppable(
+            this.createList(this.state.trip_locations)
+          )
+        });
+        this.setState({ days: res.data.trip.days });
+        this.setState({
+          days_elements: this.getDaysDroppable(this.state.days)
         });
 
-        console.log(res.data.trip);
-        console.log(res.data.trip);
-
-        this.setState({ days: res.data.trip.days });
         this.setState({ loading: false });
       })
       .catch(err => {
@@ -65,27 +57,33 @@ class Schedule extends Component {
       });
   }
 
-  getDayList(days) {
-    const elements = [];
-    for (let i = 0; i < days.length; i++) {
-      elements.push(<div></div>);
-    }
-  }
+  updateSchedule = e => {
+    this.setState({ loading: true });
+    AXIOS.post("http://localhost:4000/tripinfo/updateschedule", {
+      trip_id: this.state.trip_id,
+      days: this.state.days,
+      trip_locations: this.state.trip_locations
+    })
+      .then(res => {
+        this.setState({ trip_locations: res.data.trip.trip_locations });
+        this.setState({
+          trip_location_elements: this.getUserLocationsDroppable(
+            this.createList(this.state.trip_locations)
+          )
+        });
+        this.setState({ days: res.data.trip.days });
+        this.setState({
+          days_elements: this.getDaysDroppable(this.state.days)
+        });
+
+        this.setState({ loading: false });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   createList(list) {
-    // <Draggable draggableId={i.toString()} index={i} key={i}>
-    //   {provided => (
-    //     <div
-    //       ref={provided.innerRef}
-    //       {...provided.draggableProps}
-    //       {...provided.dragHandleProps}
-    //       className="draggable"
-    //       //   style={{ background: "green" }}
-    //       //   {...provided.draggableplaceholder}
-    //     >
-    //       {this.state.trip_locations[i].name}
-    //     </div>
-    //   )}
-    // </Draggable>;
     let elements = [];
     for (let i = 0; i < list.length; i++) {
       elements.push(
@@ -97,142 +95,42 @@ class Schedule extends Component {
               {...provided.dragHandleProps}
               className="draggable"
             >
-              {/* <Card
-                className="flex-row flex-wrap"
-                style={{
-                  overflowY: "auto",
-                  margin: "0 auto",
-                  marginBottom: "5px",
-                  width: "300px",
-                  minHeight: "100px",
-                  borderRadius: "0px",
-                  boxShadow:
-                    "0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12)"
-                }}
-              >
-                <Card.Header
-                  style={{
-                    width: "100%",
-                    height: "100px"
-                  }}
-                >
-                  <img
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      borderRadius: "50%",
-                      margin: "10px"
-                    }}
-                    src={list[i].image_url}
-                  />
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      fontFamily: "Roboto, sans-serif",
-                      color: "#212529",
-                      width: "230px",
-                      height: "50px"
-                      //   textOverflow: "ellipsis"
-                    }}
-                  >
-                    <span>{list[i].name}</span>
-                    <ul className="list-unstyled list-inline rating mb-0">
-                      {this.getRatingStar(list[i].rating)}
-                      <span
-                        style={{
-                          fontSize: "11px",
-                          color: "#6c757d",
-                          marginLeft: "10px"
-                        }}
-                      >
-                        {list[i].rating} {"("}
-                        {list[i].review_count}
-                        {")"}
-                      </span>
-                    </ul>
-                    <span>
-                      {list[i].price} • {list[i].categories[0].title}
-                    </span>
-                  </span>
-                  <Card.Subtitle
-                    style={{
-                      fontFamily: "Roboto, sans-serif",
-                      fontSize: "16px",
-                      marginBottom: "16px"
-                    }}
-                  >
-                    {list[i].price} • {list[i].categories[0].title}
-                  </Card.Subtitle>
-                </Card.Header>
-                <Card.Body
-                  style={{
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    width: "250px"
-                  }}
-                >
-                <Card.Title
-                    style={{
-                      fontSize: "20px",
-                      fontFamily: "Roboto, sans-serif",
-                      color: "#212529",
-                      textOverflow: "ellipsis"
-                    }}
-                  >
-                    <span>{list[i].name}</span>
-                  </Card.Title>
-                  <Card.Subtitle style={{ marginBottom: "16px" }}>
-                    <ul className="list-unstyled list-inline rating mb-0">
-                      {this.getRatingStar(list[i].rating)}
-                      <span
-                        style={{
-                          fontSize: "11px",
-                          color: "#6c757d",
-                          marginLeft: "10px"
-                        }}
-                      >
-                        {list[i].rating} {"("}
-                        {list[i].review_count}
-                        {")"}
-                      </span>
-                    </ul>
-                  </Card.Subtitle>
-                  <Card.Subtitle
-                    style={{
-                      fontFamily: "Roboto, sans-serif",
-                      fontSize: "16px",
-                      marginBottom: "16px"
-                    }}
-                  >
-                    {list[i].price} • {list[i].categories[0].title}
-                  </Card.Subtitle>
-                <Card.Text style={{ fontSize: "12px" }}>
-                    {list[i].location.display_address[0]}
-                    {", "} {list[i].location.display_address[1]}
-                  </Card.Text>
-                </Card.Body> */}
-              {/* </Card> */}
               <div className="card">
                 <div className="row no-gutters">
-                  {/* <div class="col-auto">
+                  <div
+                    class="col-auto"
+                    style={{
+                      marginTop: "8px",
+                      marginLeft: "8px"
+                    }}
+                  >
                     <img
                       src={list[i].image_url}
                       class="img-fluid"
                       alt=""
-                      style={{ height: "100px", width: "100px" }}
+                      style={{
+                        height: "40px",
+                        width: "40px",
+                        borderRadius: "50%"
+                      }}
                     />
-                  </div> */}
+                  </div>
                   <div className="col">
-                    <div
-                      className="card-block px-2"
-                      style={{ textOverflow: "ellipsis" }}
-                    >
-                      <span className="card-text">{list[i].name}</span>
+                    <div className="card-block px-2">
+                      <div
+                        className="card-text"
+                        style={{
+                          // fontSize: "18px",
+                          textOverflow: "ellipsis"
+                        }}
+                      >
+                        <span>{list[i].name}</span>
+                      </div>
                       <ul className="list-unstyled list-inline rating mb-0">
                         {this.getRatingStar(list[i].rating)}
                         <span
                           style={{
-                            fontSize: "11px",
+                            fontSize: "10px",
                             color: "#6c757d",
                             marginLeft: "10px"
                           }}
@@ -247,7 +145,8 @@ class Schedule extends Component {
                         style={{
                           display: "inline-block",
                           float: "left",
-                          clear: "left"
+                          clear: "left",
+                          fontSize: "10px"
                         }}
                       >
                         {list[i].price} • {list[i].categories[0].title}
@@ -257,7 +156,8 @@ class Schedule extends Component {
                         style={{
                           display: "inline-block",
                           float: "left",
-                          clear: "left"
+                          clear: "left",
+                          fontSize: "10px"
                         }}
                       >
                         {list[i].location.display_address[0]}
@@ -267,6 +167,7 @@ class Schedule extends Component {
                   </div>
                 </div>
               </div>
+              {provided.placeholder}
             </div>
           )}
         </Draggable>
@@ -284,7 +185,7 @@ class Schedule extends Component {
         <li className="list-inline-item mr-1" key={i}>
           <i
             className="fas fa-star"
-            style={{ color: "#ffbf00", fontSize: "13px" }}
+            style={{ color: "#ffbf00", fontSize: "10px" }}
           ></i>
         </li>
       );
@@ -294,7 +195,7 @@ class Schedule extends Component {
         <li className="list-inline-item mr-0" key="half">
           <i
             className="fas fa-star-half-alt"
-            style={{ color: "#ffbf00", fontSize: "13px" }}
+            style={{ color: "#ffbf00", fontSize: "10px" }}
           ></i>
         </li>
       );
@@ -304,14 +205,29 @@ class Schedule extends Component {
 
   getUserLocationsDroppable(list) {
     return (
-      <Droppable droppableId="userlist" style={{ overflow: "scroll" }}>
-        {provided => (
+      <Droppable droppableId="userlist">
+        {(provided, snapshot) => (
           <div
-            className="droppable"
             ref={provided.innerRef}
-            {...provided.droppableProps}
-            //   {...provided.droppablePlaceholder}
+            style={{
+              width: "250px",
+              minHeight: "100px",
+              maxHeight: "1000px",
+              backgroundColor: "#DEE7ED",
+              paddingBottom: "5px",
+              borderRadius: "5px"
+            }}
           >
+            <div
+              style={{
+                marginLeft: "10px",
+                paddingTop: "5px",
+                fontFamily: "Roboto, sans-serif",
+                fontSize: "16px"
+              }}
+            >
+              My Locations
+            </div>
             {list}
             {provided.placeholder}
           </div>
@@ -320,232 +236,347 @@ class Schedule extends Component {
     );
   }
 
-  getDaysDraggableList(list) {
-    const elements = [];
-    for (let i = 0; i < list.length; i++) {
-      // for (let i = 0; i < 5; i++) {
-      const per_day = [];
-      //   for (let j = 0; j < list[i].length; j++) {
-      for (let j = 0; j < 5; j++) {
-        per_day.push(
-          <Draggable draggableId={i.toString()} index={i} key={i}>
-            {provided => (
-              <div
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                className="draggable"
-              >
-                {/* {list[i].name} */}
-                day {i + 1}
-                {provided.placeholder}
-              </div>
-            )}
-          </Draggable>
-        );
-      }
-      elements.push(per_day);
-    }
-    return elements;
-  }
-
   getDaysDroppable(daysList) {
     const elements = [];
     for (let i = 0; i < daysList.length; i++) {
       {
         elements.push(
-          <Droppable droppableId={i.toString()}>
-            {provided => (
-              <div
-                className="droppable"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                //   {...provided.droppablePlaceholder}
-              >
-                {daysList[i]}
-              </div>
-            )}
-          </Droppable>
+          <div style={{ flex: "1" }} key={i}>
+            <Droppable droppableId={i.toString()}>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  ref={provided.innerRef}
+                  style={{
+                    width: "250px",
+                    minHeight: "100px",
+                    maxHeight: "1000px",
+                    backgroundColor: "#DEE7ED",
+                    paddingBottom: "5px",
+                    borderRadius: "5px"
+                  }}
+                >
+                  <div
+                    style={{
+                      marginLeft: "10px",
+                      paddingTop: "5px",
+                      fontFamily: "Roboto, sans-serif",
+                      fontSize: "16px"
+                    }}
+                  >
+                    Day {i + 1}
+                  </div>
+                  {this.state.days[i].map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className="draggable"
+                        >
+                          <div className="card">
+                            <div className="row no-gutters">
+                              <div
+                                class="col-auto"
+                                style={{
+                                  marginTop: "8px",
+                                  marginLeft: "8px"
+                                }}
+                              >
+                                <img
+                                  src={item.image_url}
+                                  class="img-fluid"
+                                  alt=""
+                                  style={{
+                                    height: "40px",
+                                    width: "40px",
+                                    borderRadius: "50%"
+                                  }}
+                                />
+                              </div>
+                              <div className="col">
+                                <div className="card-block px-2">
+                                  <span className="card-text">{item.name}</span>
+                                  <ul className="list-unstyled list-inline rating mb-0">
+                                    {this.getRatingStar(item.rating)}
+                                    <span
+                                      style={{
+                                        fontSize: "10px",
+                                        color: "#6c757d",
+                                        marginLeft: "10px"
+                                      }}
+                                    >
+                                      {item.rating} {"("}
+                                      {item.review_count}
+                                      {")"}
+                                    </span>
+                                  </ul>
+                                  <span
+                                    className="card-text"
+                                    style={{
+                                      display: "inline-block",
+                                      float: "left",
+                                      clear: "left",
+                                      fontSize: "10px"
+                                    }}
+                                  >
+                                    {item.price} • {item.categories[0].title}
+                                  </span>
+                                  <span
+                                    className="card-text"
+                                    style={{
+                                      display: "inline-block",
+                                      float: "left",
+                                      clear: "left",
+                                      fontSize: "10px"
+                                    }}
+                                  >
+                                    {item.location.display_address[0]}
+                                    {", "} {item.location.display_address[1]}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
         );
       }
     }
     return elements;
   }
 
-  render() {
-    let settings = {
-      dots: true,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      initialSlide: 0,
-      responsive: [
-        {
-          breakpoint: 1600,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            infinite: true,
-            dots: true
-          }
-        },
-        {
-          breakpoint: 1100,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            initialSlide: 2
-          }
-        },
-        {
-          breakpoint: 800,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
-    };
-
-    let USERLIST;
-    if (this.state.trip_location_elements.length != 0) {
-      USERLIST = this.getUserLocationsDroppable(
-        this.state.trip_location_elements
-      );
-    } else {
-      USERLIST = "";
+  onDragEnd = result => {
+    console.log(result);
+    if (result.destination == null) {
+      return;
     }
 
-    let x = this.getDaysDraggableList(this.state.days);
-    console.log(x);
-    console.log(this.state.days);
-    let DAYLIST = this.getDaysDroppable(x);
-    console.log(DAYLIST);
+    if (
+      result.source.droppableId == "userlist" &&
+      result.destination.droppableId == "userlist"
+    ) {
+      this.state.trip_locations.splice(
+        result.destination.index,
+        0,
+        this.state.trip_locations.splice(result.source.index, 1)[0]
+      );
+      console.log(this.state.trip_locations);
+      this.setState({
+        trip_location_elements: this.getUserLocationsDroppable(
+          this.createList(this.state.trip_locations)
+        )
+      });
+      return;
+    } else if (
+      result.source.droppableId == "userlist" &&
+      result.destination.droppableId != "userlist"
+    ) {
+      let item = this.state.trip_locations.splice(result.source.index, 1);
+      this.setState({
+        trip_location_elements: this.getUserLocationsDroppable(
+          this.createList(this.state.trip_locations)
+        )
+      });
+      this.state.days[parseInt(result.destination.droppableId)].splice(
+        result.destination.index,
+        0,
+        item[0]
+      );
+      this.setState({
+        days_elements: this.getDaysDroppable(this.state.days)
+      });
+    } else if (
+      result.source.droppableId != "userlist" &&
+      result.destination.droppableId == "userlist"
+    ) {
+      let item = this.state.days[parseInt(result.source.droppableId)].splice(
+        result.source.index,
+        1
+      );
+      this.state.trip_locations.splice(result.destination.index, 0, item[0]);
 
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        {/* <div style={{ backgroundColor: "yellow" }}> */}
-        {/* <div
-            style={{
-              width: "300px",
-              backgroundColor: "red"
-            }}
-          >
-            {USERLIST}
+      this.setState({
+        trip_location_elements: this.getUserLocationsDroppable(
+          this.createList(this.state.trip_locations)
+        )
+      });
+      this.setState({
+        days_elements: this.getDaysDroppable(this.state.days)
+      });
+    } else if (
+      result.source.droppableId != "userlist" &&
+      result.destination.droppableId !== "userlist"
+    ) {
+      let item = this.state.days[parseInt(result.source.droppableId)].splice(
+        result.source.index,
+        1
+      );
+      this.state.days[parseInt(result.destination.droppableId)].splice(
+        result.destination.index,
+        0,
+        item[0]
+      );
+
+      this.setState({
+        trip_location_elements: this.getUserLocationsDroppable(
+          this.createList(this.state.trip_locations)
+        )
+      });
+      this.setState({
+        days_elements: this.getDaysDroppable(this.state.days)
+      });
+    }
+  };
+
+  render() {
+    const LoadingBar = (
+      <div id="cupcake" class="box">
+        <span class="letter">L</span>
+
+        <div class="cupcakeCircle box">
+          <div class="cupcakeInner box">
+            <div class="cupcakeCore box"></div>
           </div>
+        </div>
 
-          <Carousel
-            style={{
-              height: "400px",
-              background: "black",
-              width: "100%",
-              float: "right"
-            }}
-          >
-            <Carousel.Item>
-              <div style={{ width: "300px", margin: "0 auto" }}>
-                <Droppable
-                  droppableId="2"
-                  style={{
-                    overflow: "scroll",
-                    backgroundColor: "white",
-                    color: "white"
-                  }}
-                >
-                  {provided => (
-                    <div
-                      //   className="droppable"
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      //   {...provided.droppablePlaceholder}
-                    >
-                      XD
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
+        <span class="letter box">A</span>
+        <span class="letter box">D</span>
+        <span class="letter box">I</span>
+        <span class="letter box">N</span>
+        <span class="letter box">G</span>
+      </div>
+    );
+    return (
+      <div>
+        {!this.state.loading ? (
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            <div style={{ width: "100%", height: "60px" }}>
+              <Button
+                className="b"
+                variant="info"
+                onClick={this.updateSchedule}
+              >
+                Save Schedule
+              </Button>
+            </div>
+
+            <div
+              className="row"
+              style={{
+                width: "90%",
+                marginLeft: "auto",
+                marginRight: "auto"
+              }}
+            >
+              <div className="col-md-3">
+                {this.state.trip_location_elements.length != 0
+                  ? this.state.trip_location_elements
+                  : ""}
               </div>
 
-              <Carousel.Caption>
-                <h3>Second slide label</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="holder.js/800x400?text=Second slide&bg=282c34"
-                alt="Third slide"
-              />
-
-              <Carousel.Caption>
-                <h3>Second slide label</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="holder.js/800x400?text=Third slide&bg=20232a"
-                alt="Third slide"
-              />
-
-              <Carousel.Caption>
-                <h3>Third slide label</h3>
-                <p>
-                  Praesent commodo cursus magna, vel scelerisque nisl
-                  consectetur.
-                </p>
-              </Carousel.Caption>
-            </Carousel.Item>
-          </Carousel>
-        </div> */}
-        <span
-          style={{
-            width: "300px",
-            backgroundColor: "red"
-          }}
-        >
-          {USERLIST}
-        </span>
-
-        {/* <span
-          style={{
-            width: "1000px",
-            background: "yellow",
-            margin: "0 auto"
-          }}
-        > */}
-        <Slider
-          className="placeholderhere"
-          {...settings}
-          style={{
-            width: "80%",
-            margin: "0 auto",
-            background: "yellow"
-          }}
-        >
-          {DAYLIST}
-        </Slider>
-        {/* </span> */}
-
-        {/* <Droppable droppableId="2" style={{ overflow: "scroll" }}>
-          {provided => (
-            <div
-              className="droppable"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              //   {...provided.droppablePlaceholder}
-            >
-             
-              {provided.placeholder}
+              <div className="col-md-9">
+                {this.state.days.length != 0 ? (
+                  <div style={{ display: "flex" }}>
+                    {this.state.days_elements}
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
-          )}
-        </Droppable> */}
-      </DragDropContext>
+          </DragDropContext>
+        ) : (
+          LoadingBar
+        )}
+      </div>
     );
   }
 }
 
 export default Schedule;
+
+// getDaysDraggableList(list) {
+//   const elements = [];
+//   for (let i = 0; i < list.length; i++) {
+//     // for (let i = 0; i < 2; i++) {
+//     const per_day = [];
+//     for (let j = 0; j < list[i].length; j++) {
+//       //   for (let j = 0; j < 2; j++) {
+//       per_day.push(
+//         <Draggable draggableId={i.toString()} index={i} key={list[i][j].id}>
+//           {provided => (
+//             <div
+//               ref={provided.innerRef}
+//               {...provided.draggableProps}
+//               {...provided.dragHandleProps}
+//               className="draggable"
+//             >
+//               <div className="card">
+//                 <div className="row no-gutters">
+//                   <div className="col">
+//                     <div
+//                       className="card-block px-2"
+//                       style={{ textOverflow: "ellipsis" }}
+//                     >
+//                       <span className="card-text">{list[i][j].name}</span>
+//                       <ul className="list-unstyled list-inline rating mb-0">
+//                         {this.getRatingStar(list[i][j].rating)}
+//                         <span
+//                           style={{
+//                             fontSize: "11px",
+//                             color: "#6c757d",
+//                             marginLeft: "10px"
+//                           }}
+//                         >
+//                           {list[i][j].rating} {"("}
+//                           {list[i][j].review_count}
+//                           {")"}
+//                         </span>
+//                       </ul>
+//                       <span
+//                         className="card-text"
+//                         style={{
+//                           display: "inline-block",
+//                           float: "left",
+//                           clear: "left"
+//                         }}
+//                       >
+//                         {list[i][j].price} • {list[i][j].categories[0].title}
+//                       </span>
+//                       <span
+//                         className="card-text"
+//                         style={{
+//                           display: "inline-block",
+//                           float: "left",
+//                           clear: "left"
+//                         }}
+//                       >
+//                         {list[i][j].location.display_address[0]}
+//                         {", "} {list[i][j].location.display_address[1]}
+//                       </span>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           )}
+//         </Draggable>
+//       );
+//     }
+//     elements.push(per_day);
+//   }
+//   return elements;
+// }
