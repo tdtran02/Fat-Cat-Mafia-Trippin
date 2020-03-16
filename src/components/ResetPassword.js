@@ -7,13 +7,13 @@ import queryString from 'query-string';
 //import axios from 'axios';
 //import TextField from '@material-ui/core/TextField';
 import { Button, ButtonToolbar } from 'react-bootstrap';
-//import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
+import "../styles/ResetPassword.css"
 const AXIOS = require("axios").default;
 
 // import {
@@ -41,12 +41,14 @@ class ResetPassword extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      email: '',
       password: '',
       updated: false,
       isLoading: true,
       error: false,
+      token: this.props.match.params.token,
     };
+    console.log(this.props.match.params.token)
   }
   // <Router>
   //   <App>
@@ -56,36 +58,87 @@ class ResetPassword extends Component {
   //   </App>
   // </Router>
   //<Route exact path='/resetPassword/:param' component={Data} />
-  async componentDidMount() {
-    const {
-      match: {
-        params: { token },
-      },
-    } = this.props;
-    try {
-      const response = await AXIOS.get('http://localhost:3003/resetPassword', {
-        params: {
-          resetPasswordToken: token,
-        },
-      });
-      // console.log(response);
-      if (response.data.message === 'password reset link a-ok') {
+  componentDidMount() {
+    //const token = queryString.parse(this.props.location.search);
+    //<Route path="/resetPassword/:token" /> 
+    //const token = this.props.match.params.token;
+    //console.log(this.props.match.params.token);
+    // const {
+    //   match: {
+    //     params: { token },
+    //   },
+    // } = this.props;
+    // try {
+    //   const response = await 
+      // AXIOS.get('http://localhost:4000/resetPassword', {
+      //   params: {
+      //     resetPasswordToken: this.token,
+      //   },
+      // }).then(response =>{
+    console.log(this.state.token)
+    AXIOS.get('http://localhost:4000/resetPassword/'+this.state.token)
+    .then(response =>{
+        console.log(response);
+      if (response.data.message === "Password reset link is ok") {
         this.setState({
-          username: response.data.username,
+          email: response.data.email,
           updated: false,
           isLoading: false,
           error: false,
         });
-      }
-    } catch (error) {
-      console.log(error.response.data);
+      }else{
+      //console.log(error.response.data);
       this.setState({
         updated: false,
         isLoading: false,
         error: true,
       });
     }
-  }
+  }).catch(error =>{
+    console.log(error.data);
+  });
+}
+
+  handleChange = name => (event) => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
+
+  updatePassword = async (e) => {
+    e.preventDefault();
+    // const { username, password } = this.state;
+    // const {
+    //   match: {
+    //     params: { token },
+    //   },
+    // } = this.props;
+    // try {
+    //   const response = await 
+      AXIOS.put(
+        "http://localhost:4000/updatePasswordViaEmail",
+        {
+          email: this.state.email,
+          password: this.state.password,
+          resetPasswordToken: this.state.token
+          //resetPasswordToken: token,
+        }).then(response =>{
+      console.log(response.data);
+      if (response.data.message === "password updated") {
+        this.setState({
+          updated: true,
+          error: false,
+        });
+      } else {
+        this.setState({
+          updated: false,
+          error: true,
+        });
+      }
+    }). catch (error => {
+      console.log(error.response.data);
+    });
+  };
 
   render() {
     const {
@@ -99,18 +152,27 @@ class ResetPassword extends Component {
             <h4>Problem resetting password. Please send another reset link.</h4>
             <ButtonToolbar>
               <button 
-                buttonText="Go Home"
+                buttontext="Go Home"
                 //buttonStyle={homeButton}
                 link="/">
                 
               </button>
             </ButtonToolbar>
+            <p className="text-center mt-5">
+              Go Home
+              <Link
+                to="/"
+                style={{ color: "blue", marginLeft: "5px" }}
+              >
+                Go Home
+              </Link>
+            </p>
             <ButtonToolbar>
-                <button
+                <Button
                     //buttonStyle={forgotButton}
-                    buttonText="Forgot Password?"
+                    buttontext="Forgot Password?"
                     link="/forgotPassword">
-                </button>
+                </Button>
             </ButtonToolbar>
           </div>
         </div>
@@ -119,29 +181,43 @@ class ResetPassword extends Component {
     if (isLoading) {
       return (
         <div>
-          
           <div style={loading}>Loading User Data...</div>
         </div>
       );
     }
     return (
       <div>
-        
-        <form className="password-form" onSubmit={this.updatePassword}>
-          <input
-            //style={inputStyle}
-            id="password"
-            label="password"
-            onChange={this.handleChange("password")}
-            value={password}
-            type="password"
-          />
-          <button
-            //buttonStyle={updateButton}
-            buttonText="Update Password">
-          </button>
-        </form>
-
+        <div className ="restPassword">
+          <form className="password-form" onSubmit={this.updatePassword}>
+            <div className="AppForm shadow-lg">
+              <div className="row">
+                <div className="col-md-6 d-flex justify-content-center align-items-center">
+                  <div className="AppFormLeft">
+                    <h2> Reset Password</h2>
+                    <div className="new-password">
+                      <input 
+                        type="text"
+                        placeholder="Password..."
+                        value={this.state.password}
+                        onChange={this.handleChange('password')}
+                        name="password"
+                        require/>
+                      
+                    </div>
+                    <button
+                      value="update"
+                      type="submit"
+                      className="btn btn-success btn-block shadow border-0 py-2 text-uppercase "
+                    >
+                      Reset
+                    </button>
+                  </div>
+               </div>
+            </div>
+            </div>
+          </form>
+        </div>
+      
         {updated && (
           <div>
             <p>
@@ -149,19 +225,19 @@ class ResetPassword extends Component {
               again.
             </p>
             <ButtonToolbar>
-                <button
+                <Button
                     //buttonStyle={loginButton}
-                    buttonText="Login"
+                    buttontext="Login"
                     link="/login">
-                </button>
+                </Button>
             </ButtonToolbar>
           </div>
         )}
         <ButtonToolbar> 
-            <button buttonText="Go Home" 
+            <Button buttontext="Go Home" 
             //buttonStyle={homeButton} 
             link="/">
-            </button>
+            </Button>
          </ButtonToolbar>
       </div>
     );
@@ -176,4 +252,5 @@ ResetPassword.propTypes = {
     }),
   }),
 };
+
 export default ResetPassword;
