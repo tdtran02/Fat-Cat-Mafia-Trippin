@@ -186,8 +186,8 @@ class ResetPassword extends Component {
       );
     }
     return (
-      <div>
-        <div className ="restPassword">
+      <div className="container h">
+        <div className="row h justify-content-center align-items-center">
           <form className="password-form" onSubmit={this.updatePassword}>
             <div className="AppForm shadow-lg">
               <div className="row">
@@ -201,8 +201,7 @@ class ResetPassword extends Component {
                         value={this.state.password}
                         onChange={this.handleChange('password')}
                         name="password"
-                        require/>
-                      
+                        required/>
                     </div>
                     <button
                       value="update"
@@ -211,39 +210,36 @@ class ResetPassword extends Component {
                     >
                       Reset
                     </button>
+                    {updated && (
+                      <div>
+                        <p>Your password has been successfully reset.</p>
+                        <p>Please try logging in again.</p>
+                        <Link
+                            to="/login"
+                            style={{ color: "blue", marginLeft: "5px" }}
+                        >
+                            Go back to login
+                        </Link>
+                      </div>
+                      )}
                   </div>
-               </div>
-            </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="AppFormRight position-relative d-flex justify-content-center flex-column align-items-center text-center p-5 text-white">
+                      <h2 className="position-relative px-4 pb-3 mb-4">
+                        Don't worry
+                      </h2>
+                      <p>Give us your new password, and then you can login with your new password</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </form>
         </div>
-      
-        {updated && (
-          <div>
-            <p>
-              Your password has been successfully reset, please try logging in
-              again.
-            </p>
-            <ButtonToolbar>
-                <Button
-                    //buttonStyle={loginButton}
-                    buttontext="Login"
-                    link="/login">
-                </Button>
-            </ButtonToolbar>
-          </div>
-        )}
-        <ButtonToolbar> 
-            <Button buttontext="Go Home" 
-            //buttonStyle={homeButton} 
-            link="/">
-            </Button>
-         </ButtonToolbar>
       </div>
     );
   }
 }
-
 ResetPassword.propTypes = {
   // eslint-disable-next-line react/require-default-props
   match: PropTypes.shape({
