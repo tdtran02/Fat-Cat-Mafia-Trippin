@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ButtonToolbar, Card, FormControl, InputGroup } from "react-bootstrap";
+import { ButtonToolbar, Card, FormControl, InputGroup, Form } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -64,7 +64,9 @@ class CurrentTrip extends Component {
             margin: "0 10px 10px 10px",
             backgroundColor: "white",
             borderRadius: "20px",
-            margin: "15px 0"
+            margin: "15px 0",
+            boxShadow: "8px 8px 50px #000",
+            width: "90%"
           }}>
             {/*<div
               className="img-responsive cover"
@@ -139,6 +141,39 @@ class CurrentTrip extends Component {
     //send an invite to friend
   }
 
+  handleClick() {
+    let trip = JSON.parse(localStorage.getItem("trip"));
+    let postArr = []
+    if (trip.posts == null) {
+      trip.posts = [document.getElementById("comment").value]
+    }
+    else {
+      postArr = trip.posts;
+      postArr.push(document.getElementById("comment").value);
+    }
+
+    const comment = {
+      owner_id: JSON.parse(localStorage.getItem("user"))._id,
+      first_name: JSON.parse(localStorage.getItem("user")).first_name,
+      last_name: JSON.parse(localStorage.getItem("user")).last_name,
+      user_pic: JSON.parse(localStorage.getItem("user")).image,
+      trip_id: JSON.parse(localStorage.getItem("trip"))._id,
+      text: document.getElementById("comment").value,
+      date: Date.now()
+    };
+    AXIOS.post("http://localhost:4000/comment", comment)
+      .then(res => {
+
+
+        this.setState({ addSurveyShow: true });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    window.location =
+      "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
+  }
+
 
 
   render() {
@@ -160,15 +195,16 @@ class CurrentTrip extends Component {
 
         }}>
           <div style={{
-            display: "flex", flexDirection: "column"
+            display: "flex", flexDirection: "column",
+            width: "35%"
           }}>
             <div className="trip-info" style={{
-              width: "400px",
-              backgroundColor: "white",
+
+
               borderRadius: "5px",
-              height: "395px",
-              margin: "100px",
-              border: "1px solid transparent",
+
+              margin: "100px auto",
+              border: "2px solid gray",
               boxSizing: "border-box",
               borderRadius: "20px",
               boxShadow: "8px 8px 50px #000",
@@ -178,7 +214,7 @@ class CurrentTrip extends Component {
               <Card
                 style={{
                   borderRadius: "20px",
-                  backgroundColor: "transparent"
+
                 }}
               >
                 <Card.Header as="h3" style={{ textTransform: "uppercase" }}>{JSON.parse(localStorage.getItem('trip')).trip_name}</Card.Header>
@@ -199,7 +235,7 @@ class CurrentTrip extends Component {
                       <Button variant="outline-success" onClick={this.getUserId}>INVITE</Button>
                     </InputGroup.Append>
                   </InputGroup>
-                  <Button variant="warning" style={{
+                  {/*  <Button variant="warning" style={{
                     marginTop: "30px"
 
                   }} onClick={() => this.setState({ createPost: true })}>MAKE A POST</Button>
@@ -208,24 +244,55 @@ class CurrentTrip extends Component {
                     onHide={postModalClose}
                     handler={this.handler}
 
-                    style={{ maxWidth: '1600px', width: '80%' }} />
+                    style={{ maxWidth: '1600px', width: '80%' }} /> */}
                 </Card.Body>
               </Card>
 
-              <div >{this.state.posts}</div>
+
 
             </div>
           </div>
           <div style={{
-            width: "300px",
+            width: "35%",
+
             borderRadius: "5px",
-            margin: "100px auto ",
+            height: "395px",
+            margin: "100px auto",
+
+
             borderRadius: "20px",
+
             color: "#6c757d"
+          }}>
+            <Card style={{
+              boxShadow: "8px 8px 50px #000",
+              borderRadius: "20px",
+              width: "90%"
+            }}>
+              <Card.Header>MAKE A POST</Card.Header>
+              <Card.Body>
+                <Form>
+                  <Form.Group>
+                    <Form.Control id="comment" as="textarea" rows="2" placeholder="Write post..."></Form.Control>
+                  </Form.Group>
+                  <Button variant="outline-warning" onClick={this.handleClick} style={{
+                    float: "right"
+                  }}>POST</Button>
+                </Form>
+              </Card.Body>
+            </Card>
+            <div >{this.state.posts}</div>
+          </div>
+          <div style={{
+            width: "30%",
+            borderRadius: "5px",
+            margin: "100px auto",
+            borderRadius: "20px",
+            color: "#6c757d",
+
           }}>
             <Button variant="info" style={{
               float: "center",
-              marginTop: "50px",
               boxShadow: "8px 8px 20px #000"
             }} onClick={this.showRecommendations}>Show Recommendations</Button>
           </div>
