@@ -1,8 +1,5 @@
-import React, { Component } from "react";
-import { ButtonToolbar, Card, FormControl, InputGroup, Form } from "react-bootstrap";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import React, { Component, Item } from "react";
+import { Card, FormControl, InputGroup, Form, ListGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
@@ -20,7 +17,7 @@ class CurrentTrip extends Component {
       start: JSON.parse(localStorage.getItem('trip')).start_date.substring(0, 10),
       end: JSON.parse(localStorage.getItem('trip')).end_date.substring(0, 10),
       createPost: false,
-      //posts: []
+      posts: [],
       comment_id: "",
       user_id: "",
       comment: "",
@@ -56,6 +53,26 @@ class CurrentTrip extends Component {
     //let posts = JSON.parse(localStorage.getItem('trip')).posts;
     //let user = JSON.parse(localStorage.getItem('user'))
     for (let i = list.length - 1; i >= 0; i--) {
+      this.setState({ secondaryComments: [] });
+      let secondaryComments = []
+      console.log(i + ": " + list[i].commentsOnThisPost);
+      if (list[i].commentsOnThisPost != "") {
+        //secondaryComments = this.showCommentsOnPost(list[i].commentsOnThisPost);
+        // console.log("*** " + secondaryComments.length);
+
+        let commentlist = list[i].commentsOnThisPost;
+        console.log(commentlist.length);
+        for (let j = 0; j < commentlist.length; j++) {
+          console.log("?/?/");
+          let text = commentlist[j].text;
+          this.setState({ text: text });
+          this.setState({ userfirstname: list[i].first_name })
+          secondaryComments.push(
+            <div key={j} ><ListGroup.Item ><strong>{this.state.userfirstname}: </strong> {this.state.text}</ListGroup.Item></div>
+          )
+        }
+        this.setState({ secondaryComments: secondaryComments });
+      }
 
 
       elements.push(
@@ -91,15 +108,19 @@ class CurrentTrip extends Component {
               <Card.Body>
 
                 <p>{list[i].text}</p>
+                <ListGroup>
+                  <div>{this.state.secondaryComments}</div>
+                </ListGroup>
 
 
               </Card.Body>
               <Card.Footer>
 
+
                 <Form>
 
-                  <Form.Control id="comment" as="textarea" rows="1" placeholder="Write post..."></Form.Control>
-                  <Button variant="outline-warning" style={{
+                  <Form.Control id={this.key} as="textarea" rows="1" placeholder="Comment on post..."></Form.Control>
+                  <Button variant="outline-warning" onClick={e => this.commentOnPost(e, list[i])} style={{
                     float: "right",
                     marginTop: "10px"
                   }}>POST</Button>
@@ -118,6 +139,11 @@ class CurrentTrip extends Component {
     return elements;
   }
 
+
+
+  commentOnPost(e, i) {
+    console.log(i);
+  }
 
   showRecommendations = () => {
     console.log(this.state.trip_id);
@@ -237,9 +263,9 @@ class CurrentTrip extends Component {
                   <Card.Title style={{
                     textTransform: "uppercase",
                     marginTop: "5px"
-                  }}><i class="fas fa-map-marker-alt"></i>  {JSON.parse(localStorage.getItem('trip')).destination}</Card.Title>
-                  <Card.Title><i class="fas fa-plane-departure"></i>  {this.state.start}</Card.Title>
-                  <Card.Title><i class="fas fa-plane-arrival"></i>  {this.state.end}</Card.Title>
+                  }}><i className="fas fa-map-marker-alt"></i>  {JSON.parse(localStorage.getItem('trip')).destination}</Card.Title>
+                  <Card.Title><i className="fas fa-plane-departure"></i>  {this.state.start}</Card.Title>
+                  <Card.Title><i className="fas fa-plane-arrival"></i>  {this.state.end}</Card.Title>
                   <Card.Title style={{ marginTop: "50px" }}>TRAVEL BUDDIES:</Card.Title>
                   <InputGroup >
                     <FormControl id="buddyemail"
