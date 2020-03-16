@@ -10,7 +10,8 @@ COMMENTROUTES.route("/comment").post(function (req, res) {
         user_pic: req.body.user_pic,
         trip_id: req.body.trip_id,
         text: req.body.text,
-        date: req.body.date
+        date: req.body.date,
+        commentsOnThisPost: []
     })
     C.save()
         .then(x => {
@@ -48,6 +49,32 @@ COMMENTROUTES.route("/comment/:trip_id").get(function (req, res) {
         });
 });
 
+COMMENTROUTES.route("/comment/:_id").put(function (req, res) {
+    COMMENT.findByIdAndUpdate(
+        { _id: req.params._id },
+        {
+            $set: { commentsOnThisPost: req.body.commentsOnThisPost }
+        }
+    )
+        .then(response => {
+            res.status(200).json({
+
+            });
+            console.log(response);
+        }).catch(err => {
+            console.log(err);
+        })
+})
+
+COMMENTROUTES.route("/comment").get(function (req, res) {
+    COMMENT.find(function (err, comment) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(comment);
+        }
+    });
+});
 
 
 module.exports = COMMENTROUTES;

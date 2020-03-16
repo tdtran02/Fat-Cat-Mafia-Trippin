@@ -8,7 +8,14 @@ const commentSchema = new Schema({
     user_pic: String,
     trip_id: String,
     text: String,
-    date: Date
+    date: Date,
+    commentsOnThisPost: {
+        owner_id: String,
+        first_name: String,
+        last_name: String,
+        text: String,
+        date: Date
+    }
 })
 
 const Comment = mongoose.model("comment", commentSchema);

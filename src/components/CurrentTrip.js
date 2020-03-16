@@ -94,6 +94,20 @@ class CurrentTrip extends Component {
 
 
               </Card.Body>
+              <Card.Footer>
+
+                <Form>
+
+                  <Form.Control id="comment" as="textarea" rows="1" placeholder="Write post..."></Form.Control>
+                  <Button variant="outline-warning" style={{
+                    float: "right",
+                    marginTop: "10px"
+                  }}>POST</Button>
+
+
+                </Form>
+
+              </Card.Footer>
             </Card>
           </div>
         </div>
