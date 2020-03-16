@@ -65,10 +65,16 @@ class CurrentTrip extends Component {
         for (let j = 0; j < commentlist.length; j++) {
           console.log("?/?/");
           let text = commentlist[j].text;
+          if (commentlist[j].user_pic != null) {
+            this.setState({ commentuserimg: commentlist[j].user_pic });
+          }
+          else {
+            this.setState({ commentuserimg: "./images/profilepic.png" });
+          }
           this.setState({ text: text });
-          this.setState({ userfirstname: list[i].first_name })
+          this.setState({ userfirstname: commentlist[j].first_name })
           secondaryComments.push(
-            <div key={j} ><ListGroup.Item ><strong>{this.state.userfirstname}: </strong> {this.state.text}</ListGroup.Item></div>
+            <div key={j} ><ListGroup.Item ><img alt="?" style={{ width: "25px", height: "25px", border: "1px solid black" }} src={require(`${this.state.commentuserimg}`)} /><strong>  {this.state.userfirstname}: </strong> {this.state.text}</ListGroup.Item></div>
           )
         }
         this.setState({ secondaryComments: secondaryComments });

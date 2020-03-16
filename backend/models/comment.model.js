@@ -13,6 +13,7 @@ const commentSchema = new Schema({
         owner_id: String,
         first_name: String,
         last_name: String,
+        user_pic: String,
         text: String,
         date: Date
     }]
