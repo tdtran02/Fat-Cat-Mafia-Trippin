@@ -282,9 +282,7 @@ export class Home extends Component {
                 <div className="buffer"></div>
                 <div className="profile-text-buffer">
                   <div className="edit-buffer">
-                    <a className="edit" href="./MyAccount">
-                      EDIT
-                                        </a>
+
                   </div>
 
                   <form className="profile-text">
