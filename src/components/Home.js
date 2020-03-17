@@ -128,7 +128,29 @@ export class Home extends Component {
   createInvitations(list) {
     let elements = [];
     for (let i = 0; i < list.length; i++) {
-      console.log(list[i]);
+      console.log(list[i].trip_id);
+      AXIOS.get('http://localhost:4000/trip/' + list[i].trip_id)
+        .then(response => {
+          console.log(response);
+          console.log(response.data.trip_name);
+          this.setState({ tripname: response.data.trip_name });
+        }).catch(err => {
+          console.log(err);
+        })
+
+      if (list[i].pending == true) {
+        this.setState({ status: "PENDING" });
+      }
+      else {
+        if (list[i].accepted == true) {
+          this.setState({ status: "ACCEPTED" });
+        }
+        else {
+          this.setState({ status: "DECLINED" });
+        }
+      }
+
+
       elements.push(
         <div className="col-md-3 col-sm-6" key={i}>
           <div className="trip-card" style={{
@@ -150,7 +172,8 @@ export class Home extends Component {
                     Invitation
                   </Button>
                 </h5>
-                <p className="trip_destination">{list[i].owner_id}{this.getUserEmail(list[i])}</p>
+                <p className="trip_destination">{this.state.tripname}</p>
+                <p><strong>STATUS: </strong> {this.state.status}</p>
                 <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
 
                 </div>
@@ -158,7 +181,9 @@ export class Home extends Component {
             </div>
           </div>
         </div>
+
       )
+
     }
     return elements;
   }

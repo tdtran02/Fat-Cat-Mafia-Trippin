@@ -19,6 +19,7 @@ const FORGOTPASSWORDROUTES = require("./routes/forgotPassword");
 const RESETPASSWORDROUTES = require("./routes/resetPassword");
 const UPDATEPASSWORDVIAEMAILROUTES = require("./routes/updatePasswordViaEmail");
 const COMMENTROUTES = require("./routes/comment");
+const TRIPBUDDYROUTES = require("./routes/tripbuddy");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -44,6 +45,7 @@ app.use(FORGOTPASSWORDROUTES, ROUTER);
 app.use(RESETPASSWORDROUTES, ROUTER);
 app.use(UPDATEPASSWORDVIAEMAILROUTES, ROUTER);
 app.use(COMMENTROUTES, ROUTER);
+app.use(TRIPBUDDYROUTES, ROUTER);
 
 
 /* const storage = multer.diskStorage({
