@@ -187,7 +187,7 @@ class CurrentTrip extends Component {
 
                 <Form>
 
-                  <Form.Control id={this.key} as="textarea" rows="1" placeholder="Comment on post..."></Form.Control>
+                  <Form.Control id="secondary-comment" as="textarea" rows="1" placeholder="Comment on post..."></Form.Control>
                   <Button variant="outline-warning" onClick={e => this.commentOnPost(e, list[i])} style={{
                     float: "right",
                     marginTop: "10px"
@@ -210,6 +210,38 @@ class CurrentTrip extends Component {
 
 
   commentOnPost(e, i) {
+    console.log(i._id);
+    let trip = JSON.parse(localStorage.getItem("trip"));
+    let postArr = []
+    const commentOnThisPost = {
+      owner_id: JSON.parse(localStorage.getItem("user"))._id,
+      first_name: JSON.parse(localStorage.getItem("user")).first_name,
+      last_name: JSON.parse(localStorage.getItem("user")).last_name,
+      user_pic: JSON.parse(localStorage.getItem("user")).image,
+      text: document.getElementById("secondary-comment").value,
+      date: Date.now()
+    }
+    if (i.commentsOnThisPost == null) {
+      postArr.push(commentOnThisPost);
+    }
+    else {
+      postArr = i.commentsOnThisPost;
+      postArr.push(commentOnThisPost);
+    }
+
+    let comment = {
+      commentsOnThisPost: postArr
+
+    };
+    console.log(JSON.stringify(comment));
+    AXIOS.put("http://localhost:4000/comment/" + i._id, comment)
+      .then(res => {
+
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
     console.log(i);
   }
 
