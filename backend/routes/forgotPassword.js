@@ -21,10 +21,11 @@ FORGOTPASSWORDROUTES.route("/forgotPassword").post(function(req, res){
         res.status(403).send("email not in db");
       } else {
         const token = crypto.randomBytes(20).toString('hex');
-        user.update({
-          resetPasswordToken: token,
-          resetPasswordExpires: Date.now() + 3600000,
-        });
+        user.update(
+          { //$addToSet:{
+            resetPasswordToken: token,
+            resetPasswordExpires: Date.now() + 3600000}
+        ).then (y => {
         console.log(token);
         const transporter = nodemailer.createTransport({
           service: 'gmail',
@@ -58,6 +59,7 @@ FORGOTPASSWORDROUTES.route("/forgotPassword").post(function(req, res){
             console.log("here is the res: ", response);
             res.status(200).json('recovery email sent');
           }
+        });
         });
       }
     });

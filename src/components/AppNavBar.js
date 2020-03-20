@@ -95,17 +95,12 @@ class AppNavBar extends Component {
             Register
           </NavLink>
         </NavItem>
-        <NavItem>
-          <NavLink tag={RRNavLink} exact to="/ForgotPassword">
-            Forgot Password
-          </NavLink>
-        </NavItem>
       </Fragment>
     );
     return (
       <div style={{ height: "100%" }}>
         <Router>
-          <Navbar color="dark" dark expand="sm">
+          <Navbar sticky="top" color="dark" dark expand="sm">
             <Container>
               <NavbarBrand href="/">
                 <img
@@ -158,12 +153,13 @@ class AppNavBar extends Component {
             <Route path="/forgotPassword">
               <ForgotPassword />
             </Route>
-            <Route path="/resetPassword">
+            {/* <Route path="/resetPassword/:token">
               <ResetPassword />
-            </Route>
-            {/* <Route path="/updatePasswordViaEmail">
-              <UpdatePasswordViaEmail />
             </Route> */}
+            <Route exact path='/resetPassword/:token' component={ResetPassword} />
+            <Route path="/updatePasswordViaEmail">
+
+            </Route>
             <Route path="/home">
               <Home />
             </Route>

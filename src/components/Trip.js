@@ -19,7 +19,7 @@ export class Trip extends Component {
   componentDidMount() {
     AXIOS.get(
       "http://localhost:4000/trip/" +
-        JSON.parse(localStorage.getItem("user"))._id
+      JSON.parse(localStorage.getItem("user"))._id
     )
       .then(res => {
         this.setState({ trip: res.data.trip });
@@ -106,7 +106,7 @@ export class Trip extends Component {
             style={{
               border: "transparent",
               borderRadius: "20px",
-              backgroundColor: "transparent"
+              backgroundColor: "white"
             }}
           >
             <Card.Body>
@@ -195,10 +195,10 @@ export class Trip extends Component {
                   <button
                     className="btn btn-lg btn-primary btn-block text-uppercase"
                     type="submit"
-                    style={{ backgroundColor: "transparent" }}
-                    // onClick={
-                    //     this.onCreateFieldClick();
-                    // }
+                    style={{ backgroundColor: "transparent", color: "black" }}
+                  // onClick={
+                  //     this.onCreateFieldClick();
+                  // }
                   >
                     Create
                   </button>

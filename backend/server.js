@@ -17,6 +17,8 @@ const QUESTIONROUTES = require("./routes/question");
 const TRIPROUTES = require("./routes/trip");
 const FORGOTPASSWORDROUTES = require("./routes/forgotPassword");
 const SPENDINGROUTES = require("./routes/spending");
+const RESETPASSWORDROUTES = require("./routes/resetPassword");
+const UPDATEPASSWORDVIAEMAILROUTES = require("./routes/updatePasswordViaEmail");
 const COMMENTROUTES = require("./routes/comment");
 const TRIPBUDDYROUTES = require("./routes/tripbuddy");
 
@@ -42,6 +44,8 @@ app.use(QUESTIONROUTES, ROUTER);
 app.use(TRIPROUTES, ROUTER);
 app.use(FORGOTPASSWORDROUTES, ROUTER);
 app.use(SPENDINGROUTES, ROUTER);
+app.use(RESETPASSWORDROUTES, ROUTER);
+app.use(UPDATEPASSWORDVIAEMAILROUTES, ROUTER);
 app.use(COMMENTROUTES, ROUTER);
 app.use(TRIPBUDDYROUTES, ROUTER);
 

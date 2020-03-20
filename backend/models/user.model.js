@@ -9,7 +9,8 @@ const userSchema = new Schema({
   password: String,
   image: String,
   hometown: String,
-
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 });
 
 const UserChar = mongoose.model("user", userSchema);
