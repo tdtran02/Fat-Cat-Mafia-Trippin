@@ -153,33 +153,29 @@ export class Home extends Component {
 
       elements.push(
         <div className="col-md-3 col-sm-6" key={i}>
+          <Card>
+            <Card.Header as="h5">
+              <Button onClick={e => { this.updateLocalTripInvite(e, list[i]) }} id="linkbtn" className="trip-fonts" style={{
+                textDecoration: "none",
+                backgroundColor: "transparent",
+                border: "none",
+                borderRadius: "20px",
+                color: "black"
+              }}>Invitation</Button>
+            </Card.Header>
+            <Card.Body>
+              <p className="trip_destination">{this.state.tripname}</p>
+              <p ><strong>STATUS: </strong> {this.state.status}</p>
+              <div className="trip-deletion" style={{ paddingBottom: "10px" }}> </div>
+            </Card.Body>
+          </Card>
           <div className="trip-card" style={{
             margin: "10px 10px 10px 10px"
           }}>
 
-            <div className="card-info" style={{ width: "150px", border: "solid black 3px", backgroundColor: "gray", borderRadius: "20px" }}>
 
-
-              <div className="trip-info" >
-
-                <h5>
-                  <Button onClick={e => { this.updateLocalTripInvite(e, list[i]) }} id="linkbtn" className="trip-fonts" style={{
-                    textDecoration: "none",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    borderRadius: "20px",
-                  }}>
-                    Invitation
-                  </Button>
-                </h5>
-                <p className="trip_destination">{this.state.tripname}</p>
-                <p style={{ color: "white" }}><strong>STATUS: </strong> {this.state.status}</p>
-                <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
-
-                </div>
-              </div>
-            </div>
           </div>
+
         </div>
 
       )
@@ -192,18 +188,45 @@ export class Home extends Component {
     let elements = [];
     for (let i = 0; i < list.length; i++) {
       elements.push(
-        <div className="col-md-3 col-sm-6" key={i}>
-          <div className="trip-card" style={{
+        <div className="col-md-4 col-sm-6" key={i}>
+          <Card style={{ border: "2px solid gray" }}>
+            <Card.Img variant="top" style={{ border: "2px solid gray" }} src={require("./images/trip_profile_photo.png")} />
+            <Card.Title as="h5" >
+              <Button id="linkbtn" onClick={e => { this.updateLocalTrip(e, list[i]) }} href={`/trip/${list[i]._id}`} className="trip-fonts" style={{
+                textDecoration: "none",
+                backgroundColor: "transparent",
+                border: "none",
+                borderRadius: "20px",
+                color: "black"
+              }}>
+                {list[i].trip_name}
+              </Button>
+            </Card.Title>
+            <Card.Body>
+              <p className="trip_destination" >{list[i].destination}</p>
+              <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
+
+              </div>
+            </Card.Body>
+            <Card.Footer>
+              <Button variant="info" href={`/trip/${list[i]._id}`} style={{ margin: "10px auto" }}>VIEW</Button>
+              <Button variant="warning" style={{ margin: "10px 5px" }}
+                onClick={e => { this.onDeleteFieldClick(e, i); }}>
+                Delete
+                    </Button>
+            </Card.Footer>
+          </Card>
+          {/* <div className="trip-card" style={{
             margin: "0 10px 10px 10px"
-          }}>
-            {/*<div
+            }}>
+            <div
               className="img-responsive cover"
               style={{
                 height: "100px",
                 width: "400px",
                 backgroundColor: "#6495ED"
               }}
-            ></div>*/}
+            ></div>
             <div className="card-info" style={{ width: "150px", border: "solid black 3px", backgroundColor: "gray", borderRadius: "20px" }}>
               {list[i].image ? (
                 <img
@@ -225,16 +248,7 @@ export class Home extends Component {
 
               <div className="trip-info" >
 
-                <h5>
-                  <Button id="linkbtn" onClick={e => { this.updateLocalTrip(e, list[i]) }} href={`/trip/${list[i]._id}`} className="trip-fonts" style={{
-                    textDecoration: "none",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    borderRadius: "20px",
-                  }}>
-                    {list[i].trip_name}
-                  </Button>
-                </h5>
+
                 <p className="trip_destination" style={{ color: "white" }}>{list[i].destination}</p>
                 <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
                   <Button className="ml-3" variant="info" style={{ marginLeft: "40px" }}
@@ -244,7 +258,7 @@ export class Home extends Component {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       );
     }
