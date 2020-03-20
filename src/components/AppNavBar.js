@@ -99,7 +99,7 @@ class AppNavBar extends Component {
     return (
       <div style={{ height: "100%" }}>
         <Router>
-          <Navbar color="dark" dark expand="sm">
+          <Navbar sticky="top" color="dark" dark expand="sm">
             <Container>
               <NavbarBrand href="/">
                 <img

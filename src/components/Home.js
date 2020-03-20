@@ -264,7 +264,18 @@ export class Home extends Component {
   render() {
     return (
 
-      <div className="image-container" style={{ height: "100%" }}>
+      <div className="image-container" style={{
+        height: "100%",
+        backgroundImage: "url(https://wallpapershome.com/images/pages/ico_h/17813.jpg)",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        overflow: "auto",
+        display: "flex"
+
+
+      }}>
         <div style={{ height: "100%", display: "flex" }}>
           <Card style={{
             height: "40%", margin: "3%", borderRadius: "5px",
