@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import "../styles/Home.css";
+//import "../styles/Home.css";
 import MyAccount from "./MyAccount.js";
 import Trip from "./Trip.js";
-import { ButtonToolbar, Button } from "react-bootstrap";
+import { ButtonToolbar, Button, Card } from "react-bootstrap";
 const AXIOS = require("axios").default;
 
 
@@ -253,7 +253,7 @@ export class Home extends Component {
         elements.push(
           <div
             className="col-md-3 col-sm-6"
-            style={{ minWidth: "400px" }}
+            style={{ minWidth: "200px" }}
             key={4 - i}
           ></div>
         );
@@ -263,29 +263,84 @@ export class Home extends Component {
   }
   render() {
     return (
-      <div>
-        <div className="content-container">
-          <div className="content-grid">
-            <div className=" main">
-              <div className="profile-container">
-                <div className="profile-pic-buffer">
-                  <div className="profilepic">
-                    <img
-                      className="responsive"
-                      src={require(`${this.state.image}`)}
-                      alt="city"
-                      width="100"
-                      height="80"
-                    />
-                  </div>
+
+      <div className="image-container" style={{ height: "100%" }}>
+        <div style={{ height: "100%", display: "flex" }}>
+          <Card style={{
+            height: "40%", margin: "3%", borderRadius: "5px",
+
+
+            border: "2px solid gray",
+            boxSizing: "border-box",
+            borderRadius: "20px",
+            boxShadow: "8px 8px 50px #000",
+            color: "#6c757d"
+          }}>
+            <Card.Body>
+              <div style={{ display: "flex" }}>
+                <img
+                  className="responsive"
+                  src={require(`${this.state.image}`)}
+                  alt="city"
+
+                />
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <label id="same-line">NAME: </label>
+                  <label>{`${this.state.first_name}`}
+
+                  </label>
+                  <label>{`${this.state.last_name}`}
+
+                  </label>
+                  <label id="same-line">HOMETOWN: </label>
+                  <label>{`${this.state.hometown}`}</label>
                 </div>
-                <div className="buffer"></div>
-                <div className="profile-text-buffer">
-                  <div className="edit-buffer">
+              </div>
+              <Button variant="primary" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
+              <Button variant="primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
+            </Card.Body>
+          </Card>
+          <div style={{ disply: "flex", flexDirection: "column", marginTop: "3%" }}>
+            <Card style={{
+              margin: "3%", borderRadius: "5px",
 
-                  </div>
 
-                  <form className="profile-text">
+              border: "2px solid gray",
+              boxSizing: "border-box",
+              borderRadius: "20px",
+              boxShadow: "8px 8px 50px #000",
+              color: "#6c757d"
+            }}>
+              <Card.Title style={{ padding: "10px" }}>TRIP INVITATIONS</Card.Title>
+              <Card.Body><div className="row">{this.state.invitation_list}</div></Card.Body>
+            </Card>
+            <Card style={{
+              margin: "3%", borderRadius: "5px",
+              border: "2px solid gray",
+              boxSizing: "border-box",
+              borderRadius: "20px",
+              boxShadow: "8px 8px 50px #000",
+              color: "#6c757d"
+            }}>
+              <Card.Title style={{ padding: "10px" }}>TRIPS</Card.Title>
+              <Card.Body><div className="row">{this.state.trip_list}</div></Card.Body>
+            </Card>
+          </div>
+
+          {/* <div className=" main">
+            <div className="profile-container">
+              <div className="profile-pic-buffer">
+                <div className="profilepic">
+
+                </div>
+              </div>
+              <div className="buffer"></div>
+               <div className="profile-text-buffer">
+                <div className="edit-buffer">
+
+                </div> 
+
+                 <form className="profile-text">
                     <div className="fullName" >
                       <label id="same-line">NAME: </label>
                       <label>{`${this.state.first_name}`}
@@ -301,27 +356,25 @@ export class Home extends Component {
                     </div>
 
 
-                    <div className="number-of-trips">Trips: 3</div>
-                    <div className="view-friends-list">View Frends Lists</div>
-                  </form>
-                </div>
+                  </form> 
               </div>
-              <div id="trips-container">
+            </div>
+             <div id="trips-container">
                 <ButtonToolbar>
                   <Button variant="primary" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
                   <Button variant="primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
                 </ButtonToolbar>
-              </div>
-              <div className="trip-invitations">
+              </div> 
+             <div className="trip-invitations">
                 <label>TRIP INVITATIONS</label>
                 <div className="row">{this.state.invitation_list}</div>
               </div>
               <div className="trip-list">
                 <label>YOUR TRIPS</label>
                 <div className="row">{this.state.trip_list}</div>
-              </div>
-            </div>
-            <div className="side-pic-container">
+              </div> 
+          </div>
+           <div className="side-pic-container">
               <img
                 className="responsive side-pic"
                 src={require("./images/city.png")}
@@ -329,10 +382,10 @@ export class Home extends Component {
                 width="100"
                 height="80"
               />
-            </div>
-          </div>
+            </div>  */}
         </div>
       </div>
+
     );
   }
 }
