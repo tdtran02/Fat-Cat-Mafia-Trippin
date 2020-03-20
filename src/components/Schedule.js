@@ -31,6 +31,7 @@ class Schedule extends Component {
       days: [],
       days_elements: [],
       daylist: [],
+      days_miles: [],
       loading: true
     };
     this.onDragEnd = this.onDragEnd.bind(this);
@@ -39,6 +40,7 @@ class Schedule extends Component {
   componentDidMount() {
     AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
       .then(res => {
+        this.setState({ days_miles: res.data.trip.days_miles });
         this.setState({ trip_locations: res.data.trip.trip_locations });
         this.setState({
           trip_location_elements: this.getUserLocationsDroppable(
@@ -49,7 +51,6 @@ class Schedule extends Component {
         this.setState({
           days_elements: this.getDaysDroppable(this.state.days)
         });
-
         this.setState({ loading: false });
       })
       .catch(err => {
@@ -65,6 +66,7 @@ class Schedule extends Component {
       trip_locations: this.state.trip_locations
     })
       .then(res => {
+        this.setState({ days_miles: res.data.trip.days_miles });
         this.setState({ trip_locations: res.data.trip.trip_locations });
         this.setState({
           trip_location_elements: this.getUserLocationsDroppable(
@@ -98,7 +100,7 @@ class Schedule extends Component {
               <div className="card">
                 <div className="row no-gutters">
                   <div
-                    class="col-auto"
+                    className="col-auto"
                     style={{
                       marginTop: "8px",
                       marginLeft: "8px"
@@ -106,7 +108,7 @@ class Schedule extends Component {
                   >
                     <img
                       src={list[i].image_url}
-                      class="img-fluid"
+                      className="img-fluid"
                       alt=""
                       style={{
                         height: "40px",
@@ -265,7 +267,24 @@ class Schedule extends Component {
                     }}
                   >
                     Day {i + 1}
+                    {this.state.days_miles &&
+                    this.state.days_miles.length != 0 &&
+                    this.state.days_miles[i] != 0 ? (
+                      <span
+                        style={{
+                          float: "right",
+                          marginRight: "20px",
+                          fontSize: "12px",
+                          paddingTop: "5px"
+                        }}
+                      >
+                        {this.state.days_miles[i].toFixed(2) + " miles"}
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </div>
+
                   {this.state.days[i].map((item, index) => (
                     <Draggable
                       key={item.id}
@@ -282,7 +301,7 @@ class Schedule extends Component {
                           <div className="card">
                             <div className="row no-gutters">
                               <div
-                                class="col-auto"
+                                className="col-auto"
                                 style={{
                                   marginTop: "8px",
                                   marginLeft: "8px"
@@ -290,7 +309,7 @@ class Schedule extends Component {
                               >
                                 <img
                                   src={item.image_url}
-                                  class="img-fluid"
+                                  className="img-fluid"
                                   alt=""
                                   style={{
                                     height: "40px",
@@ -359,7 +378,6 @@ class Schedule extends Component {
   }
 
   onDragEnd = result => {
-    console.log(result);
     if (result.destination == null) {
       return;
     }
@@ -373,7 +391,6 @@ class Schedule extends Component {
         0,
         this.state.trip_locations.splice(result.source.index, 1)[0]
       );
-      console.log(this.state.trip_locations);
       this.setState({
         trip_location_elements: this.getUserLocationsDroppable(
           this.createList(this.state.trip_locations)
@@ -443,20 +460,20 @@ class Schedule extends Component {
 
   render() {
     const LoadingBar = (
-      <div id="cupcake" class="box">
-        <span class="letter">L</span>
+      <div id="cupcake" className="box">
+        <span className="letter">L</span>
 
-        <div class="cupcakeCircle box">
-          <div class="cupcakeInner box">
-            <div class="cupcakeCore box"></div>
+        <div className="cupcakeCircle box">
+          <div className="cupcakeInner box">
+            <div className="cupcakeCore box"></div>
           </div>
         </div>
 
-        <span class="letter box">A</span>
-        <span class="letter box">D</span>
-        <span class="letter box">I</span>
-        <span class="letter box">N</span>
-        <span class="letter box">G</span>
+        <span className="letter box">A</span>
+        <span className="letter box">D</span>
+        <span className="letter box">I</span>
+        <span className="letter box">N</span>
+        <span className="letter box">G</span>
       </div>
     );
     return (

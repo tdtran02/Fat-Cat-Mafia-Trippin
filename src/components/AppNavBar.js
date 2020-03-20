@@ -19,6 +19,7 @@ import Trip from "./Trip";
 import Friends from "./Friends";
 import TRIPPIN from "./Trippin";
 import CurrentTrip from "./CurrentTrip";
+import Spending from "./Spending";
 import { DropdownButton } from "react-bootstrap";
 import Recommendation from "./Recommendation";
 import ForgotPassword from "./ForgotPassword";
@@ -129,6 +130,7 @@ class AppNavBar extends Component {
               exact
               component={Recommendation}
             ></Route>
+            <Route path="/trip/:id/spending" exact component={Spending}></Route>
             <Route path="/trip/:id" exact component={CurrentTrip}></Route>
             <Route path="/trip">
               <Trip />
@@ -161,6 +163,7 @@ class AppNavBar extends Component {
             <Route path="/home">
               <Home />
             </Route>
+
             <Route path="/">
               <TRIPPIN />
             </Route>

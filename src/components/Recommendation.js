@@ -375,32 +375,34 @@ class Recommendation extends React.Component {
             ) : (
               ""
             )}
-            {this.state.trip_location_elements.length != 0 ? (
-              <div
-                style={{
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: "20px",
-                  fontWeight: "normal",
-                  margin: "30px auto 15px auto",
-                  width: "80%"
-                }}
-              >
-                <span>My Trip Locations</span>
-                <a
-                  style={{
-                    fontSize: "12px",
 
-                    marginTop: "10px",
-                    float: "right"
-                  }}
-                  href="./schedule"
-                >
-                  Arrange Trip Schedule
-                </a>
-              </div>
-            ) : (
-              ""
-            )}
+            <div
+              style={{
+                fontFamily: "Roboto, sans-serif",
+                fontSize: "20px",
+                fontWeight: "normal",
+                margin: "30px auto 15px auto",
+                width: "80%"
+              }}
+            >
+              {this.state.trip_location_elements.length != 0 ? (
+                <span>My Trip Locations</span>
+              ) : (
+                ""
+              )}
+              <a
+                style={{
+                  fontSize: "12px",
+
+                  marginTop: "10px",
+                  float: "right"
+                }}
+                href="./schedule"
+              >
+                Arrange Trip Schedule
+              </a>
+            </div>
+
             {this.state.trip_location_elements.length != 0 ? (
               <Slider
                 className="placeholderhere"
