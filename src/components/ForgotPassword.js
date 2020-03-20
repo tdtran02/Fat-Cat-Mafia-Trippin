@@ -26,7 +26,7 @@ class ForgotPassword extends Component {
   sendEmail = async (e) => {
     e.preventDefault();
     const { email } = this.state;
-    if (email == "") {
+    if (email === "") {
       this.setState({
         showError: false,
         messageFromServer: "",
@@ -41,7 +41,7 @@ class ForgotPassword extends Component {
           },
         );
         console.log(response.data);
-        if (response.data == "recovery email sent") {
+        if (response.data === "recovery email sent") {
           this.setState({
             showError: false,
             messageFromServer: "recovery email sent",
@@ -50,7 +50,7 @@ class ForgotPassword extends Component {
         }
       } catch (error) {
         console.error(error.response.data);
-        if (error.response.data == 'email not in db') {
+        if (error.response.data === "email not in db") {
           this.setState({
             showError: true,
             messageFromServer: "",
@@ -96,7 +96,7 @@ class ForgotPassword extends Component {
             <Link to="/register">Register</Link>
           </div>
         )}
-        {this.state.messageFromServer == "recovery email sent" && (
+        {this.state.messageFromServer === "recovery email sent" && (
           <div>
             <h3>Password Reset Email Successfully Sent!</h3>
           </div>
