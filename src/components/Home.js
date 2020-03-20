@@ -173,7 +173,7 @@ export class Home extends Component {
                   </Button>
                 </h5>
                 <p className="trip_destination">{this.state.tripname}</p>
-                <p><strong>STATUS: </strong> {this.state.status}</p>
+                <p style={{ color: "white" }}><strong>STATUS: </strong> {this.state.status}</p>
                 <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
 
                 </div>
@@ -235,7 +235,7 @@ export class Home extends Component {
                     {list[i].trip_name}
                   </Button>
                 </h5>
-                <p className="trip_destination">{list[i].destination}</p>
+                <p className="trip_destination" style={{ color: "white" }}>{list[i].destination}</p>
                 <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
                   <Button className="ml-3" variant="info" style={{ marginLeft: "40px" }}
                     onClick={e => { this.onDeleteFieldClick(e, i); }}>
@@ -276,9 +276,9 @@ export class Home extends Component {
 
 
       }}>
-        <div style={{ height: "100%", display: "flex" }}>
+        <div style={{ height: "100%", display: "flex", width: "100%" }}>
           <Card style={{
-            height: "40%", margin: "3%", borderRadius: "5px",
+            height: "70%", margin: "3%", borderRadius: "5px",
 
 
             border: "2px solid gray",
@@ -288,41 +288,40 @@ export class Home extends Component {
             color: "#6c757d"
           }}>
             <Card.Body>
-              <div style={{ display: "flex" }}>
-                <img
-                  className="responsive"
-                  src={require(`${this.state.image}`)}
-                  alt="city"
 
-                />
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <label id="same-line">NAME: </label>
-                  <label>{`${this.state.first_name}`}
+              <img
+                className="responsive"
+                src={require(`${this.state.image}`)}
+                alt="city"
 
-                  </label>
-                  <label>{`${this.state.last_name}`}
+              />
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <label id="same-line">NAME: </label>
+                <label>{`${this.state.first_name}  ${this.state.last_name}`}
 
-                  </label>
-                  <label id="same-line">HOMETOWN: </label>
-                  <label>{`${this.state.hometown}`}</label>
-                </div>
+                </label>
+                <label>{``}
+
+                </label>
+                <label id="same-line">HOMETOWN: </label>
+                <label>{`${this.state.hometown}`}</label>
+
               </div>
-              <Button variant="primary" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
-              <Button variant="primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
+              <Button style={{ margin: "5px auto" }} variant="primary" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
+              <Button style={{ margin: "5px auto" }} variant="primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
             </Card.Body>
           </Card>
-          <div style={{ disply: "flex", flexDirection: "column", marginTop: "3%" }}>
+          <div style={{ disply: "flex", flexDirection: "column", marginTop: "3%", width: "50%" }}>
             <Card style={{
-              margin: "3%", borderRadius: "5px",
-
-
+              margin: "3%",
+              borderRadius: "5px",
               border: "2px solid gray",
               boxSizing: "border-box",
               borderRadius: "20px",
               boxShadow: "8px 8px 50px #000",
               color: "#6c757d"
             }}>
-              <Card.Title style={{ padding: "10px" }}>TRIP INVITATIONS</Card.Title>
+              <Card.Header as="h3" style={{ padding: "10px" }}>TRIP INVITATIONS</Card.Header>
               <Card.Body><div className="row">{this.state.invitation_list}</div></Card.Body>
             </Card>
             <Card style={{
@@ -333,7 +332,7 @@ export class Home extends Component {
               boxShadow: "8px 8px 50px #000",
               color: "#6c757d"
             }}>
-              <Card.Title style={{ padding: "10px" }}>TRIPS</Card.Title>
+              <Card.Header as="h3" style={{ padding: "10px" }}>TRIPS</Card.Header>
               <Card.Body><div className="row">{this.state.trip_list}</div></Card.Body>
             </Card>
           </div>
