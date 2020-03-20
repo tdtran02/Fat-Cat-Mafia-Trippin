@@ -76,22 +76,29 @@ QUESTIONROUTES.route("/question/searchlocation").post((req, res) => {
             location: questions.destination
           })
           .then(response => {
-            console.log(response.jsonBody.businesses);
             b = response.jsonBody.businesses;
 
             return TRIP.findOne({ _id: req.body.trip_id });
           })
           .then(res1 => {
-            for (let i = 0; i < b.length; i++) {
-              for (let j = 0; j < res1.trip_locations.length; j++) {
-                if (b[i] == undefined) {
+            let all_locations = res1.trip_locations;
+            for (let i = 0; i < res1.days.length; i++) {
+              all_locations = all_locations.concat(res1.days[i]);
+            }
+
+            for (let i = 0; i < all_locations.length; i++) {
+              for (let j = 0; j < b.length; j++) {
+                if (all_locations[i] == undefined) {
                   break;
                 }
-                if (b[i].id == res1.trip_locations[j].id) {
-                  b.splice(i, 1);
+
+                if (all_locations[i].id == b[j].id) {
+                  b.splice(j, 1);
+                  break;
                 }
               }
             }
+
             res.status(200).json({
               questions: questions,
               recs: b,

@@ -1,0 +1,4 @@
+.item:hover .delete {
+  cursor: pointer;
+  /* display: inline-block; */
+}

@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 backend/config_url.js
+backend/config_google.js
 backend/config_yelp.js
 backend/sender.js
 backend/config_stub.js
