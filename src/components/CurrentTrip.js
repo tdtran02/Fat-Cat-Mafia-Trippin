@@ -1,10 +1,9 @@
-import React, { Component, Item } from "react";
-import { Card, FormControl, InputGroup, Form, ListGroup, ButtonToolbar } from "react-bootstrap";
+import React, { Component } from "react";
+import { Card, FormControl, InputGroup, Form, ListGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
 import AXIOS from "axios";
-import { CreatePost } from './CreatePost';
 
 
 
@@ -54,18 +53,52 @@ class CurrentTrip extends Component {
               localStorage.setItem('invitation', JSON.stringify(invitations[i]));
             }
 
+
           }
         }
       }).catch(err => {
         console.log(err);
       })
 
+    if (JSON.parse(localStorage.getItem('trip')).buddies[0] != null) {
+      let buddies = JSON.parse(localStorage.getItem('trip')).buddies;
+      let buddyarray = [];
+      for (let i = 0; i < buddies.length; i++) {
+        AXIOS.get('http://localhost:4000/user/' + buddies[i])
+          .then(response => {
+            console.log(response);
+            buddyarray.push(response.data.user);
+            // this.getTripBuddy(response.data.user.first_name)
+          }).catch(err => {
+            console.log(err);
+          })
+      }
+      this.setState({ acceptedInvitations: this.getTripBuddies(buddyarray) });
+
+    }
 
 
   }
 
-  createInvitation() {
+  getTripBuddies(buddyarray) {
+    let buddycardarray = []
+    for (let i = 0; i < buddyarray.length; i++) {
+      console.log(buddyarray[i]);
+      buddycardarray.push(
+        <div>
+          <Card style={{ margin: "50px auto 0 auto", width: "500px", border: "3px solid gray", borderRadius: "20px" }}>
+            <Card.Body>
+              <div>TEST</div>
+            </Card.Body>
+          </Card>
+        </div>
 
+      )
+    }
+    return buddycardarray;
+  }
+
+  createInvitation() {
     return (
       <Card style={{ margin: "50px auto 0 auto", width: "500px", border: "3px solid gray", borderRadius: "20px" }}>
         <Card.Header>YOU'VE BEEN INVITED TO THIS AWESOME TRIP!</Card.Header>
@@ -385,6 +418,7 @@ class CurrentTrip extends Component {
                       <Card.Title><i className="fas fa-plane-departure"></i>  {this.state.start}</Card.Title>
                       <Card.Title><i className="fas fa-plane-arrival"></i>  {this.state.end}</Card.Title>
                       <Card.Title style={{ marginTop: "50px" }}>TRAVEL BUDDIES:</Card.Title>
+                      <div >{this.state.acceptedInvitations}</div>
                       <InputGroup >
                         <FormControl id="buddyemail"
                           placeholder="username"

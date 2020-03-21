@@ -153,7 +153,7 @@ export class Home extends Component {
 
       elements.push(
         <div className="col-md-3 col-sm-6" key={i}>
-          <Card>
+          <Card style={{ minWidth: "150px" }}>
             <Card.Header as="h5">
               <Button onClick={e => { this.updateLocalTripInvite(e, list[i]) }} id="linkbtn" className="trip-fonts" style={{
                 textDecoration: "none",

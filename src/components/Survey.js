@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Modal, Button, Row, Col, Form, ButtonToolbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { Alert } from "react-bootstrap";
+import { Modal, Button, ButtonToolbar } from "react-bootstrap";
+/* import { Link } from "react-router-dom";
+import { Alert } from "react-bootstrap"; */
 
 const AXIOS = require("axios").default;
 export class Survey extends Component {
