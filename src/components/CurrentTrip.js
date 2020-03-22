@@ -118,7 +118,7 @@ class CurrentTrip extends Component {
         <Card.Body >
           <div style={{ margin: "0 auto", display: "flex", alignContent: "center" }}>
             <Button style={{ marginRight: "20px" }} onClick={this.acceptInvitation} variant="primary">ACCEPT</Button>
-            <Button style={{ marginLeft: "20px" }} variant="secondary">DECLINE</Button>
+            <Button style={{ marginLeft: "20px" }} onClick={this.declineInvitation} variant="secondary">DECLINE</Button>
           </div>
         </Card.Body>
       </Card>
@@ -153,6 +153,23 @@ class CurrentTrip extends Component {
       .catch(err => console.log(err));
 
     window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
+  }
+
+  declineInvitation() {
+    let buddyyy = JSON.parse(localStorage.getItem('invitation'));
+    let newtripbuddy = {
+      owner_id: buddyyy.owner_id,
+      trip_id: buddyyy.trip_id,
+      buddy_id: buddyyy._id,
+      accepted: false,
+      denied: true,
+      pending: false
+    }
+    console.log(newtripbuddy);
+    AXIOS.put('http://localhost:4000/buddypending/' + buddyyy._id, newtripbuddy)
+      .then(res => console.log(res.data))
+      .catch(err => { console.log(err) });
+    window.location = "/Home";
   }
 
   createPostCards(list) {

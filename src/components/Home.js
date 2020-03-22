@@ -155,36 +155,36 @@ export class Home extends Component {
         }
       }
 
+      if (list[i].denied == false) {
+        elements.push(
+          <div className="col-md-3 col-sm-6" key={i}>
+            <Card style={{ minWidth: "150px" }}>
+              <Card.Header as="h5">
+                <Button onClick={e => { this.updateLocalTripInvite(e, list[i]) }} id="linkbtn" className="trip-fonts" style={{
+                  textDecoration: "none",
+                  backgroundColor: "transparent",
+                  border: "none",
+                  borderRadius: "20px",
+                  color: "black"
+                }}>Invitation</Button>
+              </Card.Header>
+              <Card.Body>
+                <p className="trip_destination">{this.state.tripname}</p>
+                <p ><strong>STATUS: </strong> {this.state.status}</p>
+                <div className="trip-deletion" style={{ paddingBottom: "10px" }}> </div>
+              </Card.Body>
+            </Card>
+            <div className="trip-card" style={{
+              margin: "10px 10px 10px 10px"
+            }}>
 
-      elements.push(
-        <div className="col-md-3 col-sm-6" key={i}>
-          <Card style={{ minWidth: "150px" }}>
-            <Card.Header as="h5">
-              <Button onClick={e => { this.updateLocalTripInvite(e, list[i]) }} id="linkbtn" className="trip-fonts" style={{
-                textDecoration: "none",
-                backgroundColor: "transparent",
-                border: "none",
-                borderRadius: "20px",
-                color: "black"
-              }}>Invitation</Button>
-            </Card.Header>
-            <Card.Body>
-              <p className="trip_destination">{this.state.tripname}</p>
-              <p ><strong>STATUS: </strong> {this.state.status}</p>
-              <div className="trip-deletion" style={{ paddingBottom: "10px" }}> </div>
-            </Card.Body>
-          </Card>
-          <div className="trip-card" style={{
-            margin: "10px 10px 10px 10px"
-          }}>
 
+            </div>
 
           </div>
 
-        </div>
-
-      )
-
+        )
+      }
     }
     return elements;
   }
