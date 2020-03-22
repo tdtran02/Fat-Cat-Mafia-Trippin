@@ -3,29 +3,46 @@ const TRIPBUDDYROUTES = EXPRESS.Router();
 const TRIPBUDDY = require("../models/tripbuddy.model");
 
 TRIPBUDDYROUTES.route("/buddy").post(function (req, res) {
-    const B = new TRIPBUDDY({
-        owner_id: req.body.owner_id,
-        trip_id: req.body.trip_id,
-        buddy_id: req.body.buddy_id,
-        accepted: req.body.accepted,
-        denied: req.body.denied,
-        pending: req.body.pending
-    })
-    B.save().then(x => {
-        console.log(x);
-        res.status(200).json({
-            saved: true,
-            response_message: "TripBuddy created!",
-            tripbuddy: x
-        });
+    TRIPBUDDY.findOne({ trip_id: req.body.trip_id, buddy_id: req.body.buddy_id }).then(tripbuddy => {
+        if (tripbuddy != null) {
+            res.status(200).json({
+                response: "That User has already been invited"
+            });
+        } else {
+            const B = new TRIPBUDDY({
+                owner_id: req.body.owner_id,
+                trip_id: req.body.trip_id,
+                buddy_id: req.body.buddy_id,
+                buddy_first_name: req.body.buddy_first_name,
+                buddy_last_name: req.body.buddy_last_name,
+                buddy_picture: req.body.buddy_picture,
+                accepted: req.body.accepted,
+                denied: req.body.denied,
+                pending: req.body.pending
+
+            })
+
+            B.save().then(x => {
+                console.log(x);
+                res.status(200).json({
+                    saved: true,
+                    response_message: "TripBuddy created!",
+                    tripbuddy: x
+                });
+            }).catch(err => {
+                console.log(err);
+                res.status(200).json({
+                    saved: false,
+                    response_message: "Creating TripBuddy failed!",
+                    tripbuddy: null
+                });
+            });
+        }
     }).catch(err => {
         console.log(err);
-        res.status(200).json({
-            saved: false,
-            response_message: "Creating TripBuddy failed!",
-            tripbuddy: null
-        });
-    });
+    })
+
+
 });
 
 TRIPBUDDYROUTES.route("/buddy/:trip_id").get(function (req, res) {
@@ -83,6 +100,23 @@ TRIPBUDDYROUTES.route("/buddy").get(function (req, res) {
         }
     });
 });
+
+TRIPBUDDYROUTES.route("/buddy/:id").delete(function (req, res) {
+    TRIPBUDDY.deleteMany({ trip_id: req.params.id })
+        .then(tripbuddy => {
+            if (tripbuddy != null) {
+                res.status(200).json({
+                    response_message: "Travel Buddies removed",
+                    tripbuddy: tripbuddy
+                });
+            } else {
+                res.status(400).json({
+                    tripbuddy: null
+                })
+            }
+        })
+})
+
 
 
 

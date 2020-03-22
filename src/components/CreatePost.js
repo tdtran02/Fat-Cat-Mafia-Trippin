@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, Button, Form, FormGroup, Input } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 
 const AXIOS = require("axios").default;
 
