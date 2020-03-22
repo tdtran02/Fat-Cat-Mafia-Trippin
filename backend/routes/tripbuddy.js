@@ -6,7 +6,8 @@ TRIPBUDDYROUTES.route("/buddy").post(function (req, res) {
     TRIPBUDDY.findOne({ trip_id: req.body.trip_id, buddy_id: req.body.buddy_id }).then(tripbuddy => {
         if (tripbuddy != null) {
             res.status(200).json({
-                response: "That User has already been invited"
+                response: "That User has already been invited",
+                saved: true
             });
         } else {
             const B = new TRIPBUDDY({

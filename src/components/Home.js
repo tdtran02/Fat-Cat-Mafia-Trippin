@@ -97,6 +97,11 @@ export class Home extends Component {
       .catch(err => {
         console.error(err);
       })
+
+    AXIOS.delete("http://localhost:4000/buddy/" + OneTrip._id)
+      .then(res => {
+
+      }).catch(err => { console.log(err); })
   }
 
   updateLocalTrip(e, i) {

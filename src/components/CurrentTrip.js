@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, FormControl, InputGroup, Form, ListGroup } from "react-bootstrap";
+import { Card, FormControl, InputGroup, Form, ListGroup, Alert } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
@@ -20,7 +20,10 @@ class CurrentTrip extends Component {
       user_id: "",
       comment: "",
       comment_date: "",
-      user: {}
+      user: {},
+      invitation_boolean: false,
+      invitation_sent_msg: "",
+      invitation_sent_variant: ""
     };
   }
 
@@ -296,11 +299,11 @@ class CurrentTrip extends Component {
   };
 
   getBuddyId() {
-
-    let self = this;
+    //let self = this;
     AXIOS.get("http://localhost:4000/useremail/" + document.getElementById('buddyemail').value)
       .then(response => {
         let buddy = response.data.user;
+        console.log(response);
         const buddyinfo = {
           owner_id: JSON.parse(localStorage.getItem("user"))._id,
           trip_id: JSON.parse(localStorage.getItem("trip"))._id,
@@ -313,14 +316,27 @@ class CurrentTrip extends Component {
           pending: true
         }
         AXIOS.post('http://localhost:4000/buddy', buddyinfo)
-          .then(res => {
-            console.log(res);
+          .then(response => {
+
+            this.setState({ invitation_boolean: true });
+            console.log(this.state.invitation_boolean);
+            if (response.data.saved) {
+              this.setState({
+                invitation_sent: true,
+                invitation_variant: "success",
+                invitation_sent_msg: "Invitation was sent!"
+              });
+            } else {
+              this.setState({
+                invitation_variant: "warning",
+                invitation_sent_msg: "Error occured"
+              });
+            }
           }).catch(err => {
             console.log(err);
           })
-      }).catch(err => {
-        console.log(err);
       })
+      .catch(err => { console.log(err); })
 
   }
 
@@ -330,10 +346,12 @@ class CurrentTrip extends Component {
       owner_id: JSON.parse(localStorage.getItem("user"))._id,
       trip_id: JSON.parse(localStorage.getItem("trip"))._id,
       buddy_id: buddyid
+
     }
     AXIOS.post('http://localhost:4000/buddy', buddy)
-      .then(res => {
-        console.log(res);
+      .then(response => {
+
+
       }).catch(err => {
         console.log(err);
       })
@@ -443,6 +461,16 @@ class CurrentTrip extends Component {
                           <Button variant="outline-success" onClick={this.getBuddyId}>INVITE</Button>
                         </InputGroup.Append>
                       </InputGroup>
+                      {this.state.invitation_boolean ? (
+                        <Alert
+                          variant={this.state.invitation_sent_variant}
+                          style={{ marginBottom: "0", marginTop: "6px" }}
+                        >
+                          {this.state.invitation_sent_msg}
+                        </Alert>
+                      ) : (
+                          ""
+                        )}
                     </Card.Body>
                   </Card>
 
