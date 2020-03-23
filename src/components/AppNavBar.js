@@ -158,7 +158,8 @@ class AppNavBar extends Component {
             </Route> */}
             <Route exact path='/resetPassword/:token' component={ResetPassword} />
             <Route path="/updatePasswordViaEmail">
-
+            </Route>
+            <Route path="/tripbuddy">
             </Route>
             <Route path="/home">
               <Home />
