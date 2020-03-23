@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 const AXIOS = require("axios").default;
 
@@ -31,7 +31,7 @@ class Register extends Component {
 
   displayRegister = e => {
     e.preventDefault();
-    if (this.state.confirmed_password != this.state.password) {
+    if (this.state.confirmed_password !== this.state.password) {
       this.setState({ show_message: true });
       return;
     }
@@ -50,7 +50,7 @@ class Register extends Component {
           this.setState({ show_message: true });
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   };

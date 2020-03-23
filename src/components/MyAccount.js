@@ -170,11 +170,11 @@ export class MyAccount extends Component {
                     <form id="update" onSubmit={this.handleSubmit}>
                       <h2>EDIT PROFILE</h2>
                       <label htmlFor="full-name">FIRST NAME</label>
-                      <input type="text" className="myA" id="myA-firstname" />
+                      <input type="text" className="myA" id="myA-firstname" style={{ height: "25px" }} />
                       <label htmlFor="full-name">LAST NAME</label>
-                      <input type="text" className="myA" id="myA-lastname" />
+                      <input type="text" className="myA" id="myA-lastname" style={{ height: "25px" }} />
                       <label htmlFor="full-name">HOMETOWN</label>
-                      <input type="text" className="myA" id="myA-hometown" />
+                      <input type="text" className="myA" id="myA-hometown" style={{ height: "25px" }} />
                       {/* <button>UPDATE</button> */}
 
                       {/*  <label htmlFor="email">EMAIL</label>

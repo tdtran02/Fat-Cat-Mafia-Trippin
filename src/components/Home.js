@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import "../styles/Home.css";
+//import "../styles/Home.css";
 import MyAccount from "./MyAccount.js";
 import Trip from "./Trip.js";
-import { ButtonToolbar, Button } from "react-bootstrap";
+import { ButtonToolbar, Button, Card } from "react-bootstrap";
 const AXIOS = require("axios").default;
 
 
@@ -97,6 +97,11 @@ export class Home extends Component {
       .catch(err => {
         console.error(err);
       })
+
+    AXIOS.delete("http://localhost:4000/buddy/" + OneTrip._id)
+      .then(res => {
+
+      }).catch(err => { console.log(err); })
   }
 
   updateLocalTrip(e, i) {
@@ -128,37 +133,58 @@ export class Home extends Component {
   createInvitations(list) {
     let elements = [];
     for (let i = 0; i < list.length; i++) {
-      console.log(list[i]);
-      elements.push(
-        <div className="col-md-3 col-sm-6" key={i}>
-          <div className="trip-card" style={{
-            margin: "10px 10px 10px 10px"
-          }}>
+      console.log(list[i].trip_id);
+      AXIOS.get('http://localhost:4000/trip/' + list[i].trip_id)
+        .then(response => {
+          console.log(response);
+          console.log(response.data.trip_name);
+          this.setState({ tripname: response.data.trip_name });
+        }).catch(err => {
+          console.log(err);
+        })
 
-            <div className="card-info" style={{ width: "150px", border: "solid black 3px", backgroundColor: "gray", borderRadius: "20px" }}>
+      if (list[i].pending == true) {
+        this.setState({ status: "PENDING" });
+      }
+      else {
+        if (list[i].accepted == true) {
+          this.setState({ status: "ACCEPTED" });
+        }
+        else {
+          this.setState({ status: "DECLINED" });
+        }
+      }
+
+      if (list[i].denied == false) {
+        elements.push(
+          <div className="col-md-3 col-sm-6" key={i}>
+            <Card style={{ minWidth: "150px" }}>
+              <Card.Header as="h5">
+                <Button onClick={e => { this.updateLocalTripInvite(e, list[i]) }} id="linkbtn" className="trip-fonts" style={{
+                  textDecoration: "none",
+                  backgroundColor: "transparent",
+                  border: "none",
+                  borderRadius: "20px",
+                  color: "black"
+                }}>Invitation</Button>
+              </Card.Header>
+              <Card.Body>
+                <p className="trip_destination">{this.state.tripname}</p>
+                <p ><strong>STATUS: </strong> {this.state.status}</p>
+                <div className="trip-deletion" style={{ paddingBottom: "10px" }}> </div>
+              </Card.Body>
+            </Card>
+            <div className="trip-card" style={{
+              margin: "10px 10px 10px 10px"
+            }}>
 
 
-              <div className="trip-info" >
-
-                <h5>
-                  <Button onClick={e => { this.updateLocalTripInvite(e, list[i]) }} id="linkbtn" className="trip-fonts" style={{
-                    textDecoration: "none",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    borderRadius: "20px",
-                  }}>
-                    Invitation
-                  </Button>
-                </h5>
-                <p className="trip_destination">{list[i].owner_id}{this.getUserEmail(list[i])}</p>
-                <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
-
-                </div>
-              </div>
             </div>
+
           </div>
-        </div>
-      )
+
+        )
+      }
     }
     return elements;
   }
@@ -167,18 +193,45 @@ export class Home extends Component {
     let elements = [];
     for (let i = 0; i < list.length; i++) {
       elements.push(
-        <div className="col-md-3 col-sm-6" key={i}>
-          <div className="trip-card" style={{
+        <div className="col-md-4 col-sm-6" key={i}>
+          <Card style={{ border: "2px solid gray" }}>
+            <Card.Img variant="top" style={{ border: "2px solid gray" }} src={require("./images/trip_profile_photo.png")} />
+            <Card.Title as="h5" >
+              <Button id="linkbtn" onClick={e => { this.updateLocalTrip(e, list[i]) }} href={`/trip/${list[i]._id}`} className="trip-fonts" style={{
+                textDecoration: "none",
+                backgroundColor: "transparent",
+                border: "none",
+                borderRadius: "20px",
+                color: "black"
+              }}>
+                {list[i].trip_name}
+              </Button>
+            </Card.Title>
+            <Card.Body>
+              <p className="trip_destination" >{list[i].destination}</p>
+              <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
+
+              </div>
+            </Card.Body>
+            <Card.Footer>
+              <Button variant="info" href={`/trip/${list[i]._id}`} style={{ margin: "10px auto" }}>VIEW</Button>
+              <Button variant="warning" style={{ margin: "10px 5px" }}
+                onClick={e => { this.onDeleteFieldClick(e, i); }}>
+                Delete
+                    </Button>
+            </Card.Footer>
+          </Card>
+          {/* <div className="trip-card" style={{
             margin: "0 10px 10px 10px"
-          }}>
-            {/*<div
+            }}>
+            <div
               className="img-responsive cover"
               style={{
                 height: "100px",
                 width: "400px",
                 backgroundColor: "#6495ED"
               }}
-            ></div>*/}
+            ></div>
             <div className="card-info" style={{ width: "150px", border: "solid black 3px", backgroundColor: "gray", borderRadius: "20px" }}>
               {list[i].image ? (
                 <img
@@ -200,17 +253,8 @@ export class Home extends Component {
 
               <div className="trip-info" >
 
-                <h5>
-                  <Button id="linkbtn" onClick={e => { this.updateLocalTrip(e, list[i]) }} href={`/trip/${list[i]._id}`} className="trip-fonts" style={{
-                    textDecoration: "none",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    borderRadius: "20px",
-                  }}>
-                    {list[i].trip_name}
-                  </Button>
-                </h5>
-                <p className="trip_destination">{list[i].destination}</p>
+
+                <p className="trip_destination" style={{ color: "white" }}>{list[i].destination}</p>
                 <div className="trip-deletion" style={{ paddingBottom: "10px" }}>
                   <Button className="ml-3" variant="info" style={{ marginLeft: "40px" }}
                     onClick={e => { this.onDeleteFieldClick(e, i); }}>
@@ -219,7 +263,7 @@ export class Home extends Component {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       );
     }
@@ -228,7 +272,7 @@ export class Home extends Component {
         elements.push(
           <div
             className="col-md-3 col-sm-6"
-            style={{ minWidth: "400px" }}
+            style={{ minWidth: "200px" }}
             key={4 - i}
           ></div>
         );
@@ -238,31 +282,94 @@ export class Home extends Component {
   }
   render() {
     return (
-      <div>
-        <div className="content-container">
-          <div className="content-grid">
-            <div className=" main">
-              <div className="profile-container">
-                <div className="profile-pic-buffer">
-                  <div className="profilepic">
-                    <img
-                      className="responsive"
-                      src={require(`${this.state.image}`)}
-                      alt="city"
-                      width="100"
-                      height="80"
-                    />
-                  </div>
-                </div>
-                <div className="buffer"></div>
-                <div className="profile-text-buffer">
-                  <div className="edit-buffer">
-                    <a className="edit" href="./MyAccount">
-                      EDIT
-                                        </a>
-                  </div>
 
-                  <form className="profile-text">
+      <div className="image-container" style={{
+        height: "100%",
+        backgroundImage: "url(https://wallpapershome.com/images/pages/ico_h/17813.jpg)",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        overflow: "auto",
+        display: "flex"
+
+
+      }}>
+        <div style={{ height: "100%", display: "flex", width: "100%" }}>
+          <Card style={{
+            height: "70%", margin: "3%", borderRadius: "5px",
+
+
+            border: "2px solid gray",
+            boxSizing: "border-box",
+            borderRadius: "20px",
+            boxShadow: "8px 8px 50px #000",
+            color: "#6c757d"
+          }}>
+            <Card.Body>
+
+              <img
+                className="responsive"
+                src={require(`${this.state.image}`)}
+                alt="city"
+
+              />
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <label id="same-line">NAME: </label>
+                <label>{`${this.state.first_name}  ${this.state.last_name}`}
+
+                </label>
+                <label>{``}
+
+                </label>
+                <label id="same-line">HOMETOWN: </label>
+                <label>{`${this.state.hometown}`}</label>
+
+              </div>
+              <Button style={{ margin: "5px auto" }} variant="primary" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
+              <Button style={{ margin: "5px auto" }} variant="primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
+            </Card.Body>
+          </Card>
+          <div style={{ disply: "flex", flexDirection: "column", marginTop: "3%", width: "50%" }}>
+            <Card style={{
+              margin: "3%",
+              borderRadius: "5px",
+              border: "2px solid gray",
+              boxSizing: "border-box",
+              borderRadius: "20px",
+              boxShadow: "8px 8px 50px #000",
+              color: "#6c757d"
+            }}>
+              <Card.Header as="h3" style={{ padding: "10px" }}>TRIP INVITATIONS</Card.Header>
+              <Card.Body><div className="row">{this.state.invitation_list}</div></Card.Body>
+            </Card>
+            <Card style={{
+              margin: "3%", borderRadius: "5px",
+              border: "2px solid gray",
+              boxSizing: "border-box",
+              borderRadius: "20px",
+              boxShadow: "8px 8px 50px #000",
+              color: "#6c757d"
+            }}>
+              <Card.Header as="h3" style={{ padding: "10px" }}>TRIPS</Card.Header>
+              <Card.Body><div className="row">{this.state.trip_list}</div></Card.Body>
+            </Card>
+          </div>
+
+          {/* <div className=" main">
+            <div className="profile-container">
+              <div className="profile-pic-buffer">
+                <div className="profilepic">
+
+                </div>
+              </div>
+              <div className="buffer"></div>
+               <div className="profile-text-buffer">
+                <div className="edit-buffer">
+
+                </div> 
+
+                 <form className="profile-text">
                     <div className="fullName" >
                       <label id="same-line">NAME: </label>
                       <label>{`${this.state.first_name}`}
@@ -278,27 +385,25 @@ export class Home extends Component {
                     </div>
 
 
-                    <div className="number-of-trips">Trips: 3</div>
-                    <div className="view-friends-list">View Frends Lists</div>
-                  </form>
-                </div>
+                  </form> 
               </div>
-              <div id="trips-container">
+            </div>
+             <div id="trips-container">
                 <ButtonToolbar>
                   <Button variant="primary" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
                   <Button variant="primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
                 </ButtonToolbar>
-              </div>
-              <div className="trip-invitations">
+              </div> 
+             <div className="trip-invitations">
                 <label>TRIP INVITATIONS</label>
                 <div className="row">{this.state.invitation_list}</div>
               </div>
               <div className="trip-list">
                 <label>YOUR TRIPS</label>
                 <div className="row">{this.state.trip_list}</div>
-              </div>
-            </div>
-            <div className="side-pic-container">
+              </div> 
+          </div>
+           <div className="side-pic-container">
               <img
                 className="responsive side-pic"
                 src={require("./images/city.png")}
@@ -306,10 +411,10 @@ export class Home extends Component {
                 width="100"
                 height="80"
               />
-            </div>
-          </div>
+            </div>  */}
         </div>
       </div>
+
     );
   }
 }

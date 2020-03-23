@@ -9,9 +9,11 @@ const tripSchema = new Schema({
   start_date: Date,
   end_date: Date,
   trip_locations: Array,
-  days: [],
-  buddies: [],
-  posts: []
+  trip_locations_for_scheduling: Array,
+  days: Array,
+  buddies: Array,
+  posts: Array,
+  days_miles: Array
 });
 
 const TripSchem = mongoose.model("tripchar", tripSchema);

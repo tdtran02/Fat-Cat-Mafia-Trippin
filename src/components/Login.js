@@ -90,7 +90,7 @@ class Login extends Component {
                     <div className="row  mt-4 mb-4">
                       <div className="col-md-6"></div>
                       <div className="col-md-6 text-right">
-                        <a href="/register">Forgot Password?</a>
+                        <a href="/forgotPassword">Forgot Password?</a>
                       </div>
                     </div>
 

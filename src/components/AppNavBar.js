@@ -19,6 +19,7 @@ import Trip from "./Trip";
 import Friends from "./Friends";
 import TRIPPIN from "./Trippin";
 import CurrentTrip from "./CurrentTrip";
+import Spending from "./Spending";
 import { DropdownButton } from "react-bootstrap";
 import Recommendation from "./Recommendation";
 import ForgotPassword from "./ForgotPassword";
@@ -94,17 +95,12 @@ class AppNavBar extends Component {
             Register
           </NavLink>
         </NavItem>
-        <NavItem>
-          <NavLink tag={RRNavLink} exact to="/ForgotPassword">
-            Forgot Password
-          </NavLink>
-        </NavItem>
       </Fragment>
     );
     return (
       <div style={{ height: "100%" }}>
         <Router>
-          <Navbar color="dark" dark expand="sm">
+          <Navbar sticky="top" color="dark" dark expand="sm">
             <Container>
               <NavbarBrand href="/">
                 <img
@@ -134,6 +130,7 @@ class AppNavBar extends Component {
               exact
               component={Recommendation}
             ></Route>
+            <Route path="/trip/:id/spending" exact component={Spending}></Route>
             <Route path="/trip/:id" exact component={CurrentTrip}></Route>
             <Route path="/trip">
               <Trip />
@@ -159,13 +156,15 @@ class AppNavBar extends Component {
             {/* <Route path="/resetPassword/:token">
               <ResetPassword />
             </Route> */}
-            <Route exact path='/resetPassword/:token' component={ResetPassword}/>
+            <Route exact path='/resetPassword/:token' component={ResetPassword} />
             <Route path="/updatePasswordViaEmail">
-              
+            </Route>
+            <Route path="/tripbuddy">
             </Route>
             <Route path="/home">
               <Home />
             </Route>
+
             <Route path="/">
               <TRIPPIN />
             </Route>

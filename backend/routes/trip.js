@@ -2,6 +2,9 @@ const EXPRESS = require("express");
 const TRIPROUTES = EXPRESS.Router();
 const TRIP = require("../models/trip.model");
 const USER = require("../models/user.model");
+const REQUEST = require("request");
+const ASYNC = require("async");
+const GOOGLE_KEY = require("../config_google").key;
 const FRIEND = require("../models/friend.model");
 
 TRIPROUTES.route("/trip").post(function (req, res) {
@@ -18,7 +21,6 @@ TRIPROUTES.route("/trip").post(function (req, res) {
   });
   T.save()
     .then(x => {
-      console.log(x);
       res.status(200).json({
         saved: true,
         response_message: "Trip created!",
@@ -90,7 +92,7 @@ TRIPROUTES.route("/trip/:id").delete(function (req, res) {
 });
 
 // add a location to user's list
-TRIPROUTES.route("/trip/addtotriplocation").post(function(req, res) {
+TRIPROUTES.route("/trip/addtotriplocation").post(function (req, res) {
   // console.log(req.body);
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
@@ -116,7 +118,7 @@ TRIPROUTES.route("/trip/addtotriplocation").post(function(req, res) {
 });
 
 // delete a location from user's list
-TRIPROUTES.route("/trip/deletefromtriplocations").post(function(req, res) {
+TRIPROUTES.route("/trip/deletefromtriplocations").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     {
@@ -140,18 +142,105 @@ TRIPROUTES.route("/trip/deletefromtriplocations").post(function(req, res) {
   });
 });
 
-TRIPROUTES.route("/tripinfo/updateschedule").post(function(req, res) {
+TRIPROUTES.route("/tripinfo/updateschedule").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     { days: req.body.days, trip_locations: req.body.trip_locations },
     { returnOriginal: false }
   ).then(r => {
-    // TRIP.findOne({ _id: req.body.trip_id }).then(r => {
-    res.status(200).json({ trip: r });
+    const milage = [];
+    const urls = [];
+    for (let i = 0; i < r.days.length; i++) {
+      let day_length = r.days[i].length;
+      let day = r.days[i];
+      let origin = "";
+      let destination = "";
+      let waypoints = [];
+      if (day_length <= 1) {
+        urls.push(null);
+        continue;
+      }
+      for (let j = 0; j < day_length; j++) {
+        let loc = day[j].location;
+        let temploc =
+          loc.address1 + " " + loc.city + " " + loc.state + " " + loc.zip_code;
+        if (j == 0) {
+          origin = temploc;
+        } else if (j + 1 == day_length) {
+          destination = temploc;
+        } else {
+          waypoints.push(temploc);
+        }
+      }
+      let waypoints_string = "&waypoints=";
+      if (waypoints.length != 0) {
+        for (let i = 0; i < waypoints.length; i++) {
+          if (i != 0) {
+            waypoints_string += "|" + waypoints[i];
+          } else {
+            waypoints_string += waypoints[i];
+          }
+        }
+      }
+
+      let origin_string = "origin=" + origin;
+      let destination_string = "&destination=" + destination;
+      let url =
+        "https://maps.googleapis.com/maps/api/directions/json?" +
+        origin_string +
+        destination_string +
+        waypoints_string +
+        "&key=" +
+        GOOGLE_KEY;
+      urls.push(url);
+    }
+    ASYNC.eachSeries(
+      urls,
+      function(url, callback) {
+        if (url == null) {
+          milage.push(0);
+          callback();
+        } else {
+          REQUEST(url, function(error, response, body) {
+            if (error) {
+              milage.push("Error");
+              callback();
+            } else {
+              let legs = JSON.parse(body).routes[0].legs;
+              let meters = 0;
+              for (let j = 0; j < legs.length; j++) {
+                meters += legs[j].distance.value;
+              }
+              milage.push(meters * 0.000621371192);
+              callback();
+            }
+          });
+        }
+      },
+      function(err) {
+        if (err) {
+          console.log("error for distance calculation");
+        } else {
+          console.log("successfully computed distance");
+
+          TRIP.findOneAndUpdate(
+            { _id: req.body.trip_id },
+            { days_miles: milage },
+            { returnOriginal: false }
+          )
+            .then(x => {
+              res.status(200).json({
+                trip: x
+              });
+            })
+            .catch();
+        }
+      }
+    );
   });
 });
 
-TRIPROUTES.route("/tripinfo/addtodays").post(function(req, res) {
+TRIPROUTES.route("/tripinfo/addtodays").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     { days: req.body.days },
@@ -161,7 +250,7 @@ TRIPROUTES.route("/tripinfo/addtodays").post(function(req, res) {
   });
 });
 
-TRIPROUTES.route("/tripinfo/addBuddy").post(function(req, res) {
+TRIPROUTES.route("/tripinfo/addBuddy").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     { buddies: req.body.buddies }
@@ -171,7 +260,7 @@ TRIPROUTES.route("/tripinfo/addBuddy").post(function(req, res) {
 });
 
 // get trip information based on trip id
-TRIPROUTES.route("/tripinfo/:trip_id").get(function(req, res) {
+TRIPROUTES.route("/tripinfo/:trip_id").get(function (req, res) {
   TRIP.findOne({ _id: req.params.trip_id }).then(trip => {
     if (trip != null) {
       res.status(200).json({
@@ -186,5 +275,22 @@ TRIPROUTES.route("/tripinfo/:trip_id").get(function(req, res) {
     }
   });
 });
+
+TRIPROUTES.route("/trip/:_id").put(function (req, res) {
+  TRIP.findByIdAndUpdate(
+    { _id: req.params._id },
+    {
+      $set: { buddies: req.body.buddies }
+    }
+  )
+    .then(response => {
+      res.status(200).json({
+
+      });
+      console.log(response);
+    }).catch(err => {
+      console.log(err);
+    })
+})
 
 module.exports = TRIPROUTES;
