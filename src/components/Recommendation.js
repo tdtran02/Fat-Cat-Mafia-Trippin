@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import {
-  Container,
+  /* Container,
   Col,
   Row,
   Dropdown,
   Form,
-  Button,
+  Button, */
   Card
 } from "react-bootstrap";
 import AXIOS from "axios";
@@ -126,7 +126,7 @@ class Recommendation extends React.Component {
                 }}
               >
                 {list[i].price} • {list[i].categories[0].title}
-                {option == "add" ? (
+                {option === "add" ? (
                   <i
                     className="fas fa-plus-circle"
                     style={{
@@ -140,18 +140,18 @@ class Recommendation extends React.Component {
                     }}
                   ></i>
                 ) : (
-                  <i
-                    className="fas fa-minus-circle"
-                    style={{
-                      color: "#cd5c5c",
-                      marginLeft: "5px",
-                      cursor: "pointer"
-                    }}
-                    onClick={e => {
-                      this.deleteTripLocation(e, i);
-                    }}
-                  ></i>
-                )}
+                    <i
+                      className="fas fa-minus-circle"
+                      style={{
+                        color: "#cd5c5c",
+                        marginLeft: "5px",
+                        cursor: "pointer"
+                      }}
+                      onClick={e => {
+                        this.deleteTripLocation(e, i);
+                      }}
+                    ></i>
+                  )}
               </Card.Subtitle>
               <Card.Text style={{ fontSize: "12px" }}>
                 {list[i].location.display_address[0]}
@@ -241,7 +241,7 @@ class Recommendation extends React.Component {
         </li>
       );
     }
-    if (whole != num) {
+    if (whole !== num) {
       stars.push(
         <li className="list-inline-item mr-0" key="half">
           <i
@@ -313,20 +313,20 @@ class Recommendation extends React.Component {
     };
 
     const LoadingBar = (
-      <div id="cupcake" class="box">
-        <span class="letter">L</span>
+      <div id="cupcake" className="box">
+        <span className="letter">L</span>
 
-        <div class="cupcakeCircle box">
-          <div class="cupcakeInner box">
-            <div class="cupcakeCore box"></div>
+        <div className="cupcakeCircle box">
+          <div className="cupcakeInner box">
+            <div className="cupcakeCore box"></div>
           </div>
         </div>
 
-        <span class="letter box">A</span>
-        <span class="letter box">D</span>
-        <span class="letter box">I</span>
-        <span class="letter box">N</span>
-        <span class="letter box">G</span>
+        <span className="letter box">A</span>
+        <span className="letter box">D</span>
+        <span className="letter box">I</span>
+        <span className="letter box">N</span>
+        <span className="letter box">G</span>
       </div>
     );
     return (
@@ -335,90 +335,90 @@ class Recommendation extends React.Component {
           // loading
           LoadingBar
         ) : (
-          // not loading
-          <span>
-            <div class="searchbar">
-              <input
-                type="text"
-                placeholder="Search..."
-                onKeyDown={this.searchLocation}
-                onChange={this.onChangeSearch}
-              />
-              <div class="search"></div>
-            </div>
+            // not loading
+            <span>
+              <div className="searchbar">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  onKeyDown={this.searchLocation}
+                  onChange={this.onChangeSearch}
+                />
+                <div className="search"></div>
+              </div>
 
-            {this.state.location_elements.length != 0 ? (
-              <h1
+              {this.state.location_elements.length !== 0 ? (
+                <h1
+                  style={{
+                    fontFamily: "Roboto, sans-serif",
+                    fontSize: "20px",
+                    fontWeight: "normal",
+                    margin: "0 auto 15px auto",
+                    width: "80%"
+                  }}
+                >
+                  My Recommendations
+                </h1>
+              ) : (
+                  <span></span>
+                )}
+              {this.state.location_elements.length !== 0 ? (
+                <Slider
+                  {...settings}
+                  style={{
+                    width: "80%",
+                    margin: "0 auto"
+                  }}
+                >
+                  {this.state.location_elements}
+                </Slider>
+              ) : (
+                  ""
+                )}
+
+              <div
                 style={{
                   fontFamily: "Roboto, sans-serif",
                   fontSize: "20px",
                   fontWeight: "normal",
-                  margin: "0 auto 15px auto",
+                  margin: "30px auto 15px auto",
                   width: "80%"
                 }}
               >
-                My Recommendations
-              </h1>
-            ) : (
-              <span></span>
-            )}
-            {this.state.location_elements.length != 0 ? (
-              <Slider
-                {...settings}
-                style={{
-                  width: "80%",
-                  margin: "0 auto"
-                }}
-              >
-                {this.state.location_elements}
-              </Slider>
-            ) : (
-              ""
-            )}
+                {this.state.trip_location_elements.length !== 0 ? (
+                  <span>My Trip Locations</span>
+                ) : (
+                    ""
+                  )}
+                <a
+                  style={{
+                    fontSize: "12px",
 
-            <div
-              style={{
-                fontFamily: "Roboto, sans-serif",
-                fontSize: "20px",
-                fontWeight: "normal",
-                margin: "30px auto 15px auto",
-                width: "80%"
-              }}
-            >
-              {this.state.trip_location_elements.length != 0 ? (
-                <span>My Trip Locations</span>
-              ) : (
-                ""
-              )}
-              <a
-                style={{
-                  fontSize: "12px",
-
-                  marginTop: "10px",
-                  float: "right"
-                }}
-                href="./schedule"
-              >
-                Arrange Trip Schedule
+                    marginTop: "10px",
+                    float: "right"
+                  }}
+                  href="./schedule"
+                >
+                  Arrange Trip Schedule
               </a>
-            </div>
+              </div>
 
-            {this.state.trip_location_elements.length != 0 ? (
-              <Slider
-                className="placeholderhere"
-                {...settings}
-                style={{
-                  width: "80%",
-                  margin: "0 auto"
-                }}
-              >
-                {this.state.trip_location_elements}
-              </Slider>
-            ) : (
-              ""
-            )}
-          </span>
-        )}
+              {this.state.trip_location_elements.length !== 0 ? (
+                <Slider
+                  className="placeholderhere"
+                  {...settings}
+                  style={{
+                    width: "80%",
+                    margin: "0 auto"
+                  }}
+                >
+                  {this.state.trip_location_elements}
+                </Slider>
+              ) : (
+                  ""
+                )}
+            </span>
+          )}
       </div>
     );
   }

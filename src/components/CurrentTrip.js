@@ -1,10 +1,9 @@
-import React, { Component, Item } from "react";
-import { Card, FormControl, InputGroup, Form, ListGroup, ButtonToolbar } from "react-bootstrap";
+import React, { Component } from "react";
+import { Card, FormControl, InputGroup, Form, ListGroup, Alert } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
 import AXIOS from "axios";
-import { CreatePost } from './CreatePost';
 
 
 
@@ -16,18 +15,20 @@ class CurrentTrip extends Component {
       trip_id: this.props.match.params.id,
       start: JSON.parse(localStorage.getItem('trip')).start_date.substring(0, 10),
       end: JSON.parse(localStorage.getItem('trip')).end_date.substring(0, 10),
-      createPost: false,
       posts: [],
       comment_id: "",
       user_id: "",
       comment: "",
       comment_date: "",
-      user: {}
+      user: {},
+      invitation_boolean: false,
+      invitation_sent_msg: "",
+      invitation_sent_variant: ""
     };
   }
 
   componentDidMount() {
-
+    //get trip info
     AXIOS.get('http://localhost:4000/comment/' + JSON.parse(localStorage.getItem('trip'))._id)
       .then(response => {
         if (response !== 'undefined') {
@@ -36,17 +37,18 @@ class CurrentTrip extends Component {
           this.setState({ comment_date: response.data.comment[0].date });
           this.setState({ posts: this.createPostCards(response.data.comment) });
         }
-
-      })
-      .catch(err => {
+      }).catch(err => {
         console.log(err);
       });
 
+    //check if any pending invitations
     AXIOS.get('http://localhost:4000/buddy/' + JSON.parse(localStorage.getItem('trip'))._id)
       .then(response => {
         console.log(response);
         let invitations = response.data.tripbuddy;
+        this.getTripBuddies(invitations);
         for (let i = 0; i < invitations.length; i++) {
+
           if (invitations[i].buddy_id = JSON.parse(localStorage.getItem('user'))._id) {
             if (invitations[i].pending == true) {
               console.log(invitations);
@@ -56,23 +58,67 @@ class CurrentTrip extends Component {
 
           }
         }
+
+      }).catch(err => {
+        console.log(err);
+      })
+
+    AXIOS.get('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('trip')).owner_id)
+      .then(response => {
+        console.log(response);
+        this.setState({ organizer: this.getTripOrganizer(response.data.user) });
       }).catch(err => {
         console.log(err);
       })
 
 
+  }
 
+  getTripOrganizer(user) {
+    return (
+      <Card style={{ margin: "0 auto", border: "transparent" }}>
+        <Card.Body>
+          <div><img style={{ width: "50px" }} src={require(`${user.image}`)} /></div>
+          <div ><strong>{user.first_name}</strong></div>
+        </Card.Body>
+      </Card>
+    )
+  }
+
+  getTripBuddies(buddyarray) {
+    console.log(buddyarray);
+    console.log(buddyarray.length);
+    let buddycardarray = []
+    for (let i = 0; i < buddyarray.length; i++) {
+      //console.log(JSON.parse(buddyarray[i]));
+      if (buddyarray[i].accepted === true) {
+        buddycardarray.push(
+          <div key={i}>
+            <Card style={{ margin: "0 auto", border: "transparent" }}>
+              <Card.Body>
+                <div><img style={{ width: "50px" }} src={require(`${buddyarray[i].buddy_picture}`)} /></div>
+                <div ><strong>{buddyarray[i].buddy_first_name}</strong></div>
+              </Card.Body>
+            </Card>
+          </div>
+
+        )
+      }
+
+    }
+
+    this.setState({ acceptedInvitations: buddycardarray });
+    return buddycardarray;
   }
 
   createInvitation() {
-
     return (
       <Card style={{ margin: "50px auto 0 auto", width: "500px", border: "3px solid gray", borderRadius: "20px" }}>
         <Card.Header>YOU'VE BEEN INVITED TO THIS AWESOME TRIP!</Card.Header>
         <Card.Body >
           <div style={{ margin: "0 auto", display: "flex", alignContent: "center" }}>
             <Button style={{ marginRight: "20px" }} onClick={this.acceptInvitation} variant="primary">ACCEPT</Button>
-            <Button style={{ marginLeft: "20px" }} variant="secondary">DECLINE</Button>
+            <Button style={{ marginLeft: "20px" }} onClick={this.declineInvitation} variant="secondary">DECLINE</Button>
           </div>
         </Card.Body>
       </Card>
@@ -105,6 +151,25 @@ class CurrentTrip extends Component {
     AXIOS.put('http://localhost:4000/trip/' + buddyyy.trip_id, newtrip)
       .then(res => console.log(res.data))
       .catch(err => console.log(err));
+
+    window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
+  }
+
+  declineInvitation() {
+    let buddyyy = JSON.parse(localStorage.getItem('invitation'));
+    let newtripbuddy = {
+      owner_id: buddyyy.owner_id,
+      trip_id: buddyyy.trip_id,
+      buddy_id: buddyyy._id,
+      accepted: false,
+      denied: true,
+      pending: false
+    }
+    console.log(newtripbuddy);
+    AXIOS.put('http://localhost:4000/buddypending/' + buddyyy._id, newtripbuddy)
+      .then(res => console.log(res.data))
+      .catch(err => { console.log(err) });
+    window.location = "/Home";
   }
 
   createPostCards(list) {
@@ -251,29 +316,44 @@ class CurrentTrip extends Component {
   };
 
   getBuddyId() {
-    let buddyid = "";
-    let self = this;
+    //let self = this;
     AXIOS.get("http://localhost:4000/useremail/" + document.getElementById('buddyemail').value)
       .then(response => {
-        buddyid = response.data.user._id;
-        console.log(buddyid);
-        const buddy = {
+        let buddy = response.data.user;
+        console.log(response);
+        const buddyinfo = {
           owner_id: JSON.parse(localStorage.getItem("user"))._id,
           trip_id: JSON.parse(localStorage.getItem("trip"))._id,
-          buddy_id: buddyid,
+          buddy_id: buddy._id,
+          buddy_first_name: buddy.first_name,
+          buddy_last_name: buddy.last_name,
+          buddy_picture: buddy.image,
           accepted: false,
           denied: false,
           pending: true
         }
-        AXIOS.post('http://localhost:4000/buddy', buddy)
-          .then(res => {
-            console.log(res);
+        AXIOS.post('http://localhost:4000/buddy', buddyinfo)
+          .then(response => {
+
+            this.setState({ invitation_boolean: true });
+            console.log(this.state.invitation_boolean);
+            if (response.data.saved) {
+              this.setState({
+                invitation_sent: true,
+                invitation_variant: "success",
+                invitation_sent_msg: "Invitation was sent!"
+              });
+            } else {
+              this.setState({
+                invitation_variant: "warning",
+                invitation_sent_msg: "Error occured"
+              });
+            }
           }).catch(err => {
             console.log(err);
           })
-      }).catch(err => {
-        console.log(err);
       })
+      .catch(err => { console.log(err); })
 
   }
 
@@ -283,10 +363,12 @@ class CurrentTrip extends Component {
       owner_id: JSON.parse(localStorage.getItem("user"))._id,
       trip_id: JSON.parse(localStorage.getItem("trip"))._id,
       buddy_id: buddyid
+
     }
     AXIOS.post('http://localhost:4000/buddy', buddy)
-      .then(res => {
-        console.log(res);
+      .then(response => {
+
+
       }).catch(err => {
         console.log(err);
       })
@@ -331,7 +413,7 @@ class CurrentTrip extends Component {
 
 
   render() {
-    let postModalClose = () => this.setState({ createPost: false });
+
     return (
 
       <div style={{ height: "100%" }}>
@@ -361,7 +443,7 @@ class CurrentTrip extends Component {
 
                   borderRadius: "5px",
 
-                  margin: "100px auto",
+                  margin: "50px auto",
                   border: "2px solid gray",
                   boxSizing: "border-box",
                   borderRadius: "20px",
@@ -379,12 +461,15 @@ class CurrentTrip extends Component {
 
                     <Card.Body>
                       <Card.Title style={{
-                        textTransform: "uppercase",
-                        marginTop: "5px"
+                        textTransform: "uppercase"
                       }}><i className="fas fa-map-marker-alt"></i>  {JSON.parse(localStorage.getItem('trip')).destination}</Card.Title>
                       <Card.Title><i className="fas fa-plane-departure"></i>  {this.state.start}</Card.Title>
                       <Card.Title><i className="fas fa-plane-arrival"></i>  {this.state.end}</Card.Title>
-                      <Card.Title style={{ marginTop: "50px" }}>TRAVEL BUDDIES:</Card.Title>
+                      <Card.Title style={{ marginTop: "10px" }}>TRIP ORGANIZER:</Card.Title>
+                      <div>{this.state.organizer}</div>
+
+                      <Card.Title style={{ marginTop: "10px" }}>TRAVEL BUDDIES:</Card.Title>
+                      <div >{this.state.acceptedInvitations}</div>
                       <InputGroup >
                         <FormControl id="buddyemail"
                           placeholder="username"
@@ -393,6 +478,16 @@ class CurrentTrip extends Component {
                           <Button variant="outline-success" onClick={this.getBuddyId}>INVITE</Button>
                         </InputGroup.Append>
                       </InputGroup>
+                      {this.state.invitation_boolean ? (
+                        <Alert
+                          variant={this.state.invitation_sent_variant}
+                          style={{ marginBottom: "0", marginTop: "6px" }}
+                        >
+                          {this.state.invitation_sent_msg}
+                        </Alert>
+                      ) : (
+                          ""
+                        )}
                     </Card.Body>
                   </Card>
 
@@ -405,7 +500,7 @@ class CurrentTrip extends Component {
 
                 borderRadius: "5px",
                 height: "395px",
-                margin: "100px auto",
+                margin: "50px auto",
 
 
                 borderRadius: "20px",
@@ -434,7 +529,7 @@ class CurrentTrip extends Component {
               <div style={{
                 width: "30%",
                 borderRadius: "5px",
-                margin: "100px auto",
+                margin: "50px auto",
                 borderRadius: "20px",
                 color: "#6c757d",
 
