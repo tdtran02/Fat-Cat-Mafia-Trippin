@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 import Header from "./TrippinPage/header";
 import Main from "./TrippinPage/main";
 import Footer from "./TrippinPage/footer";
 
-
 class Trippin extends Component {
   render() {
     return (
-      <div className="container" >
-
+      <div>
         <Header />
         <Main />
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
