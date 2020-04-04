@@ -13,6 +13,9 @@ export class InviteBuddy extends Component {
             invitation_sent_variant: "",
             currentFriend: {},
             selectedFriends: [],
+            email_boolean: false,
+            email_sent_msg: "",
+            email_sent_variant: ""
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -173,6 +176,31 @@ export class InviteBuddy extends Component {
             });
     }
 
+    sendEmail() {
+
+        console.log(document.getElementById('email').value);
+        let newUser = {
+            email: document.getElementById('email').value
+        }
+        AXIOS.put("http://localhost:4000/buddyinvite", newUser)
+            .then(response => {
+                console.log(response);
+                this.setState({ email_boolean: true });
+                if (response.status == 200) {
+                    this.setState({
+                        email_sent: true,
+                        email_variant: "success",
+                        email_sent_msg: "An Email has been sent!",
+                    });
+                } else {
+                    this.setState({
+                        email_variant: "warning",
+                        email_sent_msg: "Error occured",
+                    });
+                }
+            }).catch(err => { console.log(err); })
+    }
+
     render() {
         return (
             <Modal
@@ -189,7 +217,7 @@ export class InviteBuddy extends Component {
                         </div>
 
 
-                        <Button onClick={this.inviteBuddy.bind(this)}>SEND</Button>
+                        <Button variant="outline-success" onClick={this.inviteBuddy.bind(this)}>SEND</Button>
                     </form>
                     <div>
                         {this.state.invitation_boolean ? (
@@ -214,13 +242,24 @@ export class InviteBuddy extends Component {
                             placeholder="Recipient's email"
                             aria-label="Recipient's email"
                             aria-describedby="basic-addon2"
+                            id="email"
                         />
                         <InputGroup.Append>
-                            <Button variant="outline-secondary">Send Email</Button>
+                            <Button variant="outline-secondary" onClick={this.sendEmail}>Send Email</Button>
                         </InputGroup.Append>
 
 
                     </InputGroup>
+                    {this.state.email_boolean ? (
+                        <Alert
+                            variant={this.state.email_sent_variant}
+                            style={{ marginBottom: "0", marginTop: "6px" }}
+                        >
+                            {this.state.email_sent_msg}
+                        </Alert>
+                    ) : (
+                            ""
+                        )}
                 </Modal.Body>
                 {/* <Modal.Footer>
                     <Button onClick={this.getBuddyId} >SEND</Button>
