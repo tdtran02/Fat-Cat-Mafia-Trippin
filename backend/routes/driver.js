@@ -107,7 +107,6 @@ DRIVERROUTES.route("/driver/remove").post(function (req, res) {
     }
   )
     .then((result) => {
-      console.log(result);
       res.status(200).json({
         driver: result,
       });
