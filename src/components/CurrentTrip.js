@@ -18,6 +18,7 @@ import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
 import AXIOS from "axios";
+import InviteBuddy from "./InviteBuddy";
 
 class CurrentTrip extends Component {
   constructor(props) {
@@ -36,15 +37,14 @@ class CurrentTrip extends Component {
       comment: "",
       comment_date: "",
       user: {},
-      invitation_boolean: false,
-      invitation_sent_msg: "",
-      invitation_sent_variant: "",
+
       show_drivers: false,
       all_drivers: [],
       candidates: [],
       drivers: [],
       driver_passengers: [],
       driver_number: "1",
+      inviteBuddyShow: false,
     };
   }
 
@@ -81,6 +81,7 @@ class CurrentTrip extends Component {
               localStorage.getItem("user")
             )._id)
           ) {
+            console.log(invitations[i]);
             if (invitations[i].pending == true) {
               console.log(invitations);
               this.setState({ invitation: this.createInvitation() });
@@ -676,6 +677,7 @@ class CurrentTrip extends Component {
   }
 
   render() {
+    let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
       <div style={{ height: "100%" }}>
         <div
@@ -760,31 +762,17 @@ class CurrentTrip extends Component {
                         TRAVEL BUDDIES:
                       </Card.Title>
                       <div>{this.state.acceptedInvitations}</div>
-                      <InputGroup>
-                        <FormControl
-                          id="buddyemail"
-                          placeholder="username"
-                          aria-label="username"
-                        />
-                        <InputGroup.Append>
-                          <Button
-                            variant="outline-success"
-                            onClick={this.getBuddyId}
-                          >
-                            INVITE
-                          </Button>
-                        </InputGroup.Append>
-                      </InputGroup>
-                      {this.state.invitation_boolean ? (
-                        <Alert
-                          variant={this.state.invitation_sent_variant}
-                          style={{ marginBottom: "0", marginTop: "6px" }}
-                        >
-                          {this.state.invitation_sent_msg}
-                        </Alert>
-                      ) : (
-                        ""
-                      )}
+                      <Button
+                        onClick={() => this.setState({ inviteBuddyShow: true })}
+                      >
+                        INVITE
+                      </Button>
+                      <InviteBuddy
+                        show={this.state.inviteBuddyShow}
+                        onHide={inviteBuddyClose}
+                        handler={this.handler}
+                        size="lg"
+                      />
                     </Card.Body>
                   </Card>
                 </div>
