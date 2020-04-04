@@ -12,7 +12,7 @@ import {
   Col,
   Accordion,
   Tab,
-  Nav
+  Nav,
 } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
@@ -44,7 +44,7 @@ class CurrentTrip extends Component {
       candidates: [],
       drivers: [],
       driver_passengers: [],
-      driver_number: "1"
+      driver_number: "1",
     };
   }
 
@@ -54,7 +54,7 @@ class CurrentTrip extends Component {
       "http://localhost:4000/comment/" +
         JSON.parse(localStorage.getItem("trip"))._id
     )
-      .then(response => {
+      .then((response) => {
         if (response !== "undefined") {
           this.setState({ comment_id: response.data.comment[0]._id });
           this.setState({ comment: response.data.comment[0].text });
@@ -62,7 +62,7 @@ class CurrentTrip extends Component {
           this.setState({ posts: this.createPostCards(response.data.comment) });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 
@@ -71,7 +71,7 @@ class CurrentTrip extends Component {
       "http://localhost:4000/buddy/" +
         JSON.parse(localStorage.getItem("trip"))._id
     )
-      .then(response => {
+      .then((response) => {
         console.log(response);
         let invitations = response.data.tripbuddy;
         this.getTripBuddies(invitations);
@@ -92,7 +92,7 @@ class CurrentTrip extends Component {
           }
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 
@@ -100,11 +100,11 @@ class CurrentTrip extends Component {
       "http://localhost:4000/user/" +
         JSON.parse(localStorage.getItem("trip")).owner_id
     )
-      .then(response => {
+      .then((response) => {
         console.log(response);
         this.setState({ organizer: this.getTripOrganizer(response.data.user) });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -162,7 +162,7 @@ class CurrentTrip extends Component {
           margin: "50px auto 0 auto",
           width: "500px",
           border: "3px solid gray",
-          borderRadius: "20px"
+          borderRadius: "20px",
         }}
       >
         <Card.Header>YOU'VE BEEN INVITED TO THIS AWESOME TRIP!</Card.Header>
@@ -171,7 +171,7 @@ class CurrentTrip extends Component {
             style={{
               margin: "0 auto",
               display: "flex",
-              alignContent: "center"
+              alignContent: "center",
             }}
           >
             <Button
@@ -202,25 +202,25 @@ class CurrentTrip extends Component {
       buddy_id: buddyyy._id,
       accepted: true,
       denied: false,
-      pending: false
+      pending: false,
     };
     console.log(newtripbuddy);
     AXIOS.put("http://localhost:4000/buddypending/" + buddyyy._id, newtripbuddy)
-      .then(res => console.log(res.data))
-      .catch(err => {
+      .then((res) => console.log(res.data))
+      .catch((err) => {
         console.log(err);
       });
 
     let buddies = JSON.parse(localStorage.getItem("trip")).buddies;
     buddies.push(buddyyy.buddy_id);
     let newtrip = {
-      buddies: buddies
+      buddies: buddies,
     };
     console.log(buddies);
 
     AXIOS.put("http://localhost:4000/trip/" + buddyyy.trip_id, newtrip)
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err));
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
 
     window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
   }
@@ -233,12 +233,12 @@ class CurrentTrip extends Component {
       buddy_id: buddyyy._id,
       accepted: false,
       denied: true,
-      pending: false
+      pending: false,
     };
     console.log(newtripbuddy);
     AXIOS.put("http://localhost:4000/buddypending/" + buddyyy._id, newtripbuddy)
-      .then(res => console.log(res.data))
-      .catch(err => {
+      .then((res) => console.log(res.data))
+      .catch((err) => {
         console.log(err);
       });
     window.location = "/Home";
@@ -274,7 +274,7 @@ class CurrentTrip extends Component {
                   style={{
                     width: "25px",
                     height: "25px",
-                    border: "1px solid black"
+                    border: "1px solid black",
                   }}
                   src={require(`${this.state.commentuserimg}`)}
                 />
@@ -296,7 +296,7 @@ class CurrentTrip extends Component {
               borderRadius: "20px",
               margin: "15px 0",
               boxShadow: "8px 8px 50px #000",
-              width: "90%"
+              width: "90%",
             }}
           >
             {/*<div
@@ -310,13 +310,13 @@ class CurrentTrip extends Component {
             <Card
               style={{
                 borderRadius: "20px",
-                backgroundColor: "transparent"
+                backgroundColor: "transparent",
               }}
             >
               <Card.Header
                 as="h5"
                 style={{
-                  textTransform: "uppercase"
+                  textTransform: "uppercase",
                 }}
               >
                 {" "}
@@ -325,7 +325,7 @@ class CurrentTrip extends Component {
                   style={{
                     width: "40px",
                     height: "40px",
-                    marginRight: "20px"
+                    marginRight: "20px",
                   }}
                 />
                 {list[i].first_name}
@@ -347,10 +347,10 @@ class CurrentTrip extends Component {
                   ></Form.Control>
                   <Button
                     variant="outline-warning"
-                    onClick={e => this.commentOnPost(e, list[i])}
+                    onClick={(e) => this.commentOnPost(e, list[i])}
                     style={{
                       float: "right",
-                      marginTop: "10px"
+                      marginTop: "10px",
                     }}
                   >
                     POST
@@ -376,7 +376,7 @@ class CurrentTrip extends Component {
       last_name: JSON.parse(localStorage.getItem("user")).last_name,
       user_pic: JSON.parse(localStorage.getItem("user")).image,
       text: document.getElementById("secondary-comment").value,
-      date: Date.now()
+      date: Date.now(),
     };
     if (i.commentsOnThisPost == null) {
       postArr.push(commentOnThisPost);
@@ -386,12 +386,12 @@ class CurrentTrip extends Component {
     }
 
     let comment = {
-      commentsOnThisPost: postArr
+      commentsOnThisPost: postArr,
     };
     console.log(JSON.stringify(comment));
     AXIOS.put("http://localhost:4000/comment/" + i._id, comment)
-      .then(res => {})
-      .catch(err => {
+      .then((res) => {})
+      .catch((err) => {
         console.log(err);
       });
     window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
@@ -409,7 +409,7 @@ class CurrentTrip extends Component {
       "http://localhost:4000/useremail/" +
         document.getElementById("buddyemail").value
     )
-      .then(response => {
+      .then((response) => {
         let buddy = response.data.user;
         console.log(response);
         const buddyinfo = {
@@ -421,30 +421,30 @@ class CurrentTrip extends Component {
           buddy_picture: buddy.image,
           accepted: false,
           denied: false,
-          pending: true
+          pending: true,
         };
         AXIOS.post("http://localhost:4000/buddy", buddyinfo)
-          .then(response => {
+          .then((response) => {
             this.setState({ invitation_boolean: true });
             console.log(this.state.invitation_boolean);
             if (response.data.saved) {
               this.setState({
                 invitation_sent: true,
                 invitation_variant: "success",
-                invitation_sent_msg: "Invitation was sent!"
+                invitation_sent_msg: "Invitation was sent!",
               });
             } else {
               this.setState({
                 invitation_variant: "warning",
-                invitation_sent_msg: "Error occured"
+                invitation_sent_msg: "Error occured",
               });
             }
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
           });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -453,11 +453,11 @@ class CurrentTrip extends Component {
     const buddy = {
       owner_id: JSON.parse(localStorage.getItem("user"))._id,
       trip_id: JSON.parse(localStorage.getItem("trip"))._id,
-      buddy_id: buddyid
+      buddy_id: buddyid,
     };
     AXIOS.post("http://localhost:4000/buddy", buddy)
-      .then(response => {})
-      .catch(err => {
+      .then((response) => {})
+      .catch((err) => {
         console.log(err);
       });
     //TODO: see if user and buddy are already friends
@@ -482,13 +482,13 @@ class CurrentTrip extends Component {
       user_pic: JSON.parse(localStorage.getItem("user")).image,
       trip_id: JSON.parse(localStorage.getItem("trip"))._id,
       text: document.getElementById("comment").value,
-      date: Date.now()
+      date: Date.now(),
     };
     AXIOS.post("http://localhost:4000/comment", comment)
-      .then(res => {
+      .then((res) => {
         this.setState({ addSurveyShow: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
     window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
@@ -497,18 +497,18 @@ class CurrentTrip extends Component {
   showDrivers = () => {
     this.setState({ show_drivers: true });
     AXIOS.get("http://localhost:4000/driver/friends/" + this.state.trip_id)
-      .then(result => {
+      .then((result) => {
         // console.log(result);
         this.setState({
-          candidates: this.candidates(result.data.tripbuddy)
+          candidates: this.candidates(result.data.tripbuddy),
         });
         return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
       })
-      .then(result => {
+      .then((result) => {
         this.setState({ all_drivers: result.data.drivers });
         this.setState({ drivers: this.drivers(result.data.drivers) });
         this.setState({
-          driver_passengers: this.passengers(result.data.drivers)
+          driver_passengers: this.passengers(result.data.drivers),
         });
       });
   };
@@ -556,11 +556,16 @@ class CurrentTrip extends Component {
   passengers(list) {
     const elements = [];
     for (let i = 0; i < list.length; i++) {
-      let x = [];
-      for (let j = 0; j < list[i].passengers; j++) {
+      const x = [];
+      for (let j = 0; j < list[i].passengers.length; j++) {
         x.push(
-          <ListGroup.Item>
+          <ListGroup.Item key={j}>
             {list[i].passengers[j].first_name} {list[i].passengers[j].last_name}
+            <i
+              style={{ marginTop: "3px", float: "right" }}
+              className="fas fa-minus-circle"
+              onClick={() => this.removePassenger(list[i].passengers[j])}
+            ></i>
           </ListGroup.Item>
         );
       }
@@ -573,7 +578,7 @@ class CurrentTrip extends Component {
     return elements;
   }
 
-  changeDriverNumber = i => {
+  changeDriverNumber = (i) => {
     this.setState({ driver_number: i });
   };
 
@@ -582,12 +587,27 @@ class CurrentTrip extends Component {
       trip_id: this.state.trip_id,
       driver_id: person.buddy_id,
       first_name: person.buddy_first_name,
-      last_name: person.buddy_last_name
+      last_name: person.buddy_last_name,
     })
-      .then(result => {
-        console.log(result);
+      .then((result) => {
+        return AXIOS.get(
+          "http://localhost:4000/driver/friends/" + this.state.trip_id
+        );
       })
-      .catch(err => {
+      .then((result) => {
+        this.setState({
+          candidates: this.candidates(result.data.tripbuddy),
+        });
+        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+      })
+      .then((result) => {
+        this.setState({ all_drivers: result.data.drivers });
+        this.setState({ drivers: this.drivers(result.data.drivers) });
+        this.setState({
+          driver_passengers: this.passengers(result.data.drivers),
+        });
+      })
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -595,15 +615,62 @@ class CurrentTrip extends Component {
   addPassenger(person) {
     AXIOS.post("http://localhost:4000/driver/add", {
       trip_id: this.state.trip_id,
-      driver_id: this.state.all_drivers[this.state.driver_number],
+      driver_id: this.state.all_drivers[this.state.driver_number].driver_id,
       passenger: person.buddy_id,
-      first_name: person.first_name,
-      last_name: person.last_name
+      first_name: person.buddy_first_name,
+      last_name: person.buddy_last_name,
     })
-      .then(result => {
-        console.log(result);
+      .then((result) => {
+        return AXIOS.get(
+          "http://localhost:4000/driver/friends/" + this.state.trip_id
+        );
       })
-      .catch(err => {
+      .then((result) => {
+        this.setState({
+          candidates: this.candidates(result.data.tripbuddy),
+        });
+        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+      })
+      .then((result) => {
+        this.setState({ all_drivers: result.data.drivers });
+        this.setState({ drivers: this.drivers(result.data.drivers) });
+        this.setState({
+          driver_passengers: this.passengers(result.data.drivers),
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  removePassenger(person) {
+    console.log(person);
+    AXIOS.post("http://localhost:4000/driver/remove", {
+      trip_id: this.state.trip_id,
+      driver_id: this.state.all_drivers[this.state.driver_number].driver_id,
+      passenger: person.passenger,
+      first_name: person.first_name,
+      last_name: person.last_name,
+    })
+      .then((result) => {
+        return AXIOS.get(
+          "http://localhost:4000/driver/friends/" + this.state.trip_id
+        );
+      })
+      .then((result) => {
+        this.setState({
+          candidates: this.candidates(result.data.tripbuddy),
+        });
+        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+      })
+      .then((result) => {
+        this.setState({ all_drivers: result.data.drivers });
+        this.setState({ drivers: this.drivers(result.data.drivers) });
+        this.setState({
+          driver_passengers: this.passengers(result.data.drivers),
+        });
+      })
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -622,7 +689,7 @@ class CurrentTrip extends Component {
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
             overflow: "auto",
-            display: "flex"
+            display: "flex",
           }}
         >
           <div
@@ -634,7 +701,7 @@ class CurrentTrip extends Component {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  width: "35%"
+                  width: "35%",
                 }}
               >
                 <div
@@ -647,12 +714,12 @@ class CurrentTrip extends Component {
                     boxSizing: "border-box",
                     borderRadius: "20px",
                     boxShadow: "8px 8px 50px #000",
-                    color: "#6c757d"
+                    color: "#6c757d",
                   }}
                 >
                   <Card
                     style={{
-                      borderRadius: "20px"
+                      borderRadius: "20px",
                     }}
                   >
                     <Card.Header as="h3" style={{ textTransform: "uppercase" }}>
@@ -662,7 +729,7 @@ class CurrentTrip extends Component {
                     <Card.Body>
                       <Card.Title
                         style={{
-                          textTransform: "uppercase"
+                          textTransform: "uppercase",
                         }}
                       >
                         <i className="fas fa-map-marker-alt"></i>{" "}
@@ -729,14 +796,14 @@ class CurrentTrip extends Component {
                   height: "395px",
                   margin: "50px auto",
                   borderRadius: "20px",
-                  color: "#6c757d"
+                  color: "#6c757d",
                 }}
               >
                 <Card
                   style={{
                     boxShadow: "8px 8px 50px #000",
                     borderRadius: "20px",
-                    width: "90%"
+                    width: "90%",
                   }}
                 >
                   <Card.Header>MAKE A POST</Card.Header>
@@ -754,7 +821,7 @@ class CurrentTrip extends Component {
                         variant="outline-warning"
                         onClick={this.handleClick}
                         style={{
-                          float: "right"
+                          float: "right",
                         }}
                       >
                         POST
@@ -771,14 +838,14 @@ class CurrentTrip extends Component {
                   borderRadius: "5px",
                   margin: "50px auto",
                   borderRadius: "20px",
-                  color: "#6c757d"
+                  color: "#6c757d",
                 }}
               >
                 <Button
                   variant="info"
                   style={{
                     float: "center",
-                    boxShadow: "8px 8px 20px #000"
+                    boxShadow: "8px 8px 20px #000",
                   }}
                   onClick={this.showRecommendations}
                 >
@@ -802,16 +869,16 @@ class CurrentTrip extends Component {
             <Container>
               <Row className="show-grid">
                 <Col md={6}>
-                  <h5>Drivers</h5>
-                  {/* <Accordion>{this.state.drivers}</Accordion> */}
                   <Tab.Container id="left-tabs-example" defaultActiveKey="1">
                     <Row>
-                      <Col sm={3}>
+                      <Col md={6}>
+                        <h5>Drivers</h5>
                         <Nav variant="pills" className="flex-column">
                           {this.state.drivers}
                         </Nav>
                       </Col>
-                      <Col sm={9}>
+                      <Col md={6}>
+                        <h5>Passengers</h5>
                         <Tab.Content>
                           {this.state.driver_passengers}
                         </Tab.Content>
