@@ -18,6 +18,7 @@ import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
 import AXIOS from "axios";
+import InviteBuddy from "./InviteBuddy";
 
 class CurrentTrip extends Component {
   constructor(props) {
@@ -36,15 +37,14 @@ class CurrentTrip extends Component {
       comment: "",
       comment_date: "",
       user: {},
-      invitation_boolean: false,
-      invitation_sent_msg: "",
-      invitation_sent_variant: "",
+
       show_drivers: false,
       all_drivers: [],
       candidates: [],
       drivers: [],
       driver_passengers: [],
-      driver_number: "1"
+      driver_number: "1",
+      inviteBuddyShow: false
     };
   }
 
@@ -52,7 +52,7 @@ class CurrentTrip extends Component {
     //get trip info
     AXIOS.get(
       "http://localhost:4000/comment/" +
-        JSON.parse(localStorage.getItem("trip"))._id
+      JSON.parse(localStorage.getItem("trip"))._id
     )
       .then(response => {
         if (response !== "undefined") {
@@ -69,18 +69,15 @@ class CurrentTrip extends Component {
     //check if any pending invitations
     AXIOS.get(
       "http://localhost:4000/buddy/" +
-        JSON.parse(localStorage.getItem("trip"))._id
+      JSON.parse(localStorage.getItem("trip"))._id
     )
       .then(response => {
         console.log(response);
         let invitations = response.data.tripbuddy;
         this.getTripBuddies(invitations);
         for (let i = 0; i < invitations.length; i++) {
-          if (
-            (invitations[i].buddy_id = JSON.parse(
-              localStorage.getItem("user")
-            )._id)
-          ) {
+          if ((invitations[i].buddy_id = JSON.parse(localStorage.getItem("user"))._id)) {
+            console.log(invitations[i])
             if (invitations[i].pending == true) {
               console.log(invitations);
               this.setState({ invitation: this.createInvitation() });
@@ -98,7 +95,7 @@ class CurrentTrip extends Component {
 
     AXIOS.get(
       "http://localhost:4000/user/" +
-        JSON.parse(localStorage.getItem("trip")).owner_id
+      JSON.parse(localStorage.getItem("trip")).owner_id
     )
       .then(response => {
         console.log(response);
@@ -390,7 +387,7 @@ class CurrentTrip extends Component {
     };
     console.log(JSON.stringify(comment));
     AXIOS.put("http://localhost:4000/comment/" + i._id, comment)
-      .then(res => {})
+      .then(res => { })
       .catch(err => {
         console.log(err);
       });
@@ -403,51 +400,7 @@ class CurrentTrip extends Component {
     window.location = "/trip/" + this.state.trip_id + "/recommendations";
   };
 
-  getBuddyId() {
-    //let self = this;
-    AXIOS.get(
-      "http://localhost:4000/useremail/" +
-        document.getElementById("buddyemail").value
-    )
-      .then(response => {
-        let buddy = response.data.user;
-        console.log(response);
-        const buddyinfo = {
-          owner_id: JSON.parse(localStorage.getItem("user"))._id,
-          trip_id: JSON.parse(localStorage.getItem("trip"))._id,
-          buddy_id: buddy._id,
-          buddy_first_name: buddy.first_name,
-          buddy_last_name: buddy.last_name,
-          buddy_picture: buddy.image,
-          accepted: false,
-          denied: false,
-          pending: true
-        };
-        AXIOS.post("http://localhost:4000/buddy", buddyinfo)
-          .then(response => {
-            this.setState({ invitation_boolean: true });
-            console.log(this.state.invitation_boolean);
-            if (response.data.saved) {
-              this.setState({
-                invitation_sent: true,
-                invitation_variant: "success",
-                invitation_sent_msg: "Invitation was sent!"
-              });
-            } else {
-              this.setState({
-                invitation_variant: "warning",
-                invitation_sent_msg: "Error occured"
-              });
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+
 
   addBuddy(buddyid) {
     const buddy = {
@@ -456,7 +409,7 @@ class CurrentTrip extends Component {
       buddy_id: buddyid
     };
     AXIOS.post("http://localhost:4000/buddy", buddy)
-      .then(response => {})
+      .then(response => { })
       .catch(err => {
         console.log(err);
       });
@@ -609,6 +562,7 @@ class CurrentTrip extends Component {
   }
 
   render() {
+    let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
       <div style={{ height: "100%" }}>
         <div
@@ -693,31 +647,16 @@ class CurrentTrip extends Component {
                         TRAVEL BUDDIES:
                       </Card.Title>
                       <div>{this.state.acceptedInvitations}</div>
-                      <InputGroup>
-                        <FormControl
-                          id="buddyemail"
-                          placeholder="username"
-                          aria-label="username"
-                        />
-                        <InputGroup.Append>
-                          <Button
-                            variant="outline-success"
-                            onClick={this.getBuddyId}
-                          >
-                            INVITE
-                          </Button>
-                        </InputGroup.Append>
-                      </InputGroup>
-                      {this.state.invitation_boolean ? (
-                        <Alert
-                          variant={this.state.invitation_sent_variant}
-                          style={{ marginBottom: "0", marginTop: "6px" }}
-                        >
-                          {this.state.invitation_sent_msg}
-                        </Alert>
-                      ) : (
-                        ""
-                      )}
+                      <Button onClick={() => this.setState({ inviteBuddyShow: true })}>INVITE</Button>
+                      <InviteBuddy
+                        show={this.state.inviteBuddyShow}
+                        onHide={inviteBuddyClose}
+                        handler={this.handler}
+                        size="lg" />
+
+
+
+
                     </Card.Body>
                   </Card>
                 </div>
