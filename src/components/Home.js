@@ -2,7 +2,7 @@ import React, { Component } from "react";
 //import "../styles/Home.css";
 import MyAccount from "./MyAccount.js";
 import Trip from "./Trip.js";
-import { ButtonToolbar, Button, Card } from "react-bootstrap";
+import { Alert, Button, Card } from "react-bootstrap";
 const AXIOS = require("axios").default;
 
 
@@ -25,7 +25,8 @@ export class Home extends Component {
       trip_number: null,
       trip_list: [],
       invite: null,
-      invitation_list: []
+      invitation_list: [],
+      showInvitations: false
     }
 
     if (JSON.parse(localStorage.getItem('user')).image == null) {
@@ -70,7 +71,7 @@ export class Home extends Component {
 
     AXIOS.get("http://localhost:4000/buddypending/" + JSON.parse(localStorage.getItem('user'))._id)
       .then(res => {
-        // console.log(res);
+        console.log(res);
         this.setState({ invite: res.data.tripbuddy });
         this.setState({
           invitation_list: this.createInvitations(res.data.tripbuddy)
@@ -186,6 +187,9 @@ export class Home extends Component {
         )
       }
     }
+    if (elements.length > 0) {
+      this.setState({ showInvitations: true });
+    }
     return elements;
   }
 
@@ -292,14 +296,10 @@ export class Home extends Component {
         backgroundAttachment: "fixed",
         overflow: "auto",
         display: "flex"
-
-
       }}>
         <div style={{ height: "100%", display: "flex", width: "100%" }}>
           <Card style={{
-            height: "70%", margin: "3%", borderRadius: "5px",
-
-
+            height: "60%", margin: "3%", borderRadius: "5px",
             border: "2px solid gray",
             boxSizing: "border-box",
             borderRadius: "20px",
@@ -308,41 +308,59 @@ export class Home extends Component {
           }}>
             <Card.Body>
 
-              <img
-                className="responsive"
-                src={require(`${this.state.image}`)}
-                alt="city"
-
-              />
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <label id="same-line">NAME: </label>
-                <label>{`${this.state.first_name}  ${this.state.last_name}`}
-
-                </label>
-                <label>{``}
-
-                </label>
-                <label id="same-line">HOMETOWN: </label>
-                <label>{`${this.state.hometown}`}</label>
-
+              <div style={{ display: "flex", alignContent: "center" }}>
+                <img className="responsive"
+                  src={require(`${this.state.image}`)}
+                  alt="profile" style={{
+                    display: "block",
+                    margin: "5px auto"
+                  }} />
               </div>
-              <Button style={{ margin: "5px auto" }} variant="primary" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
-              <Button style={{ margin: "5px auto" }} variant="primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
+              <div style={{
+                display: "flex",
+                flexDirection: "column"
+              }}>
+
+                <div style={{
+                  margin: "5px auto"
+                }}>
+                  <label id="same-line" style={{
+                    marginRight: "5px"
+                  }}><strong>NAME: </strong></label>
+                  <label>{`  ${this.state.first_name}  ${this.state.last_name}`}</label>
+                </div>
+                <div style={{
+                  margin: "5px auto"
+                }}>
+                  <label id="same-line" style={{
+                    marginRight: "5px"
+                  }}><strong>HOMETOWN: </strong></label>
+                  <label>{`${this.state.hometown}`}</label>
+                </div>
+              </div>
+              <div style={{ display: "flex" }}>
+                <Button style={{ margin: "5px 5px" }} variant="outline-success" id="home-btns" href="/Friends">VIEW FRIENDS</Button>
+                <Button style={{ margin: "5px 5px" }} variant="outline-primary" id="home-btns" href="/Trip" >CREATE A TRIP</Button>
+              </div>
+
             </Card.Body>
           </Card>
           <div style={{ disply: "flex", flexDirection: "column", marginTop: "3%", width: "50%" }}>
-            <Card style={{
-              margin: "3%",
-              borderRadius: "5px",
-              border: "2px solid gray",
-              boxSizing: "border-box",
-              borderRadius: "20px",
-              boxShadow: "8px 8px 50px #000",
-              color: "#6c757d"
-            }}>
-              <Card.Header as="h3" style={{ padding: "10px" }}>TRIP INVITATIONS</Card.Header>
-              <Card.Body><div className="row">{this.state.invitation_list}</div></Card.Body>
-            </Card>
+            <Alert show={this.state.showInvitations}>
+              <Card style={{
+                margin: "3%",
+                borderRadius: "5px",
+                border: "2px solid gray",
+                boxSizing: "border-box",
+                borderRadius: "20px",
+                boxShadow: "8px 8px 50px #000",
+                color: "#6c757d"
+              }}>
+                <Card.Header as="h3" style={{ padding: "10px" }}>TRIP INVITATIONS</Card.Header>
+                <Card.Body><div className="row">{this.state.invitation_list}</div></Card.Body>
+              </Card>
+
+            </Alert>
             <Card style={{
               margin: "3%", borderRadius: "5px",
               border: "2px solid gray",
