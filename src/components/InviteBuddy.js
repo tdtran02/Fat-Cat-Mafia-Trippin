@@ -89,41 +89,45 @@ export class InviteBuddy extends Component {
         let buddies = this.state.selectedFriends;
         if (buddies != null) {
             for (let i = 0; i < buddies.length; i++) {
-                AXIOS.get("http://localhost:4000/user/" + buddies[i]).then((resp) => {
-                    let buddy = resp.data.user;
-                    const buddyinfo = {
-                        owner_id: JSON.parse(localStorage.getItem("user"))._id,
-                        trip_id: JSON.parse(localStorage.getItem("trip"))._id,
-                        buddy_id: buddy._id,
-                        buddy_first_name: buddy.first_name,
-                        buddy_last_name: buddy.last_name,
-                        buddy_picture: buddy.image,
-                        accepted: false,
-                        denied: false,
-                        pending: true,
-                    };
-                    AXIOS.post("http://localhost:4000/buddy", buddyinfo)
-                        .then((response) => {
-                            console.log(response);
-                            this.setState({ invitation_boolean: true });
-                            console.log(this.state.invitation_boolean);
-                            if (response.data.saved) {
-                                this.setState({
-                                    invitation_sent: true,
-                                    invitation_variant: "success",
-                                    invitation_sent_msg: "Invitation was sent!",
-                                });
-                            } else {
-                                this.setState({
-                                    invitation_variant: "warning",
-                                    invitation_sent_msg: "Error occured",
-                                });
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                });
+                AXIOS.get("http://localhost:4000/user/" + buddies[i])
+                    .then(resp => {
+                        let buddy = resp.data.user;
+                        const buddyinfo = {
+                            owner_id: JSON.parse(localStorage.getItem("user"))._id,
+                            trip_id: JSON.parse(localStorage.getItem("trip"))._id,
+                            trip_name: JSON.parse(localStorage.getItem("trip")).trip_name,
+                            buddy_id: buddy._id,
+                            buddy_first_name: buddy.first_name,
+                            buddy_last_name: buddy.last_name,
+                            buddy_picture: buddy.image,
+                            owner_first_name: JSON.parse(localStorage.getItem("user")).first_name,
+                            owner_last_name: JSON.parse(localStorage.getItem("user")).last_name,
+                            accepted: false,
+                            denied: false,
+                            pending: true,
+                        };
+                        AXIOS.post("http://localhost:4000/buddy", buddyinfo)
+                            .then((response) => {
+                                console.log(response);
+                                this.setState({ invitation_boolean: true });
+                                console.log(this.state.invitation_boolean);
+                                if (response.data.saved) {
+                                    this.setState({
+                                        invitation_sent: true,
+                                        invitation_variant: "success",
+                                        invitation_sent_msg: "Invitation was sent!",
+                                    });
+                                } else {
+                                    this.setState({
+                                        invitation_variant: "warning",
+                                        invitation_sent_msg: "Error occured",
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    });
             }
         }
     }
