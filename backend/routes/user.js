@@ -1,8 +1,38 @@
 const EXPRESS = require("express");
 const USERROUTES = EXPRESS.Router();
-
+const db = require("../config_url").mongoURL;
 const USER = require("../models/user.model");
-
+const GridFsStorage = require('multer-gridfs-storage'); 
+const multer = require('multer');
+const storage = new GridFsStorage({
+  url: db,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err)
+        }
+        const filename = file.originalname
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads',
+        }
+        resolve(fileInfo)
+      })
+    })
+  },
+})
+const upload = multer({ 
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+      if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+          cb(null, true);
+      } else {
+          cb(null, false);
+          return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      }
+  } 
+})
 //find user by id
 USERROUTES.route("/user/:id").get(function (req, res) {
   USER.findOne({ _id: req.params.id }).then(user => {
@@ -46,13 +76,13 @@ USERROUTES.route("/user").get(function (req, res) {
 
 USERROUTES.route("/user/:id").put(function (req, res) {
   /*  console.log(req.body.hi);
-   console.log(req.params); */
+   console.log(req.params); image: req.body.user.image,*/
   console.log(req.params);
   console.log(req.body.user.image);
   USER.updateOne(
     { _id: req.params.id },
     {
-      $set: { image: req.body.user.image, first_name: req.body.user.first_name, last_name: req.body.user.last_name, hometown: req.body.user.hometown }
+      $set: {first_name: req.body.user.first_name, last_name: req.body.user.last_name, hometown: req.body.user.hometown }
     }
   )
     .then(response => {
@@ -62,6 +92,21 @@ USERROUTES.route("/user/:id").put(function (req, res) {
     .catch(err => { console.log(err) });
 });
 
+USERROUTES.route('/user/:id/profile').post(upload.single('img'), (req, res, err) => {
+  if (err) throw err
+  USER.updateOne(
+    {_id: req.params.id},
+    {
+      $set: {image: upload.single('img')}
+    }
+  )
+  .then(response => {
+    res.status(200).json({});
+    console.log(response);
+  })
+  .catch(err => { console.log(err) });
+  res.status(201).send()
+})
 
 
 

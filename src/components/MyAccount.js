@@ -64,9 +64,9 @@ export class MyAccount extends Component {
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
         this.setState({ __v: response.data.user.__v });
-        if (response.data.user.image != null) {
-          this.setState({ image: response.data.user.image });
-        }
+        // if (response.data.user.image != null) {
+        //   this.setState({ image: response.data.user.image });
+        // }
 
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown })
