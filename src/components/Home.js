@@ -285,7 +285,7 @@ export class Home extends Component {
 
       <div className="image-container" style={{
         height: "100%",
-        backgroundImage: "url(https://wallpapershome.com/images/pages/ico_h/17813.jpg)",
+        backgroundImage: "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
