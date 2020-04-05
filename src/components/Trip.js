@@ -19,7 +19,7 @@ export class Trip extends Component {
   componentDidMount() {
     AXIOS.get(
       "http://localhost:4000/trip/" +
-      JSON.parse(localStorage.getItem("user"))._id
+        JSON.parse(localStorage.getItem("user"))._id
     )
       .then(res => {
         this.setState({ trip: res.data.trip });
@@ -91,7 +91,8 @@ export class Trip extends Component {
         <div
           style={{
             width: "400px",
-            backgroundColor: "transparent",
+            backgroundColor: "transparent !important",
+            // backgroundColor: "yellow",
             borderRadius: "5px",
             width: "500px",
             margin: "100px auto",
@@ -105,8 +106,8 @@ export class Trip extends Component {
           <Card
             style={{
               border: "transparent",
-              borderRadius: "20px",
-              backgroundColor: "white"
+              borderRadius: "20px"
+              // backgroundColor: "white"
             }}
           >
             <Card.Body>
@@ -121,7 +122,7 @@ export class Trip extends Component {
                     required
                     style={{
                       width: "100%",
-                      backgroundColor: "white",
+                      // backgroundColor: "white",
                       border: "1px solid #CED4DA",
                       backgroundColor: "transparent",
                       color: "#6c757d"
@@ -140,7 +141,7 @@ export class Trip extends Component {
                     required
                     style={{
                       width: "100%",
-                      backgroundColor: "white",
+                      // backgroundColor: "white",
                       border: "1px solid #CED4DA",
                       backgroundColor: "transparent",
                       color: "#6c757d"
@@ -162,7 +163,7 @@ export class Trip extends Component {
                     required
                     style={{
                       width: "100%",
-                      backgroundColor: "white",
+                      // backgroundColor: "white",
                       border: "1px solid #CED4DA",
                       backgroundColor: "transparent",
                       color: "#6c757d"
@@ -180,7 +181,7 @@ export class Trip extends Component {
                     required
                     style={{
                       width: "100%",
-                      backgroundColor: "white",
+                      // backgroundColor: "white",
                       border: "1px solid #CED4DA",
                       backgroundColor: "transparent",
                       color: "#6c757d"
@@ -196,9 +197,9 @@ export class Trip extends Component {
                     className="btn btn-lg btn-primary btn-block text-uppercase"
                     type="submit"
                     style={{ backgroundColor: "transparent", color: "black" }}
-                  // onClick={
-                  //     this.onCreateFieldClick();
-                  // }
+                    // onClick={
+                    //     this.onCreateFieldClick();
+                    // }
                   >
                     Create
                   </button>

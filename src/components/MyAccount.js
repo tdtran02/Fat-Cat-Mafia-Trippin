@@ -1,30 +1,10 @@
 import React, { Component, useState } from "react";
 import "../styles/MyAccount.css";
-import { Button, ButtonToolbar, Alert } from 'react-bootstrap';
+import { Button, ButtonToolbar, Alert, Card, Form } from 'react-bootstrap';
 import { EditPhotoModal } from './EditPhotoModal';
-/* import Profile from './images/profilepic.png';
-import Profile1 from './images/profile1.jpg';
-import Profile2 from './images/profile2.jpg';
-import Profile3 from './images/profile3.jpg';
-import Profile4 from './images/profile4.jpg';
-import Profile5 from './images/profile5.jpg';
-import Profile6 from './images/profile6.jpg';
-import Profile7 from './images/profile7.jpg';
-import Profile8 from './images/profile8.jpg';
-import Profile9 from './images/profile9.jpg';
-import Profile10 from './images/profile10.jpg'; */
+
 
 const AXIOS = require("axios").default;
-
-/* function ChangePhoto() {
-  function handleClick(e) {
-
-    e.preventDefault();
-    document.getElementById("profile-pic-myA").src = { Profile10 };
-    console.log();
-  }
-
-} */
 
 export class MyAccount extends Component {
   constructor(props) {
@@ -86,11 +66,11 @@ export class MyAccount extends Component {
   };
 
   handleSubmit(e) {
-    alert("Your Profile Has Been Updated")
+    //alert("Your Profile Has Been Updated")
     console.log("teestinggg");
-    var x = document.getElementById("myA-firstname").value;
-    var y = document.getElementById("myA-lastname").value;
-    var z = document.getElementById("myA-hometown").value;
+    var x = document.getElementById("first-name").value;
+    var y = document.getElementById("last-name").value;
+    var z = document.getElementById("hometown").value;
     console.log(z);
     if (x === "") {
       x = JSON.parse(localStorage.getItem('user')).first_name;
@@ -113,11 +93,9 @@ export class MyAccount extends Component {
     const update = {
       user: {
         _id: JSON.parse(localStorage.getItem('user'))._id,
-        //    email: JSON.parse(localStorage.getItem('user')).email,
         first_name: x,
         last_name: y,
-        //    password: JSON.parse(localStorage.getItem('user')).password,
-        image: "./images/profile6.jpg",
+        image: this.state.image,
         __v: this.state.__v,
         hometown: z
       }
@@ -130,6 +108,7 @@ export class MyAccount extends Component {
 
     this.setState({ updateflag: true });
     e.preventDefault();
+    window.location.href = "/MyAccount";
   }
 
 
@@ -137,7 +116,129 @@ export class MyAccount extends Component {
     let editModalClose = () => this.setState({ editPhotoShow: false });
 
     return (
-      <div>
+      <div className="image-container" style={{
+        height: "97%",
+        backgroundImage: "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        overflow: "auto",
+        display: "flex"
+      }}>
+        <div style={{ height: "100%", display: "flex", width: "100%" }}>
+          <Card style={{
+            height: "60%", margin: "3%", borderRadius: "5px",
+            border: "2px solid gray",
+            boxSizing: "border-box",
+            borderRadius: "20px",
+            boxShadow: "8px 8px 50px #000",
+            color: "#6c757d",
+            width: "30%",
+            maxWidth: "350px",
+            minWidth: "250px"
+          }}>
+            <Card.Body>
+              <div style={{ display: "flex", alignContent: "center" }}>
+                <img className="responsive"
+                  src={require(`${this.state.image}`)}
+                  alt="profile" style={{
+                    display: "block",
+                    margin: "5px auto"
+                  }} />
+              </div>
+              <div style={{
+                display: "flex",
+                flexDirection: "column"
+              }}>
+                <Button style={{
+                  margin: "5px auto"
+                }} variant="outline-dark" onClick={() => { this.setState({ editPhotoShow: true }) }}>CHANGE PHOTO</Button>
+                <EditPhotoModal
+                  show={this.state.editPhotoShow}
+                  onHide={editModalClose}
+                  handler={this.handler}
+                  size="lg"
+                  style={{ maxWidth: '1600px', width: '80%' }}
+                />
+                <div style={{
+                  margin: "5px auto"
+                }}>
+                  <label id="same-line" style={{
+                    marginRight: "5px"
+                  }}><strong>NAME: </strong></label>
+                  <label>{`  ${this.state.first_name}  ${this.state.last_name}`}</label>
+                </div>
+                <div style={{
+                  margin: "5px auto"
+                }}>
+                  <label id="same-line" style={{
+                    marginRight: "5px"
+                  }}><strong>HOMETOWN: </strong></label>
+                  <label>{`${this.state.hometown}`}</label>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+
+          <Card style={{
+            margin: "3%",
+            borderRadius: "5px",
+            border: "2px solid gray",
+            boxSizing: "border-box",
+            borderRadius: "20px",
+            boxShadow: "8px 8px 50px #000",
+            color: "#6c757d",
+            height: "60%",
+            minWidth: "400px"
+          }}>
+            <Card.Header as="h3">UPDATE PROFILE</Card.Header>
+            <Card.Body>
+              <Form>
+                <div style={{
+                  display: "flex",
+                  width: "400px",
+                  margin: "5px auto",
+                  alignItems: "center"
+                }}>
+                  <Form.Label style={{
+                    margin: "0 15px 0 32px"
+                  }}>FIRST NAME:</Form.Label>
+                  <Form.Control id="first-name" type="text" placeholder="ENTER FIRST NAME" style={{
+                    width: "230px"
+                  }} />
+                </div>
+                <div style={{ display: "flex", width: "400px", margin: "5px auto" }}>
+                  <Form.Label style={{
+                    margin: "0 15px 0 35px"
+                  }}>LAST NAME:</Form.Label>
+                  <Form.Control id="last-name" type="text" placeholder="ENTER LAST NAME" style={{
+                    width: "230px"
+                  }} />
+                </div>
+                <div style={{ display: "flex", width: "400px", margin: "5px auto" }}>
+                  <Form.Label style={{
+                    margin: "0 15px 0 28px"
+                  }}>HOMETOWN:</Form.Label>
+                  <Form.Control id="hometown" type="text" placeholder="ENTER HOMETOWN" style={{
+                    width: "230px"
+                  }} />
+                </div>
+                <div style={{ display: "flex" }}>
+                  <Button className="buttons" onClick={this.handleSubmit} variant="outline-success" type="submit"
+                    style={{ margin: "15px auto" }}>
+                    UPDATE</Button>
+                </div>
+
+
+              </Form>
+
+            </Card.Body>
+
+          </Card>
+        </div>
+
+        {/* <div>
 
 
         <div className='content-container'>
@@ -175,18 +276,7 @@ export class MyAccount extends Component {
                       <input type="text" className="myA" id="myA-lastname" style={{ height: "25px" }} />
                       <label htmlFor="full-name">HOMETOWN</label>
                       <input type="text" className="myA" id="myA-hometown" style={{ height: "25px" }} />
-                      {/* <button>UPDATE</button> */}
-
-                      {/*  <label htmlFor="email">EMAIL</label>
-                    <input type="text" className="myA" /> */}
-                      {/* <button>UPDATE</button> */}
-
-
-                      {/* <div className="phone">
-                        <label htmlFor="telNo">PHONE NUMBER </label>
-                        <input id="telNo" name="telNo" type="tel" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX"></input>
-                        <span className="validity"></span>
-                      </div> */}
+                     
                       <div id="update-div">
 
                         <ButtonToolbar id="btntb">
@@ -201,52 +291,7 @@ export class MyAccount extends Component {
                       </div>
 
                     </form>
-                    {/* <div className="container-form">
-                      <div className="panel panel-primary">
-                        <div className="panel-heading">
-                          <h3 className="panel-title">Address</h3>
-                        </div>
-                        <div className="panel-body">
-                          <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text" className="form-control"></input>
-                          <br></br>
-                          <div id="address">
-                            <div className="row">
-                              <div className="col-md-6">
-                                <label className="control-label">Street Address</label>
-                                <input className="form-control" id="stress_number" placeholder="Enter your street number and street name"></input>
-                              </div>
-                              <div className="col-md-6">
-                                <label className="control-label">Apt Number</label>
-                                <input className="form-control" id="apt_number" placeholder="Enter your Apartment number"></input>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-6">
-                                <label className="control-label">City</label>
-                                <input className="form-control field" id="locality" placeholder="Enter your city"></input>
-                              </div>
-                              <div className="col-md-6">
-                                <label className="control-label">State</label>
-                                <input className="form-control" id="administrative_area_level_1" placeholder="Enter your State"></input>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-6">
-                                <label className="cotrol-label">Zip Code</label>
-                                <input className="form-control" id="postal_code" placeholder="Enter your Zip Code"></input>
-                              </div>
-                              <div className="col-md-6">
-                                <label className="control-label">Country</label>
-                                <input className="form-control" id="country" placeholder="Enter your country"></input>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div id="submit-btn">
-                        <button>SUBMIT CHANGES</button>
-                      </div>
-                    </div> */}
+                  
                   </div>
                   <ButtonToolbar className="done-btn">
 
@@ -265,73 +310,19 @@ export class MyAccount extends Component {
             </div>
           </div>
         </div>
-        {/*     <div className="container-form">
-          <div className="panel panel-primary">
-            <div className="panel-heading">
-              <h3 className="panel-title">TRAVEL</h3>
-            </div>
-            <div className="panel-body">
-              <br></br>
-              <div id="location">
-                <div className="row">
-                  <div className="col-md-6">
-                    <label className="control-label">Departure</label>
-                    <input className="form-control" id="departue_location" placeholder="City Country Depart"></input>
-                  </div>
-                  <div className="col-md-6">
-                    <label className="control-label">Arrival</label>
-                    <input className="form-control" id="arrival_location" placeholder="City Country Arrive"></input>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <form>
-                      <label htmlFor="control-label">Start Date
-                        <input className="form-control" type="date" name="start-day" min="2020-02-10" max="2022-02-10" required></input>
-                        <span className="validity"></span>
-                      </label>
-                    </form>
-                  </div>
-                  <div className="col-md-6">
-                    <form>
-                      <label htmlFor="control-label">End Date
-                        <input className="form-control" type="date" name="end-day" min="2020-02-11" max="2022-02-11" required></input>
-                        <span className="validity"></span>
-                      </label>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> */}
+     
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete" async defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossOrigin="anonymous"></script>
         <script src="auto-complete.js"></script>
+      </div> */}
       </div>
     );
   }
 }
 
-/* var modal = document.getElementById("myModal");
-var btn = document.getElementById("trigger");
-var span = document.getElementByClassName("close")[0];
- 
-btn.onclick = function () {
-      modal.style.display = "block";
-  }
-  
-span.onclick = function () {
-      modal.style.display = "none";
-  }
-  
-window.onclick = function (event) {
-if (event.target == modal) {
-      modal.style.display = "none";
-  }
-} */
+
 
 
 export default MyAccount;

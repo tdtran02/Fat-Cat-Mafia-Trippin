@@ -1,20 +1,19 @@
-
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   font-family: Raleway;
- 
+
   color: #111;
   height: 100%;
 }
 body * {
-  transition: all 0.300s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
-#root{
+#root {
   height: 100%;
 }
-
 
 /*------------- HEADER -------------------*/
 
@@ -24,7 +23,6 @@ header {
   height: 700px;
   background-position: center;
   position: relative;
- 
 }
 
 header div.head {
@@ -32,18 +30,15 @@ header div.head {
   z-index: 2;
   display: grid;
   width: 70%;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   margin: 0 auto;
   padding-top: 12%;
   align-items: center;
-  
 }
 
-header div.head  {
+header div.head {
   color: #222;
-
 }
-
 
 header div.head h1 {
   font-size: 5rem;
@@ -59,34 +54,29 @@ header div.head p {
   padding-left: 30px;
 }
 
-
 .contact {
- background: rgb(0, 99, 248);
- display: block;
- color:black;
- font-weight: bold;
- width: 50%;
- margin: 0 auto;
- text-align: center;
- padding: 12px;
- border-radius: 10px;
- text-decoration: none; 
- -webkit-box-shadow: 0px 10px 54px -11px rgba(0,0,0,0.75);
- -moz-box-shadow: 0px 10px 54px -11px rgba(0,0,0,0.75);
- box-shadow: 0px 10px 54px -11px rgba(0,0,0,0.75);
+  background: rgb(0, 99, 248);
+  display: block;
+  color: black;
+  font-weight: bold;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  -webkit-box-shadow: 0px 10px 54px -11px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 10px 54px -11px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 10px 54px -11px rgba(0, 0, 0, 0.75);
 }
 
-
- /*------------- MAIN SECTION -------------------*/
-
+/*------------- MAIN SECTION -------------------*/
 
 main {
- 
   position: relative;
   z-index: 3;
- overflow: hidden;
+  overflow: hidden;
 }
-
 
 main section {
   width: 70%;
@@ -95,57 +85,51 @@ main section {
   display: grid;
   grid-template-columns: 2fr 3fr;
   align-items: center;
-
 }
 
 main section h2 {
   font-size: 4.3rem;
   color: black;
   text-transform: uppercase;
- line-height: 4.2rem; 
- padding-right: 10px;
- border-right: 3px solid black;
+  line-height: 4.2rem;
+  padding-right: 10px;
+  border-right: 3px solid black;
 }
-
-
 
 main section div {
   position: relative;
-
 }
 
 main section div p {
   padding-left: 10px;
 }
 
-
 /*------------- GALLERY -------------------*/
 
-.gallery{
+.gallery {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   height: 820px;
   width: 95%;
   margin: 180px auto 0px auto;
-  -webkit-box-shadow: 0px 10px 20px -11px rgba(0,0,0,0.9);
- -moz-box-shadow: 0px 10px 20px -11px rgba(0,0,0,0.9);
- box-shadow: 0px 10px 20px -11px rgba(0,0,0,0.9);
+  -webkit-box-shadow: 0px 10px 20px -11px rgba(0, 0, 0, 0.9);
+  -moz-box-shadow: 0px 10px 20px -11px rgba(0, 0, 0, 0.9);
+  box-shadow: 0px 10px 20px -11px rgba(0, 0, 0, 0.9);
 }
 
 .gallery div {
   width: 100%;
   height: 100%;
   position: relative;
-   overflow: hidden;
-   filter: grayscale(83%);
+  overflow: hidden;
+  filter: grayscale(83%);
 }
-
 
 .gallery div.gallery-item-one {
   background: url("/");
   background-size: 160%;
- grid-column-end: span 2;
- grid-row-end: span 2;
+  grid-column-end: span 2;
+  grid-row-end: span 2;
 }
 
 .gallery div.gallery-item-two {
@@ -169,21 +153,24 @@ main section div p {
   background: url("./components/TrippinPage/images/images.jpeg");
   background-size: 160%;
 }
-.gallery div.gallery-item-one:hover, .gallery div.gallery-item-two:hover, .gallery div.gallery-item-three:hover, .gallery div.gallery-item-four:hover, .gallery div.gallery-item-five:hover, .gallery div.gallery-item-six:hover{
+.gallery div.gallery-item-one:hover,
+.gallery div.gallery-item-two:hover,
+.gallery div.gallery-item-three:hover,
+.gallery div.gallery-item-four:hover,
+.gallery div.gallery-item-five:hover,
+.gallery div.gallery-item-six:hover {
   background-size: 100%;
   filter: grayscale(0%);
 }
 
- /*------------- SERVICES -------------------*/
+/*------------- SERVICES -------------------*/
 
 div.services {
   display: grid;
   height: auto;
-  grid-template-columns: repeat(3,1fr);
- padding: 10px;
-
+  grid-template-columns: repeat(3, 1fr);
+  padding: 10px;
 }
-
 
 .services div {
   text-align: center;
@@ -191,11 +178,10 @@ div.services {
   width: 90%;
   border-radius: 10px;
   margin: 10px auto 50px auto;
-  
-  -webkit-box-shadow: 0px 10px 30px -9px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 10px 30px -9px rgba(0,0,0,0.75);
-  box-shadow: 0px 10px 30px -9px rgba(0,0,0,0.75);
-  
+
+  -webkit-box-shadow: 0px 10px 30px -9px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 10px 30px -9px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 10px 30px -9px rgba(0, 0, 0, 0.75);
 }
 
 .services p.service-icon {
@@ -207,17 +193,16 @@ div.services {
   filter: grayscale(0%);
   border-bottom: 2px solid rgb(0, 99, 248);
 }
-.services p.service-title{
+.services p.service-title {
   font-size: 3.1rem;
   padding: 0;
   margin: 0;
 }
 
-.services p:last-of-type{
-  padding: 0px 90px 20px 90px; 
+.services p:last-of-type {
+  padding: 0px 90px 20px 90px;
   text-align: left;
 }
-
 
 footer {
   background: rgb(0, 99, 248);
@@ -225,14 +210,12 @@ footer {
   padding: 20px;
   margin-top: 80px;
   display: grid;
-  grid-template-columns:1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   text-align: center;
- 
 }
 
 footer ul {
-  
   list-style: none;
   display: grid;
   padding: 0;
@@ -245,57 +228,48 @@ footer ul li a {
   color: #eee;
 }
 
+@media (max-width: 1310px) and (min-width: 1100px) {
+  header div.head {
+    width: 75%;
+    padding-top: 190px;
+  }
+  header div.head h1 {
+    font-size: 4rem;
+  }
 
-@media (max-width:1310px) and (min-width:1100px) {
-    
-    header div.head {
-      width: 75%;
-      padding-top: 190px;
-    }
-    header div.head h1 {
-      font-size: 4rem;
-      
-    }
-    
-    main section {
-      width: 90%;
-      padding: 90px 0;
-      margin: 0px auto 50px auto;
-      display: grid;
-      grid-template-columns: 1fr;
-      
-    }
-    main section div p {
-      padding: 0px 90px;
-    }
-    
-    
+  main section {
+    width: 90%;
+    padding: 90px 0;
+    margin: 0px auto 50px auto;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  main section div p {
+    padding: 0px 90px;
+  }
 
-    .services p.service-icon {
-      font-size: 2.4rem;
-      padding: 10px 30px;
-      margin: 0px 0px 30px 0px;
-      
-    }
-    .services p.service-title{
-      font-size: 2.1rem;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .services p:last-of-type{
-      padding: 0px 20px; 
-      text-align: left;
-    }
+  .services p.service-icon {
+    font-size: 2.4rem;
+    padding: 10px 30px;
+    margin: 0px 0px 30px 0px;
+  }
+  .services p.service-title {
+    font-size: 2.1rem;
+    padding: 0;
+    margin: 0;
+  }
 
-    .gallery{
-      height: 600px;
-    }
+  .services p:last-of-type {
+    padding: 0px 20px;
+    text-align: left;
+  }
+
+  .gallery {
+    height: 600px;
+  }
 }
 
-
-
-@media (max-width:1099px) and (min-width:850px) {
+@media (max-width: 1099px) and (min-width: 850px) {
   header {
     height: 350px;
     background-position: bottom;
@@ -305,13 +279,11 @@ footer ul li a {
     width: 75%;
     padding-top: 400px;
     grid-template-columns: 1fr;
-    
   }
   header div.head h1 {
     font-size: 4rem;
-    
   }
-  main section:first-of-type{
+  main section:first-of-type {
     margin-top: 400px;
   }
 
@@ -321,43 +293,37 @@ footer ul li a {
     margin: 0px auto 50px auto;
     display: grid;
     grid-template-columns: 1fr;
-    
   }
   main section div p {
     padding: 0px 90px;
   }
-  
-  
+
   .services p.service-icon {
     font-size: 2.4rem;
     padding: 10px 30px;
     margin: 0px 0px 30px 0px;
-    
   }
-  .services p.service-title{
+  .services p.service-title {
     font-size: 2.1rem;
     padding: 0;
     margin: 0;
   }
-  
-  .services p:last-of-type{
-    padding: 0px 20px; 
+
+  .services p:last-of-type {
+    padding: 0px 20px;
     text-align: left;
   }
 
-  .gallery{
+  .gallery {
     height: 420px;
   }
 }
 
-
-@media (max-width:849px) and (min-width:600px) {
+@media (max-width: 849px) and (min-width: 600px) {
   header {
-  height: 440px;
-
+    height: 440px;
   }
-  
-  
+
   header div.head {
     width: 75%;
     padding-top: 120px;
@@ -365,29 +331,24 @@ footer ul li a {
   }
   header div.head h1 {
     font-size: 3rem;
-    
   }
 
-
-
-  
   main section {
     width: 90%;
     padding: 90px 0;
     margin: 0px auto 50px auto;
     display: grid;
     grid-template-columns: 1fr;
-    
   }
   main section div p {
     padding: 0px 90px;
   }
-  
- div.services {
-   display: grid;
-   grid-template-columns: 1fr;
+
+  div.services {
+    display: grid;
+    grid-template-columns: 1fr;
   }
-   div.services div {
+  div.services div {
     width: 70%;
   }
 
@@ -395,73 +356,65 @@ footer ul li a {
     font-size: 2.4rem;
     padding: 10px 30px;
     margin: 0px 0px 30px 0px;
-    
   }
-  .services p.service-title{
+  .services p.service-title {
     font-size: 2.1rem;
     padding: 0;
     margin: 0;
   }
-  
-  .services p:last-of-type{
-    padding: 0px 20px; 
+
+  .services p:last-of-type {
+    padding: 0px 20px;
     text-align: left;
   }
 
-  .gallery{
+  .gallery {
     height: 400px;
   }
 }
 
-
-@media (max-width:599px) and (min-width:0px) {
+@media (max-width: 599px) and (min-width: 0px) {
   nav {
-   text-align: center;
+    text-align: center;
     display: grid;
     grid-template-columns: 1fr;
   }
-  
+
   nav ul {
     margin-bottom: 10px;
-    
   }
   nav ul:first-of-type {
-    border-bottom:1px solid #111;
-    padding-bottom: 10px; 
+    border-bottom: 1px solid #111;
+    padding-bottom: 10px;
   }
-  
-  nav ul:last-of-type li{
-   text-align: center;
-   width: 100%;
-   padding-top: 10px;
-   
+
+  nav ul:last-of-type li {
+    text-align: center;
+    width: 100%;
+    padding-top: 10px;
   }
-  
+
   header {
-     
     background-size: 160%;
     height: 270px;
     position: relative;
-   
   }
-  
+
   header div.head {
     width: 75%;
     grid-template-columns: 1fr;
     padding-top: 260px;
-    
   }
   header div.head h1 {
     font-size: 2.3rem;
     border: none;
   }
-  
+
   header div.head p {
     padding-left: 0px;
   }
-  
 
-  main section:first-of-type{
+  main section:first-of-type {
     margin-top: 390px;
   }
 
@@ -471,15 +424,14 @@ footer ul li a {
     margin: 50px auto 0px auto;
     display: grid;
     grid-template-columns: 1fr;
-    
   }
   main section div p {
     padding: 0px 10px;
   }
-  
+
   div.services {
-   display: grid;
-   grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 1fr;
   }
   div.services div {
     width: 80%;
@@ -489,20 +441,19 @@ footer ul li a {
     font-size: 2.4rem;
     padding: 10px 30px;
     margin: 0px 0px 30px 0px;
-    
   }
-  .services p.service-title{
+  .services p.service-title {
     font-size: 2.1rem;
     padding: 0;
     margin: 0;
   }
-  
-  .services p:last-of-type{
-    padding: 0px 20px; 
+
+  .services p:last-of-type {
+    padding: 0px 20px;
     text-align: left;
   }
 
-  .gallery{
+  .gallery {
     grid-template-columns: 1fr;
     height: auto;
     margin: 30px auto 0px auto;
@@ -512,32 +463,25 @@ footer ul li a {
   }
 
   .gallery div.gallery-item-one {
-   grid-column-end: span 1;
-   grid-row-end: span 1;
+    grid-column-end: span 1;
+    grid-row-end: span 1;
   }
 
- 
   main section form div label {
-    margin-right:10px;
+    margin-right: 10px;
     border-radius: 5px;
-  
   }
-  
+
   main section form div:last-of-type input {
-   
     padding: 10px;
     border-radius: 5px;
-  
   }
   footer {
     padding: 20px 0;
     text-align: center;
-    grid-template-columns:1fr;
-  
+    grid-template-columns: 1fr;
   }
   footer ul li a {
- font-size: 1.8rem;
+    font-size: 1.8rem;
   }
-  
-  
 }
