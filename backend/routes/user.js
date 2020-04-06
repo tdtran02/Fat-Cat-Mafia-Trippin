@@ -108,6 +108,28 @@ USERROUTES.route('/user/:id/profile').post(upload.single('img'), (req, res, err)
   res.status(201).send()
 })
 
+USERROUTES.route('/user/:id/profile/:filename').get(function(req, req){
+  USER.findOne({filename: req.params.filename }, (err, file) =>{
+    // check if file
+    if(!file || file.length === 0){
+      return res.status(404).json({
+        err:'No file exists'
+      })
+    }
+    // check if image
+    if(file.contentType === 'image/jpeg' ||
+    file.contentType === 'image/png'){
+      // read output to browser
+      const readstream = gfs.createReadStream(file.filename)
+      readstream.pipe(res)
 
+    }else{
+      res.status(404).json({
+        err:"not an image",
+      })
+
+    }
+  })
+})
 
 module.exports = USERROUTES;

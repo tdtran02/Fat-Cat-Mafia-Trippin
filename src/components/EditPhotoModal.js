@@ -103,7 +103,7 @@ export class EditPhotoModal extends Component {
         
         formData.append('profileImg', this.state.profileImg)
         
-        fetch('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id + 'profile', {
+        fetch('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id + '/profile', {
             method: 'POST',
             body: formData,
         }).then(r => {
