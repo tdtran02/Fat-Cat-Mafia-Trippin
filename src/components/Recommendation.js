@@ -27,17 +27,34 @@ class Recommendation extends React.Component {
       days: [],
       days_elements: [],
       daylist: [],
-      loading: true
+      loading: true,
+      trip_location_events: [],
+      location_events: [],
+      event_list: [],
+      destination: null,
+      startDate: null,
+      endDate: null,
+      show_event: []
     };
   }
-  componentDidMount() {
+
+ async componentDidMount() {
     AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
       .then(res => {
         // localStorage.setItem("trip", JSON.stringify(res.data.trip));
         console.log(res.data.trip);
-        this.setState({ trip_locations: res.data.trip.trip_locations });
+        let get_start = new Date(res.data.trip.start_date);
+        let get_end = new Date(res.data.trip.end_date);
+        get_start = get_start.getFullYear() + "-" + (get_start.getMonth()+1) + "-" + (get_start.getDate()+1);
+        get_end = get_end.getFullYear() + "-" + (get_end.getMonth()+1) + "-" + (get_end.getDate()+1);
+        
+        this.setState({ trip_locations: res.data.trip.trip_locations,
+          destination: res.data.trip.destination,
+          startDate: new Date(get_start),
+          endDate: new Date(get_end)  
+        });
 
-        console.log(this.state);
+       // console.log(this.state);
         // this.setState({ days: res.data.trip.days });
         // this.setState({ daylist: this.getDays() });
         return AXIOS.post("http://localhost:4000/question/searchlocation", {
@@ -48,23 +65,58 @@ class Recommendation extends React.Component {
       .then(res => {
         this.setState({ locations: res.data.recs });
         this.setState({
-          location_elements: this.createList(this.state.locations, "add")
-        });
-        this.setState({
-          trip_location_elements: this.createList(
-            this.state.trip_locations,
-            "delete"
-          )
-        });
-        this.setState({ loading: false });
+          location_elements: this.createList(this.state.locations, "add"),
+          location_events: this.createEvent(res.data.eventKey, "add"),
+         //event_list: this.createEventList(this.state.event_list, "add")
+        },
+        //  console.log("in didmount" + this.state.event_list),
+        //  this.state.show_event = this.createEventList(this.state.event_list, "add")
+        );
+        
         console.log(this.state);
+        //let see_event = this.state.event_list;
+        //console.log("in didmount" + this.state.event_list);
+        //this.setState({
+        //  show_event: this.createEventList(evKey, "add")
+        //});
+       // this.setState({
+       //   trip_location_elements: this.createList(
+       //     this.state.trip_locations,
+        //    "delete"
+        //  )
+        //});
+        this.setState({ loading: false });
+       
+   //     console.log("After all state is set");
+   //     console.log("event_list: " + this.state.event_list);
+   //     console.log("location_elements: " + this.state.location_elements);
       })
       .catch(err => {
         console.log(err);
       });
+
+
+      AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
+      .then(res =>{
+        return AXIOS.post("http://localhost:4000/question/eventlocation", {
+          trip_id: this.state.trip_id
+        });
+      })
+      .then(res => {
+        this.setState({ event_list: res.data.event_list });
+      //  this.setState({event_list: this.createEventList(this.state.event_list, "add"),
+      //  });
+        console.log("in didmount after get eventlocation trip id: " + res.data.event_list + " apikey: " + res.data.trip_id + " destination: " + res.data.destination + " start: " + res.data.start_date + " end: " + res.data.end_date);
+      })
+      .catch(err =>{
+        console.log(err);
+      });
+      
+      
   }
 
   createList(list, option) {
+    //console.log("in createList: " + list);
     let elements = [];
     for (let i = 0; i < list.length; i++) {
       elements.push(
@@ -165,11 +217,177 @@ class Recommendation extends React.Component {
     return elements;
   }
 
+  createEventList(list, option) {
+    let event_elements = [];
+   // console.log("in createEventList: " + list);
+    for (let i = 0; i < list.length; i++) {
+      this.state.show_event.push(
+        <div key={i}>
+          <Card
+            style={{
+              overflowY: "auto",
+              margin: "0 auto",
+              marginBottom: "5px",
+              width: "300px",
+              minHeight: "300px",
+              borderRadius: "0px",
+              boxShadow:
+                "0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12)"
+            }}
+          >
+            <Card.Img
+              style={{ width: "300px", height: "200px", borderRadius: "0px" }}
+              variant="top"
+              src={list[i].images[0].url}
+            />
+            <Card.Body
+              style={{
+                overflow: "hidden",
+                whiteSpace: "nowrap"
+              }}
+            >
+              <Card.Title
+                style={{
+                  fontSize: "20px",
+                  fontFamily: "Roboto, sans-serif",
+                  color: "#212529",
+                  textOverflow: "ellipsis"
+                }}
+              >
+                <span>{list[i].name}</span>
+               <div>
+                 <button className="ticket-button"
+                 onClick={()=> this.findTicket(list[i].url)}>ticketmaster
+                 </button>
+               </div>
+              </Card.Title>
+              <Card.Subtitle style={{ marginBottom: "16px" }}>
+                <ul className="list-unstyled list-inline rating mb-0">
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      color: "#6c757d",
+                      marginLeft: "10px"
+                    }}
+                  >
+                    {list[i]._embedded.venues[0].name}
+                  </span>
+                </ul>
+              </Card.Subtitle>
+              <Card.Subtitle
+                style={{
+                  fontFamily: "Roboto, sans-serif",
+                  fontSize: "16px",
+                  marginBottom: "16px"
+                }}
+              >
+                 {list[i].dates.start.localDate}  {list[i].dates.start.localTime}
+                {option === "add" ? (
+                  <i
+                    className="fas fa-plus-circle"
+                    style={{
+                      color: "#8dc63f",
+                      marginLeft: "10px",
+                      cursor: "pointer",
+                      fontSize: "20px"
+                    }}
+                    onClick={e => {
+                      this.addToTripLocations(e, i);
+                    }}
+                  ></i>
+                  
+                ) : (
+                    <i
+                      className="fas fa-minus-circle"
+                      style={{
+                        color: "#cd5c5c",
+                        marginLeft: "5px",
+                        cursor: "pointer"
+                      }}
+                      onClick={e => {
+                        this.deleteTripLocation(e, i);
+                      }}
+                    ></i>
+                  )}
+              </Card.Subtitle>
+              <Card.Text style={{ fontSize: "12px" }}>
+               {list[i]._embedded.venues[0].city.name}, {list[i]._embedded.venues[0].state.stateCode}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </div>
+      );
+    }
+    //console.log("at the end of createEventList: " + this.state.show_event);
+    this.setState({event_list: this.state.show_event});
+    return event_elements;
+  }
+
+  createEvent(key, option){
+    let eventCopy = [];
+    let selectEndDate = null;
+    let selectStartDate = null;
+    const {startDate, endDate, destination} = this.state;
+
+    if ((startDate.getMonth() + 1) < 10 || (startDate.getDate() + 1) < 10){
+      if ((startDate.getMonth()+1) < 10 && (startDate.getDate()+1) < 10){
+          selectStartDate = ((startDate.getFullYear() + "-" + "0"+ (startDate.getMonth()+1) + "-" + "0" + (startDate.getDate()+1)));
+      }
+      else if ((startDate.getMonth()+1) < 10 && (startDate.getDate()+1) >= 10){
+          selectStartDate = ((startDate.getFullYear() + "-" + "0"+ (startDate.getMonth()+1) + "-" + (startDate.getDate()+1)));
+          
+      }
+      else if ((startDate.getMonth()+1) >=10 && (startDate.getDate()+1) < 10){
+          selectStartDate = ((startDate.getFullYear() + "-" + (startDate.getMonth()+1) + "-" + "0" + (startDate.getDate()+1)));
+      }
+    }
+    else{
+      selectStartDate = ((startDate.getFullYear() + "-" + (startDate.getMonth()+1) + "-" + (startDate.getDate()+1)));
+    }
+
+    if ((endDate.getMonth() + 1) < 10 || (endDate.getDate() + 1) < 10){
+      if ((endDate.getMonth()+1) < 10 && (endDate.getDate()+1) < 10){
+          selectEndDate = ((endDate.getFullYear() + "-" + "0"+ (endDate.getMonth()+1) + "-" + "0" + (endDate.getDate()+1)));
+      }
+      else if ((endDate.getMonth()+1) < 10 && (endDate.getDate()+1) >= 10){
+          selectEndDate = ((endDate.getFullYear() + "-" + "0"+ (endDate.getMonth()+1) + "-" + (endDate.getDate()+1)));
+          
+      }
+      else if ((endDate.getMonth()+1) >=10 && (endDate.getDate()+1) < 10){
+          selectEndDate = ((endDate.getFullYear() + "-" + (endDate.getMonth()+1) + "-" + "0" + (endDate.getDate()+1)));
+      }
+    }
+    else{
+      selectEndDate = ((endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + (endDate.getDate()+1)));
+    }
+    fetch("https://app.ticketmaster.com/discovery/v2/events.json?sort=date,asc&startDateTime=" + selectStartDate + "T00:00:00Z&endDateTime=" + selectEndDate + "T00:00:00Z&size=200&radius=75&unit=miles&city=" + destination + "&apikey=" + key)
+          .then(res => res.json())
+          .then(json => {
+              let j = 0;
+              for (let i = 0; i < json._embedded.events.length; i++){
+                  eventCopy[j] = (json._embedded.events[i]);
+                  j = j + 1;
+              }
+             // console.log("in create Event: " + eventCopy);
+              this.setState({event_list: eventCopy});
+              eventCopy = this.createEventList(eventCopy, "add");
+          })
+          .catch(err => {
+              console.log(err);
+          });    
+      return eventCopy;
+  }
+
+  findTicket = (e) => {
+    window.open(e);
+}
+
   addToTripLocations(e, i) {
     this.setState({ loading: true });
     AXIOS.post("http://localhost:4000/trip/addtotriplocation", {
       trip_id: this.state.trip_id,
-      trip_location: this.state.locations[i]
+      trip_location: this.state.locations[i],
+      trip_location_events: this.state.location_events[i]
     })
       .then(res => {
         return AXIOS.post("http://localhost:4000/question/searchlocation", {
@@ -185,9 +403,11 @@ class Recommendation extends React.Component {
             "delete"
           )
         });
+
         this.setState({ locations: r.data.recs });
         this.setState({
-          location_elements: this.createList(this.state.locations, "add")
+          location_elements: this.createList(this.state.locations, "add"),
+          event_list: this.createEvent(r.data.eventKey, "add")
         });
         this.setState({ loading: false });
       })
@@ -200,7 +420,8 @@ class Recommendation extends React.Component {
     this.setState({ loading: true });
     AXIOS.post("http://localhost:4000/trip/deletefromtriplocations", {
       trip_id: this.state.trip_id,
-      trip_location: this.state.trip_locations[i]
+      trip_location: this.state.trip_locations[i],
+      trip_location_events: this.state.show_event[i]
     })
       .then(res => {
         return AXIOS.post("http://localhost:4000/question/searchlocation", {
@@ -216,9 +437,11 @@ class Recommendation extends React.Component {
             "delete"
           )
         });
+
         this.setState({ locations: r.data.recs });
         this.setState({
-          location_elements: this.createList(this.state.locations, "add")
+          location_elements: this.createList(this.state.locations, "add"),
+          location_events: this.createEvent(r.data.eventKey, "add")
         });
         this.setState({ loading: false });
       })
@@ -267,7 +490,8 @@ class Recommendation extends React.Component {
         .then(r => {
           this.setState({ locations: r.data.recs });
           this.setState({
-            location_elements: this.createList(this.state.locations, "add")
+            location_elements: this.createList(this.state.locations, "add"),
+            location_events: this.createEvent(r.data.eventKey, "add")
           });
           this.setState({ loading: false });
         })
@@ -277,6 +501,11 @@ class Recommendation extends React.Component {
     }
   };
   render() {
+    console.log(this.state.show_event.length);
+   // console.log("location_elements" + this.state.location_elements.length);
+    //console.log("eventlist: " + this.state.event_list);
+    //this.setState({event_list: this.createEventList(this.state.event_list, "add")});
+    //console.log("eventlist after set: " + this.state.event_list);
     let settings = {
       dots: true,
       infinite: false,
@@ -346,8 +575,8 @@ class Recommendation extends React.Component {
                 />
                 <div className="search"></div>
               </div>
-
-              {this.state.location_elements.length !== 0 ? (
+            
+             {this.state.location_elements.length !== 0 ? (
                 <h1
                   style={{
                     fontFamily: "Roboto, sans-serif",
@@ -374,6 +603,47 @@ class Recommendation extends React.Component {
                 </Slider>
               ) : (
                   ""
+                )}
+              <div class="searchbar">
+              <input
+                type="text"
+                placeholder="Search..."
+                onKeyDown={this.searchLocation}
+                onChange={this.onChangeSearch}
+              />
+              <div class="search"></div>
+            </div>
+
+            {this.state.location_events.length != 0 ? (
+              <h1
+                style={{
+                  fontFamily: "Roboto, sans-serif",
+                  fontSize: "20px",
+                  fontWeight: "normal",
+                  margin: "0 auto 15px auto",
+                  //marginTop: "20px",
+                  marginTop: "40px",
+                  width: "80%"
+                }}
+              >
+                Event Recommendations
+              </h1>  
+            ) : (
+              <span></span>
+            )}
+            {this.state.location_events.length != 0 ? (
+              <Slider
+                {...settings}
+                style={{
+                  width: "80%",
+                  margin: "0 auto"
+                }}
+              >
+                {this.state.show_event}
+              </Slider>
+              
+            ) : (
+              ""
                 )}
 
               <div
