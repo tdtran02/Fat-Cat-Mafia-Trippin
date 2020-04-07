@@ -137,6 +137,7 @@ class Recommendation extends React.Component {
               style={{ width: "300px", height: "200px", borderRadius: "0px" }}
               variant="top"
               src={list[i].image_url}
+              onClick={()=> this.openLink(list[i].url)}
             />
             <Card.Body
               style={{
@@ -148,9 +149,11 @@ class Recommendation extends React.Component {
                 style={{
                   fontSize: "20px",
                   fontFamily: "Roboto, sans-serif",
-                  color: "#212529",
-                  textOverflow: "ellipsis"
+                  //color: "#212529",
+                  color: "#026cdd",
+                  textOverflow: "ellipsis",
                 }}
+                onClick={()=> this.openLink(list[i].url)}
               >
                 <span>{list[i].name}</span>
               </Card.Title>
@@ -239,6 +242,7 @@ class Recommendation extends React.Component {
               style={{ width: "300px", height: "200px", borderRadius: "0px" }}
               variant="top"
               src={list[i].images[0].url}
+              onClick={()=> this.openLink(list[i].url)}
             />
             <Card.Body
               style={{
@@ -257,7 +261,7 @@ class Recommendation extends React.Component {
                 <span>{list[i].name}</span>
                <div>
                  <button className="ticket-button"
-                 onClick={()=> this.findTicket(list[i].url)}>ticketmaster
+                 onClick={()=> this.openLink(list[i].url)}>find tickets
                  </button>
                </div>
               </Card.Title>
@@ -378,7 +382,7 @@ class Recommendation extends React.Component {
       return eventCopy;
   }
 
-  findTicket = (e) => {
+  openLink = (e) => {
     window.open(e);
 }
 
