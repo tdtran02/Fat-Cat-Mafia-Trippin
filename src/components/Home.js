@@ -108,7 +108,7 @@ export class Home extends Component {
   updateLocalTrip(e, i) {
     console.log(i);
     localStorage.setItem('trip', JSON.stringify(i));
-    window.location = '/trip/' + i.trip_id;
+    window.location = '/trip/' + i._id;
   }
 
   updateLocalTripInvite(e, i) {

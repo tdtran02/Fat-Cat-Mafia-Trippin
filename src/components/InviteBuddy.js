@@ -40,6 +40,9 @@ export class InviteBuddy extends Component {
         for (let i = 0; i < list.length; i++) {
             AXIOS.get("http://localhost:4000/user/" + list[i]).then((response) => {
                 user = response.data.user;
+                if (user.image == null) {
+                    user.image = './images/profilepic.png';
+                }
                 friendslist.push(
                     <label type="checkbox" key={i} label="Check me out">
                         <input type="radio" value={user._id} onChange={this.handleChange} />
@@ -52,7 +55,7 @@ export class InviteBuddy extends Component {
                                 padding: "5px",
                             }}
                         >
-                            {/* <img style={{ width: "50px" }} src={require(`${user.image}`)} alt="userimage" /> */}
+                            <img style={{ width: "50px" }} src={require(`${user.image}`)} alt="userimage" />
                             <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
                             <div style={{ margin: "15px 0" }}>{user.last_name}</div>
                         </div>
@@ -237,9 +240,9 @@ export class InviteBuddy extends Component {
                     </div>
                     <label style={{
                         width: "100%",
-                        marginTop: "50px"
+                        marginTop: "50px auto", display: "block"
                     }} htmlFor="basic-url">Invite A Buddy Outside Of Your Friends List:</label>
-                    <InputGroup >
+                    <InputGroup style={{ width: "400px", display: "flex", margin: "0 auto" }}>
 
 
                         <FormControl
@@ -247,6 +250,7 @@ export class InviteBuddy extends Component {
                             aria-label="Recipient's email"
                             aria-describedby="basic-addon2"
                             id="email"
+
                         />
                         <InputGroup.Append>
                             <Button variant="outline-secondary" onClick={this.sendEmail}>Send Email</Button>
