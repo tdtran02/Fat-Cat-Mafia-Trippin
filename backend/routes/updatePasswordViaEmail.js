@@ -24,15 +24,18 @@ UPDATEPASSWORDVIAEMAILROUTES.route("/updatePasswordViaEmail").put(function (req,
         res.status(403).send("password reset link is invalid or has expired");
       } else if (user != null) {
         console.log("user exists in db");
-        BCRYPT
-          .hash(req.body.password, BCRYPT_SALT_ROUNDS)
-          .then(hashedPassword => {
-            user.update({
-              password: hashedPassword,
-              resetPasswordToken: null,
-              resetPasswordExpires: null,
-            });
-          })
+        let hashedPassword = BCRYPT.hashSync(req.body.password, BCRYPT_SALT_ROUNDS);
+        // BCRYPT
+        //   .hash(req.body.password, BCRYPT_SALT_ROUNDS)
+        //   .then(hashedPassword => {
+        USER.findOneAndUpdate(
+          {email: req.body.email},
+          {
+            password:hashedPassword,
+            resetPasswordToken: null,
+            resetPasswordExpires: null,
+          }
+        )
           .then(() => {
             console.log("password updated");
             res.status(200).send({ message: "password updated" });
