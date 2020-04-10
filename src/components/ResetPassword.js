@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router-dom';
 //import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import PropTypes from 'prop-types';
@@ -17,13 +18,6 @@ import "../styles/ResetPassword.css"
 const AXIOS = require("axios").default;
 
 // import {
-//   LinkButtons,
-//   updateButton,
-//   homeButton,
-//   loginButton,
-//   HeaderBar,
-//   forgotButton,
-//   inputStyle,
 //   SubmitButtons,
 // } from '../components';
 
@@ -248,5 +242,10 @@ ResetPassword.propTypes = {
     }),
   }),
 };
+// SubmitButtons.propTypes = {
+//   buttonText: PropTypes.string.isRequired,
+//   // eslint-disable-next-line react/forbid-prop-types
+//   buttonStyle: PropTypes.object.isRequired,
+// };
 
 export default ResetPassword;

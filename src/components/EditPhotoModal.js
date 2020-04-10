@@ -10,11 +10,14 @@ export class EditPhotoModal extends Component {
         super(props);
         this.state = {
             option: '',
-            selectedFile: ""
+            profileImg: ''
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
+        
+        this.onFileChange = this.onFileChange.bind(this);
+        this.onClickHandler = this.onClickHandler.bind(this);
     }
 
     photoSelected = () => {
@@ -37,8 +40,6 @@ export class EditPhotoModal extends Component {
                 option: event.target.value
             });
         }
-
-
     }
 
     handleSubmit(event) {
@@ -92,8 +93,24 @@ export class EditPhotoModal extends Component {
 
 
     }
-
-
+    onFileChange(e) {
+        this.setState({ profileImg: e.target.files[0] })
+    }
+    onClickHandler(e){
+        e.preventDefault()
+        const file = document.getElementById('inputGroupFile01').files
+        const formData = new FormData()
+        
+        formData.append('profileImg', this.state.profileImg)
+        
+        fetch('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id + '/profile', {
+            method: 'POST',
+            body: formData,
+        }).then(r => {
+            console.log(r)
+        })
+        console.log(this.state.profileImg)
+    }
 
 
     render() {
@@ -167,7 +184,22 @@ export class EditPhotoModal extends Component {
                                                     <input type="file" className="form-contr" name="file" onChange={this.onChangeHandler} />
 
                                                 </div>
-                                                <Button variant="primary" type="button" className="btn btn-s">Upload</Button>
+                                                <div className="input-group mb-3">
+                                                    <div className="custom-file">
+                                                    <input
+                                                        type="file"
+                                                        className="custom-file-input"
+                                                        id="inputGroupFile01"
+                                                        aria-describedby="inputGroupFileAddon01"
+                                                    />
+                                                    <label className="custom-file-label" htmlFor="inputGroupFile01" onChange={this.onFileChange}>
+                                                        Choose file
+                                                    </label>
+                                                    </div>
+                                                </div>
+                                                <button type="button" className="btn btn-primary" onChange={this.onClickHandler}>
+                                                    Upload
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

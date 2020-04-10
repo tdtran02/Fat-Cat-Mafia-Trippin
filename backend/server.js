@@ -37,6 +37,7 @@ app.listen(PORT, function() {
   console.log("Server is running on Port: " + PORT);
 });
 
+
 app.use(LOGINROUTES, ROUTER);
 app.use(REGISTEROUTES, ROUTER);
 app.use(USERROUTES, ROUTER);

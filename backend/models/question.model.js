@@ -9,7 +9,9 @@ const questionSchema = new Schema({
    trip_id: String,
    user_id: String,
    destination: String,
-   questions: Array
+   questions: Array,
+   start_date: Date,
+   end_date: Date
 });
 
 const QuestionSchem = mongoose.model('questionchar', questionSchema);

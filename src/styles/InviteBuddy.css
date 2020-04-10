@@ -7,12 +7,14 @@
 
 [type=radio] + div  {
     cursor: pointer;
+
   }
 
 [type=radio]:checked + div {
     outline: 2px solid #f00;
-    background-color: aqua;
+    background-color: rgb(117, 156, 102);
 }
-[type=radio]:hover {
+[type=radio]:hover + div {
     outline: 2px solid #f00;
+    background-color: rgb(156, 163, 148);
 }

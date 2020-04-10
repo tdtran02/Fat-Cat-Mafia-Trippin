@@ -52,7 +52,7 @@ class CurrentTrip extends Component {
     //get trip info
     AXIOS.get(
       "http://localhost:4000/comment/" +
-        JSON.parse(localStorage.getItem("trip"))._id
+      JSON.parse(localStorage.getItem("trip"))._id
     )
       .then((response) => {
         if (response !== "undefined") {
@@ -69,7 +69,7 @@ class CurrentTrip extends Component {
     //check if any pending invitations
     AXIOS.get(
       "http://localhost:4000/buddy/" +
-        JSON.parse(localStorage.getItem("trip"))._id
+      JSON.parse(localStorage.getItem("trip"))._id
     )
       .then((response) => {
         console.log(response);
@@ -99,7 +99,7 @@ class CurrentTrip extends Component {
 
     AXIOS.get(
       "http://localhost:4000/user/" +
-        JSON.parse(localStorage.getItem("trip")).owner_id
+      JSON.parse(localStorage.getItem("trip")).owner_id
     )
       .then((response) => {
         console.log(response);
@@ -391,7 +391,7 @@ class CurrentTrip extends Component {
     };
     console.log(JSON.stringify(comment));
     AXIOS.put("http://localhost:4000/comment/" + i._id, comment)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -408,7 +408,7 @@ class CurrentTrip extends Component {
     //let self = this;
     AXIOS.get(
       "http://localhost:4000/useremail/" +
-        document.getElementById("buddyemail").value
+      document.getElementById("buddyemail").value
     )
       .then((response) => {
         let buddy = response.data.user;
@@ -457,7 +457,7 @@ class CurrentTrip extends Component {
       buddy_id: buddyid,
     };
     AXIOS.post("http://localhost:4000/buddy", buddy)
-      .then((response) => {})
+      .then((response) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -679,7 +679,7 @@ class CurrentTrip extends Component {
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
-      <div style={{ height: "100%" }}>
+      <div style={{ height: "91.7%" }}>
         <div
           className="image-container"
           style={{
