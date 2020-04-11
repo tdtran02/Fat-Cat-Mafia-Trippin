@@ -403,6 +403,10 @@ class CurrentTrip extends Component {
     window.location = "/trip/" + this.state.trip_id + "/recommendations";
   };
 
+  showSpendings = () => {
+    window.location = "/trip/" + this.state.trip_id + "/spending";
+  };
+
   getBuddyId() {
     //let self = this;
     AXIOS.get(
@@ -940,6 +944,18 @@ class CurrentTrip extends Component {
                   onClick={this.showRecommendations}
                 >
                   Show Recommendations
+                </Button>
+
+                <Button
+                  variant="info"
+                  style={{
+                    float: "center",
+                    boxShadow: "8px 8px 20px #000",
+                    marginTop: "10px",
+                  }}
+                  onClick={this.showSpendings}
+                >
+                  Show Spendings
                 </Button>
               </div>
             </div>
