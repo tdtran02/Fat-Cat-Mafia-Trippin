@@ -5,6 +5,7 @@ import {
   ListGroup,
   Nav,
   Tab,
+  Tabs,
   Modal,
   Container,
   Row,
@@ -898,25 +899,40 @@ class CurrentTrip extends Component {
                 >
                   <Card.Header>MAKE A POST</Card.Header>
                   <Card.Body>
-                    <Form>
-                      <Form.Group>
-                        <Form.Control
-                          id="comment"
-                          as="textarea"
-                          rows="2"
-                          placeholder="Write post..."
-                        ></Form.Control>
-                      </Form.Group>
-                      <Button
-                        variant="outline-warning"
-                        onClick={this.handleClick}
-                        style={{
-                          float: "right",
-                        }}
-                      >
-                        POST
-                      </Button>
-                    </Form>
+
+                    <Tabs defaultActiveKey="comment" id="uncontrolled-tab-example">
+                      <Tab eventKey="comment" title="Comment" style={{ marginTop: "20px", padding: "20px" }}>
+                        <Form >
+                          <Form.Group>
+                            <Form.Control
+                              id="comment"
+                              as="textarea"
+                              rows="2"
+                              placeholder="Write post..."
+                            ></Form.Control>
+                          </Form.Group>
+                          <Button variant="outline-warning" onClick={this.handleClick} style={{
+                            float: "right",
+                          }}>POST</Button>
+                        </Form>
+                      </Tab>
+                      <Tab eventKey="poll" title="Poll" style={{ marginTop: "20px", padding: "20px" }}>
+                        <Form>
+                          <Form.Label>Question:</Form.Label>
+                          <Form.Control type="text" placeholder="Ask your question here"></Form.Control>
+                          <Form.Label>How many answer options?</Form.Label>
+                          <Form.Control as="select">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                          </Form.Control>
+                        </Form>
+                      </Tab>
+                    </Tabs>
+
+
+
                   </Card.Body>
                 </Card>
                 <div>{this.state.posts}</div>
