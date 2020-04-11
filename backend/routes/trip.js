@@ -7,7 +7,7 @@ const ASYNC = require("async");
 const GOOGLE_KEY = require("../config_google").key;
 const FRIEND = require("../models/friend.model");
 
-TRIPROUTES.route("/trip").post(function(req, res) {
+TRIPROUTES.route("/trip").post(function (req, res) {
   // console.log(req.body);
   const T = new TRIP({
     owner_id: req.body.owner_id,
@@ -17,134 +17,136 @@ TRIPROUTES.route("/trip").post(function(req, res) {
     end_date: req.body.end_date,
     days: req.body.days,
     buddies: req.body.buddies,
-    posts: req.body.posts
+    posts: req.body.posts,
   });
   T.save()
-    .then(x => {
+    .then((x) => {
       res.status(200).json({
         saved: true,
         response_message: "Trip created!",
-        trip: x
+        trip: x,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       //   console.error(err);
       res.status(200).json({
         saved: false,
         response_message: "Creating trip failed!",
-        trip: null
+        trip: null,
       });
     });
 });
 
-TRIPROUTES.route("/trip/addbuddy").post(function(req, res) {
-  FRIEND.findOne({ owner_id: req.body.owner_id }).then(user => {
+TRIPROUTES.route("/trip/addbuddy").post(function (req, res) {
+  FRIEND.findOne({ owner_id: req.body.owner_id }).then((user) => {
     let friends = user.confirmed_friends;
     if (friends.email == req.body.buddy) {
     }
   });
 });
 
-TRIPROUTES.route("/trip/:id").get(function(req, res) {
-  TRIP.find({ owner_id: req.params.id }).then(trip => {
+TRIPROUTES.route("/trip/:id").get(function (req, res) {
+  TRIP.find({ owner_id: req.params.id, start_date: { $gte: new Date() } })
+    .sort({ start_date: 1 })
+    .then((trip) => {
+      if (trip != null) {
+        res.status(200).json({
+          trip: trip,
+        });
+      } else {
+        res.status(400).json({
+          trip: null,
+        });
+      }
+    });
+});
+
+TRIPROUTES.route("/tripid/:id").get(function (req, res) {
+  TRIP.find({ _id: req.params.id }).then((trip) => {
     if (trip != null) {
       res.status(200).json({
-        trip: trip
+        trip: trip,
       });
     } else {
       res.status(400).json({
-        trip: null
+        trip: null,
       });
     }
   });
 });
 
-TRIPROUTES.route("/tripid/:id").get(function(req, res) {
-  TRIP.find({ _id: req.params.id }).then(trip => {
-    if (trip != null) {
-      res.status(200).json({
-        trip: trip
-      });
-    } else {
-      res.status(400).json({
-        trip: null
-      });
-    }
-  });
-});
-
-TRIPROUTES.route("/trip/:id").delete(function(req, res) {
-  TRIP.findOneAndDelete({ _id: req.params.id }).then(trip => {
+TRIPROUTES.route("/trip/:id").delete(function (req, res) {
+  TRIP.findOneAndDelete({ _id: req.params.id }).then((trip) => {
     if (trip != null) {
       res.status(200).json({
         response_message: "Trip deleted!",
-        trip: trip
+        trip: trip,
       });
     } else {
       res.status(400).json({
-        trip: null
+        trip: null,
       });
     }
   });
 });
 
 // add a location to user's list
-TRIPROUTES.route("/trip/addtotriplocation").post(function(req, res) {
+TRIPROUTES.route("/trip/addtotriplocation").post(function (req, res) {
   // console.log(req.body);
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     {
-      $addToSet: { trip_locations: req.body.trip_location }
+      $addToSet: { trip_locations: req.body.trip_location },
     },
     {
-      returnOriginal: false
+      returnOriginal: false,
     }
-  ).then(trip => {
+  ).then((trip) => {
     if (trip != null) {
       res.status(200).json({
         updated: true,
-        trip: trip
+        trip: trip,
       });
     } else {
       res.status(400).json({
         updated: false,
-        trip: null
+        trip: null,
       });
     }
   });
 });
 
 // delete a location from user's list
-TRIPROUTES.route("/trip/deletefromtriplocations").post(function(req, res) {
+TRIPROUTES.route("/trip/deletefromtriplocations").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     {
-      $pull: { trip_locations: req.body.trip_location }
+      $pull: { trip_locations: req.body.trip_location },
     },
     {
-      returnOriginal: false
+      returnOriginal: false,
     }
-  ).then(trip => {
+  ).then((trip) => {
     if (trip != null) {
       res.status(200).json({
         updated: true,
-        trip: trip
+        trip: trip,
       });
     } else {
       res.status(400).json({
         updated: false,
-        trip: null
+        trip: null,
       });
     }
   });
 });
 
-TRIPROUTES.route("/tripinfo/updateschedule").post(function(req, res) {
+TRIPROUTES.route("/tripinfo/updateschedule").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     { days: req.body.days, trip_locations: req.body.trip_locations },
     { returnOriginal: false }
-  ).then(r => {
+  ).then((r) => {
     const milage = [];
     const urls = [];
     for (let i = 0; i < r.days.length; i++) {
@@ -193,12 +195,12 @@ TRIPROUTES.route("/tripinfo/updateschedule").post(function(req, res) {
     }
     ASYNC.eachSeries(
       urls,
-      function(url, callback) {
+      function (url, callback) {
         if (url == null) {
           milage.push(0);
           callback();
         } else {
-          REQUEST(url, function(error, response, body) {
+          REQUEST(url, function (error, response, body) {
             if (error) {
               milage.push("Error");
               callback();
@@ -215,7 +217,7 @@ TRIPROUTES.route("/tripinfo/updateschedule").post(function(req, res) {
           });
         }
       },
-      function(err) {
+      function (err) {
         if (err) {
           console.log("error for distance calculation");
         } else {
@@ -226,9 +228,9 @@ TRIPROUTES.route("/tripinfo/updateschedule").post(function(req, res) {
             { days_miles: milage },
             { returnOriginal: false }
           )
-            .then(x => {
+            .then((x) => {
               res.status(200).json({
-                trip: x
+                trip: x,
               });
             })
             .catch();
@@ -238,54 +240,54 @@ TRIPROUTES.route("/tripinfo/updateschedule").post(function(req, res) {
   });
 });
 
-TRIPROUTES.route("/tripinfo/addtodays").post(function(req, res) {
+TRIPROUTES.route("/tripinfo/addtodays").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     { days: req.body.days },
     { returnOriginal: false }
-  ).then(r => {
+  ).then((r) => {
     res.status(200).json({ days: r.days });
   });
 });
 
-TRIPROUTES.route("/tripinfo/addBuddy").post(function(req, res) {
+TRIPROUTES.route("/tripinfo/addBuddy").post(function (req, res) {
   TRIP.findOneAndUpdate(
     { _id: req.body.trip_id },
     { buddies: req.body.buddies }
-  ).then(r => {
+  ).then((r) => {
     res.status(200).json({ buddies: r.buddies });
   });
 });
 
 // get trip information based on trip id
-TRIPROUTES.route("/tripinfo/:trip_id").get(function(req, res) {
-  TRIP.findOne({ _id: req.params.trip_id }).then(trip => {
+TRIPROUTES.route("/tripinfo/:trip_id").get(function (req, res) {
+  TRIP.findOne({ _id: req.params.trip_id }).then((trip) => {
     if (trip != null) {
       res.status(200).json({
         // updated: true,
-        trip: trip
+        trip: trip,
       });
     } else {
       res.status(400).json({
         // updated: false,
-        trip: null
+        trip: null,
       });
     }
   });
 });
 
-TRIPROUTES.route("/trip/:_id").put(function(req, res) {
+TRIPROUTES.route("/trip/:_id").put(function (req, res) {
   TRIP.findByIdAndUpdate(
     { _id: req.params._id },
     {
-      $set: { buddies: req.body.buddies }
+      $set: { buddies: req.body.buddies },
     }
   )
-    .then(response => {
+    .then((response) => {
       res.status(200).json({});
       console.log(response);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 });

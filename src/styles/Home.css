@@ -92,13 +92,12 @@
 }
 .fullName {
   display: flex;
-  
 }
 .hometown {
   display: flex;
 }
 
-#same-line{
+#same-line {
   margin: 0px 5px 0px 5px;
 }
 
@@ -120,7 +119,7 @@
   background-color: rgb(162, 154, 212);
   color: white;
 }
-#home-btns:visited{
+#home-btns:visited {
   text-decoration: none;
 }
 a {
@@ -129,4 +128,8 @@ a {
 .responsive {
   height: 100%;
   width: 100%;
+}
+
+.trip_dates {
+  padding-top: 30px;
 }
