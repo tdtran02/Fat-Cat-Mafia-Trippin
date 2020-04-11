@@ -144,7 +144,9 @@ export class MyAccount extends Component {
                   src={require(`${this.state.image}`)}
                   alt="profile" style={{
                     display: "block",
-                    margin: "5px auto"
+                    margin: "5px auto",
+                    width: "200px",
+                    border: "1px solid black"
                   }} />
               </div>
               <div style={{

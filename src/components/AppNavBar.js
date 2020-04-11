@@ -59,6 +59,9 @@ class AppNavBar extends Component {
 
   logout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("trip");
+    localStorage.removeItem("invitation");
+    localStorage.removeItem("survey")
     document.location.href = "/";
   };
 

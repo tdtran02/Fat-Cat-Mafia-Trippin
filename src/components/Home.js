@@ -44,7 +44,7 @@ export class Home extends Component {
     //  console.log(this.state.user.email);
     AXIOS.get(
       "http://localhost:4000/user/" +
-        JSON.parse(localStorage.getItem("user"))._id
+      JSON.parse(localStorage.getItem("user"))._id
     )
       .then((response) => {
         console.log(response.data.user.email);
@@ -67,7 +67,7 @@ export class Home extends Component {
 
     AXIOS.get(
       "http://localhost:4000/trip/" +
-        JSON.parse(localStorage.getItem("user"))._id
+      JSON.parse(localStorage.getItem("user"))._id
     ).then((response) => {
       console.log(response);
       this.setState({ trip: response.data.trip });
@@ -78,7 +78,7 @@ export class Home extends Component {
 
     AXIOS.get(
       "http://localhost:4000/buddypending/" +
-        JSON.parse(localStorage.getItem("user"))._id
+      JSON.parse(localStorage.getItem("user"))._id
     ).then((res) => {
       console.log(res);
       this.setState({ invite: res.data.tripbuddy });
@@ -109,7 +109,7 @@ export class Home extends Component {
       });
 
     AXIOS.delete("http://localhost:4000/buddy/" + OneTrip._id)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -398,6 +398,8 @@ export class Home extends Component {
                   style={{
                     display: "block",
                     margin: "5px auto",
+                    width: "150px",
+                    border: "1px solid black"
                   }}
                 />
               </div>

@@ -24,7 +24,7 @@ export class InviteBuddy extends Component {
   componentDidMount() {
     AXIOS.get(
       "http://localhost:4000/friend/" +
-        JSON.parse(localStorage.getItem("user"))._id
+      JSON.parse(localStorage.getItem("user"))._id
     ).then((result) => {
       console.log(result.data.friend.confirmed_friends);
 
@@ -71,6 +71,7 @@ export class InviteBuddy extends Component {
     return friendslist;
   }
 
+  //once a buddy 'button' is selected, the buddy id is added to a list stored as a state
   handleChange(event) {
     let selected = [];
     if (this.state.selectedFriends != null) {
@@ -92,54 +93,59 @@ export class InviteBuddy extends Component {
       } */
 
   inviteBuddy() {
+    //get the selected buddies
     console.log(this.state.selectedFriends);
     let buddies = this.state.selectedFriends;
     if (buddies != null) {
+      //for each buddy selected, send an AXIOS get call to get their user data
       for (let i = 0; i < buddies.length; i++) {
-        AXIOS.get("http://localhost:4000/user/" + buddies[i]).then((resp) => {
-          let buddy = resp.data.user;
-          const buddyinfo = {
-            owner_id: JSON.parse(localStorage.getItem("user"))._id,
-            trip_id: JSON.parse(localStorage.getItem("trip"))._id,
-            trip_name: JSON.parse(localStorage.getItem("trip")).trip_name,
-            buddy_id: buddy._id,
-            buddy_first_name: buddy.first_name,
-            buddy_last_name: buddy.last_name,
-            buddy_picture: buddy.image,
-            owner_first_name: JSON.parse(localStorage.getItem("user"))
-              .first_name,
-            owner_last_name: JSON.parse(localStorage.getItem("user")).last_name,
-            accepted: false,
-            denied: false,
-            pending: true,
-          };
-          AXIOS.post("http://localhost:4000/buddy", buddyinfo)
-            .then((response) => {
-              console.log(response);
-              this.setState({ invitation_boolean: true });
-              console.log(this.state.invitation_boolean);
-              if (response.data.saved) {
-                this.setState({
-                  invitation_sent: true,
-                  invitation_variant: "success",
-                  invitation_sent_msg: "Invitation was sent!",
-                });
-              } else {
-                this.setState({
-                  invitation_variant: "warning",
-                  invitation_sent_msg: "Error occured",
-                });
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        });
+        AXIOS.get("http://localhost:4000/user/" + buddies[i])
+          .then((resp) => {
+            let buddy = resp.data.user;
+            //create a tripbuddy object
+            const buddyinfo = {
+              owner_id: JSON.parse(localStorage.getItem("user"))._id,
+              trip_id: JSON.parse(localStorage.getItem("trip"))._id,
+              trip_name: JSON.parse(localStorage.getItem("trip")).trip_name,
+              buddy_id: buddy._id,
+              buddy_first_name: buddy.first_name,
+              buddy_last_name: buddy.last_name,
+              buddy_picture: buddy.image,
+              owner_first_name: JSON.parse(localStorage.getItem("user"))
+                .first_name,
+              owner_last_name: JSON.parse(localStorage.getItem("user")).last_name,
+              accepted: false,
+              denied: false,
+              pending: true,
+            };
+            console.log(buddyinfo);
+            AXIOS.post("http://localhost:4000/buddy", buddyinfo)
+              .then((response) => {
+                console.log(response);
+                this.setState({ invitation_boolean: true });
+                console.log(this.state.invitation_boolean);
+                if (response.data.saved) {
+                  this.setState({
+                    invitation_sent: true,
+                    invitation_variant: "success",
+                    invitation_sent_msg: "Invitation was sent!",
+                  });
+                } else {
+                  this.setState({
+                    invitation_variant: "warning",
+                    invitation_sent_msg: "Error occured",
+                  });
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
       }
     }
   }
 
-  getBuddyId() {
+  /* getBuddyId() {
     //let self = this;
     console.log(document.getElementById("buddyemail").value);
     AXIOS.get(
@@ -185,7 +191,7 @@ export class InviteBuddy extends Component {
       .catch((err) => {
         console.log(err);
       });
-  }
+  } */
 
   sendEmail() {
     console.log(document.getElementById("email").value);
@@ -250,8 +256,8 @@ export class InviteBuddy extends Component {
                 {this.state.invitation_sent_msg}
               </Alert>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </div>
           <label
             style={{
@@ -286,8 +292,8 @@ export class InviteBuddy extends Component {
               {this.state.email_sent_msg}
             </Alert>
           ) : (
-            ""
-          )}
+              ""
+            )}
         </Modal.Body>
         {/* <Modal.Footer>
                     <Button onClick={this.getBuddyId} >SEND</Button>
