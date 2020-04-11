@@ -1,24 +1,21 @@
 import React, { Component } from "react";
 import {
   Card,
-  FormControl,
-  InputGroup,
   Form,
   ListGroup,
-  Alert,
+  Nav,
+  Tab,
   Modal,
   Container,
   Row,
   Col,
-  Accordion,
-  Tab,
-  Nav,
 } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
 import AXIOS from "axios";
 import InviteBuddy from "./InviteBuddy";
+import InviteDriver from "./InviteDriver";
 
 class CurrentTrip extends Component {
   constructor(props) {
@@ -39,11 +36,13 @@ class CurrentTrip extends Component {
       user: {},
 
       show_drivers: false,
-      all_drivers: [],
+      all_candidates: [],
       candidates: [],
+      all_drivers: [],
       drivers: [],
+      all_driver_passengers: [],
       driver_passengers: [],
-      driver_number: "1",
+      driver_number: "0",
       inviteBuddyShow: false,
     };
   }
@@ -52,7 +51,7 @@ class CurrentTrip extends Component {
     //get trip info
     AXIOS.get(
       "http://localhost:4000/comment/" +
-      JSON.parse(localStorage.getItem("trip"))._id
+        JSON.parse(localStorage.getItem("trip"))._id
     )
       .then((response) => {
         if (response !== "undefined") {
@@ -69,7 +68,7 @@ class CurrentTrip extends Component {
     //check if any pending invitations
     AXIOS.get(
       "http://localhost:4000/buddy/" +
-      JSON.parse(localStorage.getItem("trip"))._id
+        JSON.parse(localStorage.getItem("trip"))._id
     )
       .then((response) => {
         console.log(response);
@@ -99,7 +98,7 @@ class CurrentTrip extends Component {
 
     AXIOS.get(
       "http://localhost:4000/user/" +
-      JSON.parse(localStorage.getItem("trip")).owner_id
+        JSON.parse(localStorage.getItem("trip")).owner_id
     )
       .then((response) => {
         console.log(response);
@@ -391,7 +390,7 @@ class CurrentTrip extends Component {
     };
     console.log(JSON.stringify(comment));
     AXIOS.put("http://localhost:4000/comment/" + i._id, comment)
-      .then((res) => { })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -408,7 +407,7 @@ class CurrentTrip extends Component {
     //let self = this;
     AXIOS.get(
       "http://localhost:4000/useremail/" +
-      document.getElementById("buddyemail").value
+        document.getElementById("buddyemail").value
     )
       .then((response) => {
         let buddy = response.data.user;
@@ -457,7 +456,7 @@ class CurrentTrip extends Component {
       buddy_id: buddyid,
     };
     AXIOS.post("http://localhost:4000/buddy", buddy)
-      .then((response) => { })
+      .then((response) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -496,13 +495,11 @@ class CurrentTrip extends Component {
   }
 
   showDrivers = () => {
+    // window.open("/trip/" + this.state.trip_id + "/drivers", "_blank");
     this.setState({ show_drivers: true });
     AXIOS.get("http://localhost:4000/driver/friends/" + this.state.trip_id)
       .then((result) => {
-        // console.log(result);
-        this.setState({
-          candidates: this.candidates(result.data.tripbuddy),
-        });
+        this.setState({ candidates: this.candidates(result.data.candidates) });
         return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
       })
       .then((result) => {
@@ -518,39 +515,139 @@ class CurrentTrip extends Component {
     this.setState({ show_drivers: false });
   };
 
+  updateModalContent() {
+    AXIOS.get("http://localhost:4000/driver/friends/" + this.state.trip_id)
+      .then((result) => {
+        this.setState({ candidates: this.candidates(result.data.candidates) });
+        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+      })
+      .then((result) => {
+        this.setState({ all_drivers: result.data.drivers });
+        this.setState({ drivers: this.drivers(result.data.drivers) });
+        this.setState({
+          driver_passengers: this.passengers(result.data.drivers),
+        });
+      });
+  }
+
   candidates(list) {
     const elements = [];
+    const httplist = [];
+    let user = null;
     for (let i = 0; i < list.length; i++) {
-      elements.push(
-        <ListGroup.Item key={i}>
-          {list[i].buddy_first_name} {list[i].buddy_last_name}{" "}
-          <i
-            style={{ marginTop: "3px", float: "right" }}
-            className="fas fa-car"
-            onClick={() => this.addDriver(list[i])}
-          ></i>
-          <i
-            style={{ marginTop: "3px", float: "right", marginRight: "10px" }}
-            className="fas fa-plus-circle"
-            onClick={() => this.addPassenger(list[i])}
-          ></i>
-        </ListGroup.Item>
-      );
+      httplist.push(list[i].buddy_id);
     }
+    AXIOS.post("http://localhost:4000/user/getusersbylist", {
+      list: httplist,
+    }).then((r) => {
+      this.setState({ all_candidates: r.data.users });
+      for (let j = 0; j < r.data.users.length; j++) {
+        user = r.data.users[j];
+        if (user.image == null) {
+          user.image = "./images/profilepic.png";
+        }
+        elements.push(
+          <div
+            style={{
+              display: "flex",
+              border: "1px solid black",
+              borderRadius: "5px",
+              margin: "5px",
+              padding: "5px",
+            }}
+            key={j}
+          >
+            <img
+              style={{ width: "50px" }}
+              src={require(`${user.image}`)}
+              alt="userimage"
+            />
+            <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
+            <div style={{ margin: "15px 0" }}>{user.last_name}</div>
+            <div
+              style={{
+                marginLeft: "5px",
+                marginTop: "15px",
+                float: "right",
+                cursor: "pointer",
+              }}
+            >
+              {" "}
+              <i className="fas fa-car" onClick={() => this.addDriver(j)}></i>
+            </div>
+            <div
+              style={{
+                marginLeft: "5px",
+                marginTop: "15px",
+                float: "right",
+                cursor: "pointer",
+              }}
+            >
+              <i
+                className="fas fa-plus-circle"
+                onClick={() => this.addPassenger(j)}
+              ></i>
+            </div>
+          </div>
+        );
+      }
+    });
+
     return elements;
   }
   drivers(list) {
     const elements = [];
+    const httplist = [];
+    let user = null;
     for (let i = 0; i < list.length; i++) {
-      console.log(i);
-      elements.push(
-        <Nav.Item key={i} onClick={() => this.changeDriverNumber(i)}>
-          <Nav.Link eventKey={i.toString()}>
-            {list[i].first_name} {list[i].last_name}
-          </Nav.Link>
-        </Nav.Item>
-      );
+      httplist.push(list[i].driver_id);
     }
+    AXIOS.post("http://localhost:4000/user/getusersbylist", {
+      list: httplist,
+    }).then((r) => {
+      this.setState({ all_drivers: r.data.users });
+
+      for (let j = 0; j < r.data.users.length; j++) {
+        user = r.data.users[j];
+        if (user.image == null) {
+          user.image = "./images/profilepic.png";
+        }
+        elements.push(
+          <Nav.Item key={j} onClick={() => this.changeDriverNumber(j)}>
+            <Nav.Link
+              eventKey={j.toString()}
+              style={{
+                display: "flex",
+                border: "1px solid black",
+                borderRadius: "5px",
+                margin: "5px",
+                padding: "5px",
+              }}
+            >
+              <img
+                style={{ width: "50px" }}
+                src={require(`${user.image}`)}
+                alt="userimage"
+              />
+              <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
+              <div style={{ margin: "15px 0" }}>{user.last_name}</div>
+              <div
+                style={{
+                  marginLeft: "5px",
+                  marginTop: "15px",
+                  cursor: "pointer",
+                }}
+              >
+                <i
+                  className="fas fa-minus-circle"
+                  onClick={() => this.removeDriver(j)}
+                ></i>
+              </div>
+            </Nav.Link>
+          </Nav.Item>
+        );
+      }
+    });
     return elements;
   }
 
@@ -558,17 +655,50 @@ class CurrentTrip extends Component {
     const elements = [];
     for (let i = 0; i < list.length; i++) {
       const x = [];
+      let user;
       for (let j = 0; j < list[i].passengers.length; j++) {
-        x.push(
-          <ListGroup.Item key={j}>
-            {list[i].passengers[j].first_name} {list[i].passengers[j].last_name}
-            <i
-              style={{ marginTop: "3px", float: "right" }}
-              className="fas fa-minus-circle"
-              onClick={() => this.removePassenger(list[i].passengers[j])}
-            ></i>
-          </ListGroup.Item>
-        );
+        if (list[i].passengers[j].passenger == undefined) continue;
+        AXIOS.get(
+          "http://localhost:4000/user/" + list[i].passengers[j].passenger
+        ).then((response) => {
+          user = response.data.user;
+          if (user.image == null) {
+            user.image = "./images/profilepic.png";
+          }
+          x.push(
+            <ListGroup.Item
+              key={j}
+              style={{
+                display: "flex",
+                border: "1px solid black",
+                borderRadius: "5px",
+                margin: "5px",
+                padding: "5px",
+              }}
+            >
+              <img
+                style={{ width: "50px" }}
+                src={require(`${user.image}`)}
+                alt="userimage"
+              />
+              <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
+              <div style={{ margin: "15px 0" }}>{user.last_name}</div>
+
+              <div
+                style={{
+                  marginLeft: "5px",
+                  marginTop: "15px",
+                  cursor: "pointer",
+                }}
+              >
+                <i
+                  className="fas fa-minus-circle"
+                  onClick={() => this.removePassenger(list[i].passengers[j])}
+                ></i>
+              </div>
+            </ListGroup.Item>
+          );
+        });
       }
       elements.push(
         <Tab.Pane key={i} eventKey={i}>
@@ -583,61 +713,44 @@ class CurrentTrip extends Component {
     this.setState({ driver_number: i });
   };
 
-  addDriver(person) {
+  addDriver = (index) => {
     AXIOS.post("http://localhost:4000/driver/", {
       trip_id: this.state.trip_id,
-      driver_id: person.buddy_id,
-      first_name: person.buddy_first_name,
-      last_name: person.buddy_last_name,
+      driver_id: this.state.all_candidates[index]._id,
+      first_name: this.state.all_candidates[index].first_name,
+      last_name: this.state.all_candidates[index].last_name,
     })
       .then((result) => {
-        return AXIOS.get(
-          "http://localhost:4000/driver/friends/" + this.state.trip_id
-        );
-      })
-      .then((result) => {
-        this.setState({
-          candidates: this.candidates(result.data.tripbuddy),
-        });
-        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
-      })
-      .then((result) => {
-        this.setState({ all_drivers: result.data.drivers });
-        this.setState({ drivers: this.drivers(result.data.drivers) });
-        this.setState({
-          driver_passengers: this.passengers(result.data.drivers),
-        });
+        this.updateModalContent();
       })
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
-  addPassenger(person) {
-    AXIOS.post("http://localhost:4000/driver/add", {
+  removeDriver = (index) => {
+    AXIOS.post("http://localhost:4000/driverremove/", {
       trip_id: this.state.trip_id,
-      driver_id: this.state.all_drivers[this.state.driver_number].driver_id,
-      passenger: person.buddy_id,
-      first_name: person.buddy_first_name,
-      last_name: person.buddy_last_name,
+      driver_id: this.state.all_drivers[index]._id,
     })
       .then((result) => {
-        return AXIOS.get(
-          "http://localhost:4000/driver/friends/" + this.state.trip_id
-        );
+        this.updateModalContent();
       })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  addPassenger(j) {
+    AXIOS.post("http://localhost:4000/driver/add", {
+      trip_id: this.state.trip_id,
+      driver_id: this.state.all_drivers[this.state.driver_number]._id,
+      passenger: this.state.all_candidates[j]._id,
+      first_name: this.state.all_candidates[j].first_name,
+      last_name: this.state.all_candidates[j].last_name,
+    })
       .then((result) => {
-        this.setState({
-          candidates: this.candidates(result.data.tripbuddy),
-        });
-        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
-      })
-      .then((result) => {
-        this.setState({ all_drivers: result.data.drivers });
-        this.setState({ drivers: this.drivers(result.data.drivers) });
-        this.setState({
-          driver_passengers: this.passengers(result.data.drivers),
-        });
+        this.updateModalContent();
       })
       .catch((err) => {
         console.log(err);
@@ -645,31 +758,15 @@ class CurrentTrip extends Component {
   }
 
   removePassenger(person) {
-    console.log(person);
     AXIOS.post("http://localhost:4000/driver/remove", {
       trip_id: this.state.trip_id,
-      driver_id: this.state.all_drivers[this.state.driver_number].driver_id,
+      driver_id: this.state.all_drivers[this.state.driver_number]._id,
       passenger: person.passenger,
       first_name: person.first_name,
       last_name: person.last_name,
     })
       .then((result) => {
-        return AXIOS.get(
-          "http://localhost:4000/driver/friends/" + this.state.trip_id
-        );
-      })
-      .then((result) => {
-        this.setState({
-          candidates: this.candidates(result.data.tripbuddy),
-        });
-        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
-      })
-      .then((result) => {
-        this.setState({ all_drivers: result.data.drivers });
-        this.setState({ drivers: this.drivers(result.data.drivers) });
-        this.setState({
-          driver_passengers: this.passengers(result.data.drivers),
-        });
+        this.updateModalContent();
       })
       .catch((err) => {
         console.log(err);
@@ -753,6 +850,11 @@ class CurrentTrip extends Component {
                           onClick={this.showDrivers}
                         ></i>
                       </Card.Title>
+                      <InviteDriver
+                        show={this.state.show_drivers}
+                        onHide={this.closeDrivers}
+                        tripid={this.state.trip_id}
+                      />
                       <Card.Title style={{ marginTop: "10px" }}>
                         TRIP ORGANIZER:
                       </Card.Title>
@@ -843,48 +945,6 @@ class CurrentTrip extends Component {
             </div>
           </div>
         </div>
-        <Modal
-          show={this.state.show_drivers}
-          centered
-          onHide={this.closeDrivers}
-          size="lg"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Drivers</Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-            <Container>
-              <Row className="show-grid">
-                <Col md={6}>
-                  <Tab.Container id="left-tabs-example" defaultActiveKey="1">
-                    <Row>
-                      <Col md={6}>
-                        <h5>Drivers</h5>
-                        <Nav variant="pills" className="flex-column">
-                          {this.state.drivers}
-                        </Nav>
-                      </Col>
-                      <Col md={6}>
-                        <h5>Passengers</h5>
-                        <Tab.Content>
-                          {this.state.driver_passengers}
-                        </Tab.Content>
-                      </Col>
-                    </Row>
-                  </Tab.Container>
-                </Col>
-                <Col md={2}></Col>
-                <Col md={4}>
-                  <ListGroup>
-                    <h5>Candidates</h5>
-                    {this.state.candidates}
-                  </ListGroup>
-                </Col>
-              </Row>
-            </Container>
-          </Modal.Body>
-        </Modal>
       </div>
     );
   }

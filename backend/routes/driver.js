@@ -3,6 +3,7 @@ const DRIVERROUTES = EXPRESS.Router();
 const DRIVER = require("../models/driver.model");
 const TRIPBUDDY = require("../models/tripbuddy.model");
 
+// create a new driver
 DRIVERROUTES.route("/driver").post(function (req, res) {
   const D = new DRIVER({
     trip_id: req.body.trip_id,
@@ -25,6 +26,22 @@ DRIVERROUTES.route("/driver").post(function (req, res) {
     });
 });
 
+DRIVERROUTES.route("/driverremove").post(function (req, res) {
+  DRIVER.findOneAndRemove({
+    trip_id: req.body.trip_id,
+    driver_id: req.body.driver_id,
+  })
+    .then((result) => {
+      res.status(200).json({
+        updated: true,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+// get all candidates excludes driver and passanegers
 DRIVERROUTES.route("/driver/friends/:trip_id").get(function (req, res) {
   let trip_buddies;
   TRIPBUDDY.find({ trip_id: req.params.trip_id, accepted: true })
@@ -53,11 +70,11 @@ DRIVERROUTES.route("/driver/friends/:trip_id").get(function (req, res) {
           }
         }
         res.status(200).json({
-          tripbuddy: trip_buddies,
+          candidates: trip_buddies,
         });
       } else {
         res.status(400).json({
-          tripbuddy: null,
+          candidates: null,
         });
       }
     })

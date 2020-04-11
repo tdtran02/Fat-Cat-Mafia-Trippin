@@ -7,7 +7,7 @@ import {
   DropdownMenu,
   DropdownToggle,
   DropdownItem,
-  UncontrolledDropdown
+  UncontrolledDropdown,
 } from "reactstrap";
 import { Route } from "react-router-dom";
 import Register from "./Register";
@@ -27,6 +27,7 @@ import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "./ResetPassword";
 //import UpdatePasswordViaEmail from "./UpdatePasswordViaEmail";
 import Schedule from "./Schedule";
+import InviteDriver from "./InviteDriver";
 
 import {
   Collapse,
@@ -35,7 +36,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  Container
+  Container,
 } from "reactstrap";
 
 class AppNavBar extends Component {
@@ -43,7 +44,7 @@ class AppNavBar extends Component {
     super(props);
     this.state = {
       isOpen: false,
-      user: null
+      user: null,
     };
   }
 
@@ -53,7 +54,7 @@ class AppNavBar extends Component {
 
   toggle = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     });
   };
 
@@ -124,6 +125,11 @@ class AppNavBar extends Component {
             </Container>
           </Navbar>
           <Switch>
+            <Route
+              path="/trip/:id/drivers"
+              exact
+              component={InviteDriver}
+            ></Route>
             <Route path="/trip/:id/schedule" exact component={Schedule}></Route>
             <Route
               path="/trip/:id/recommendations"
@@ -156,11 +162,13 @@ class AppNavBar extends Component {
             {/* <Route path="/resetPassword/:token">
               <ResetPassword />
             </Route> */}
-            <Route exact path='/resetPassword/:token' component={ResetPassword} />
-            <Route path="/updatePasswordViaEmail">
-            </Route>
-            <Route path="/tripbuddy">
-            </Route>
+            <Route
+              exact
+              path="/resetPassword/:token"
+              component={ResetPassword}
+            />
+            <Route path="/updatePasswordViaEmail"></Route>
+            <Route path="/tripbuddy"></Route>
             <Route path="/home">
               <Home />
             </Route>
