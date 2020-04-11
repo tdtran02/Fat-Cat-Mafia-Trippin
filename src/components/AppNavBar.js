@@ -27,7 +27,6 @@ import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "./ResetPassword";
 //import UpdatePasswordViaEmail from "./UpdatePasswordViaEmail";
 import Schedule from "./Schedule";
-import InviteDriver from "./InviteDriver";
 
 import {
   Collapse,
@@ -125,11 +124,6 @@ class AppNavBar extends Component {
             </Container>
           </Navbar>
           <Switch>
-            <Route
-              path="/trip/:id/drivers"
-              exact
-              component={InviteDriver}
-            ></Route>
             <Route path="/trip/:id/schedule" exact component={Schedule}></Route>
             <Route
               path="/trip/:id/recommendations"
