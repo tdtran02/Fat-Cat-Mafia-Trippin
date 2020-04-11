@@ -7,7 +7,7 @@ import {
   DropdownMenu,
   DropdownToggle,
   DropdownItem,
-  UncontrolledDropdown
+  UncontrolledDropdown,
 } from "reactstrap";
 import { Route } from "react-router-dom";
 import Register from "./Register";
@@ -35,7 +35,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  Container
+  Container,
 } from "reactstrap";
 
 class AppNavBar extends Component {
@@ -43,7 +43,7 @@ class AppNavBar extends Component {
     super(props);
     this.state = {
       isOpen: false,
-      user: null
+      user: null,
     };
   }
 
@@ -53,7 +53,7 @@ class AppNavBar extends Component {
 
   toggle = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     });
   };
 
@@ -156,11 +156,13 @@ class AppNavBar extends Component {
             {/* <Route path="/resetPassword/:token">
               <ResetPassword />
             </Route> */}
-            <Route exact path='/resetPassword/:token' component={ResetPassword} />
-            <Route path="/updatePasswordViaEmail">
-            </Route>
-            <Route path="/tripbuddy">
-            </Route>
+            <Route
+              exact
+              path="/resetPassword/:token"
+              component={ResetPassword}
+            />
+            <Route path="/updatePasswordViaEmail"></Route>
+            <Route path="/tripbuddy"></Route>
             <Route path="/home">
               <Home />
             </Route>
