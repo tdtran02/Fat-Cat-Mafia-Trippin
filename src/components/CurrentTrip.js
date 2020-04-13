@@ -41,8 +41,10 @@ class CurrentTrip extends Component {
       driver_passengers: [],
       driver_number: "0",
       inviteBuddyShow: false,
-      options: []
+      options: [],
+      pollValidated: false
     };
+    this.savePoll = this.savePoll.bind(this);
   }
 
   componentDidMount() {
@@ -771,27 +773,77 @@ class CurrentTrip extends Component {
       });
   }
 
-  showOptions(e) {
-    let num = e.target.value;
-    this.setState({ options: this.createOptions(num) });
-  }
-  createOptions(num) {
+  /*   showOptions(e) {
+      let num = e.target.value;
+      this.setState({ options: this.createOptions(num) });
+    }
+     */
+  // createOptions(num) {
+  //   let options = [];
+  //   for (let i = 1; i <= num; i++) {
+  //     console.log(i);
+  //     options.push(
+  //       <div>
+  //         <label>Option {i}:</label>
+  //         <input className="form-control" required type="text" key={i} />
+  //       </div>
+  //     )
+  //   }
+  /* 
+      return options;
+    } */
+
+  savePoll = async (event) => {
+    let op1 = await document.getElementById('op1').value;
+    let op2 = await document.getElementById('op2').value;
+    let op3 = await document.getElementById('op3').value;
+    let op4 = await document.getElementById('op4').value;
+
+    let tripres = await AXIOS.get('http://localhost:4000/tripid/' + JSON.parse(localStorage.getItem('trip'))._id)
+    console.log(tripres.data.trip[0]);
+    let trip = await tripres.data.trip[0];
+    let polls = []
+    if (trip.polls != []) {
+      polls = await trip.polls
+    }
+    await polls.push({
+      question: document.getElementById('poll-question').value,
+      options: [
+        { option: op1, votes: 0 },
+        { option: op2, votes: 0 },
+        { option: op3, votes: 0 },
+        { option: op4, votes: 0 }]
+    })
+    console.log(polls);
+    /* let trip = await localStorage.getItem('trip');
+    console.log(trip); */
 
 
-    let options = [];
-    for (let i = 1; i <= num; i++) {
-      console.log(i);
-      options.push(
-        <div>
-          <Form.Label>Option {i}:</Form.Label>
-          <Form.Control type="text" key={i} />
-        </div>
-
-      )
+    let updated_trip = await {
+      trip_locations: trip.trip_locations,
+      trip_locations_for_scheduling: trip.trip_locations_for_scheduling,
+      days: trip.days,
+      buddies: trip.buddies,
+      posts: trip.posts,
+      days_miles: trip.days_miles,
+      _id: trip._id,
+      owner_id: trip.owner_id,
+      trip_name: trip.trip_name,
+      destination: trip.destination,
+      start_date: trip.start_date,
+      end_date: trip.end_date,
+      polls: polls
     }
 
 
-    return options;
+    let res = await AXIOS.put('http://localhost:4000/trippoll/' + JSON.parse(localStorage.getItem('trip'))._id, updated_trip)
+
+    console.log(res);
+    if (res.status == 200) {
+      await localStorage.setItem('trip', JSON.stringify(updated_trip));
+
+    }
+
   }
 
   render() {
@@ -922,35 +974,41 @@ class CurrentTrip extends Component {
 
                     <Tabs defaultActiveKey="comment" id="uncontrolled-tab-example">
                       <Tab eventKey="comment" title="Comment" style={{ marginTop: "20px", padding: "20px" }}>
-                        <Form >
-                          <Form.Group>
-                            <Form.Control
-                              id="comment"
-                              as="textarea"
-                              rows="2"
-                              placeholder="Write post..."
-                            ></Form.Control>
-                          </Form.Group>
-                          <Button variant="outline-warning" onClick={this.postComment} style={{
+                        <form onSubmit={this.postComment}>
+
+                          <input required
+                            id="comment"
+                            type="textarea"
+                            rows="2"
+                            placeholder="Write post..."
+                            className="form-control"
+                            style={{
+                              width: "100%",
+                              // backgroundColor: "white",
+                              border: "1px solid #CED4DA",
+                              backgroundColor: "transparent",
+                              color: "#6c757d"
+                            }}
+                          ></input>
+
+                          <Button type="submit" variant="outline-warning" style={{
                             float: "right",
                           }}>POST</Button>
-                        </Form>
+                        </form>
                       </Tab>
                       <Tab eventKey="poll" title="Poll" style={{ marginTop: "20px", padding: "20px" }}>
-                        <Form>
-                          <Form.Label>Question:</Form.Label>
-                          <Form.Control type="text" placeholder="Ask your question here"></Form.Control>
-                          <Form.Label>How many answer options?</Form.Label>
-                          <Form.Control as="select" onChange={(e) => { this.showOptions(e) }}>
-                            <option value="1" >1</option>
-                            <option value="2" >2</option>
-                            <option value="3" >3</option>
-                            <option value="4" >4</option>
+                        <form onSubmit={this.savePoll}>
+                          <label>QUESTION:</label>
+                          <input className="form-control" id="poll-question" required type="text" placeholder="Ask your question here" controlId="validationCustom01" ></input>
 
-                          </Form.Control>
-                          {this.state.options}
-                          <Button variant="outline-success" style={{ float: "right" }}>NEXT</Button>
-                        </Form>
+                          <label>OPTIONS:</label>
+                          <input required type="text" className="form-control" id="op1" />
+                          <input required type="text" className="form-control" id="op2" />
+                          <input type="text" className="form-control" id="op3" />
+                          <input type="text" className="form-control" id="op4" />
+
+                          <Button type="submit" variant="outline-success" style={{ float: "right" }}>NEXT</Button>
+                        </form>
                       </Tab>
                     </Tabs>
 

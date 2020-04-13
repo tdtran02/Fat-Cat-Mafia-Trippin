@@ -26,8 +26,6 @@ export class InviteBuddy extends Component {
       "http://localhost:4000/friend/" +
       JSON.parse(localStorage.getItem("user"))._id
     ).then((result) => {
-      console.log(result.data.friend.confirmed_friends);
-
       this.setState({
         friends: this.showFriends(result.data.friend.confirmed_friends),
       });
@@ -77,10 +75,13 @@ export class InviteBuddy extends Component {
     if (this.state.selectedFriends != null) {
       selected = this.state.selectedFriends;
     }
+    if (selected.includes(event.target.value) === false) {
+      selected.push(event.target.value);
+      this.setState({ selectedFriends: selected });
+      console.log(this.state.selectedFriends);
+    }
 
-    selected.push(event.target.value);
-    this.setState({ selectedFriends: selected });
-    console.log(this.state.selectedFriends);
+
   }
 
   /* handleSubmit(event) {
