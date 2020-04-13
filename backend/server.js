@@ -22,6 +22,7 @@ const UPDATEPASSWORDVIAEMAILROUTES = require("./routes/updatePasswordViaEmail");
 const COMMENTROUTES = require("./routes/comment");
 const TRIPBUDDYROUTES = require("./routes/tripbuddy");
 const DRIVERROUTES = require("./routes/driver");
+const UPLOADROUTES = require("./routes/saveImage");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -51,6 +52,7 @@ app.use(UPDATEPASSWORDVIAEMAILROUTES, ROUTER);
 app.use(COMMENTROUTES, ROUTER);
 app.use(TRIPBUDDYROUTES, ROUTER);
 app.use(DRIVERROUTES, ROUTER);
+app.use(UPLOADROUTES, ROUTER);
 
 /* const storage = multer.diskStorage({
   destination: function (req, res, cb) {
