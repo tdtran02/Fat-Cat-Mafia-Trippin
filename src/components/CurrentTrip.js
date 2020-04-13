@@ -5,11 +5,7 @@ import {
   ListGroup,
   Nav,
   Tab,
-  Tabs,
-  Modal,
-  Container,
-  Row,
-  Col,
+  Tabs
 } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
@@ -45,6 +41,7 @@ class CurrentTrip extends Component {
       driver_passengers: [],
       driver_number: "0",
       inviteBuddyShow: false,
+      options: []
     };
   }
 
@@ -76,9 +73,9 @@ class CurrentTrip extends Component {
         let invitations = respo.data.tripbuddy;
         this.getTripBuddies(invitations);
         for (let i = 0; i < invitations.length; i++) {
-          if (invitations[i].buddy_id == JSON.parse(localStorage.getItem("user"))._id) {
+          if (invitations[i].buddy_id === JSON.parse(localStorage.getItem("user"))._id) {
             console.log(invitations[i]);
-            if (invitations[i].pending == true) {
+            if (invitations[i].pending === true) {
               console.log(invitations);
               this.setState({ invitation: this.createInvitation() });
               localStorage.setItem(
@@ -466,7 +463,7 @@ class CurrentTrip extends Component {
     //send an invite to friend
   }
 
-  handleClick() {
+  postComment() {
     let trip = JSON.parse(localStorage.getItem("trip"));
     let postArr = [];
     if (trip.posts == null) {
@@ -774,6 +771,29 @@ class CurrentTrip extends Component {
       });
   }
 
+  showOptions(e) {
+    let num = e.target.value;
+    this.setState({ options: this.createOptions(num) });
+  }
+  createOptions(num) {
+
+
+    let options = [];
+    for (let i = 1; i <= num; i++) {
+      console.log(i);
+      options.push(
+        <div>
+          <Form.Label>Option {i}:</Form.Label>
+          <Form.Control type="text" key={i} />
+        </div>
+
+      )
+    }
+
+
+    return options;
+  }
+
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
@@ -911,7 +931,7 @@ class CurrentTrip extends Component {
                               placeholder="Write post..."
                             ></Form.Control>
                           </Form.Group>
-                          <Button variant="outline-warning" onClick={this.handleClick} style={{
+                          <Button variant="outline-warning" onClick={this.postComment} style={{
                             float: "right",
                           }}>POST</Button>
                         </Form>
@@ -921,12 +941,15 @@ class CurrentTrip extends Component {
                           <Form.Label>Question:</Form.Label>
                           <Form.Control type="text" placeholder="Ask your question here"></Form.Control>
                           <Form.Label>How many answer options?</Form.Label>
-                          <Form.Control as="select">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
+                          <Form.Control as="select" onChange={(e) => { this.showOptions(e) }}>
+                            <option value="1" >1</option>
+                            <option value="2" >2</option>
+                            <option value="3" >3</option>
+                            <option value="4" >4</option>
+
                           </Form.Control>
+                          {this.state.options}
+                          <Button variant="outline-success" style={{ float: "right" }}>NEXT</Button>
                         </Form>
                       </Tab>
                     </Tabs>
