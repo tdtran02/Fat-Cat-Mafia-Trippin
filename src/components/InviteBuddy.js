@@ -16,6 +16,7 @@ export class InviteBuddy extends Component {
       email_boolean: false,
       email_sent_msg: "",
       email_sent_variant: "",
+      checked: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -42,8 +43,8 @@ export class InviteBuddy extends Component {
           user.image = "./images/profilepic.png";
         }
         friendslist.push(
-          <label type="checkbox" key={i} label="Check me out">
-            <input type="radio" value={user._id} onChange={this.handleChange} />
+          <label key={i} label="Check me out">
+            <input type="checkbox" value={user._id} onClick={this.handleChange} />
             <div
               style={{
                 display: "flex",
@@ -80,7 +81,14 @@ export class InviteBuddy extends Component {
       this.setState({ selectedFriends: selected });
       console.log(this.state.selectedFriends);
     }
-
+    else if (selected.includes(event.target.value) === true) {
+      let index = selected.indexOf(event.target.value);
+      console.log(index);
+      selected = selected.splice(index, 1);
+      this.setState({ selectedFriends: selected });
+      console.log(this.state.selectedFriends);
+    }
+    // console.log(selected);
 
   }
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../styles/Home.css";
 import MyAccount from "./MyAccount.js";
 import Trip from "./Trip.js";
+import ProfilePicture from './ProfilePicture';
 import {
   Alert,
   Button,
@@ -22,7 +23,7 @@ export class Home extends Component {
       email: "",
       first_name: "",
       last_name: "",
-      image: "./images/profilepic.png",
+      image: './images/empty.jpg',
       _v: "",
       hometown: "",
       trip: null,
@@ -51,9 +52,9 @@ export class Home extends Component {
         this.setState({ email: response.data.user.email });
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
-        // if (response.data.user.image != null) {
-        //   this.setState({ image: response.data.user.image });
-        // }
+        if (response.data.user.image != null) {
+          this.setState({ image: response.data.user.image });
+        }
 
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown });
@@ -361,6 +362,7 @@ export class Home extends Component {
     return elements;
   }
   render() {
+    const img = this.state.image;
     return (
       <div
         className="image-container"
@@ -392,9 +394,10 @@ export class Home extends Component {
             <Card.Body>
               <div style={{ display: "flex", alignContent: "center" }}>
                 <img
-                  className="responsive"
-                  src={require(`${this.state.image}`)}
                   alt="profile"
+                  className="responsive"
+                  src={require(`${img}`)}
+
                   style={{
                     display: "block",
                     margin: "5px auto",
@@ -402,6 +405,7 @@ export class Home extends Component {
                     border: "1px solid black"
                   }}
                 />
+                {/* <ProfilePicture /> */}
               </div>
               <div
                 style={{
