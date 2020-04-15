@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Modal, Button, FormControl, Alert, InputGroup } from "react-bootstrap";
 import "../styles/InviteBuddy.css";
-const AXIOS = require("axios").default;
+import { app } from '../utils/AxiosConfig';
+//const AXIOS = require("axios").default;
 
 export class InviteBuddy extends Component {
   constructor(props) {
@@ -23,8 +24,8 @@ export class InviteBuddy extends Component {
     //  this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
-    AXIOS.get(
-      "http://localhost:4000/friend/" +
+    app.get(
+      "friend/" +
       JSON.parse(localStorage.getItem("user"))._id
     ).then((result) => {
       this.setState({
@@ -37,7 +38,7 @@ export class InviteBuddy extends Component {
     let friendslist = [];
     let user = null;
     for (let i = 0; i < list.length; i++) {
-      AXIOS.get("http://localhost:4000/user/" + list[i]).then((response) => {
+      app.get("user/" + list[i]).then((response) => {
         user = response.data.user;
         if (user.image == null) {
           user.image = "./images/profilepic.png";
@@ -108,7 +109,7 @@ export class InviteBuddy extends Component {
     if (buddies != null) {
       //for each buddy selected, send an AXIOS get call to get their user data
       for (let i = 0; i < buddies.length; i++) {
-        AXIOS.get("http://localhost:4000/user/" + buddies[i])
+        app.get("user/" + buddies[i])
           .then((resp) => {
             let buddy = resp.data.user;
             //create a tripbuddy object
@@ -128,7 +129,7 @@ export class InviteBuddy extends Component {
               pending: true,
             };
             console.log(buddyinfo);
-            AXIOS.post("http://localhost:4000/buddy", buddyinfo)
+            app.post("buddy", buddyinfo)
               .then((response) => {
                 console.log(response);
                 this.setState({ invitation_boolean: true });
@@ -207,7 +208,7 @@ export class InviteBuddy extends Component {
     let newUser = {
       email: document.getElementById("email").value,
     };
-    AXIOS.put("http://localhost:4000/buddyinvite", newUser)
+    app.put("buddyinvite", newUser)
       .then((response) => {
         console.log(response);
         this.setState({ email_boolean: true });

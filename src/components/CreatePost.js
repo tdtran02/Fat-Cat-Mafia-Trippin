@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-
-const AXIOS = require("axios").default;
+import { app } from '../utils/AxiosConfig';
+//const AXIOS = require("axios").default;
 
 export class CreatePost extends Component {
   constructor(props) {
@@ -37,7 +37,7 @@ export class CreatePost extends Component {
       days: trip.days,
       posts: postArr
     };
-    AXIOS.post("http://localhost:4000/trip/", update)
+    app.post("trip/", update)
       .then(res => {
         localStorage.setItem("trip", JSON.stringify(res.data.trip));
         this.setState({ addSurveyShow: true });
@@ -65,7 +65,7 @@ export class CreatePost extends Component {
       text: document.getElementById("comment").value,
       date: Date.now()
     };
-    AXIOS.post("http://localhost:4000/comment", comment)
+    app.post("comment", comment)
       .then(res => {
         this.setState({ addSurveyShow: true });
       })

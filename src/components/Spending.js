@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import AXIOS from "axios";
+import { app } from '../utils/AxiosConfig';
+//import AXIOS from "axios";
 import { Form, Button, ListGroup, Row, ListGroupItem } from "react-bootstrap";
 import "../styles/Spending.css";
 
@@ -18,7 +19,7 @@ class Schedule extends Component {
   }
 
   componentDidMount() {
-    AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
+    app.get("tripinfo/" + this.state.trip_id)
       .then(res => {
         const MILES = res.data.trip.days_miles;
         let total_miles = 0;
@@ -29,8 +30,8 @@ class Schedule extends Component {
 
         this.setState({ number_people: res.data.trip.buddies.length });
         this.setState({ number_people: 6 });
-        return AXIOS.get(
-          "http://localhost:4000/spending/" + this.state.trip_id
+        return app.get(
+          "spending/" + this.state.trip_id
         );
       })
       .then(r => {
@@ -51,7 +52,7 @@ class Schedule extends Component {
   };
 
   submitItem = () => {
-    AXIOS.post("http://localhost:4000/spending/add", {
+    app.post("spending/add", {
       trip_id: this.state.trip_id,
       itemname: this.state.itemname,
       itemamount: this.state.itemamount
@@ -68,7 +69,7 @@ class Schedule extends Component {
   };
 
   deleteItem(id) {
-    AXIOS.post("http://localhost:4000/spending/delete", {
+    app.post("spending/delete", {
       trip_id: this.state.trip_id,
       itemid: id
     })

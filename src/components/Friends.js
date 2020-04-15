@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Alert, Form } from "react-bootstrap";
-import AXIOS from "axios";
+import { app } from '../utils/AxiosConfig';
+//import AXIOS from "axios";
 
 import "../styles/Friends.css";
 
@@ -22,9 +23,9 @@ class Friends extends Component {
   }
 
   componentDidMount() {
-    AXIOS.get(
-      "http://localhost:4000/friend/" +
-        JSON.parse(localStorage.getItem("user"))._id
+    app.get(
+      "friend/" +
+      JSON.parse(localStorage.getItem("user"))._id
     )
       .then(res => {
         this.setState({ friend: res.data.friend });
@@ -57,7 +58,7 @@ class Friends extends Component {
 
   onSearchFieldClick = () => {
     const USER = JSON.parse(localStorage.getItem("user"));
-    AXIOS.post("http://localhost:4000/friend/add", {
+    app.post("friend/add", {
       user_id: USER._id,
       user_email: USER.email,
       adding_friend: this.state.search_email
@@ -78,7 +79,7 @@ class Friends extends Component {
 
   acceptFriend = e => {
     let index = e.target.id.replace("incoming_friends", "");
-    AXIOS.post("http://localhost:4000/friend/accept", {
+    app.post("friend/accept", {
       user_id: this.state.friend.owner_id,
       adding_friend: this.state.friend.incoming_pending_friends[index]
     }).then(response => {
@@ -115,12 +116,12 @@ class Friends extends Component {
                   className="profile-photo-lg"
                 />
               ) : (
-                <img
-                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                  alt="user"
-                  className="profile-photo-lg"
-                />
-              )}
+                  <img
+                    src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                    alt="user"
+                    className="profile-photo-lg"
+                  />
+                )}
 
               <div className="friend-info">
                 <span className="pull-right text-green">My Friend</span>
@@ -172,12 +173,12 @@ class Friends extends Component {
                   className="profile-photo-lg"
                 />
               ) : (
-                <img
-                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                  alt="user"
-                  className="profile-photo-lg"
-                />
-              )}
+                  <img
+                    src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                    alt="user"
+                    className="profile-photo-lg"
+                  />
+                )}
 
               <div className="friend-info">
                 <span
@@ -234,12 +235,12 @@ class Friends extends Component {
                     className="profile-photo-md"
                   />
                 ) : (
-                  <img
-                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                    alt=""
-                    className="profile-photo-md"
-                  />
-                )}
+                    <img
+                      src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                      alt=""
+                      className="profile-photo-md"
+                    />
+                  )}
                 <Form.Group
                   style={{
                     display: "table-cell",
@@ -270,8 +271,8 @@ class Friends extends Component {
                   {this.state.search_message}
                 </Alert>
               ) : (
-                ""
-              )}
+                  ""
+                )}
             </div>
           </div>
         </div>
@@ -288,8 +289,8 @@ class Friends extends Component {
                 Pending Friend Requests
               </span>
             ) : (
-              <span></span>
-            )}
+                <span></span>
+              )}
           </div>
           <div className="col-md-9"></div>
         </div>
@@ -310,8 +311,8 @@ class Friends extends Component {
                 My Friends
               </span>
             ) : (
-              <span></span>
-            )}
+                <span></span>
+              )}
           </div>
           <div className="col-md-9"></div>
         </div>

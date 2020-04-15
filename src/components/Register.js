@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 //import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
-const AXIOS = require("axios").default;
+import { app } from '../utils/AxiosConfig';
+//const AXIOS = require("axios").default;
 
 class Register extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Register extends Component {
     }
 
     // console.log("You have successfully registered");
-    AXIOS.post("http://localhost:4000/user/register", {
+    app.post("user/register", {
       email: this.state.email,
       password: this.state.password,
       first_name: this.state.first_name,

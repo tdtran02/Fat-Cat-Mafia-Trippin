@@ -10,10 +10,10 @@ import {
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
-import AXIOS from "axios";
+//import AXIOS from "axios";
 import InviteBuddy from "./InviteBuddy";
 import InviteDriver from "./InviteDriver";
-
+import { app } from '../utils/AxiosConfig';
 class CurrentTrip extends Component {
   constructor(props) {
     super(props);
@@ -49,8 +49,8 @@ class CurrentTrip extends Component {
 
   componentDidMount() {
     //get trip info
-    AXIOS.get(
-      "http://localhost:4000/comment/" +
+    app.get(
+      "comment/" +
       JSON.parse(localStorage.getItem("trip"))._id
     )
       .then((response) => {
@@ -66,8 +66,8 @@ class CurrentTrip extends Component {
       });
 
     //check if any pending invitations
-    AXIOS.get(
-      "http://localhost:4000/buddy/" +
+    app.get(
+      "buddy/" +
       JSON.parse(localStorage.getItem("trip"))._id
     )
       .then((respo) => {
@@ -92,8 +92,8 @@ class CurrentTrip extends Component {
         console.log(err);
       });
 
-    AXIOS.get(
-      "http://localhost:4000/user/" +
+    app.get(
+      "user/" +
       JSON.parse(localStorage.getItem("trip")).owner_id
     )
       .then((response) => {
@@ -201,7 +201,7 @@ class CurrentTrip extends Component {
       pending: false,
     };
     console.log(newtripbuddy);
-    AXIOS.put("http://localhost:4000/buddypending/" + buddyyy._id, newtripbuddy)
+    app.put("buddypending/" + buddyyy._id, newtripbuddy)
       .then((res) => console.log(res.data))
       .catch((err) => {
         console.log(err);
@@ -214,7 +214,7 @@ class CurrentTrip extends Component {
     };
     console.log(buddies);
 
-    AXIOS.put("http://localhost:4000/trip/" + buddyyy.trip_id, newtrip)
+    app.put("trip/" + buddyyy.trip_id, newtrip)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
 
@@ -232,7 +232,7 @@ class CurrentTrip extends Component {
       pending: false,
     };
     console.log(newtripbuddy);
-    AXIOS.put("http://localhost:4000/buddypending/" + buddyyy._id, newtripbuddy)
+    app.put("buddypending/" + buddyyy._id, newtripbuddy)
       .then((res) => console.log(res.data))
       .catch((err) => {
         console.log(err);
@@ -385,7 +385,7 @@ class CurrentTrip extends Component {
       commentsOnThisPost: postArr,
     };
     console.log(JSON.stringify(comment));
-    AXIOS.put("http://localhost:4000/comment/" + i._id, comment)
+    app.put("comment/" + i._id, comment)
       .then((res) => { })
       .catch((err) => {
         console.log(err);
@@ -405,8 +405,8 @@ class CurrentTrip extends Component {
 
   getBuddyId() {
     //let self = this;
-    AXIOS.get(
-      "http://localhost:4000/useremail/" +
+    app.get(
+      "useremail/" +
       document.getElementById("buddyemail").value
     )
       .then((response) => {
@@ -423,7 +423,7 @@ class CurrentTrip extends Component {
           denied: false,
           pending: true,
         };
-        AXIOS.post("http://localhost:4000/buddy", buddyinfo)
+        app.post("buddy", buddyinfo)
           .then((response) => {
             this.setState({ invitation_boolean: true });
             console.log(this.state.invitation_boolean);
@@ -455,7 +455,7 @@ class CurrentTrip extends Component {
       trip_id: JSON.parse(localStorage.getItem("trip"))._id,
       buddy_id: buddyid,
     };
-    AXIOS.post("http://localhost:4000/buddy", buddy)
+    app.post("buddy", buddy)
       .then((response) => { })
       .catch((err) => {
         console.log(err);
@@ -484,7 +484,7 @@ class CurrentTrip extends Component {
       text: document.getElementById("comment").value,
       date: Date.now(),
     };
-    AXIOS.post("http://localhost:4000/comment", comment)
+    app.post("comment", comment)
       .then((res) => {
         this.setState({ addSurveyShow: true });
       })
@@ -497,10 +497,10 @@ class CurrentTrip extends Component {
   showDrivers = () => {
     // window.open("/trip/" + this.state.trip_id + "/drivers", "_blank");
     this.setState({ show_drivers: true });
-    AXIOS.get("http://localhost:4000/driver/friends/" + this.state.trip_id)
+    app.get("friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
-        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+        return app.get("driver/" + this.state.trip_id);
       })
       .then((result) => {
         this.setState({ all_drivers: result.data.drivers });
@@ -516,10 +516,10 @@ class CurrentTrip extends Component {
   };
 
   updateModalContent() {
-    AXIOS.get("http://localhost:4000/driver/friends/" + this.state.trip_id)
+    app.get("driver/friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
-        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+        return app.get("driver/" + this.state.trip_id);
       })
       .then((result) => {
         this.setState({ all_drivers: result.data.drivers });
@@ -537,7 +537,7 @@ class CurrentTrip extends Component {
     for (let i = 0; i < list.length; i++) {
       httplist.push(list[i].buddy_id);
     }
-    AXIOS.post("http://localhost:4000/user/getusersbylist", {
+    app.post("user/getusersbylist", {
       list: httplist,
     }).then((r) => {
       this.setState({ all_candidates: r.data.users });
@@ -602,7 +602,7 @@ class CurrentTrip extends Component {
     for (let i = 0; i < list.length; i++) {
       httplist.push(list[i].driver_id);
     }
-    AXIOS.post("http://localhost:4000/user/getusersbylist", {
+    app.post("user/getusersbylist", {
       list: httplist,
     }).then((r) => {
       this.setState({ all_drivers: r.data.users });
@@ -658,8 +658,8 @@ class CurrentTrip extends Component {
       let user;
       for (let j = 0; j < list[i].passengers.length; j++) {
         if (list[i].passengers[j].passenger == undefined) continue;
-        AXIOS.get(
-          "http://localhost:4000/user/" + list[i].passengers[j].passenger
+        app.get(
+          "user/" + list[i].passengers[j].passenger
         ).then((response) => {
           user = response.data.user;
           if (user.image == null) {
@@ -714,7 +714,7 @@ class CurrentTrip extends Component {
   };
 
   addDriver = (index) => {
-    AXIOS.post("http://localhost:4000/driver/", {
+    app.post("driver/", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_candidates[index]._id,
       first_name: this.state.all_candidates[index].first_name,
@@ -729,7 +729,7 @@ class CurrentTrip extends Component {
   };
 
   removeDriver = (index) => {
-    AXIOS.post("http://localhost:4000/driverremove/", {
+    app.post("driverremove/", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_drivers[index]._id,
     })
@@ -742,7 +742,7 @@ class CurrentTrip extends Component {
   };
 
   addPassenger(j) {
-    AXIOS.post("http://localhost:4000/driver/add", {
+    app.post("driver/add", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_drivers[this.state.driver_number]._id,
       passenger: this.state.all_candidates[j]._id,
@@ -758,7 +758,7 @@ class CurrentTrip extends Component {
   }
 
   removePassenger(person) {
-    AXIOS.post("http://localhost:4000/driver/remove", {
+    app.post("driver/remove", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_drivers[this.state.driver_number]._id,
       passenger: person.passenger,
@@ -799,7 +799,7 @@ class CurrentTrip extends Component {
     let op3 = await document.getElementById('op3').value;
     let op4 = await document.getElementById('op4').value;
 
-    let tripres = await AXIOS.get('http://localhost:4000/tripid/' + JSON.parse(localStorage.getItem('trip'))._id)
+    let tripres = await app.get('tripid/' + JSON.parse(localStorage.getItem('trip'))._id)
     console.log(tripres.data.trip[0]);
     let trip = await tripres.data.trip[0];
     let polls = []
@@ -836,7 +836,7 @@ class CurrentTrip extends Component {
     }
 
 
-    let res = await AXIOS.put('http://localhost:4000/trippoll/' + JSON.parse(localStorage.getItem('trip'))._id, updated_trip)
+    let res = await app.put('trippoll/' + JSON.parse(localStorage.getItem('trip'))._id, updated_trip)
 
     console.log(res);
     if (res.status == 200) {

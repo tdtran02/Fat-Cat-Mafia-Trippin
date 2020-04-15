@@ -11,7 +11,9 @@ import {
   ToggleButton,
 } from "react-bootstrap";
 import { element } from "prop-types";
-const AXIOS = require("axios").default;
+import { app } from '../utils/AxiosConfig';
+//const AXIOS = require("axios").default;
+
 
 let profilePicPath = localStorage.getItem("user");
 
@@ -42,9 +44,9 @@ export class Home extends Component {
     }
   }
   componentDidMount() {
-    //  console.log(this.state.user.email);
-    AXIOS.get(
-      "http://localhost:4000/user/" +
+    console.log(process.env.NODE_ENV);
+    app.get(
+      "user/" +
       JSON.parse(localStorage.getItem("user"))._id
     )
       .then((response) => {
@@ -66,8 +68,8 @@ export class Home extends Component {
         console.log(error);
       });
 
-    AXIOS.get(
-      "http://localhost:4000/trip/" +
+    app.get(
+      "trip/" +
       JSON.parse(localStorage.getItem("user"))._id
     ).then((response) => {
       console.log(response);
@@ -77,8 +79,8 @@ export class Home extends Component {
       });
     });
 
-    AXIOS.get(
-      "http://localhost:4000/buddypending/" +
+    app.get(
+      "buddypending/" +
       JSON.parse(localStorage.getItem("user"))._id
     ).then((res) => {
       console.log(res);
@@ -96,7 +98,7 @@ export class Home extends Component {
     // console.log(JSON.parse(localStorage.getItem('user')))
     const USER_ID = JSON.parse(localStorage.getItem("user"))._id;
     console.log(USER_ID);
-    AXIOS.delete("http://localhost:4000/trip/" + OneTrip._id)
+    app.delete("trip/" + OneTrip._id)
       .then((res) => {
         console.log(res);
         this.setState({ trip: res.data.trip });
@@ -109,7 +111,7 @@ export class Home extends Component {
         console.error(err);
       });
 
-    AXIOS.delete("http://localhost:4000/buddy/" + OneTrip._id)
+    app.delete("buddy/" + OneTrip._id)
       .then((res) => { })
       .catch((err) => {
         console.log(err);
@@ -123,7 +125,7 @@ export class Home extends Component {
   }
 
   updateLocalTripInvite(e, i) {
-    AXIOS.get("http://localhost:4000/tripid/" + i.trip_id)
+    app.get("tripid/" + i.trip_id)
       .then((res) => {
         console.log(res.data.trip[0]);
         localStorage.setItem("trip", JSON.stringify(res.data.trip[0]));
@@ -135,7 +137,7 @@ export class Home extends Component {
   }
 
   getUserEmail(i) {
-    AXIOS.get("http://localhost:4000/user/" + i.owner_id)
+    app.get("user/" + i.owner_id)
       .then((res) => {
         console.log(res.data.user.email);
         return res.data.user.email;

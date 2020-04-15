@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import "../styles/Trip.css";
 import { Survey } from "./Survey";
 import { Button, ButtonToolbar, Form, Col, Row, Card } from "react-bootstrap";
-
-const AXIOS = require("axios").default;
+import { app } from '../utils/AxiosConfig';
+//const AXIOS = require("axios").default;
 
 export class Trip extends Component {
   constructor(props) {
@@ -17,9 +17,9 @@ export class Trip extends Component {
     };
   }
   componentDidMount() {
-    AXIOS.get(
-      "http://localhost:4000/trip/" +
-        JSON.parse(localStorage.getItem("user"))._id
+    app.get(
+      "trip/" +
+      JSON.parse(localStorage.getItem("user"))._id
     )
       .then(res => {
         this.setState({ trip: res.data.trip });
@@ -64,7 +64,7 @@ export class Trip extends Component {
       trip_name: w,
       days: days
     };
-    AXIOS.post("http://localhost:4000/trip/", update)
+    app.post("trip/", update)
       .then(res => {
         localStorage.setItem("trip", JSON.stringify(res.data.trip));
 
@@ -197,9 +197,9 @@ export class Trip extends Component {
                     className="btn btn-lg btn-primary btn-block text-uppercase"
                     type="submit"
                     style={{ backgroundColor: "transparent", color: "black" }}
-                    // onClick={
-                    //     this.onCreateFieldClick();
-                    // }
+                  // onClick={
+                  //     this.onCreateFieldClick();
+                  // }
                   >
                     Create
                   </button>

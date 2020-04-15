@@ -9,7 +9,8 @@ import {
   Card,
   Carousel
 } from "react-bootstrap";
-import AXIOS from "axios";
+import { app } from '../utils/AxiosConfig';
+//import AXIOS from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -38,7 +39,7 @@ class Schedule extends Component {
   }
 
   componentDidMount() {
-    AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
+    app.get("tripinfo/" + this.state.trip_id)
       .then(res => {
         this.setState({ days_miles: res.data.trip.days_miles });
         this.setState({ trip_locations: res.data.trip.trip_locations });
@@ -60,7 +61,7 @@ class Schedule extends Component {
 
   updateSchedule = e => {
     this.setState({ loading: true });
-    AXIOS.post("http://localhost:4000/tripinfo/updateschedule", {
+    app.post("tripinfo/updateschedule", {
       trip_id: this.state.trip_id,
       days: this.state.days,
       trip_locations: this.state.trip_locations
@@ -268,21 +269,21 @@ class Schedule extends Component {
                   >
                     Day {i + 1}
                     {this.state.days_miles &&
-                    this.state.days_miles.length != 0 &&
-                    this.state.days_miles[i] != 0 ? (
-                      <span
-                        style={{
-                          float: "right",
-                          marginRight: "20px",
-                          fontSize: "12px",
-                          paddingTop: "5px"
-                        }}
-                      >
-                        {this.state.days_miles[i].toFixed(2) + " miles"}
-                      </span>
-                    ) : (
-                      ""
-                    )}
+                      this.state.days_miles.length != 0 &&
+                      this.state.days_miles[i] != 0 ? (
+                        <span
+                          style={{
+                            float: "right",
+                            marginRight: "20px",
+                            fontSize: "12px",
+                            paddingTop: "5px"
+                          }}
+                        >
+                          {this.state.days_miles[i].toFixed(2) + " miles"}
+                        </span>
+                      ) : (
+                        ""
+                      )}
                   </div>
 
                   {this.state.days[i].map((item, index) => (
@@ -510,14 +511,14 @@ class Schedule extends Component {
                     {this.state.days_elements}
                   </div>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
               </div>
             </div>
           </DragDropContext>
         ) : (
-          LoadingBar
-        )}
+            LoadingBar
+          )}
       </div>
     );
   }
