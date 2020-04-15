@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Modal, Button, ButtonToolbar } from "react-bootstrap";
 /* import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap"; */
-
-const AXIOS = require("axios").default;
+import { app } from '../utils/AxiosConfig';
+//const AXIOS = require("axios").default;
 export class Survey extends Component {
   //import Question from './components/Question';
 
@@ -104,7 +104,7 @@ export class Survey extends Component {
         }
       ]
     };
-    AXIOS.post("http://localhost:4000/question", answers)
+    app.post("question", answers)
       .then(response => {
         console.log(response.data);
         console.log(response.data.recs);

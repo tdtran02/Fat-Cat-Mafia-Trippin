@@ -2,9 +2,9 @@ import React, { Component, useState } from "react";
 import "../styles/MyAccount.css";
 import { Button, ButtonToolbar, Alert, Card, Form } from 'react-bootstrap';
 import { EditPhotoModal } from './EditPhotoModal';
+import { app } from '../utils/AxiosConfig';
 
-
-const AXIOS = require("axios").default;
+//const AXIOS = require("axios").default;
 
 export class MyAccount extends Component {
   constructor(props) {
@@ -19,8 +19,9 @@ export class MyAccount extends Component {
       last_name: "",
       __v: "",
       hometown: "",
-      updateflag: false
+      updateflag: false,
 
+      multerImage: "./image/placehoder.png",
     };
 
 
@@ -35,9 +36,16 @@ export class MyAccount extends Component {
     }
 
   };
+  setDefaultImage(uploadType) {
+    if (uploadType === "multer") {
+      this.setState({
+        multerImage: "./image/placeholder.png"
+      });
+    }
+  }
   componentDidMount() {
     //  console.log(this.state.user.email);
-    AXIOS.get('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id)
+    app.get('user/' + JSON.parse(localStorage.getItem('user'))._id)
       .then(response => {
         console.log(response.data.user.email);
         this.setState({ email: response.data.user.email });
@@ -58,7 +66,31 @@ export class MyAccount extends Component {
       })
 
   };
+  uploadImage(e, method) {
+    let imageObj = {};
+    if (method === "multer") {
+      let imageFormObj = new FormData();
+      imageFormObj.append("imageName", "multer-image-" + Date.now());
+      imageFormObj.append("imageData", e.target.files[0]);
 
+      // stores a readable instance of 
+      // the image being uploaded using multer
+
+      this.setState({
+        multerImage: URL.createObjectURL(e.target.files[0])
+      });
+      app.post('uploadmulter/user/' + JSON.parse(localStorage.getItem('user'))._id, imageFormObj).then((data) => {
+        if (data.data.success) {
+          alert("Image has been successfully upload using multer");
+          this.setDefaultImage("multer");
+        }
+      })
+        .catch((err) => {
+          alert("Error while uploading image using multer");
+          this.setDefaultImage("multer");
+        });
+    }
+  }
   onChange(event) {
     console.log(this.state.first_name)
     console.log(event.target.value)
@@ -102,7 +134,7 @@ export class MyAccount extends Component {
 
     }
     console.log(JSON.stringify(update));
-    AXIOS.put('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id, update)
+    app.put('user/' + JSON.parse(localStorage.getItem('user'))._id, update)
       .then(res => console.log(res.data))
       .catch(err => { console.log(err) });
 
@@ -144,7 +176,9 @@ export class MyAccount extends Component {
                   src={require(`${this.state.image}`)}
                   alt="profile" style={{
                     display: "block",
-                    margin: "5px auto"
+                    margin: "5px auto",
+                    width: "200px",
+                    border: "1px solid black"
                   }} />
               </div>
               <div style={{
@@ -230,7 +264,15 @@ export class MyAccount extends Component {
                     UPDATE</Button>
                 </div>
 
+                <div className="image-container">
+                  <div className="process">
+                    <h4 className="process_heading">Process: Using Multer</h4>
+                    <p className="process_details">Upload image to a node server, connected to a MongoDB database, with the help of multer</p>
 
+                    <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
+                    <img src={this.state.multerImage} alt="upload-image" className="process_image" />
+                  </div>
+                </div>
               </Form>
 
             </Card.Body>

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import "../styles/EditModal.css";
+import { app } from '../utils/AxiosConfig';
 
-
-const AXIOS = require("axios").default;
+//const AXIOS = require("axios").default;
 
 export class EditPhotoModal extends Component {
     constructor(props) {
@@ -15,7 +15,7 @@ export class EditPhotoModal extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
-        
+
         this.onFileChange = this.onFileChange.bind(this);
         this.onClickHandler = this.onClickHandler.bind(this);
     }
@@ -68,12 +68,12 @@ export class EditPhotoModal extends Component {
         }
         console.log(update.user.toString);
 
-        AXIOS.put('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id, update)
+        app.put('user/' + JSON.parse(localStorage.getItem('user'))._id, update)
             .then(res => console.log(res.data))
             .catch(err => { console.log(err) });
 
 
-        AXIOS.get('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id)
+        app.get('user/' + JSON.parse(localStorage.getItem('user'))._id)
             .then(response => {
                 console.log(JSON.stringify(response.data.user))
                 localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -96,13 +96,13 @@ export class EditPhotoModal extends Component {
     onFileChange(e) {
         this.setState({ profileImg: e.target.files[0] })
     }
-    onClickHandler(e){
+    onClickHandler(e) {
         e.preventDefault()
         const file = document.getElementById('inputGroupFile01').files
         const formData = new FormData()
-        
+
         formData.append('profileImg', this.state.profileImg)
-        
+
         fetch('http://localhost:4000/user/' + JSON.parse(localStorage.getItem('user'))._id + '/profile', {
             method: 'POST',
             body: formData,
@@ -186,14 +186,14 @@ export class EditPhotoModal extends Component {
                                                 </div>
                                                 <div className="input-group mb-3">
                                                     <div className="custom-file">
-                                                    <input
-                                                        type="file"
-                                                        className="custom-file-input"
-                                                        id="inputGroupFile01"
-                                                        aria-describedby="inputGroupFileAddon01"
-                                                    />
-                                                    <label className="custom-file-label" htmlFor="inputGroupFile01" onChange={this.onFileChange}>
-                                                        Choose file
+                                                        <input
+                                                            type="file"
+                                                            className="custom-file-input"
+                                                            id="inputGroupFile01"
+                                                            aria-describedby="inputGroupFileAddon01"
+                                                        />
+                                                        <label className="custom-file-label" htmlFor="inputGroupFile01" onChange={this.onFileChange}>
+                                                            Choose file
                                                     </label>
                                                     </div>
                                                 </div>

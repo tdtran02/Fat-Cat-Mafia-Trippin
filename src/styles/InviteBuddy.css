@@ -1,20 +1,20 @@
-[type=radio] {
+[type=checkbox] {
     position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-[type=radio] + div  {
+[type=checkbox] + div  {
     cursor: pointer;
 
   }
 
-[type=radio]:checked + div {
+[type=checkbox]:checked + div {
     outline: 2px solid #f00;
     background-color: rgb(117, 156, 102);
 }
-[type=radio]:hover + div {
+[type=checkbox]:hover + div {
     outline: 2px solid #f00;
     background-color: rgb(156, 163, 148);
 }

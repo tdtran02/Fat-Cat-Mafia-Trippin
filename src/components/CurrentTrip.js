@@ -5,18 +5,15 @@ import {
   ListGroup,
   Nav,
   Tab,
-  Modal,
-  Container,
-  Row,
-  Col,
+  Tabs
 } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
-import AXIOS from "axios";
+//import AXIOS from "axios";
 import InviteBuddy from "./InviteBuddy";
 import InviteDriver from "./InviteDriver";
-
+import { app } from '../utils/AxiosConfig';
 class CurrentTrip extends Component {
   constructor(props) {
     super(props);
@@ -44,14 +41,17 @@ class CurrentTrip extends Component {
       driver_passengers: [],
       driver_number: "0",
       inviteBuddyShow: false,
+      options: [],
+      pollValidated: false
     };
+    this.savePoll = this.savePoll.bind(this);
   }
 
   componentDidMount() {
     //get trip info
-    AXIOS.get(
-      "http://localhost:4000/comment/" +
-        JSON.parse(localStorage.getItem("trip"))._id
+    app.get(
+      "comment/" +
+      JSON.parse(localStorage.getItem("trip"))._id
     )
       .then((response) => {
         if (response !== "undefined") {
@@ -66,22 +66,18 @@ class CurrentTrip extends Component {
       });
 
     //check if any pending invitations
-    AXIOS.get(
-      "http://localhost:4000/buddy/" +
-        JSON.parse(localStorage.getItem("trip"))._id
+    app.get(
+      "buddy/" +
+      JSON.parse(localStorage.getItem("trip"))._id
     )
-      .then((response) => {
-        console.log(response);
-        let invitations = response.data.tripbuddy;
+      .then((respo) => {
+        console.log(respo);
+        let invitations = respo.data.tripbuddy;
         this.getTripBuddies(invitations);
         for (let i = 0; i < invitations.length; i++) {
-          if (
-            (invitations[i].buddy_id = JSON.parse(
-              localStorage.getItem("user")
-            )._id)
-          ) {
+          if (invitations[i].buddy_id === JSON.parse(localStorage.getItem("user"))._id) {
             console.log(invitations[i]);
-            if (invitations[i].pending == true) {
+            if (invitations[i].pending === true) {
               console.log(invitations);
               this.setState({ invitation: this.createInvitation() });
               localStorage.setItem(
@@ -96,9 +92,9 @@ class CurrentTrip extends Component {
         console.log(err);
       });
 
-    AXIOS.get(
-      "http://localhost:4000/user/" +
-        JSON.parse(localStorage.getItem("trip")).owner_id
+    app.get(
+      "user/" +
+      JSON.parse(localStorage.getItem("trip")).owner_id
     )
       .then((response) => {
         console.log(response);
@@ -205,7 +201,7 @@ class CurrentTrip extends Component {
       pending: false,
     };
     console.log(newtripbuddy);
-    AXIOS.put("http://localhost:4000/buddypending/" + buddyyy._id, newtripbuddy)
+    app.put("buddypending/" + buddyyy._id, newtripbuddy)
       .then((res) => console.log(res.data))
       .catch((err) => {
         console.log(err);
@@ -218,7 +214,7 @@ class CurrentTrip extends Component {
     };
     console.log(buddies);
 
-    AXIOS.put("http://localhost:4000/trip/" + buddyyy.trip_id, newtrip)
+    app.put("trip/" + buddyyy.trip_id, newtrip)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
 
@@ -236,7 +232,7 @@ class CurrentTrip extends Component {
       pending: false,
     };
     console.log(newtripbuddy);
-    AXIOS.put("http://localhost:4000/buddypending/" + buddyyy._id, newtripbuddy)
+    app.put("buddypending/" + buddyyy._id, newtripbuddy)
       .then((res) => console.log(res.data))
       .catch((err) => {
         console.log(err);
@@ -389,8 +385,8 @@ class CurrentTrip extends Component {
       commentsOnThisPost: postArr,
     };
     console.log(JSON.stringify(comment));
-    AXIOS.put("http://localhost:4000/comment/" + i._id, comment)
-      .then((res) => {})
+    app.put("comment/" + i._id, comment)
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -409,9 +405,9 @@ class CurrentTrip extends Component {
 
   getBuddyId() {
     //let self = this;
-    AXIOS.get(
-      "http://localhost:4000/useremail/" +
-        document.getElementById("buddyemail").value
+    app.get(
+      "useremail/" +
+      document.getElementById("buddyemail").value
     )
       .then((response) => {
         let buddy = response.data.user;
@@ -427,7 +423,7 @@ class CurrentTrip extends Component {
           denied: false,
           pending: true,
         };
-        AXIOS.post("http://localhost:4000/buddy", buddyinfo)
+        app.post("buddy", buddyinfo)
           .then((response) => {
             this.setState({ invitation_boolean: true });
             console.log(this.state.invitation_boolean);
@@ -459,8 +455,8 @@ class CurrentTrip extends Component {
       trip_id: JSON.parse(localStorage.getItem("trip"))._id,
       buddy_id: buddyid,
     };
-    AXIOS.post("http://localhost:4000/buddy", buddy)
-      .then((response) => {})
+    app.post("buddy", buddy)
+      .then((response) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -469,7 +465,7 @@ class CurrentTrip extends Component {
     //send an invite to friend
   }
 
-  handleClick() {
+  postComment() {
     let trip = JSON.parse(localStorage.getItem("trip"));
     let postArr = [];
     if (trip.posts == null) {
@@ -488,7 +484,7 @@ class CurrentTrip extends Component {
       text: document.getElementById("comment").value,
       date: Date.now(),
     };
-    AXIOS.post("http://localhost:4000/comment", comment)
+    app.post("comment", comment)
       .then((res) => {
         this.setState({ addSurveyShow: true });
       })
@@ -501,10 +497,10 @@ class CurrentTrip extends Component {
   showDrivers = () => {
     // window.open("/trip/" + this.state.trip_id + "/drivers", "_blank");
     this.setState({ show_drivers: true });
-    AXIOS.get("http://localhost:4000/driver/friends/" + this.state.trip_id)
+    app.get("friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
-        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+        return app.get("driver/" + this.state.trip_id);
       })
       .then((result) => {
         this.setState({ all_drivers: result.data.drivers });
@@ -520,10 +516,10 @@ class CurrentTrip extends Component {
   };
 
   updateModalContent() {
-    AXIOS.get("http://localhost:4000/driver/friends/" + this.state.trip_id)
+    app.get("driver/friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
-        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+        return app.get("driver/" + this.state.trip_id);
       })
       .then((result) => {
         this.setState({ all_drivers: result.data.drivers });
@@ -541,7 +537,7 @@ class CurrentTrip extends Component {
     for (let i = 0; i < list.length; i++) {
       httplist.push(list[i].buddy_id);
     }
-    AXIOS.post("http://localhost:4000/user/getusersbylist", {
+    app.post("user/getusersbylist", {
       list: httplist,
     }).then((r) => {
       this.setState({ all_candidates: r.data.users });
@@ -606,7 +602,7 @@ class CurrentTrip extends Component {
     for (let i = 0; i < list.length; i++) {
       httplist.push(list[i].driver_id);
     }
-    AXIOS.post("http://localhost:4000/user/getusersbylist", {
+    app.post("user/getusersbylist", {
       list: httplist,
     }).then((r) => {
       this.setState({ all_drivers: r.data.users });
@@ -662,8 +658,8 @@ class CurrentTrip extends Component {
       let user;
       for (let j = 0; j < list[i].passengers.length; j++) {
         if (list[i].passengers[j].passenger == undefined) continue;
-        AXIOS.get(
-          "http://localhost:4000/user/" + list[i].passengers[j].passenger
+        app.get(
+          "user/" + list[i].passengers[j].passenger
         ).then((response) => {
           user = response.data.user;
           if (user.image == null) {
@@ -718,7 +714,7 @@ class CurrentTrip extends Component {
   };
 
   addDriver = (index) => {
-    AXIOS.post("http://localhost:4000/driver/", {
+    app.post("driver/", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_candidates[index]._id,
       first_name: this.state.all_candidates[index].first_name,
@@ -733,7 +729,7 @@ class CurrentTrip extends Component {
   };
 
   removeDriver = (index) => {
-    AXIOS.post("http://localhost:4000/driverremove/", {
+    app.post("driverremove/", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_drivers[index]._id,
     })
@@ -746,7 +742,7 @@ class CurrentTrip extends Component {
   };
 
   addPassenger(j) {
-    AXIOS.post("http://localhost:4000/driver/add", {
+    app.post("driver/add", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_drivers[this.state.driver_number]._id,
       passenger: this.state.all_candidates[j]._id,
@@ -762,7 +758,7 @@ class CurrentTrip extends Component {
   }
 
   removePassenger(person) {
-    AXIOS.post("http://localhost:4000/driver/remove", {
+    app.post("driver/remove", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_drivers[this.state.driver_number]._id,
       passenger: person.passenger,
@@ -775,6 +771,79 @@ class CurrentTrip extends Component {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  /*   showOptions(e) {
+      let num = e.target.value;
+      this.setState({ options: this.createOptions(num) });
+    }
+     */
+  // createOptions(num) {
+  //   let options = [];
+  //   for (let i = 1; i <= num; i++) {
+  //     console.log(i);
+  //     options.push(
+  //       <div>
+  //         <label>Option {i}:</label>
+  //         <input className="form-control" required type="text" key={i} />
+  //       </div>
+  //     )
+  //   }
+  /* 
+      return options;
+    } */
+
+  savePoll = async (event) => {
+    let op1 = await document.getElementById('op1').value;
+    let op2 = await document.getElementById('op2').value;
+    let op3 = await document.getElementById('op3').value;
+    let op4 = await document.getElementById('op4').value;
+
+    let tripres = await app.get('tripid/' + JSON.parse(localStorage.getItem('trip'))._id)
+    console.log(tripres.data.trip[0]);
+    let trip = await tripres.data.trip[0];
+    let polls = []
+    if (trip.polls != []) {
+      polls = await trip.polls
+    }
+    await polls.push({
+      question: document.getElementById('poll-question').value,
+      options: [
+        { option: op1, votes: 0 },
+        { option: op2, votes: 0 },
+        { option: op3, votes: 0 },
+        { option: op4, votes: 0 }]
+    })
+    console.log(polls);
+    /* let trip = await localStorage.getItem('trip');
+    console.log(trip); */
+
+
+    let updated_trip = await {
+      trip_locations: trip.trip_locations,
+      trip_locations_for_scheduling: trip.trip_locations_for_scheduling,
+      days: trip.days,
+      buddies: trip.buddies,
+      posts: trip.posts,
+      days_miles: trip.days_miles,
+      _id: trip._id,
+      owner_id: trip.owner_id,
+      trip_name: trip.trip_name,
+      destination: trip.destination,
+      start_date: trip.start_date,
+      end_date: trip.end_date,
+      polls: polls
+    }
+
+
+    let res = await app.put('trippoll/' + JSON.parse(localStorage.getItem('trip'))._id, updated_trip)
+
+    console.log(res);
+    if (res.status == 200) {
+      await localStorage.setItem('trip', JSON.stringify(updated_trip));
+
+    }
+
   }
 
   render() {
@@ -902,25 +971,49 @@ class CurrentTrip extends Component {
                 >
                   <Card.Header>MAKE A POST</Card.Header>
                   <Card.Body>
-                    <Form>
-                      <Form.Group>
-                        <Form.Control
-                          id="comment"
-                          as="textarea"
-                          rows="2"
-                          placeholder="Write post..."
-                        ></Form.Control>
-                      </Form.Group>
-                      <Button
-                        variant="outline-warning"
-                        onClick={this.handleClick}
-                        style={{
-                          float: "right",
-                        }}
-                      >
-                        POST
-                      </Button>
-                    </Form>
+
+                    <Tabs defaultActiveKey="comment" id="uncontrolled-tab-example">
+                      <Tab eventKey="comment" title="Comment" style={{ marginTop: "20px", padding: "20px" }}>
+                        <form onSubmit={this.postComment}>
+
+                          <input required
+                            id="comment"
+                            type="textarea"
+                            rows="2"
+                            placeholder="Write post..."
+                            className="form-control"
+                            style={{
+                              width: "100%",
+                              // backgroundColor: "white",
+                              border: "1px solid #CED4DA",
+                              backgroundColor: "transparent",
+                              color: "#6c757d"
+                            }}
+                          ></input>
+
+                          <Button type="submit" variant="outline-warning" style={{
+                            float: "right",
+                          }}>POST</Button>
+                        </form>
+                      </Tab>
+                      <Tab eventKey="poll" title="Poll" style={{ marginTop: "20px", padding: "20px" }}>
+                        <form onSubmit={this.savePoll}>
+                          <label>QUESTION:</label>
+                          <input className="form-control" id="poll-question" required type="text" placeholder="Ask your question here" controlId="validationCustom01" ></input>
+
+                          <label>OPTIONS:</label>
+                          <input required type="text" className="form-control" id="op1" />
+                          <input required type="text" className="form-control" id="op2" />
+                          <input type="text" className="form-control" id="op3" />
+                          <input type="text" className="form-control" id="op4" />
+
+                          <Button type="submit" variant="outline-success" style={{ float: "right" }}>NEXT</Button>
+                        </form>
+                      </Tab>
+                    </Tabs>
+
+
+
                   </Card.Body>
                 </Card>
                 <div>{this.state.posts}</div>

@@ -8,7 +8,8 @@ import {
   Tab,
   Nav,
 } from "react-bootstrap";
-const AXIOS = require("axios").default;
+import { app } from '../utils/AxiosConfig';
+//const AXIOS = require("axios").default;
 
 export class InviteDriver extends Component {
   constructor(props) {
@@ -27,10 +28,10 @@ export class InviteDriver extends Component {
 
   // get all drivers with its passengers and candidates
   componentDidMount() {
-    AXIOS.get("http://localhost:4000/driver/friends/" + this.state.trip_id)
+    app.get("driver/friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
-        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+        return app.get("driver/" + this.state.trip_id);
       })
       .then((result) => {
         this.setState({ all_drivers: result.data.drivers });
@@ -43,10 +44,10 @@ export class InviteDriver extends Component {
 
   updateModalContent() {
     console.log("XD");
-    AXIOS.get("http://localhost:4000/driver/friends/" + this.state.trip_id)
+    app.get("driver/friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
-        return AXIOS.get("http://localhost:4000/driver/" + this.state.trip_id);
+        return app.get("driver/" + this.state.trip_id);
       })
       .then((result) => {
         this.setState({ all_drivers: result.data.drivers });
@@ -64,7 +65,7 @@ export class InviteDriver extends Component {
     for (let i = 0; i < list.length; i++) {
       httplist.push(list[i].buddy_id);
     }
-    AXIOS.post("http://localhost:4000/user/getusersbylist", {
+    app.post("user/getusersbylist", {
       list: httplist,
     }).then((r) => {
       this.setState({ all_candidates: r.data.users });
@@ -129,7 +130,7 @@ export class InviteDriver extends Component {
     for (let i = 0; i < list.length; i++) {
       httplist.push(list[i].driver_id);
     }
-    AXIOS.post("http://localhost:4000/user/getusersbylist", {
+    app.post("user/getusersbylist", {
       list: httplist,
     }).then((r) => {
       this.setState({ all_drivers: r.data.users });
@@ -185,8 +186,8 @@ export class InviteDriver extends Component {
       let user;
       for (let j = 0; j < list[i].passengers.length; j++) {
         if (list[i].passengers[j].passenger == undefined) continue;
-        AXIOS.get(
-          "http://localhost:4000/user/" + list[i].passengers[j].passenger
+        app.get(
+          "user/" + list[i].passengers[j].passenger
         ).then((response) => {
           user = response.data.user;
           if (user.image == null) {
@@ -241,7 +242,7 @@ export class InviteDriver extends Component {
   };
 
   addDriver = (index) => {
-    AXIOS.post("http://localhost:4000/driver/", {
+    app.post("driver/", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_candidates[index]._id,
       first_name: this.state.all_candidates[index].first_name,
@@ -256,7 +257,7 @@ export class InviteDriver extends Component {
   };
 
   removeDriver = (index) => {
-    AXIOS.post("http://localhost:4000/driverremove/", {
+    app.post("driverremove/", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_drivers[index]._id,
     })
@@ -269,7 +270,7 @@ export class InviteDriver extends Component {
   };
 
   addPassenger(j) {
-    AXIOS.post("http://localhost:4000/driver/add", {
+    app.post("driver/add", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_drivers[this.state.driver_number]._id,
       passenger: this.state.all_candidates[j]._id,
@@ -285,7 +286,7 @@ export class InviteDriver extends Component {
   }
 
   removePassenger(person) {
-    AXIOS.post("http://localhost:4000/driver/remove", {
+    app.post("driver/remove", {
       trip_id: this.state.trip_id,
       driver_id: this.state.all_drivers[this.state.driver_number]._id,
       passenger: person.passenger,

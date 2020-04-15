@@ -13,7 +13,14 @@ const tripSchema = new Schema({
   days: Array,
   buddies: Array,
   posts: Array,
-  days_miles: Array
+  days_miles: Array,
+  polls: [{
+    question: String,
+    options: [{
+      option: String,
+      votes: Number
+    }]
+  }]
 });
 
 const TripSchem = mongoose.model("tripchar", tripSchema);

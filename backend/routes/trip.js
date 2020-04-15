@@ -18,6 +18,7 @@ TRIPROUTES.route("/trip").post(function (req, res) {
     days: req.body.days,
     buddies: req.body.buddies,
     posts: req.body.posts,
+    polls: req.body.polls,
   });
   T.save()
     .then((x) => {
@@ -281,6 +282,22 @@ TRIPROUTES.route("/trip/:_id").put(function (req, res) {
     { _id: req.params._id },
     {
       $set: { buddies: req.body.buddies },
+    }
+  )
+    .then((response) => {
+      res.status(200).json({});
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+TRIPROUTES.route("/trippoll/:_id").put(function (req, res) {
+  TRIP.findByIdAndUpdate(
+    { _id: req.params._id },
+    {
+      $set: { polls: req.body.polls },
     }
   )
     .then((response) => {
