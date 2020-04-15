@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const ROUTER = express.Router();
-const PORT = 4000;
+
 /* const multer = require('multer');
 const upload = multer({ storage: storage }); */
 const fs = require("fs");
@@ -23,7 +23,8 @@ const COMMENTROUTES = require("./routes/comment");
 const TRIPBUDDYROUTES = require("./routes/tripbuddy");
 const DRIVERROUTES = require("./routes/driver");
 const UPLOADROUTES = require("./routes/saveImage");
-
+const env = process.env.NODE_ENV;
+const PORT = env === 'production' ? 'ec2-3-101-14-234.us-west-1.compute.amazonaws.com' : 4000;
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -34,7 +35,7 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("Server is running on Port: " + PORT);
 });
 
