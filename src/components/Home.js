@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../styles/Home.css";
 import MyAccount from "./MyAccount.js";
 import Trip from "./Trip.js";
-import ProfilePicture from './ProfilePicture';
+
 import {
   Alert,
   Button,
