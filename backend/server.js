@@ -23,8 +23,12 @@ const COMMENTROUTES = require("./routes/comment");
 const TRIPBUDDYROUTES = require("./routes/tripbuddy");
 const DRIVERROUTES = require("./routes/driver");
 const UPLOADROUTES = require("./routes/saveImage");
+const EMAILTRIPINFOROUTES = require("./routes/emailtripinfo");
 const env = process.env.NODE_ENV;
-const PORT = env === 'production' ? 'ec2-3-101-14-234.us-west-1.compute.amazonaws.com' : 4000;
+const PORT =
+  env === "production"
+    ? "ec2-3-101-14-234.us-west-1.compute.amazonaws.com"
+    : 4000;
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -33,12 +37,11 @@ mongoose.set("useFindAndModify", false);
 mongoose
   .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
 app.listen(PORT, function () {
   console.log("Server is running on Port: " + PORT);
 });
-
 
 app.use(LOGINROUTES, ROUTER);
 app.use(REGISTEROUTES, ROUTER);
@@ -54,6 +57,7 @@ app.use(COMMENTROUTES, ROUTER);
 app.use(TRIPBUDDYROUTES, ROUTER);
 app.use(DRIVERROUTES, ROUTER);
 app.use(UPLOADROUTES, ROUTER);
+app.use(EMAILTRIPINFOROUTES, ROUTER);
 
 /* const storage = multer.diskStorage({
   destination: function (req, res, cb) {
