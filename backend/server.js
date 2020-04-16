@@ -25,10 +25,10 @@ const DRIVERROUTES = require("./routes/driver");
 const UPLOADROUTES = require("./routes/saveImage");
 const EMAILTRIPINFOROUTES = require("./routes/emailtripinfo");
 const env = process.env.NODE_ENV;
-const PORT =
-  env === "production"
-    ? "ec2-3-101-14-234.us-west-1.compute.amazonaws.com"
-    : 4000;
+const PORT = process.env.PORT || 8080;
+/* env === "production"
+  ? "ec2-3-101-14-234.us-west-1.compute.amazonaws.com/api"
+  : 4000; */
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -38,6 +38,16 @@ mongoose
   .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
+
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  // Handle React routing, return all requests to React app
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 app.listen(PORT, function () {
   console.log("Server is running on Port: " + PORT);
