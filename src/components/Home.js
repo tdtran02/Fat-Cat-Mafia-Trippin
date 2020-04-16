@@ -11,9 +11,8 @@ import {
   ToggleButton,
 } from "react-bootstrap";
 import { element } from "prop-types";
-import { app } from '../utils/AxiosConfig';
+import { app } from "../utils/AxiosConfig";
 //const AXIOS = require("axios").default;
-
 
 let profilePicPath = localStorage.getItem("user");
 
@@ -25,7 +24,7 @@ export class Home extends Component {
       email: "",
       first_name: "",
       last_name: "",
-      image: './images/empty.jpg',
+      image: "./images/empty.jpg",
       _v: "",
       hometown: "",
       trip: null,
@@ -45,10 +44,8 @@ export class Home extends Component {
   }
   componentDidMount() {
     console.log(process.env.NODE_ENV);
-    app.get(
-      "user/" +
-      JSON.parse(localStorage.getItem("user"))._id
-    )
+    app
+      .get("user/" + JSON.parse(localStorage.getItem("user"))._id)
       .then((response) => {
         console.log(response.data.user.email);
         this.setState({ email: response.data.user.email });
@@ -68,27 +65,25 @@ export class Home extends Component {
         console.log(error);
       });
 
-    app.get(
-      "trip/" +
-      JSON.parse(localStorage.getItem("user"))._id
-    ).then((response) => {
-      console.log(response);
-      this.setState({ trip: response.data.trip });
-      this.setState({
-        trip_list: this.createList(response.data.trip),
+    app
+      .get("trip/" + JSON.parse(localStorage.getItem("user"))._id)
+      .then((response) => {
+        console.log(response);
+        this.setState({ trip: response.data.trip });
+        this.setState({
+          trip_list: this.createList(response.data.trip),
+        });
       });
-    });
 
-    app.get(
-      "buddypending/" +
-      JSON.parse(localStorage.getItem("user"))._id
-    ).then((res) => {
-      console.log(res);
-      this.setState({ invite: res.data.tripbuddy });
-      this.setState({
-        invitation_list: this.createInvitations(res.data.tripbuddy),
+    app
+      .get("buddypending/" + JSON.parse(localStorage.getItem("user"))._id)
+      .then((res) => {
+        console.log(res);
+        this.setState({ invite: res.data.tripbuddy });
+        this.setState({
+          invitation_list: this.createInvitations(res.data.tripbuddy),
+        });
       });
-    });
   }
   onDeleteFieldClick(e, i) {
     //console.log(i);
@@ -98,7 +93,8 @@ export class Home extends Component {
     // console.log(JSON.parse(localStorage.getItem('user')))
     const USER_ID = JSON.parse(localStorage.getItem("user"))._id;
     console.log(USER_ID);
-    app.delete("trip/" + OneTrip._id)
+    app
+      .delete("trip/" + OneTrip._id)
       .then((res) => {
         console.log(res);
         this.setState({ trip: res.data.trip });
@@ -111,8 +107,9 @@ export class Home extends Component {
         console.error(err);
       });
 
-    app.delete("buddy/" + OneTrip._id)
-      .then((res) => { })
+    app
+      .delete("buddy/" + OneTrip._id)
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -125,7 +122,8 @@ export class Home extends Component {
   }
 
   updateLocalTripInvite(e, i) {
-    app.get("tripid/" + i.trip_id)
+    app
+      .get("tripid/" + i.trip_id)
       .then((res) => {
         console.log(res.data.trip[0]);
         localStorage.setItem("trip", JSON.stringify(res.data.trip[0]));
@@ -137,7 +135,8 @@ export class Home extends Component {
   }
 
   getUserEmail(i) {
-    app.get("user/" + i.owner_id)
+    app
+      .get("user/" + i.owner_id)
       .then((res) => {
         console.log(res.data.user.email);
         return res.data.user.email;
@@ -245,6 +244,7 @@ export class Home extends Component {
     let twice = false;
 
     let temp = [];
+    console.log("LIST LENGTH: " + list.length);
     for (let i = 0; i < list.length; i++) {
       if (once != true && date_mark < new Date(list[i].start_date)) {
         elements.push(
@@ -328,38 +328,40 @@ export class Home extends Component {
         </div>
       );
     }
-    if (list.length < 4) {
-      for (let i = 0; i < 4 - list.length - 1; i++) {
+    if (list.length > 0) {
+      if (list.length < 4) {
+        for (let i = 0; i < 4 - list.length - 1; i++) {
+          elements.push(
+            <div
+              className="col-md-3 col-sm-6"
+              style={{ minWidth: "200px" }}
+              key={4 - i}
+            ></div>
+          );
+        }
+      }
+      if (once == false) {
         elements.push(
-          <div
-            className="col-md-3 col-sm-6"
-            style={{ minWidth: "200px" }}
-            key={4 - i}
-          ></div>
+          <div className="container" key="once">
+            <h3>Upcoming Week</h3>
+            <div className="row">{temp}</div>
+          </div>
+        );
+      } else if (twice == false) {
+        elements.push(
+          <div className="container" key="twice">
+            <h3 className="trip_dates">Within a Month</h3>
+            <div className="row">{temp}</div>
+          </div>
+        );
+      } else if (twice == true && once == true && temp.length != 0) {
+        elements.push(
+          <div className="container" key="third">
+            <h3 className="trip_dates">Rest of My Upcoming Trips</h3>
+            <div className="row">{temp}</div>
+          </div>
         );
       }
-    }
-    if (once == false) {
-      elements.push(
-        <div className="container" key="once">
-          <h3>Upcoming Week</h3>
-          <div className="row">{temp}</div>
-        </div>
-      );
-    } else if (twice == false) {
-      elements.push(
-        <div className="container" key="twice">
-          <h3 className="trip_dates">Within a Month</h3>
-          <div className="row">{temp}</div>
-        </div>
-      );
-    } else if (twice == true && once == true && temp.length != 0) {
-      elements.push(
-        <div className="container" key="third">
-          <h3 className="trip_dates">Rest of My Upcoming Trips</h3>
-          <div className="row">{temp}</div>
-        </div>
-      );
     }
     return elements;
   }
@@ -399,12 +401,11 @@ export class Home extends Component {
                   alt="profile"
                   className="responsive"
                   src={require(`${img}`)}
-
                   style={{
                     display: "block",
                     margin: "5px auto",
                     width: "150px",
-                    border: "1px solid black"
+                    border: "1px solid black",
                   }}
                 />
                 {/* <ProfilePicture /> */}

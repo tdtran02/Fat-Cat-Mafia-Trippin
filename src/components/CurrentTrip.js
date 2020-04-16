@@ -1,30 +1,21 @@
 import React, { Component } from "react";
-import {
-  Card,
-  Form,
-  ListGroup,
-  Nav,
-  Tab,
-  Tabs
-} from "react-bootstrap";
+import { Card, Form, ListGroup, Nav, Tab, Tabs, Toast } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
 //import AXIOS from "axios";
 import InviteBuddy from "./InviteBuddy";
 import InviteDriver from "./InviteDriver";
-import { app } from '../utils/AxiosConfig';
+import { app } from "../utils/AxiosConfig";
 class CurrentTrip extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       trip_id: this.props.match.params.id,
-      start: JSON.parse(localStorage.getItem("trip")).start_date.substring(
-        0,
-        10
-      ),
-      end: JSON.parse(localStorage.getItem("trip")).end_date.substring(0, 10),
+      start: null,
+      end: null,
+      trip: {},
       posts: [],
       comment_id: "",
       user_id: "",
@@ -42,17 +33,25 @@ class CurrentTrip extends Component {
       driver_number: "0",
       inviteBuddyShow: false,
       options: [],
-      pollValidated: false
+      pollValidated: false,
+
+      email_success: false,
+      show_email_notification: false,
     };
     this.savePoll = this.savePoll.bind(this);
   }
 
   componentDidMount() {
+    app.get("tripid/" + this.state.trip_id).then((result) => {
+      // if (result.data.trip.start_date != null)
+      console.log(result.data);
+      this.setState({ start: result.data.trip[0].start_date.substring(0, 10) });
+      this.setState({ end: result.data.trip[0].end_date.substring(0, 10) });
+      this.setState({ trip: result.data.trip[0] });
+    });
     //get trip info
-    app.get(
-      "comment/" +
-      JSON.parse(localStorage.getItem("trip"))._id
-    )
+    app
+      .get("comment/" + this.state.trip_id)
       .then((response) => {
         if (response !== "undefined") {
           this.setState({ comment_id: response.data.comment[0]._id });
@@ -66,16 +65,17 @@ class CurrentTrip extends Component {
       });
 
     //check if any pending invitations
-    app.get(
-      "buddy/" +
-      JSON.parse(localStorage.getItem("trip"))._id
-    )
+    app
+      .get("buddy/" + this.state.trip_id)
       .then((respo) => {
         console.log(respo);
         let invitations = respo.data.tripbuddy;
         this.getTripBuddies(invitations);
         for (let i = 0; i < invitations.length; i++) {
-          if (invitations[i].buddy_id === JSON.parse(localStorage.getItem("user"))._id) {
+          if (
+            invitations[i].buddy_id ===
+            JSON.parse(localStorage.getItem("user"))._id
+          ) {
             console.log(invitations[i]);
             if (invitations[i].pending === true) {
               console.log(invitations);
@@ -87,15 +87,8 @@ class CurrentTrip extends Component {
             }
           }
         }
+        return app.get("user/" + this.state.trip.owner_id);
       })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    app.get(
-      "user/" +
-      JSON.parse(localStorage.getItem("trip")).owner_id
-    )
       .then((response) => {
         console.log(response);
         this.setState({ organizer: this.getTripOrganizer(response.data.user) });
@@ -201,7 +194,8 @@ class CurrentTrip extends Component {
       pending: false,
     };
     console.log(newtripbuddy);
-    app.put("buddypending/" + buddyyy._id, newtripbuddy)
+    app
+      .put("buddypending/" + buddyyy._id, newtripbuddy)
       .then((res) => console.log(res.data))
       .catch((err) => {
         console.log(err);
@@ -214,7 +208,8 @@ class CurrentTrip extends Component {
     };
     console.log(buddies);
 
-    app.put("trip/" + buddyyy.trip_id, newtrip)
+    app
+      .put("trip/" + buddyyy.trip_id, newtrip)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
 
@@ -232,7 +227,8 @@ class CurrentTrip extends Component {
       pending: false,
     };
     console.log(newtripbuddy);
-    app.put("buddypending/" + buddyyy._id, newtripbuddy)
+    app
+      .put("buddypending/" + buddyyy._id, newtripbuddy)
       .then((res) => console.log(res.data))
       .catch((err) => {
         console.log(err);
@@ -385,8 +381,9 @@ class CurrentTrip extends Component {
       commentsOnThisPost: postArr,
     };
     console.log(JSON.stringify(comment));
-    app.put("comment/" + i._id, comment)
-      .then((res) => { })
+    app
+      .put("comment/" + i._id, comment)
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -405,10 +402,8 @@ class CurrentTrip extends Component {
 
   getBuddyId() {
     //let self = this;
-    app.get(
-      "useremail/" +
-      document.getElementById("buddyemail").value
-    )
+    app
+      .get("useremail/" + document.getElementById("buddyemail").value)
       .then((response) => {
         let buddy = response.data.user;
         console.log(response);
@@ -423,7 +418,8 @@ class CurrentTrip extends Component {
           denied: false,
           pending: true,
         };
-        app.post("buddy", buddyinfo)
+        app
+          .post("buddy", buddyinfo)
           .then((response) => {
             this.setState({ invitation_boolean: true });
             console.log(this.state.invitation_boolean);
@@ -455,8 +451,9 @@ class CurrentTrip extends Component {
       trip_id: JSON.parse(localStorage.getItem("trip"))._id,
       buddy_id: buddyid,
     };
-    app.post("buddy", buddy)
-      .then((response) => { })
+    app
+      .post("buddy", buddy)
+      .then((response) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -484,7 +481,8 @@ class CurrentTrip extends Component {
       text: document.getElementById("comment").value,
       date: Date.now(),
     };
-    app.post("comment", comment)
+    app
+      .post("comment", comment)
       .then((res) => {
         this.setState({ addSurveyShow: true });
       })
@@ -497,7 +495,8 @@ class CurrentTrip extends Component {
   showDrivers = () => {
     // window.open("/trip/" + this.state.trip_id + "/drivers", "_blank");
     this.setState({ show_drivers: true });
-    app.get("friends/" + this.state.trip_id)
+    app
+      .get("friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
         return app.get("driver/" + this.state.trip_id);
@@ -516,7 +515,8 @@ class CurrentTrip extends Component {
   };
 
   updateModalContent() {
-    app.get("driver/friends/" + this.state.trip_id)
+    app
+      .get("driver/friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
         return app.get("driver/" + this.state.trip_id);
@@ -537,85 +537,19 @@ class CurrentTrip extends Component {
     for (let i = 0; i < list.length; i++) {
       httplist.push(list[i].buddy_id);
     }
-    app.post("user/getusersbylist", {
-      list: httplist,
-    }).then((r) => {
-      this.setState({ all_candidates: r.data.users });
-      for (let j = 0; j < r.data.users.length; j++) {
-        user = r.data.users[j];
-        if (user.image == null) {
-          user.image = "./images/profilepic.png";
-        }
-        elements.push(
-          <div
-            style={{
-              display: "flex",
-              border: "1px solid black",
-              borderRadius: "5px",
-              margin: "5px",
-              padding: "5px",
-            }}
-            key={j}
-          >
-            <img
-              style={{ width: "50px" }}
-              src={require(`${user.image}`)}
-              alt="userimage"
-            />
-            <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
-            <div style={{ margin: "15px 0" }}>{user.last_name}</div>
+    app
+      .post("user/getusersbylist", {
+        list: httplist,
+      })
+      .then((r) => {
+        this.setState({ all_candidates: r.data.users });
+        for (let j = 0; j < r.data.users.length; j++) {
+          user = r.data.users[j];
+          if (user.image == null) {
+            user.image = "./images/profilepic.png";
+          }
+          elements.push(
             <div
-              style={{
-                marginLeft: "5px",
-                marginTop: "15px",
-                float: "right",
-                cursor: "pointer",
-              }}
-            >
-              {" "}
-              <i className="fas fa-car" onClick={() => this.addDriver(j)}></i>
-            </div>
-            <div
-              style={{
-                marginLeft: "5px",
-                marginTop: "15px",
-                float: "right",
-                cursor: "pointer",
-              }}
-            >
-              <i
-                className="fas fa-plus-circle"
-                onClick={() => this.addPassenger(j)}
-              ></i>
-            </div>
-          </div>
-        );
-      }
-    });
-
-    return elements;
-  }
-  drivers(list) {
-    const elements = [];
-    const httplist = [];
-    let user = null;
-    for (let i = 0; i < list.length; i++) {
-      httplist.push(list[i].driver_id);
-    }
-    app.post("user/getusersbylist", {
-      list: httplist,
-    }).then((r) => {
-      this.setState({ all_drivers: r.data.users });
-
-      for (let j = 0; j < r.data.users.length; j++) {
-        user = r.data.users[j];
-        if (user.image == null) {
-          user.image = "./images/profilepic.png";
-        }
-        elements.push(
-          <Nav.Item key={j} onClick={() => this.changeDriverNumber(j)}>
-            <Nav.Link
-              eventKey={j.toString()}
               style={{
                 display: "flex",
                 border: "1px solid black",
@@ -623,6 +557,7 @@ class CurrentTrip extends Component {
                 margin: "5px",
                 padding: "5px",
               }}
+              key={j}
             >
               <img
                 style={{ width: "50px" }}
@@ -635,19 +570,90 @@ class CurrentTrip extends Component {
                 style={{
                   marginLeft: "5px",
                   marginTop: "15px",
+                  float: "right",
+                  cursor: "pointer",
+                }}
+              >
+                {" "}
+                <i className="fas fa-car" onClick={() => this.addDriver(j)}></i>
+              </div>
+              <div
+                style={{
+                  marginLeft: "5px",
+                  marginTop: "15px",
+                  float: "right",
                   cursor: "pointer",
                 }}
               >
                 <i
-                  className="fas fa-minus-circle"
-                  onClick={() => this.removeDriver(j)}
+                  className="fas fa-plus-circle"
+                  onClick={() => this.addPassenger(j)}
                 ></i>
               </div>
-            </Nav.Link>
-          </Nav.Item>
-        );
-      }
-    });
+            </div>
+          );
+        }
+      });
+
+    return elements;
+  }
+  drivers(list) {
+    const elements = [];
+    const httplist = [];
+    let user = null;
+    for (let i = 0; i < list.length; i++) {
+      httplist.push(list[i].driver_id);
+    }
+    app
+      .post("user/getusersbylist", {
+        list: httplist,
+      })
+      .then((r) => {
+        this.setState({ all_drivers: r.data.users });
+
+        for (let j = 0; j < r.data.users.length; j++) {
+          user = r.data.users[j];
+          if (user.image == null) {
+            user.image = "./images/profilepic.png";
+          }
+          elements.push(
+            <Nav.Item key={j} onClick={() => this.changeDriverNumber(j)}>
+              <Nav.Link
+                eventKey={j.toString()}
+                style={{
+                  display: "flex",
+                  border: "1px solid black",
+                  borderRadius: "5px",
+                  margin: "5px",
+                  padding: "5px",
+                }}
+              >
+                <img
+                  style={{ width: "50px" }}
+                  src={require(`${user.image}`)}
+                  alt="userimage"
+                />
+                <div style={{ margin: "15px 5px 0 15px" }}>
+                  {user.first_name}
+                </div>
+                <div style={{ margin: "15px 0" }}>{user.last_name}</div>
+                <div
+                  style={{
+                    marginLeft: "5px",
+                    marginTop: "15px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <i
+                    className="fas fa-minus-circle"
+                    onClick={() => this.removeDriver(j)}
+                  ></i>
+                </div>
+              </Nav.Link>
+            </Nav.Item>
+          );
+        }
+      });
     return elements;
   }
 
@@ -658,9 +664,7 @@ class CurrentTrip extends Component {
       let user;
       for (let j = 0; j < list[i].passengers.length; j++) {
         if (list[i].passengers[j].passenger == undefined) continue;
-        app.get(
-          "user/" + list[i].passengers[j].passenger
-        ).then((response) => {
+        app.get("user/" + list[i].passengers[j].passenger).then((response) => {
           user = response.data.user;
           if (user.image == null) {
             user.image = "./images/profilepic.png";
@@ -714,12 +718,13 @@ class CurrentTrip extends Component {
   };
 
   addDriver = (index) => {
-    app.post("driver/", {
-      trip_id: this.state.trip_id,
-      driver_id: this.state.all_candidates[index]._id,
-      first_name: this.state.all_candidates[index].first_name,
-      last_name: this.state.all_candidates[index].last_name,
-    })
+    app
+      .post("driver/", {
+        trip_id: this.state.trip_id,
+        driver_id: this.state.all_candidates[index]._id,
+        first_name: this.state.all_candidates[index].first_name,
+        last_name: this.state.all_candidates[index].last_name,
+      })
       .then((result) => {
         this.updateModalContent();
       })
@@ -729,10 +734,11 @@ class CurrentTrip extends Component {
   };
 
   removeDriver = (index) => {
-    app.post("driverremove/", {
-      trip_id: this.state.trip_id,
-      driver_id: this.state.all_drivers[index]._id,
-    })
+    app
+      .post("driverremove/", {
+        trip_id: this.state.trip_id,
+        driver_id: this.state.all_drivers[index]._id,
+      })
       .then((result) => {
         this.updateModalContent();
       })
@@ -742,13 +748,14 @@ class CurrentTrip extends Component {
   };
 
   addPassenger(j) {
-    app.post("driver/add", {
-      trip_id: this.state.trip_id,
-      driver_id: this.state.all_drivers[this.state.driver_number]._id,
-      passenger: this.state.all_candidates[j]._id,
-      first_name: this.state.all_candidates[j].first_name,
-      last_name: this.state.all_candidates[j].last_name,
-    })
+    app
+      .post("driver/add", {
+        trip_id: this.state.trip_id,
+        driver_id: this.state.all_drivers[this.state.driver_number]._id,
+        passenger: this.state.all_candidates[j]._id,
+        first_name: this.state.all_candidates[j].first_name,
+        last_name: this.state.all_candidates[j].last_name,
+      })
       .then((result) => {
         this.updateModalContent();
       })
@@ -758,13 +765,14 @@ class CurrentTrip extends Component {
   }
 
   removePassenger(person) {
-    app.post("driver/remove", {
-      trip_id: this.state.trip_id,
-      driver_id: this.state.all_drivers[this.state.driver_number]._id,
-      passenger: person.passenger,
-      first_name: person.first_name,
-      last_name: person.last_name,
-    })
+    app
+      .post("driver/remove", {
+        trip_id: this.state.trip_id,
+        driver_id: this.state.all_drivers[this.state.driver_number]._id,
+        passenger: person.passenger,
+        first_name: person.first_name,
+        last_name: person.last_name,
+      })
       .then((result) => {
         this.updateModalContent();
       })
@@ -772,6 +780,28 @@ class CurrentTrip extends Component {
         console.log(err);
       });
   }
+
+  emailInfo = () => {
+    console.log("XD");
+    app
+      .get("/emailtripinfo/" + this.state.trip_id)
+      .then((result) => {
+        this.setState({ show_email_notification: true });
+        console.log(result.data.sent);
+        if (result.data.sent == true) {
+          this.setState({ email_success: true });
+        } else {
+          this.setState({ email_success: false });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  closeEmailInfo = () => {
+    this.setState({ show_email_notification: false });
+  };
 
   /*   showOptions(e) {
       let num = e.target.value;
@@ -794,30 +824,32 @@ class CurrentTrip extends Component {
     } */
 
   savePoll = async (event) => {
-    let op1 = await document.getElementById('op1').value;
-    let op2 = await document.getElementById('op2').value;
-    let op3 = await document.getElementById('op3').value;
-    let op4 = await document.getElementById('op4').value;
+    let op1 = await document.getElementById("op1").value;
+    let op2 = await document.getElementById("op2").value;
+    let op3 = await document.getElementById("op3").value;
+    let op4 = await document.getElementById("op4").value;
 
-    let tripres = await app.get('tripid/' + JSON.parse(localStorage.getItem('trip'))._id)
+    let tripres = await app.get(
+      "tripid/" + JSON.parse(localStorage.getItem("trip"))._id
+    );
     console.log(tripres.data.trip[0]);
     let trip = await tripres.data.trip[0];
-    let polls = []
+    let polls = [];
     if (trip.polls != []) {
-      polls = await trip.polls
+      polls = await trip.polls;
     }
     await polls.push({
-      question: document.getElementById('poll-question').value,
+      question: document.getElementById("poll-question").value,
       options: [
         { option: op1, votes: 0 },
         { option: op2, votes: 0 },
         { option: op3, votes: 0 },
-        { option: op4, votes: 0 }]
-    })
+        { option: op4, votes: 0 },
+      ],
+    });
     console.log(polls);
     /* let trip = await localStorage.getItem('trip');
     console.log(trip); */
-
 
     let updated_trip = await {
       trip_locations: trip.trip_locations,
@@ -832,19 +864,19 @@ class CurrentTrip extends Component {
       destination: trip.destination,
       start_date: trip.start_date,
       end_date: trip.end_date,
-      polls: polls
-    }
+      polls: polls,
+    };
 
-
-    let res = await app.put('trippoll/' + JSON.parse(localStorage.getItem('trip'))._id, updated_trip)
+    let res = await app.put(
+      "trippoll/" + JSON.parse(localStorage.getItem("trip"))._id,
+      updated_trip
+    );
 
     console.log(res);
     if (res.status == 200) {
-      await localStorage.setItem('trip', JSON.stringify(updated_trip));
-
+      await localStorage.setItem("trip", JSON.stringify(updated_trip));
     }
-
-  }
+  };
 
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
@@ -895,7 +927,7 @@ class CurrentTrip extends Component {
                     }}
                   >
                     <Card.Header as="h3" style={{ textTransform: "uppercase" }}>
-                      {JSON.parse(localStorage.getItem("trip")).trip_name}
+                      {this.state.trip.trip_name}
                     </Card.Header>
 
                     <Card.Body>
@@ -905,7 +937,7 @@ class CurrentTrip extends Component {
                         }}
                       >
                         <i className="fas fa-map-marker-alt"></i>{" "}
-                        {JSON.parse(localStorage.getItem("trip")).destination}
+                        {this.state.trip.destination}
                       </Card.Title>
                       <Card.Title>
                         <i className="fas fa-plane-departure"></i>{" "}
@@ -971,12 +1003,18 @@ class CurrentTrip extends Component {
                 >
                   <Card.Header>MAKE A POST</Card.Header>
                   <Card.Body>
-
-                    <Tabs defaultActiveKey="comment" id="uncontrolled-tab-example">
-                      <Tab eventKey="comment" title="Comment" style={{ marginTop: "20px", padding: "20px" }}>
+                    <Tabs
+                      defaultActiveKey="comment"
+                      id="uncontrolled-tab-example"
+                    >
+                      <Tab
+                        eventKey="comment"
+                        title="Comment"
+                        style={{ marginTop: "20px", padding: "20px" }}
+                      >
                         <form onSubmit={this.postComment}>
-
-                          <input required
+                          <input
+                            required
                             id="comment"
                             type="textarea"
                             rows="2"
@@ -987,33 +1025,71 @@ class CurrentTrip extends Component {
                               // backgroundColor: "white",
                               border: "1px solid #CED4DA",
                               backgroundColor: "transparent",
-                              color: "#6c757d"
+                              color: "#6c757d",
                             }}
                           ></input>
 
-                          <Button type="submit" variant="outline-warning" style={{
-                            float: "right",
-                          }}>POST</Button>
+                          <Button
+                            type="submit"
+                            variant="outline-warning"
+                            style={{
+                              float: "right",
+                            }}
+                          >
+                            POST
+                          </Button>
                         </form>
                       </Tab>
-                      <Tab eventKey="poll" title="Poll" style={{ marginTop: "20px", padding: "20px" }}>
+                      <Tab
+                        eventKey="poll"
+                        title="Poll"
+                        style={{ marginTop: "20px", padding: "20px" }}
+                      >
                         <form onSubmit={this.savePoll}>
                           <label>QUESTION:</label>
-                          <input className="form-control" id="poll-question" required type="text" placeholder="Ask your question here" controlId="validationCustom01" ></input>
+                          <input
+                            className="form-control"
+                            id="poll-question"
+                            required
+                            type="text"
+                            placeholder="Ask your question here"
+                            controlId="validationCustom01"
+                          ></input>
 
                           <label>OPTIONS:</label>
-                          <input required type="text" className="form-control" id="op1" />
-                          <input required type="text" className="form-control" id="op2" />
-                          <input type="text" className="form-control" id="op3" />
-                          <input type="text" className="form-control" id="op4" />
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            id="op1"
+                          />
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            id="op2"
+                          />
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="op3"
+                          />
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="op4"
+                          />
 
-                          <Button type="submit" variant="outline-success" style={{ float: "right" }}>NEXT</Button>
+                          <Button
+                            type="submit"
+                            variant="outline-success"
+                            style={{ float: "right" }}
+                          >
+                            NEXT
+                          </Button>
                         </form>
                       </Tab>
                     </Tabs>
-
-
-
                   </Card.Body>
                 </Card>
                 <div>{this.state.posts}</div>
@@ -1050,6 +1126,43 @@ class CurrentTrip extends Component {
                 >
                   Show Spendings
                 </Button>
+
+                <Button
+                  variant="info"
+                  style={{
+                    float: "center",
+                    boxShadow: "8px 8px 20px #000",
+                    marginTop: "10px",
+                  }}
+                  onClick={this.emailInfo}
+                >
+                  Email Trip Info
+                </Button>
+                <Toast
+                  show={this.state.show_email_notification}
+                  onClose={this.closeEmailInfo}
+                  autohide={true}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    marginTop: "60px",
+                  }}
+                >
+                  <Toast.Header>
+                    <img
+                      src="holder.js/20x20?text=%20"
+                      className="rounded mr-2"
+                      alt=""
+                    />
+                    <strong className="mr-auto">Email Trip Info</strong>
+                  </Toast.Header>
+                  <Toast.Body>
+                    {this.state.email_success == true
+                      ? "Trip info has been email to the atteendees!"
+                      : "Email failed to send"}
+                  </Toast.Body>
+                </Toast>
               </div>
             </div>
           </div>

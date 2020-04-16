@@ -8,7 +8,7 @@ import {
   Tab,
   Nav,
 } from "react-bootstrap";
-import { app } from '../utils/AxiosConfig';
+import { app } from "../utils/AxiosConfig";
 //const AXIOS = require("axios").default;
 
 export class InviteDriver extends Component {
@@ -28,7 +28,8 @@ export class InviteDriver extends Component {
 
   // get all drivers with its passengers and candidates
   componentDidMount() {
-    app.get("driver/friends/" + this.state.trip_id)
+    app
+      .get("driver/friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
         return app.get("driver/" + this.state.trip_id);
@@ -43,8 +44,8 @@ export class InviteDriver extends Component {
   }
 
   updateModalContent() {
-    console.log("XD");
-    app.get("driver/friends/" + this.state.trip_id)
+    app
+      .get("driver/friends/" + this.state.trip_id)
       .then((result) => {
         this.setState({ candidates: this.candidates(result.data.candidates) });
         return app.get("driver/" + this.state.trip_id);
@@ -65,85 +66,19 @@ export class InviteDriver extends Component {
     for (let i = 0; i < list.length; i++) {
       httplist.push(list[i].buddy_id);
     }
-    app.post("user/getusersbylist", {
-      list: httplist,
-    }).then((r) => {
-      this.setState({ all_candidates: r.data.users });
-      for (let j = 0; j < r.data.users.length; j++) {
-        user = r.data.users[j];
-        if (user.image == null) {
-          user.image = "./images/profilepic.png";
-        }
-        elements.push(
-          <div
-            style={{
-              display: "flex",
-              border: "1px solid black",
-              borderRadius: "5px",
-              margin: "5px",
-              padding: "5px",
-            }}
-            key={j}
-          >
-            <img
-              style={{ width: "50px" }}
-              src={require(`${user.image}`)}
-              alt="userimage"
-            />
-            <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
-            <div style={{ margin: "15px 0" }}>{user.last_name}</div>
+    app
+      .post("user/getusersbylist", {
+        list: httplist,
+      })
+      .then((r) => {
+        this.setState({ all_candidates: r.data.users });
+        for (let j = 0; j < r.data.users.length; j++) {
+          user = r.data.users[j];
+          if (user.image == null) {
+            user.image = "./images/profilepic.png";
+          }
+          elements.push(
             <div
-              style={{
-                marginLeft: "5px",
-                marginTop: "15px",
-                float: "right",
-                cursor: "pointer",
-              }}
-            >
-              {" "}
-              <i className="fas fa-car" onClick={() => this.addDriver(j)}></i>
-            </div>
-            <div
-              style={{
-                marginLeft: "5px",
-                marginTop: "15px",
-                float: "right",
-                cursor: "pointer",
-              }}
-            >
-              <i
-                className="fas fa-plus-circle"
-                onClick={() => this.addPassenger(j)}
-              ></i>
-            </div>
-          </div>
-        );
-      }
-    });
-
-    return elements;
-  }
-  drivers(list) {
-    const elements = [];
-    const httplist = [];
-    let user = null;
-    for (let i = 0; i < list.length; i++) {
-      httplist.push(list[i].driver_id);
-    }
-    app.post("user/getusersbylist", {
-      list: httplist,
-    }).then((r) => {
-      this.setState({ all_drivers: r.data.users });
-
-      for (let j = 0; j < r.data.users.length; j++) {
-        user = r.data.users[j];
-        if (user.image == null) {
-          user.image = "./images/profilepic.png";
-        }
-        elements.push(
-          <Nav.Item key={j} onClick={() => this.changeDriverNumber(j)}>
-            <Nav.Link
-              eventKey={j.toString()}
               style={{
                 display: "flex",
                 border: "1px solid black",
@@ -151,6 +86,7 @@ export class InviteDriver extends Component {
                 margin: "5px",
                 padding: "5px",
               }}
+              key={j}
             >
               <img
                 style={{ width: "50px" }}
@@ -163,19 +99,91 @@ export class InviteDriver extends Component {
                 style={{
                   marginLeft: "5px",
                   marginTop: "15px",
+                  float: "right",
+                  cursor: "pointer",
+                }}
+              >
+                {" "}
+                <i className="fas fa-car" onClick={() => this.addDriver(j)}></i>
+              </div>
+              <div
+                style={{
+                  marginLeft: "5px",
+                  marginTop: "15px",
+                  float: "right",
                   cursor: "pointer",
                 }}
               >
                 <i
-                  className="fas fa-minus-circle"
-                  onClick={() => this.removeDriver(j)}
+                  className="fas fa-plus-circle"
+                  onClick={() => this.addPassenger(j)}
                 ></i>
               </div>
-            </Nav.Link>
-          </Nav.Item>
-        );
-      }
-    });
+            </div>
+          );
+        }
+      });
+
+    return elements;
+  }
+  drivers(list) {
+    const elements = [];
+    const httplist = [];
+    let user = null;
+    for (let i = 0; i < list.length; i++) {
+      httplist.push(list[i].driver_id);
+    }
+    app
+      .post("user/getusersbylist", {
+        list: httplist,
+      })
+      .then((r) => {
+        this.setState({ all_drivers: r.data.users });
+
+        for (let j = 0; j < r.data.users.length; j++) {
+          user = r.data.users[j];
+          if (user == null) continue;
+          if (user.image == null) {
+            user.image = "./images/profilepic.png";
+          }
+          elements.push(
+            <Nav.Item key={j} onClick={() => this.changeDriverNumber(j)}>
+              <Nav.Link
+                eventKey={j.toString()}
+                style={{
+                  display: "flex",
+                  border: "1px solid black",
+                  borderRadius: "5px",
+                  margin: "5px",
+                  padding: "5px",
+                }}
+              >
+                <img
+                  style={{ width: "50px" }}
+                  src={require(`${user.image}`)}
+                  alt="userimage"
+                />
+                <div style={{ margin: "15px 5px 0 15px" }}>
+                  {user.first_name}
+                </div>
+                <div style={{ margin: "15px 0" }}>{user.last_name}</div>
+                <div
+                  style={{
+                    marginLeft: "5px",
+                    marginTop: "15px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <i
+                    className="fas fa-minus-circle"
+                    onClick={() => this.removeDriver(j)}
+                  ></i>
+                </div>
+              </Nav.Link>
+            </Nav.Item>
+          );
+        }
+      });
     return elements;
   }
 
@@ -186,9 +194,7 @@ export class InviteDriver extends Component {
       let user;
       for (let j = 0; j < list[i].passengers.length; j++) {
         if (list[i].passengers[j].passenger == undefined) continue;
-        app.get(
-          "user/" + list[i].passengers[j].passenger
-        ).then((response) => {
+        app.get("user/" + list[i].passengers[j].passenger).then((response) => {
           user = response.data.user;
           if (user.image == null) {
             user.image = "./images/profilepic.png";
@@ -242,12 +248,13 @@ export class InviteDriver extends Component {
   };
 
   addDriver = (index) => {
-    app.post("driver/", {
-      trip_id: this.state.trip_id,
-      driver_id: this.state.all_candidates[index]._id,
-      first_name: this.state.all_candidates[index].first_name,
-      last_name: this.state.all_candidates[index].last_name,
-    })
+    app
+      .post("driver/", {
+        trip_id: this.state.trip_id,
+        driver_id: this.state.all_candidates[index]._id,
+        first_name: this.state.all_candidates[index].first_name,
+        last_name: this.state.all_candidates[index].last_name,
+      })
       .then((result) => {
         this.updateModalContent();
       })
@@ -257,10 +264,11 @@ export class InviteDriver extends Component {
   };
 
   removeDriver = (index) => {
-    app.post("driverremove/", {
-      trip_id: this.state.trip_id,
-      driver_id: this.state.all_drivers[index]._id,
-    })
+    app
+      .post("driverremove/", {
+        trip_id: this.state.trip_id,
+        driver_id: this.state.all_drivers[index]._id,
+      })
       .then((result) => {
         this.updateModalContent();
       })
@@ -270,13 +278,14 @@ export class InviteDriver extends Component {
   };
 
   addPassenger(j) {
-    app.post("driver/add", {
-      trip_id: this.state.trip_id,
-      driver_id: this.state.all_drivers[this.state.driver_number]._id,
-      passenger: this.state.all_candidates[j]._id,
-      first_name: this.state.all_candidates[j].first_name,
-      last_name: this.state.all_candidates[j].last_name,
-    })
+    app
+      .post("driver/add", {
+        trip_id: this.state.trip_id,
+        driver_id: this.state.all_drivers[this.state.driver_number]._id,
+        passenger: this.state.all_candidates[j]._id,
+        first_name: this.state.all_candidates[j].first_name,
+        last_name: this.state.all_candidates[j].last_name,
+      })
       .then((result) => {
         this.updateModalContent();
       })
@@ -286,13 +295,14 @@ export class InviteDriver extends Component {
   }
 
   removePassenger(person) {
-    app.post("driver/remove", {
-      trip_id: this.state.trip_id,
-      driver_id: this.state.all_drivers[this.state.driver_number]._id,
-      passenger: person.passenger,
-      first_name: person.first_name,
-      last_name: person.last_name,
-    })
+    app
+      .post("driver/remove", {
+        trip_id: this.state.trip_id,
+        driver_id: this.state.all_drivers[this.state.driver_number]._id,
+        passenger: person.passenger,
+        first_name: person.first_name,
+        last_name: person.last_name,
+      })
       .then((result) => {
         this.updateModalContent();
       })
