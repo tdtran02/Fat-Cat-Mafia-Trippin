@@ -5,6 +5,6 @@ const env = process.env.NODE_ENV;
 export const app = axios.create({
     baseURL:
         env === 'production'
-            ? 'http://localhost:8080/' //production
-            : 'http://localhost:8080/', //development
+            ? 'http://ec2-3-101-14-234.us-west-1.compute.amazonaws.com/api/' //production
+            : 'http://localhost:4000/', //development
 });

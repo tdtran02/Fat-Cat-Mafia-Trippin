@@ -25,10 +25,10 @@ const DRIVERROUTES = require("./routes/driver");
 const UPLOADROUTES = require("./routes/saveImage");
 const EMAILTRIPINFOROUTES = require("./routes/emailtripinfo");
 const env = process.env.NODE_ENV;
-const PORT = process.env.PORT || 8080;
-/* env === "production"
+const PORT =
+ env === "production"
   ? "ec2-3-101-14-234.us-west-1.compute.amazonaws.com/api"
-  : 4000; */
+  : 4000; 
 app.use(cors());
 app.use(bodyParser.json());
 
