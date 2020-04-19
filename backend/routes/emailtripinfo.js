@@ -87,10 +87,10 @@ EMAILTRIPINFOROUTE.route("/emailtripinfo/:trip_id").get(function (req, res) {
         ASYNC.eachSeries(
           trip.buddies,
           function (buddy, callback) {
-            console.log(buddy);
+            // console.log(buddy);
             USER.findById(buddy)
               .then((b) => {
-                console.log(b);
+                // console.log(b);
                 const mailOptions = {
                   from: "Trippin Webapp Service <trippinwebapp@gmail.com>",
                   to: b.email,
