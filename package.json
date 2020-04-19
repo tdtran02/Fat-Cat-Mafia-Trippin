@@ -2,6 +2,7 @@
   "name": "my-trippin",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -73,5 +74,5 @@
   "bugs": {
     "url": "https://github.com/tdtran02/trippin/issues"
   },
-  "homepage": "https://github.com/tdtran02/trippin#readme"
+  "homepage": "http://ec2-3-101-14-234.us-west-1.compute.amazonaws.com"
 }
