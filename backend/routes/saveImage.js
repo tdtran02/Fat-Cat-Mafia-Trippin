@@ -102,21 +102,24 @@ UPLOADROUTES.route("/user/profileImage/:id").post(profileImageUpload.single('ima
 });
 
 UPLOADROUTES.route("/userImageUpdate/:id").put(function(req, res){
+    let newImage;
     IMAGE.findOne({
         $and:[
             {owner_id: req.params.id},
             {imageCate: req.body.imageCate}]
     }).then(image =>{
+        newImage = image;
         if(image == null){
             console.error("Profile image is not existed.");
             res.status(403).send("User has not upload profile image.");
         }else if(image != null){
             console.log("Profile image is existed in db");
-            let newImageId = image.id;
-            USER.findOneAndUpdate(
-                {id: req.params.id},
+            // let newImageId = image.id;
+            console.log(newImage);
+            USER.updateOne(
+                { _id: req.params.id},
                 {
-                  image: newImageId,
+                  $set: {image: newImage.id}
                 })
                 .then(() => {
                   console.log("User profile image updated");
@@ -149,6 +152,20 @@ UPLOADROUTES.route("/uploadmulter/user/:id").post(upload.single('imageData'), (r
 
 UPLOADROUTES.route("/user/profile/:id").get(function (req, res) {
     IMAGE.findOne({ owner_id: req.params.id }).then((image) => {
+        if (image != null) {
+          res.status(200).json({
+            image: image,
+          });
+        } else {
+          res.status(400).json({
+            image: null,
+          });
+        }
+      });
+});
+
+UPLOADROUTES.route("/user/profile/:id").delete(function (req, res) {
+    IMAGE.remove({ owner_id: req.params.id }).then((image) => {
         if (image != null) {
           res.status(200).json({
             image: image,

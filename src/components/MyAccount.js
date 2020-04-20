@@ -83,6 +83,19 @@ export class MyAccount extends Component {
         if (data.data.success) {
           alert("Image has been successfully upload using multer");
           this.setDefaultImage("multer");
+          const update = {
+            image: {
+              owner_id: JSON.parse(localStorage.getItem('user'))._id,
+              imageCate: "profile",
+            }
+          }
+          console.log(JSON.stringify(update));
+          app.put('userImageUpdate/' + JSON.parse(localStorage.getItem('user'))._id, update)
+          .then(
+            res => console.log(res.data),
+            alert("Image has been successfully updated in user profile")
+          )
+          .catch(err => { console.log(err) });
         }
       })
         .catch((err) => {
