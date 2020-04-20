@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 
 var imageSchema = new Schema({
     owner_id: String,
+    imageCate: String,
     imageName: {
         type: String,
         default: "none",

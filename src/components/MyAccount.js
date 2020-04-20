@@ -79,7 +79,7 @@ export class MyAccount extends Component {
       this.setState({
         multerImage: URL.createObjectURL(e.target.files[0])
       });
-      app.post('uploadmulter/user/' + JSON.parse(localStorage.getItem('user'))._id, imageFormObj).then((data) => {
+      app.post('user/profileImage/' + JSON.parse(localStorage.getItem('user'))._id, imageFormObj).then((data) => {
         if (data.data.success) {
           alert("Image has been successfully upload using multer");
           this.setDefaultImage("multer");
