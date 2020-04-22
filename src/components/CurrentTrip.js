@@ -68,16 +68,22 @@ class CurrentTrip extends Component {
     app
       .get("buddy/" + this.state.trip_id)
       .then((respo) => {
+        console.log("xd");
         console.log(respo);
         let invitations = respo.data.tripbuddy;
+        console.log(invitations);
         this.getTripBuddies(invitations);
+        console.log("XP");
+        console.log(localStorage.getItem("user"));
         for (let i = 0; i < invitations.length; i++) {
+          console.log(invitations[i].buddy_id);
           if (
             invitations[i].buddy_id ===
             JSON.parse(localStorage.getItem("user"))._id
           ) {
             console.log(invitations[i]);
             if (invitations[i].pending === true) {
+              console.log("XDDDDD");
               console.log(invitations);
               this.setState({ invitation: this.createInvitation() });
               localStorage.setItem(
@@ -114,21 +120,21 @@ class CurrentTrip extends Component {
   }
 
   getTripBuddies(buddyarray) {
-    console.log(buddyarray);
-    console.log(buddyarray.length);
     let buddycardarray = [];
     for (let i = 0; i < buddyarray.length; i++) {
-      //console.log(JSON.parse(buddyarray[i]));
-      if (buddyarray[i].accepted === true) {
+      if (buddyarray[i].accepted == true) {
+        let bpicture;
+        if (buddyarray[i].buddy_picture == undefined) {
+          bpicture = "./images/profile1.jpg";
+        } else {
+          bpicture = buddyarray[i].buddy_picture;
+        }
         buddycardarray.push(
           <div key={i}>
             <Card style={{ margin: "0 auto", border: "transparent" }}>
               <Card.Body>
                 <div>
-                  <img
-                    style={{ width: "50px" }}
-                    src={require(`${buddyarray[i].buddy_picture}`)}
-                  />
+                  <img style={{ width: "50px" }} src={require(`${bpicture}`)} />
                 </div>
                 <div>
                   <strong>{buddyarray[i].buddy_first_name}</strong>
@@ -139,7 +145,6 @@ class CurrentTrip extends Component {
         );
       }
     }
-
     this.setState({ acceptedInvitations: buddycardarray });
     return buddycardarray;
   }
@@ -409,7 +414,7 @@ class CurrentTrip extends Component {
         console.log(response);
         const buddyinfo = {
           owner_id: JSON.parse(localStorage.getItem("user"))._id,
-          trip_id: JSON.parse(localStorage.getItem("trip"))._id,
+          trip_id: this.state.trip_id,
           buddy_id: buddy._id,
           buddy_first_name: buddy.first_name,
           buddy_last_name: buddy.last_name,
@@ -448,7 +453,7 @@ class CurrentTrip extends Component {
   addBuddy(buddyid) {
     const buddy = {
       owner_id: JSON.parse(localStorage.getItem("user"))._id,
-      trip_id: JSON.parse(localStorage.getItem("trip"))._id,
+      trip_id: this.state.trip_id,
       buddy_id: buddyid,
     };
     app
@@ -496,8 +501,9 @@ class CurrentTrip extends Component {
     // window.open("/trip/" + this.state.trip_id + "/drivers", "_blank");
     this.setState({ show_drivers: true });
     app
-      .get("friends/" + this.state.trip_id)
+      .get("driver/friends/" + this.state.trip_id)
       .then((result) => {
+        console.log(result.data);
         this.setState({ candidates: this.candidates(result.data.candidates) });
         return app.get("driver/" + this.state.trip_id);
       })
@@ -610,9 +616,9 @@ class CurrentTrip extends Component {
       })
       .then((r) => {
         this.setState({ all_drivers: r.data.users });
-
         for (let j = 0; j < r.data.users.length; j++) {
           user = r.data.users[j];
+          if (user == null) continue;
           if (user.image == null) {
             user.image = "./images/profilepic.png";
           }
@@ -1053,7 +1059,7 @@ class CurrentTrip extends Component {
                             required
                             type="text"
                             placeholder="Ask your question here"
-                            controlId="validationCustom01"
+                            // controlId="validationCustom01"
                           ></input>
 
                           <label>OPTIONS:</label>
