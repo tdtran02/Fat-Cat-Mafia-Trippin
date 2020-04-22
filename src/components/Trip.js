@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../styles/Trip.css";
 import { Survey } from "./Survey";
 import { Button, ButtonToolbar, Form, Col, Row, Card } from "react-bootstrap";
-import { app } from '../utils/AxiosConfig';
+import { app } from "../utils/AxiosConfig";
 //const AXIOS = require("axios").default;
 
 export class Trip extends Component {
@@ -13,18 +13,16 @@ export class Trip extends Component {
       destination: "",
       start_date: null,
       end_date: null,
-      addSurveyShow: false
+      addSurveyShow: false,
     };
   }
   componentDidMount() {
-    app.get(
-      "trip/" +
-      JSON.parse(localStorage.getItem("user"))._id
-    )
-      .then(res => {
+    app
+      .get("trip/" + JSON.parse(localStorage.getItem("user"))._id)
+      .then((res) => {
         this.setState({ trip: res.data.trip });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -42,7 +40,7 @@ export class Trip extends Component {
     return Math.round((second - first) / (1000 * 60 * 60 * 24));
   }
 
-  onCreateFieldClick = e => {
+  onCreateFieldClick = (e) => {
     e.preventDefault();
     var x = document.getElementById("arrival_location").value;
     var y = document.getElementById("start-day").value;
@@ -62,15 +60,17 @@ export class Trip extends Component {
       start_date: y,
       end_date: z,
       trip_name: w,
-      days: days
+      days: days,
+      user: JSON.parse(localStorage.getItem("user")),
     };
-    app.post("trip/", update)
-      .then(res => {
+    app
+      .post("trip/", update)
+      .then((res) => {
         localStorage.setItem("trip", JSON.stringify(res.data.trip));
 
         this.setState({ addSurveyShow: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
     // e.preventDefault();
@@ -85,7 +85,7 @@ export class Trip extends Component {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          overflow: "auto"
+          overflow: "auto",
         }}
       >
         <div
@@ -100,13 +100,13 @@ export class Trip extends Component {
             boxSizing: "border-box",
             borderRadius: "20px",
             boxShadow: "8px 8px 50px #000",
-            color: "#6c757d"
+            color: "#6c757d",
           }}
         >
           <Card
             style={{
               border: "transparent",
-              borderRadius: "20px"
+              borderRadius: "20px",
               // backgroundColor: "white"
             }}
           >
@@ -125,7 +125,7 @@ export class Trip extends Component {
                       // backgroundColor: "white",
                       border: "1px solid #CED4DA",
                       backgroundColor: "transparent",
-                      color: "#6c757d"
+                      color: "#6c757d",
                     }}
                   />
                   <label htmlFor="trip-name" style={{ color: "#6c757d" }}>
@@ -144,7 +144,7 @@ export class Trip extends Component {
                       // backgroundColor: "white",
                       border: "1px solid #CED4DA",
                       backgroundColor: "transparent",
-                      color: "#6c757d"
+                      color: "#6c757d",
                     }}
                   />
                   <label
@@ -166,7 +166,7 @@ export class Trip extends Component {
                       // backgroundColor: "white",
                       border: "1px solid #CED4DA",
                       backgroundColor: "transparent",
-                      color: "#6c757d"
+                      color: "#6c757d",
                     }}
                   />
                   <label htmlFor="startdate" style={{ color: "#6c757d" }}>
@@ -184,7 +184,7 @@ export class Trip extends Component {
                       // backgroundColor: "white",
                       border: "1px solid #CED4DA",
                       backgroundColor: "transparent",
-                      color: "#6c757d"
+                      color: "#6c757d",
                     }}
                     id="end-day"
                   />
@@ -197,9 +197,9 @@ export class Trip extends Component {
                     className="btn btn-lg btn-primary btn-block text-uppercase"
                     type="submit"
                     style={{ backgroundColor: "transparent", color: "black" }}
-                  // onClick={
-                  //     this.onCreateFieldClick();
-                  // }
+                    // onClick={
+                    //     this.onCreateFieldClick();
+                    // }
                   >
                     Create
                   </button>
