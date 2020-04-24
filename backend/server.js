@@ -24,11 +24,12 @@ const TRIPBUDDYROUTES = require("./routes/tripbuddy");
 const DRIVERROUTES = require("./routes/driver");
 const UPLOADROUTES = require("./routes/saveImage");
 const EMAILTRIPINFOROUTES = require("./routes/emailtripinfo");
+const POLLSROUTES = require("./routes/polls");
 const env = process.env.NODE_ENV;
 const PORT =
- env === "production"
-  ? "ec2-3-101-14-234.us-west-1.compute.amazonaws.com/api"
-  : 4000; 
+  env === "production"
+    ? "ec2-3-101-14-234.us-west-1.compute.amazonaws.com/api"
+    : 4000;
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -39,13 +40,13 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   // Serve any static files
-  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.use(express.static(path.join(__dirname, "client/build")));
 
   // Handle React routing, return all requests to React app
-  app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "client/build", "index.html"));
   });
 }
 
@@ -68,6 +69,7 @@ app.use(TRIPBUDDYROUTES, ROUTER);
 app.use(DRIVERROUTES, ROUTER);
 app.use(UPLOADROUTES, ROUTER);
 app.use(EMAILTRIPINFOROUTES, ROUTER);
+app.use(POLLSROUTES, ROUTER);
 
 /* const storage = multer.diskStorage({
   destination: function (req, res, cb) {

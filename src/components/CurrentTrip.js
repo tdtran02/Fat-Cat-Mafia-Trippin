@@ -3,9 +3,10 @@ import { Card, Form, ListGroup, Nav, Tab, Tabs, Toast } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
-//import AXIOS from "axios";
+import AXIOS from "axios";
 import InviteBuddy from "./InviteBuddy";
 import InviteDriver from "./InviteDriver";
+import Poll from "react-polls";
 import { app } from "../utils/AxiosConfig";
 class CurrentTrip extends Component {
   constructor(props) {
@@ -37,67 +38,64 @@ class CurrentTrip extends Component {
 
       email_success: false,
       show_email_notification: false,
+
+      question: "",
+      option1: "",
+      option2: "",
+      option3: "",
+      option4: "",
+      option5: "",
+      polls: [],
     };
-    this.savePoll = this.savePoll.bind(this);
   }
 
   componentDidMount() {
-    app.get("tripid/" + this.state.trip_id).then((result) => {
-      // if (result.data.trip.start_date != null)
-      console.log(result.data);
-      this.setState({ start: result.data.trip[0].start_date.substring(0, 10) });
-      this.setState({ end: result.data.trip[0].end_date.substring(0, 10) });
-      this.setState({ trip: result.data.trip[0] });
-    });
-    //get trip info
     app
-      .get("comment/" + this.state.trip_id)
-      .then((response) => {
-        if (response !== "undefined") {
-          this.setState({ comment_id: response.data.comment[0]._id });
-          this.setState({ comment: response.data.comment[0].text });
-          this.setState({ comment_date: response.data.comment[0].date });
-          this.setState({ posts: this.createPostCards(response.data.comment) });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    //check if any pending invitations
-    app
-      .get("buddy/" + this.state.trip_id)
-      .then((respo) => {
-        console.log("xd");
-        console.log(respo);
-        let invitations = respo.data.tripbuddy;
-        console.log(invitations);
-        this.getTripBuddies(invitations);
-        console.log("XP");
-        console.log(localStorage.getItem("user"));
-        for (let i = 0; i < invitations.length; i++) {
-          console.log(invitations[i].buddy_id);
-          if (
-            invitations[i].buddy_id ===
-            JSON.parse(localStorage.getItem("user"))._id
-          ) {
-            console.log(invitations[i]);
-            if (invitations[i].pending === true) {
-              console.log("XDDDDD");
-              console.log(invitations);
-              this.setState({ invitation: this.createInvitation() });
-              localStorage.setItem(
-                "invitation",
-                JSON.stringify(invitations[i])
-              );
-            }
-          }
-        }
+      .get("tripid/" + this.state.trip_id)
+      .then((result) => {
+        // if (result.data.trip.start_date != null)
+        this.setState({
+          start: result.data.trip[0].start_date.substring(0, 10),
+        });
+        this.setState({ end: result.data.trip[0].end_date.substring(0, 10) });
+        this.setState({ trip: result.data.trip[0] });
         return app.get("user/" + this.state.trip.owner_id);
       })
       .then((response) => {
-        console.log(response);
         this.setState({ organizer: this.getTripOrganizer(response.data.user) });
+      });
+    // get trip info
+    app.get("comment/" + this.state.trip_id).then((response) => {
+      if (response !== undefined && response.data.comment.length != 0) {
+        this.setState({ comment_id: response.data.comment[0]._id });
+        this.setState({ comment: response.data.comment[0].text });
+        this.setState({ comment_date: response.data.comment[0].date });
+        this.setState({ posts: this.createPostCards(response.data.comment) });
+      }
+    });
+
+    //check if any pending invitations
+    app.get("buddy/" + this.state.trip_id).then((respo) => {
+      let invitations = respo.data.tripbuddy;
+      this.getTripBuddies(invitations);
+      for (let i = 0; i < invitations.length; i++) {
+        if (
+          invitations[i].buddy_id ===
+          JSON.parse(localStorage.getItem("user"))._id
+        ) {
+          if (invitations[i].pending === true) {
+            this.setState({ invitation: this.createInvitation() });
+            localStorage.setItem("invitation", JSON.stringify(invitations[i]));
+          }
+        }
+      }
+    });
+
+    // polls
+    app
+      .get("/polls/" + this.state.trip_id)
+      .then((response) => {
+        this.setState({ polls: this.createPolls(response.data.polls) });
       })
       .catch((err) => {
         console.log(err);
@@ -198,10 +196,9 @@ class CurrentTrip extends Component {
       denied: false,
       pending: false,
     };
-    console.log(newtripbuddy);
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => console.log(res.data))
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -211,11 +208,10 @@ class CurrentTrip extends Component {
     let newtrip = {
       buddies: buddies,
     };
-    console.log(buddies);
 
     app
       .put("trip/" + buddyyy.trip_id, newtrip)
-      .then((res) => console.log(res.data))
+      .then((res) => {})
       .catch((err) => console.log(err));
 
     window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
@@ -231,10 +227,9 @@ class CurrentTrip extends Component {
       denied: true,
       pending: false,
     };
-    console.log(newtripbuddy);
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => console.log(res.data))
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -246,15 +241,12 @@ class CurrentTrip extends Component {
     for (let i = list.length - 1; i >= 0; i--) {
       this.setState({ secondaryComments: [] });
       let secondaryComments = [];
-      console.log(i + ": " + list[i].commentsOnThisPost);
       if (list[i].commentsOnThisPost != "") {
         //secondaryComments = this.showCommentsOnPost(list[i].commentsOnThisPost);
         // console.log("*** " + secondaryComments.length);
 
         let commentlist = list[i].commentsOnThisPost;
-        console.log(commentlist.length);
         for (let j = 0; j < commentlist.length; j++) {
-          console.log("?/?/");
           let text = commentlist[j].text;
           if (commentlist[j].user_pic != null) {
             this.setState({ commentuserimg: commentlist[j].user_pic });
@@ -364,7 +356,6 @@ class CurrentTrip extends Component {
   }
 
   commentOnPost(e, i) {
-    console.log(i._id);
     let trip = JSON.parse(localStorage.getItem("trip"));
     let postArr = [];
     const commentOnThisPost = {
@@ -385,7 +376,6 @@ class CurrentTrip extends Component {
     let comment = {
       commentsOnThisPost: postArr,
     };
-    console.log(JSON.stringify(comment));
     app
       .put("comment/" + i._id, comment)
       .then((res) => {})
@@ -393,11 +383,9 @@ class CurrentTrip extends Component {
         console.log(err);
       });
     window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
-    console.log(i);
   }
 
   showRecommendations = () => {
-    console.log(this.state.trip_id);
     window.location = "/trip/" + this.state.trip_id + "/recommendations";
   };
 
@@ -411,7 +399,6 @@ class CurrentTrip extends Component {
       .get("useremail/" + document.getElementById("buddyemail").value)
       .then((response) => {
         let buddy = response.data.user;
-        console.log(response);
         const buddyinfo = {
           owner_id: JSON.parse(localStorage.getItem("user"))._id,
           trip_id: this.state.trip_id,
@@ -427,7 +414,6 @@ class CurrentTrip extends Component {
           .post("buddy", buddyinfo)
           .then((response) => {
             this.setState({ invitation_boolean: true });
-            console.log(this.state.invitation_boolean);
             if (response.data.saved) {
               this.setState({
                 invitation_sent: true,
@@ -503,7 +489,6 @@ class CurrentTrip extends Component {
     app
       .get("driver/friends/" + this.state.trip_id)
       .then((result) => {
-        console.log(result.data);
         this.setState({ candidates: this.candidates(result.data.candidates) });
         return app.get("driver/" + this.state.trip_id);
       })
@@ -788,12 +773,10 @@ class CurrentTrip extends Component {
   }
 
   emailInfo = () => {
-    console.log("XD");
     app
       .get("/emailtripinfo/" + this.state.trip_id)
       .then((result) => {
         this.setState({ show_email_notification: true });
-        console.log(result.data.sent);
         if (result.data.sent == true) {
           this.setState({ email_success: true });
         } else {
@@ -809,80 +792,117 @@ class CurrentTrip extends Component {
     this.setState({ show_email_notification: false });
   };
 
-  /*   showOptions(e) {
-      let num = e.target.value;
-      this.setState({ options: this.createOptions(num) });
+  // create Polls
+  addPull = () => {
+    const options = [];
+    if (this.state.option1.length != 0) {
+      options.push({
+        option: this.state.option1,
+        votes: 0,
+      });
     }
-     */
-  // createOptions(num) {
-  //   let options = [];
-  //   for (let i = 1; i <= num; i++) {
-  //     console.log(i);
-  //     options.push(
-  //       <div>
-  //         <label>Option {i}:</label>
-  //         <input className="form-control" required type="text" key={i} />
-  //       </div>
-  //     )
-  //   }
-  /* 
-      return options;
-    } */
-
-  savePoll = async (event) => {
-    let op1 = await document.getElementById("op1").value;
-    let op2 = await document.getElementById("op2").value;
-    let op3 = await document.getElementById("op3").value;
-    let op4 = await document.getElementById("op4").value;
-
-    let tripres = await app.get(
-      "tripid/" + JSON.parse(localStorage.getItem("trip"))._id
-    );
-    console.log(tripres.data.trip[0]);
-    let trip = await tripres.data.trip[0];
-    let polls = [];
-    if (trip.polls != []) {
-      polls = await trip.polls;
+    if (this.state.option2.length != 0) {
+      options.push({
+        option: this.state.option2,
+        votes: 0,
+      });
     }
-    await polls.push({
-      question: document.getElementById("poll-question").value,
-      options: [
-        { option: op1, votes: 0 },
-        { option: op2, votes: 0 },
-        { option: op3, votes: 0 },
-        { option: op4, votes: 0 },
-      ],
-    });
-    console.log(polls);
-    /* let trip = await localStorage.getItem('trip');
-    console.log(trip); */
-
-    let updated_trip = await {
-      trip_locations: trip.trip_locations,
-      trip_locations_for_scheduling: trip.trip_locations_for_scheduling,
-      days: trip.days,
-      buddies: trip.buddies,
-      posts: trip.posts,
-      days_miles: trip.days_miles,
-      _id: trip._id,
-      owner_id: trip.owner_id,
-      trip_name: trip.trip_name,
-      destination: trip.destination,
-      start_date: trip.start_date,
-      end_date: trip.end_date,
-      polls: polls,
-    };
-
-    let res = await app.put(
-      "trippoll/" + JSON.parse(localStorage.getItem("trip"))._id,
-      updated_trip
-    );
-
-    console.log(res);
-    if (res.status == 200) {
-      await localStorage.setItem("trip", JSON.stringify(updated_trip));
+    if (this.state.option3.length != 0) {
+      options.push({
+        option: this.state.option3,
+        votes: 0,
+      });
     }
+    if (this.state.option4.length != 0) {
+      options.push({
+        option: this.state.option4,
+        votes: 0,
+      });
+    }
+    if (this.state.option5.length != 0) {
+      options.push({
+        option: this.state.option5,
+        votes: 0,
+      });
+    }
+    app
+      .post("/polls", {
+        question: this.state.question,
+        options: options,
+        trip_id: this.state.trip_id,
+      })
+      .then((response) => {
+        this.setState({ polls: this.createPolls(response.data.polls) });
+        this.setState({ question: "" });
+        this.setState({ option1: "" });
+        this.setState({ option2: "" });
+        this.setState({ option3: "" });
+        this.setState({ option4: "" });
+        this.setState({ option5: "" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  // update poll options fields
+  update = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  handleVote = (voteAnswer, id) => {
+    app
+      .post("/polls/update", {
+        user_id: JSON.parse(localStorage.getItem("user"))._id,
+        voteAnswer: voteAnswer,
+        poll_id: id,
+        trip_id: this.state.trip_id,
+      })
+      .then(async (response) => {
+        // this.setState({ polls:
+        //   this.createPolls(response.data.polls) });
+
+        await new Promise((resolve) =>
+          this.setState({ polls: this.createPolls(response.data.polls) }, () =>
+            resolve()
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // create polls
+  createPolls(polls) {
+    let elements = [];
+    let vote = "";
+    for (let i = 0; i < polls.length; i++) {
+      for (let j = 0; j < polls[i].voted.length; j++) {
+        if (
+          polls[i].voted[j].id == JSON.parse(localStorage.getItem("user"))._id
+        ) {
+          vote = polls[i].voted[j].answer;
+        }
+      }
+      elements.push(
+        <Poll
+          key={i}
+          question={polls[i].question}
+          answers={polls[i].options}
+          onVote={(answer) => this.handleVote(answer, polls[i]._id)}
+          noStorage={true}
+          vote={vote}
+        />
+      );
+      vote = "";
+    }
+    return elements;
+  }
 
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
@@ -1047,53 +1067,84 @@ class CurrentTrip extends Component {
                         </form>
                       </Tab>
                       <Tab
-                        eventKey="poll"
-                        title="Poll"
+                        eventKey="createpoll"
+                        title="CreatePoll"
                         style={{ marginTop: "20px", padding: "20px" }}
                       >
-                        <form onSubmit={this.savePoll}>
-                          <label>QUESTION:</label>
-                          <input
-                            className="form-control"
-                            id="poll-question"
-                            required
-                            type="text"
-                            placeholder="Ask your question here"
-                            // controlId="validationCustom01"
-                          ></input>
+                        <Form>
+                          <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Question</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter question"
+                              name="question"
+                              value={this.state.question}
+                              onChange={this.update}
+                            />
+                          </Form.Group>
+                          <Form.Group key="1">
+                            <Form.Label>Option 1</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter option"
+                              value={this.state.option1}
+                              name="option1"
+                              onChange={this.update}
+                            />
+                          </Form.Group>
+                          <Form.Group key="2">
+                            <Form.Label>Option 2</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter option"
+                              value={this.state.option2}
+                              name="option2"
+                              onChange={this.update}
+                            />
+                          </Form.Group>
+                          <Form.Group key="3">
+                            <Form.Label>Option 3</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter option"
+                              value={this.state.option3}
+                              name="option3"
+                              onChange={this.update}
+                            />
+                          </Form.Group>
+                          <Form.Group key="4">
+                            <Form.Label>Option 4</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter option"
+                              value={this.state.option4}
+                              name="option4"
+                              onChange={this.update}
+                            />
+                          </Form.Group>
+                          <Form.Group>
+                            <Form.Label>Option 5</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter option"
+                              value={this.state.option5}
+                              name="option5"
+                              onChange={this.update}
+                            />
+                          </Form.Group>
 
-                          <label>OPTIONS:</label>
-                          <input
-                            required
-                            type="text"
-                            className="form-control"
-                            id="op1"
-                          />
-                          <input
-                            required
-                            type="text"
-                            className="form-control"
-                            id="op2"
-                          />
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="op3"
-                          />
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="op4"
-                          />
-
-                          <Button
-                            type="submit"
-                            variant="outline-success"
-                            style={{ float: "right" }}
-                          >
-                            NEXT
+                          <Button variant="primary" onClick={this.addPull}>
+                            Submit
                           </Button>
-                        </form>
+                        </Form>
+                      </Tab>
+                      <Tab
+                        eventKey="polls"
+                        title="Polls"
+                        style={{ marginTop: "20px", padding: "20px" }}
+                        onClick={this.loadPolls}
+                      >
+                        {this.state.polls}
                       </Tab>
                     </Tabs>
                   </Card.Body>

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
-import { Button, ButtonToolbar } from 'react-bootstrap';
-import { app } from '../utils/AxiosConfig';
+import { Button, ButtonToolbar } from "react-bootstrap";
+import { app } from "../utils/AxiosConfig";
 //import TextField from '@material-ui/core/TextField';
 //const AXIOS = require("axios").default;
 
@@ -18,7 +18,7 @@ class ForgotPassword extends Component {
     };
   }
 
-  handleChange = name => (event) => {
+  handleChange = (name) => (event) => {
     this.setState({
       [name]: event.target.value,
     });
@@ -35,12 +35,9 @@ class ForgotPassword extends Component {
       });
     } else {
       try {
-        const response = await app.post(
-          'forgotPassword',
-          {
-            email,
-          },
-        );
+        const response = await app.post("forgotPassword", {
+          email,
+        });
         console.log(response.data);
         if (response.data === "recovery email sent") {
           this.setState({
@@ -80,6 +77,7 @@ class ForgotPassword extends Component {
                         onChange={this.handleChange("email")}
                         name="email"
                         required
+                        style={{ marginBottom: "20px" }}
                       />
                       <button
                         value="send"
@@ -87,24 +85,24 @@ class ForgotPassword extends Component {
                         className="btn btn-success btn-block shadow border-0 py-2 text-uppercase "
                       >
                         Send
-                                    </button>
-                      <p className="text-center mt-5">
+                      </button>
+                      <p className="text-center mt-3">
                         Remember your password?
-                                        <Link
+                        <Link
                           to="/login"
                           style={{ color: "blue", marginLeft: "5px" }}
                         >
                           Go back to login
-                                        </Link>
+                        </Link>
                       </p>
-                      <p className="text-center mt-5">
+                      <p className="text-center mt-1">
                         Don't have an account?
-                                        <Link
+                        <Link
                           to="/register"
                           style={{ color: "blue", marginLeft: "5px" }}
                         >
                           Create an account
-                                        </Link>
+                        </Link>
                       </p>
                       {this.state.showNullError && (
                         <div>
@@ -117,7 +115,8 @@ class ForgotPassword extends Component {
                           <p>Please try again or register for a new account.</p>
                         </div>
                       )}
-                      {this.state.messageFromServer === "recovery email sent" && (
+                      {this.state.messageFromServer ===
+                        "recovery email sent" && (
                         <div>
                           <h3>Password Reset Email Successfully Sent!</h3>
                         </div>
@@ -128,7 +127,7 @@ class ForgotPassword extends Component {
                     <div className="AppFormRight position-relative d-flex justify-content-center flex-column align-items-center text-center p-5 text-white">
                       <h2 className="position-relative px-4 pb-3 mb-4">
                         Don't worry
-                                    </h2>
+                      </h2>
                       <p>Give us your email, and receive a reset link!</p>
                     </div>
                   </div>
