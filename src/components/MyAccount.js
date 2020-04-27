@@ -13,6 +13,7 @@ export class MyAccount extends Component {
       editPhotoShow: false,
       option: '2',
       image: "./images/profilepic.png",
+      //image:"",
       id: "",
       email: "",
       first_name: "",
@@ -21,25 +22,31 @@ export class MyAccount extends Component {
       hometown: "",
       updateflag: false,
 
-      multerImage: "./image/placehoder.png",
+      multerImage: "./images/placehoder.png",
     };
-
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.Click = this.onChange.bind(this);
 
     if (JSON.parse(localStorage.getItem('user')).image == null) {
-
       this.state = {
         image: "./images/profilepic.png"
       };
     }
-
+    // else{
+    //   app.get('user/profile/'+ JSON.parse(localStorage.getItem('user'))._id)
+    //     .then(response =>{
+    //       //this.setState({image: response.data.image.imageData});
+    //       this.state = {
+    //         image: "../../backend/" + response.data.image.imageData
+    //       }
+    //   })
+    // }
   };
   setDefaultImage(uploadType) {
     if (uploadType === "multer") {
       this.setState({
-        multerImage: "./image/placeholder.png"
+        multerImage: "./images/placeholder.png"
       });
     }
   }
@@ -52,10 +59,13 @@ export class MyAccount extends Component {
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
         this.setState({ __v: response.data.user.__v });
-        // if (response.data.user.image != null) {
-        //   this.setState({ image: response.data.user.image });
-        // }
-
+        if (response.data.user.image != null) {
+          // app.get('user/profile/'+ JSON.parse(localStorage.getItem('user'))._id )
+          // .then(resImage =>{
+          //   this.setState({image: './uploads/userProfileImage/'+resImage.data.image.imageName});
+          // })
+          this.setState({image: './uploads/userProfileImage/' +response.data.user.image});
+        }
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown })
         }
@@ -70,7 +80,8 @@ export class MyAccount extends Component {
     let imageObj = {};
     if (method === "multer") {
       let imageFormObj = new FormData();
-      imageFormObj.append("imageName", "multer-image-" + Date.now());
+      //imageFormObj.append("imageName", "multer-image-" + Date.now());
+      imageFormObj.append("imageCate", "profile");
       imageFormObj.append("imageData", e.target.files[0]);
 
       // stores a readable instance of 
@@ -78,30 +89,41 @@ export class MyAccount extends Component {
 
       this.setState({
         multerImage: URL.createObjectURL(e.target.files[0])
+        //image: URL.createObjectURL(e.target.files[0])
       });
+      // delete previous profile image
+      if (JSON.parse(localStorage.getItem('user')).image != null) {
+        app.delete('user/profile/' + JSON.parse(localStorage.getItem('user'))._id).then(res => console.log(res.data))
+      .catch(err => { console.log(err) });
+      }
+      // then upload new profle image
       app.post('user/profileImage/' + JSON.parse(localStorage.getItem('user'))._id, imageFormObj).then((data) => {
         if (data.data.success) {
           alert("Image has been successfully upload using multer");
           this.setDefaultImage("multer");
-          const update = {
-            image: {
-              owner_id: JSON.parse(localStorage.getItem('user'))._id,
-              imageCate: "profile",
-            }
-          }
-          console.log(JSON.stringify(update));
-          app.put('userImageUpdate/' + JSON.parse(localStorage.getItem('user'))._id, update)
-          .then(
-            res => console.log(res.data),
-            alert("Image has been successfully updated in user profile")
-          )
-          .catch(err => { console.log(err) });
         }
-      })
-        .catch((err) => {
+      }).catch((err) => {
           alert("Error while uploading image using multer");
           this.setDefaultImage("multer");
-        });
+      });
+      // const update = {
+      //   image: {
+      //     owner_id: JSON.parse(localStorage.getItem('user'))._id,
+      //     imageCate: imageFormObj.imageCate
+      //   }
+      // }
+      // console.log(JSON.stringify(update));
+      // // make Image connects User, user.image = image.id
+      // app.put('userImageUpdate/' + JSON.parse(localStorage.getItem('user'))._id,  
+      // {
+      //   owner_id: JSON.parse(localStorage.getItem('user'))._id,
+      //   imageCate: "profile"
+      // })
+      // .then(
+      //   res => console.log(res.data),
+      //   alert("Image has been successfully updated in user profile")
+      // )
+      // .catch(err => { console.log(err) });
     }
   }
   onChange(event) {
@@ -279,8 +301,8 @@ export class MyAccount extends Component {
 
                 <div className="image-container">
                   <div className="process">
-                    <h4 className="process_heading">Process: Using Multer</h4>
-                    <p className="process_details">Upload image to a node server, connected to a MongoDB database, with the help of multer</p>
+                    <h4 className="process_heading">Profile Image: </h4>
+                    <p className="process_details">Upload image from your local device</p>
 
                     <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
                     <img src={this.state.multerImage} alt="upload-image" className="process_image" />
