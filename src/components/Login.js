@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import "../styles/Login.css";
-const AXIOS = require("axios").default;
+import { app } from '../utils/AxiosConfig';
+//const AXIOS = require("axios").default;
 
 class Login extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class Login extends Component {
 
   displayLogin(e) {
     e.preventDefault();
-    AXIOS.post("http://localhost:4000/user/login", {
+    app.post("user/login", {
       email: this.state.email,
       password: this.state.password
     })
@@ -41,7 +42,7 @@ class Login extends Component {
           this.setState({ show_message: true });
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }

@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const ROUTER = express.Router();
-const PORT = 4000;
+
 /* const multer = require('multer');
 const upload = multer({ storage: storage }); */
 const fs = require("fs");
@@ -22,7 +22,14 @@ const UPDATEPASSWORDVIAEMAILROUTES = require("./routes/updatePasswordViaEmail");
 const COMMENTROUTES = require("./routes/comment");
 const TRIPBUDDYROUTES = require("./routes/tripbuddy");
 const DRIVERROUTES = require("./routes/driver");
-
+const UPLOADROUTES = require("./routes/saveImage");
+const EMAILTRIPINFOROUTES = require("./routes/emailtripinfo");
+const POLLSROUTES = require("./routes/polls");
+const env = process.env.NODE_ENV;
+const PORT =
+  env === "production"
+    ? "ec2-3-101-14-234.us-west-1.compute.amazonaws.com/api"
+    : 4000;
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -31,12 +38,21 @@ mongoose.set("useFindAndModify", false);
 mongoose
   .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
-app.listen(PORT, function() {
+if (process.env.NODE_ENV === "production") {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, "client/build")));
+
+  // Handle React routing, return all requests to React app
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  });
+}
+
+app.listen(PORT, function () {
   console.log("Server is running on Port: " + PORT);
 });
-
 
 app.use(LOGINROUTES, ROUTER);
 app.use(REGISTEROUTES, ROUTER);
@@ -51,6 +67,9 @@ app.use(UPDATEPASSWORDVIAEMAILROUTES, ROUTER);
 app.use(COMMENTROUTES, ROUTER);
 app.use(TRIPBUDDYROUTES, ROUTER);
 app.use(DRIVERROUTES, ROUTER);
+app.use(UPLOADROUTES, ROUTER);
+app.use(EMAILTRIPINFOROUTES, ROUTER);
+app.use(POLLSROUTES, ROUTER);
 
 /* const storage = multer.diskStorage({
   destination: function (req, res, cb) {

@@ -100,20 +100,15 @@ USERROUTES.route("/user/getusersbylist").post(function (req, res) {
         console.log("error");
       } else {
         // console.log("successful");
+        res.status(200).json({
+          users: users,
+        });
       }
-
-      res.status(200).json({
-        users: users,
-      });
     }
   );
 });
 
 USERROUTES.route("/user/:id").put(function (req, res) {
-  /*  console.log(req.body.hi);
-   console.log(req.params); image: req.body.user.image,*/
-  console.log(req.params);
-  console.log(req.body.user.image);
   USER.updateOne(
     { _id: req.params.id },
     {
@@ -126,7 +121,6 @@ USERROUTES.route("/user/:id").put(function (req, res) {
   )
     .then((response) => {
       res.status(200).json({});
-      console.log(response);
     })
     .catch((err) => {
       console.log(err);
@@ -145,7 +139,6 @@ USERROUTES.route("/user/:id/profile").post(
     )
       .then((response) => {
         res.status(200).json({});
-        console.log(response);
       })
       .catch((err) => {
         console.log(err);

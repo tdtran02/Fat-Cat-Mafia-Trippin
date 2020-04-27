@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Modal, Button, FormControl, Alert, InputGroup } from "react-bootstrap";
 import "../styles/InviteBuddy.css";
-const AXIOS = require("axios").default;
+import { app } from '../utils/AxiosConfig';
+//const AXIOS = require("axios").default;
 
 export class InviteBuddy extends Component {
   constructor(props) {
@@ -16,18 +17,17 @@ export class InviteBuddy extends Component {
       email_boolean: false,
       email_sent_msg: "",
       email_sent_variant: "",
+      checked: false
     };
 
     this.handleChange = this.handleChange.bind(this);
     //  this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
-    AXIOS.get(
-      "http://localhost:4000/friend/" +
+    app.get(
+      "friend/" +
       JSON.parse(localStorage.getItem("user"))._id
     ).then((result) => {
-      console.log(result.data.friend.confirmed_friends);
-
       this.setState({
         friends: this.showFriends(result.data.friend.confirmed_friends),
       });
@@ -38,14 +38,14 @@ export class InviteBuddy extends Component {
     let friendslist = [];
     let user = null;
     for (let i = 0; i < list.length; i++) {
-      AXIOS.get("http://localhost:4000/user/" + list[i]).then((response) => {
+      app.get("user/" + list[i]).then((response) => {
         user = response.data.user;
         if (user.image == null) {
           user.image = "./images/profilepic.png";
         }
         friendslist.push(
-          <label type="checkbox" key={i} label="Check me out">
-            <input type="radio" value={user._id} onChange={this.handleChange} />
+          <label key={i} label="Check me out">
+            <input type="checkbox" value={user._id} onClick={this.handleChange} />
             <div
               style={{
                 display: "flex",
@@ -77,10 +77,20 @@ export class InviteBuddy extends Component {
     if (this.state.selectedFriends != null) {
       selected = this.state.selectedFriends;
     }
+    if (selected.includes(event.target.value) === false) {
+      selected.push(event.target.value);
+      this.setState({ selectedFriends: selected });
+      console.log(this.state.selectedFriends);
+    }
+    else if (selected.includes(event.target.value) === true) {
+      let index = selected.indexOf(event.target.value);
+      console.log(index);
+      selected = selected.splice(index, 1);
+      this.setState({ selectedFriends: selected });
+      console.log(this.state.selectedFriends);
+    }
+    // console.log(selected);
 
-    selected.push(event.target.value);
-    this.setState({ selectedFriends: selected });
-    console.log(this.state.selectedFriends);
   }
 
   /* handleSubmit(event) {
@@ -99,7 +109,7 @@ export class InviteBuddy extends Component {
     if (buddies != null) {
       //for each buddy selected, send an AXIOS get call to get their user data
       for (let i = 0; i < buddies.length; i++) {
-        AXIOS.get("http://localhost:4000/user/" + buddies[i])
+        app.get("user/" + buddies[i])
           .then((resp) => {
             let buddy = resp.data.user;
             //create a tripbuddy object
@@ -119,7 +129,7 @@ export class InviteBuddy extends Component {
               pending: true,
             };
             console.log(buddyinfo);
-            AXIOS.post("http://localhost:4000/buddy", buddyinfo)
+            app.post("buddy", buddyinfo)
               .then((response) => {
                 console.log(response);
                 this.setState({ invitation_boolean: true });
@@ -198,7 +208,7 @@ export class InviteBuddy extends Component {
     let newUser = {
       email: document.getElementById("email").value,
     };
-    AXIOS.put("http://localhost:4000/buddyinvite", newUser)
+    app.put("buddyinvite", newUser)
       .then((response) => {
         console.log(response);
         this.setState({ email_boolean: true });

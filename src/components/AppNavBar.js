@@ -61,7 +61,7 @@ class AppNavBar extends Component {
     localStorage.removeItem("user");
     localStorage.removeItem("trip");
     localStorage.removeItem("invitation");
-    localStorage.removeItem("survey")
+    localStorage.removeItem("survey");
     document.location.href = "/";
   };
 

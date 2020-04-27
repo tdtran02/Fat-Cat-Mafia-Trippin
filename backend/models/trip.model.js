@@ -14,10 +14,11 @@ const tripSchema = new Schema({
   buddies: Array,
   posts: Array,
   days_miles: Array,
-  poll_questions: [{
+  polls: [{
     question: String,
     options: [{
-      option: Boolean
+      option: String,
+      votes: Number
     }]
   }]
 });
