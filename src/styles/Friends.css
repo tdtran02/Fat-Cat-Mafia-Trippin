@@ -8,6 +8,10 @@ img.profile-photo-md {
   border-radius: 50%;
 }
 
+.container {
+  height: 78%;
+}
+
 .create-post {
   width: 100%;
   min-height: 90px;

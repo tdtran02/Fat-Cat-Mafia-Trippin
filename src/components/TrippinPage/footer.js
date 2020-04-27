@@ -7,9 +7,10 @@ class Footer extends Component {
 
       <footer style={{
         backgroundColor: '#4a7199',
-        height: "150px",
+        borderTop: "1px solid black",
         display: "flex",
-        justifyContent: "space-around"
+        justifyContent: "space-around",
+        marginTop: "0"
       }}>
         <div style={{
           display: "flex",
@@ -22,7 +23,7 @@ class Footer extends Component {
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <h5 style={{
-            textShadow: "0.5px 0.5px rgb(200,200,200)"
+            textShadow: "0.25px 0.25px rgb(200,200,200)"
           }}>THE TEAM</h5>
           <div style={{
             width: "300px",
@@ -62,7 +63,7 @@ class Footer extends Component {
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <h5 style={{
-            textShadow: "0.5px 0.5px rgb(200,200,200)"
+            textShadow: "0.25px 0.25px rgb(200,200,200)"
           }}>SUPPORT</h5>
           <p>FAQ</p>
           <p>CONTACT</p>

@@ -8,6 +8,8 @@ import InviteBuddy from "./InviteBuddy";
 import InviteDriver from "./InviteDriver";
 import Poll from "react-polls";
 import { app } from "../utils/AxiosConfig";
+import Footer from "./TrippinPage/footer";
+
 class CurrentTrip extends Component {
   constructor(props) {
     super(props);
@@ -198,7 +200,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -211,7 +213,7 @@ class CurrentTrip extends Component {
 
     app
       .put("trip/" + buddyyy.trip_id, newtrip)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => console.log(err));
 
     window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
@@ -229,7 +231,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -378,7 +380,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("comment/" + i._id, comment)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -444,7 +446,7 @@ class CurrentTrip extends Component {
     };
     app
       .post("buddy", buddy)
-      .then((response) => {})
+      .then((response) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -907,7 +909,7 @@ class CurrentTrip extends Component {
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
-      <div style={{ height: "91.7%" }}>
+      <div style={{ height: "100%" }}>
         <div
           className="image-container"
           style={{
@@ -1223,7 +1225,10 @@ class CurrentTrip extends Component {
               </div>
             </div>
           </div>
+
+
         </div>
+        <Footer />
       </div>
     );
   }
