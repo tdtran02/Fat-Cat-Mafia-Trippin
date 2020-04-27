@@ -931,7 +931,7 @@ class CurrentTrip extends Component {
           }}
         >
           <div
-            style={{ display: "flex", flexDirection: "column", height: "100%" }}
+            style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}
           >
             <div>{this.state.invitation}</div>
             <div style={{ display: "flex", height: "100%" }}>
@@ -1031,13 +1031,14 @@ class CurrentTrip extends Component {
                   margin: "50px auto",
                   borderRadius: "20px",
                   color: "#6c757d",
+                  paddingRight: "20px"
                 }}
               >
                 <Card
                   style={{
                     boxShadow: "8px 8px 50px #000",
                     borderRadius: "20px",
-                    width: "90%",
+                    width: "100%",
                   }}
                 >
                   <Card.Header>MAKE A POST</Card.Header>
@@ -1172,6 +1173,9 @@ class CurrentTrip extends Component {
                   margin: "50px auto",
                   borderRadius: "20px",
                   color: "#6c757d",
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "0 20px"
                 }}
               >
                 <Button
