@@ -17,7 +17,7 @@ class Footer extends Component {
           flexDirection: "column",
           lineHeight: "0.4"
         }}>
-          <h3 style={{ textShadow: "2px 2px black", color: "rgb(230,250,230)" }}>TRIPPIN</h3>
+          <h3 style={{ textShadow: "2px 2px black", color: "rgb(250,250,230)" }}>TRIPPIN</h3>
           <p>a project by</p>
           <h5 style={{ color: "rgb(200,200,200)", textShadow: "2px 2px black" }}>FAT CAT MAFIA</h5>
         </div>
@@ -35,7 +35,7 @@ class Footer extends Component {
               float: "left",
               textAlign: "right",
               lineHeight: "0.2",
-              color: "rgb(230,250,230)",
+              color: "rgb(250,250,230)",
               textShadow: "1px 1px black"
             }}>
               <p>melanie</p>
