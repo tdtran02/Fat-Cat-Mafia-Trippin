@@ -81,7 +81,19 @@ const profileImageUpload = multer({
 })
 
 // Routes
-
+UPLOADROUTES.route("/uploads/profile").get(function(req,res){
+    IMAGE.find({imageCate: req.body.imageCate}).then((image) => {
+        if (image != null) {
+          res.status(200).json({
+            image: image,
+          });
+        } else {
+          res.status(400).json({
+            image: null,
+          });
+        }
+    });
+});
 UPLOADROUTES.route("/user/profileImage/:id").post(profileImageUpload.single('imageData'), (req, res, next) => {
     console.log(req.body);
     const newImage = new IMAGE({
@@ -164,18 +176,46 @@ UPLOADROUTES.route("/user/profile/:id").get(function (req, res) {
       });
 });
 
+// delete by user ID, each user has only one profile image
 UPLOADROUTES.route("/user/profile/:id").delete(function (req, res) {
     IMAGE.remove({ owner_id: req.params.id }).then((image) => {
         if (image != null) {
-          res.status(200).json({
-            image: image,
-          });
+            // fs.unlinkSync(image.imageData);
+            // console.log('successfully deleted user profile image');
+            res.status(200).json({
+                image: image,
+            });
         } else {
           res.status(400).json({
             image: null,
           });
         }
       });
+});
+
+// delete by image.id from image storage
+const DIR = 'uploads/userProfileImage';
+UPLOADROUTES.route('/uploads/profile/delete/:id').delete(function (req, res) {
+    message : "Error! in image upload.";
+    if (!req.params.id) {
+        console.log("No file received");
+        message = "Error! in image delete.";
+        return res.status(500).json('error in delete');
+    } else {
+        console.log('file received');
+        console.log(req.params.id);
+        IMAGE.findById({ _id: req.params.id}).then((image) =>{
+            try {
+                //fs.unlinkSync(DIR+'/'+req.params.imageName+'.png');
+                fs.unlinkSync(image.imageData);
+                console.log('successfully deleted user profile image');
+                return res.status(200).send('Successfully! Image has been Deleted');
+            } catch (err) {
+                // handle the error
+                return res.status(400).send(err);
+            }
+        })
+      }
 });
 
 module.exports = UPLOADROUTES;
