@@ -1,6 +1,21 @@
 import React, { Component } from "react";
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      page: ''
+    }
+  }
+
+  componentDidMount() {
+    if (JSON.parse(localStorage.getItem('user'))) {
+      this.setState({ page: '/home' });
+    }
+    else {
+      this.setState({ page: '/login' });
+    }
+  }
   render() {
     return (
       <header>
@@ -15,7 +30,7 @@ class Header extends Component {
               and enjoy your vacation time with friends and family
             </p>
             <div>
-              <a className="contact" href="/home">
+              <a className="contact" href={this.state.page}>
                 Let's get started!
               </a>
             </div>
