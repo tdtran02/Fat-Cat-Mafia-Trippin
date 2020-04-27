@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Alert, Form } from "react-bootstrap";
 import { app } from '../utils/AxiosConfig';
+import Footer from "./TrippinPage/footer";
 //import AXIOS from "axios";
 
 import "../styles/Friends.css";
@@ -218,108 +219,112 @@ class Friends extends Component {
   render() {
     let user = JSON.parse(localStorage.getItem("user"));
     return (
-      <div className="container">
-        <div className="create-post">
-          <div className="row">
-            <div className="col-md-8">
-              <Form
-                style={{
-                  display: "table",
-                  tableLayout: "fixed"
-                }}
-              >
-                {user.image ? (
-                  <img
-                    src={require(`${user.image}`)}
-                    alt=""
-                    className="profile-photo-md"
-                  />
-                ) : (
+      <div style={{ height: "91.5%" }}>
+        <div className="container">
+          <div className="create-post">
+            <div className="row">
+              <div className="col-md-8">
+                <Form
+                  style={{
+                    display: "table",
+                    tableLayout: "fixed"
+                  }}
+                >
+                  {user.image ? (
                     <img
-                      src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                      src={require(`${user.image}`)}
                       alt=""
                       className="profile-photo-md"
                     />
-                  )}
-                <Form.Group
-                  style={{
-                    display: "table-cell",
-                    verticalAlign: "middle",
-                    textAlign: "center"
-                  }}
-                >
-                  <Form.Control
-                    className="ml-2"
-                    type="email"
-                    placeholder="name@example.com"
-                    onChange={this.emailOnChange}
-                  />
-                </Form.Group>
-                <Button
-                  className="ml-3"
-                  variant="info"
-                  onClick={this.onSearchFieldClick}
-                >
-                  Add
+                  ) : (
+                      <img
+                        src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                        alt=""
+                        className="profile-photo-md"
+                      />
+                    )}
+                  <Form.Group
+                    style={{
+                      display: "table-cell",
+                      verticalAlign: "middle",
+                      textAlign: "center"
+                    }}
+                  >
+                    <Form.Control
+                      className="ml-2"
+                      type="email"
+                      placeholder="name@example.com"
+                      onChange={this.emailOnChange}
+                    />
+                  </Form.Group>
+                  <Button
+                    className="ml-3"
+                    variant="info"
+                    onClick={this.onSearchFieldClick}
+                  >
+                    Add
                 </Button>
-              </Form>
-              {this.state.search_boolean ? (
-                <Alert
-                  variant={this.state.search_alert_variant}
-                  style={{ marginBottom: "0", marginTop: "6px" }}
-                >
-                  {this.state.search_message}
-                </Alert>
-              ) : (
-                  ""
-                )}
+                </Form>
+                {this.state.search_boolean ? (
+                  <Alert
+                    variant={this.state.search_alert_variant}
+                    style={{ marginBottom: "0", marginTop: "6px" }}
+                  >
+                    {this.state.search_message}
+                  </Alert>
+                ) : (
+                    ""
+                  )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="row" style={{ width: "100%" }}>
-          <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
-            {this.state.has_friend_requests ? (
-              <span
-                style={{
-                  fontFamily: "Lemonada, cursive",
-                  fontSize: "14px",
-                  fontWeight: "normal"
-                }}
-              >
-                Pending Friend Requests
-              </span>
-            ) : (
-                <span></span>
-              )}
+          <div className="row" style={{ width: "100%" }}>
+            <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
+              {this.state.has_friend_requests ? (
+                <span
+                  style={{
+                    fontFamily: "Lemonada, cursive",
+                    fontSize: "14px",
+                    fontWeight: "normal"
+                  }}
+                >
+                  Pending Friend Requests
+                </span>
+              ) : (
+                  <span></span>
+                )}
+            </div>
+            <div className="col-md-9"></div>
           </div>
-          <div className="col-md-9"></div>
-        </div>
-        {/* pending friends */}
-        <div className="friend-list">
-          <div className="row">{this.state.incoming_pending_friends}</div>
-        </div>
+          {/* pending friends */}
+          <div className="friend-list">
+            <div className="row">{this.state.incoming_pending_friends}</div>
+          </div>
 
-        <div className="row" style={{ width: "100%" }}>
-          <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
-            {this.state.has_friends ? (
-              <span
-                style={{
-                  fontFamily: "Lemonada, cursive",
-                  fontSize: "14px"
-                }}
-              >
-                My Friends
-              </span>
-            ) : (
-                <span></span>
-              )}
+          <div className="row" style={{ width: "100%" }}>
+            <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
+              {this.state.has_friends ? (
+                <span
+                  style={{
+                    fontFamily: "Lemonada, cursive",
+                    fontSize: "14px"
+                  }}
+                >
+                  My Friends
+                </span>
+              ) : (
+                  <span></span>
+                )}
+            </div>
+            <div className="col-md-9"></div>
           </div>
-          <div className="col-md-9"></div>
+          {/* friends */}
+          <div className="friend-list">
+            <div className="row">{this.state.friend_list}</div>
+          </div>
+
         </div>
-        {/* friends */}
-        <div className="friend-list">
-          <div className="row">{this.state.friend_list}</div>
-        </div>
+        <Footer />
       </div>
     );
   }

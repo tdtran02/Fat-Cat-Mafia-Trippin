@@ -31,6 +31,7 @@ class Recommendation extends React.Component {
       loading: true,
       trip_location_events: [],
       location_events: [],
+      trip_event_elements: [],
       event_list: [],
       destination: null,
       startDate: null,
@@ -335,6 +336,7 @@ class Recommendation extends React.Component {
     let selectStartDate = null;
     const { startDate, endDate, destination } = this.state;
 
+    console.log("startDate: " + startDate + " endDate: " + endDate);
     if ((startDate.getMonth() + 1) < 10 || (startDate.getDate() + 1) < 10) {
       if ((startDate.getMonth() + 1) < 10 && (startDate.getDate() + 1) < 10) {
         selectStartDate = ((startDate.getFullYear() + "-" + "0" + (startDate.getMonth() + 1) + "-" + "0" + (startDate.getDate() + 1)));
@@ -406,6 +408,10 @@ class Recommendation extends React.Component {
         this.setState({
           trip_location_elements: this.createList(
             this.state.trip_locations,
+            "delete"
+          ),
+          trip_event_elements: this.createEvent(
+            this.state.trip_location_events,
             "delete"
           )
         });
@@ -689,6 +695,7 @@ class Recommendation extends React.Component {
                   }}
                 >
                   {this.state.trip_location_elements}
+                  {this.state.trip_event_elements}
                 </Slider>
               ) : (
                   ""

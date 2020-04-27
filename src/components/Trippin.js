@@ -10,7 +10,7 @@ class Trippin extends Component {
       <div>
         <Header />
         <Main />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     );
   }
