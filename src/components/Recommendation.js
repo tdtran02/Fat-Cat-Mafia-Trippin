@@ -95,7 +95,7 @@ class Recommendation extends React.Component {
         console.log(err);
       });
 
-
+/*
       AXIOS.get("http://localhost:4000/tripinfo/" + this.state.trip_id)
       .then(res =>{
         return AXIOS.post("http://localhost:4000/question/eventlocation", {
@@ -112,7 +112,7 @@ class Recommendation extends React.Component {
         console.log(err);
       });
       
-      
+  */    
   }
 
   createList(list, option) {
