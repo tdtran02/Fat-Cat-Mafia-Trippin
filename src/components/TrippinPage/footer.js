@@ -65,7 +65,7 @@ class Footer extends Component {
           <h5 style={{
             textShadow: "0.25px 0.25px rgb(200,200,200)"
           }}>SUPPORT</h5>
-          <p>FAQ</p>
+          <a href='/FAQ'>FAQ</a>
           <p>CONTACT</p>
         </div>
 

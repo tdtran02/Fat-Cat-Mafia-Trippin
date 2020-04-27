@@ -48,6 +48,7 @@ class CurrentTrip extends Component {
       option4: "",
       option5: "",
       polls: [],
+      trip_image: './images/tripimage.jpg'
     };
   }
 
@@ -61,6 +62,11 @@ class CurrentTrip extends Component {
         });
         this.setState({ end: result.data.trip[0].end_date.substring(0, 10) });
         this.setState({ trip: result.data.trip[0] });
+        console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
+        if (result.data.trip[0].trip_image !== undefined) {
+          this.setState({ trip_image: result.data.trip[0].trip_image });
+        }
+
         return app.get("user/" + this.state.trip.owner_id);
       })
       .then((response) => {
@@ -909,38 +915,39 @@ class CurrentTrip extends Component {
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
-      <div style={{ height: "100%" }}>
+      <div style={{ height: "100%", }}>
         <div
           className="image-container"
           style={{
-            height: "100%",
+
             backgroundImage:
               "url(https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
-            overflow: "auto",
+
             display: "flex",
           }}
         >
           <div
-            style={{ display: "flex", flexDirection: "column", width: "100%" }}
+            style={{ display: "flex", flexDirection: "column", height: "100%" }}
           >
             <div>{this.state.invitation}</div>
-            <div style={{ display: "flex", width: "100%" }}>
+            <div style={{ display: "flex", height: "100%" }}>
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   width: "35%",
+                  height: "100%"
                 }}
               >
                 <div
                   className="trip-info"
                   style={{
                     borderRadius: "5px",
-
+                    height: "100%",
                     margin: "50px auto",
                     border: "2px solid gray",
                     boxSizing: "border-box",
@@ -959,6 +966,10 @@ class CurrentTrip extends Component {
                     </Card.Header>
 
                     <Card.Body>
+                      <Card.Title><img alt="trip" style={{
+                        width: "240px",
+                        border: "2px solid gray"
+                      }} src={require(`${this.state.trip_image}`)} /></Card.Title>
                       <Card.Title
                         style={{
                           textTransform: "uppercase",
