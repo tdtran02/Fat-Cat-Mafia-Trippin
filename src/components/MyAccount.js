@@ -320,12 +320,6 @@ export class MyAccount extends Component {
                     <h4 className="process_heading">Profile Image: </h4>
                     <p className="process_details">Upload image from your local device</p>
 
-                  <div className="image-container">
-                    <div className="process">
-                      <h4 className="process_heading">Process: Using Multer</h4>
-                      <p className="process_details">Upload image to a node server, connected to a MongoDB database, with the help of multer</p>
-
-
                       <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
                       <img src={this.state.multerImage} alt="upload-image" className="process_image" />
                     </div>
