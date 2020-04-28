@@ -55,7 +55,9 @@ export class Home extends Component {
         if (response.data.user.image != null) {
           this.setState({ image: './uploads/userProfileImage/' + response.data.user.image });
         }
-
+        /* if (response.data.user.image != null) {
+          this.setState({ image: './uploads/userProfileImage/' + response.data.user.image });
+        } */
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown });
         }

@@ -65,7 +65,7 @@ export class MyAccount extends Component {
           // .then(resImage =>{
           //   this.setState({image: './uploads/userProfileImage/'+resImage.data.image.imageName});
           // })
-          this.setState({image: './uploads/userProfileImage/' +response.data.user.image});
+          this.setState({ image: './uploads/userProfileImage/' + response.data.user.image });
         }
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown })
@@ -95,7 +95,7 @@ export class MyAccount extends Component {
       // delete previous profile image
       if (JSON.parse(localStorage.getItem('user')).image != null) {
         app.delete('user/profile/' + JSON.parse(localStorage.getItem('user'))._id).then(res => console.log(res.data))
-      .catch(err => { console.log(err) });
+          .catch(err => { console.log(err) });
       }
       // then upload new profle image
       app.post('user/profileImage/' + JSON.parse(localStorage.getItem('user'))._id, imageFormObj).then((data) => {
@@ -104,8 +104,8 @@ export class MyAccount extends Component {
           this.setDefaultImage("multer");
         }
       }).catch((err) => {
-          alert("Error while uploading image using multer");
-          this.setDefaultImage("multer");
+        alert("Error while uploading image using multer");
+        this.setDefaultImage("multer");
       });
       // const update = {
       //   image: {
@@ -222,16 +222,16 @@ export class MyAccount extends Component {
                   display: "flex",
                   flexDirection: "column"
                 }}>
-                  <Button style={{
+                  {/* <Button style={{
                     margin: "5px auto"
                   }} variant="outline-dark" onClick={() => { this.setState({ editPhotoShow: true }) }}>CHANGE PHOTO</Button>
-                  <EditPhotoModal
+                   <EditPhotoModal
                     show={this.state.editPhotoShow}
                     onHide={editModalClose}
                     handler={this.handler}
                     size="lg"
                     style={{ maxWidth: '1600px', width: '80%' }}
-                  />
+                  /> */}
                   <div style={{
                     margin: "5px auto"
                   }}>
@@ -301,10 +301,10 @@ export class MyAccount extends Component {
                       UPDATE</Button>
                   </div>
 
-                <div className="image-container">
-                  <div className="process">
-                    <h4 className="process_heading">Profile Image: </h4>
-                    <p className="process_details">Upload image from your local device</p>
+                  <div className="image-container">
+                    <div className="process">
+                      <h4 className="process_heading">Profile Image: </h4>
+                      <p className="process_details">Upload image from your local device</p>
 
                       <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
                       <img src={this.state.multerImage} alt="upload-image" className="process_image" />
