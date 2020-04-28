@@ -52,9 +52,6 @@ export class Home extends Component {
         this.setState({ email: response.data.user.email });
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
-        if (response.data.user.image != null) {
-          this.setState({ image: './uploads/userProfileImage/' + response.data.user.image });
-        }
         /* if (response.data.user.image != null) {
           this.setState({ image: './uploads/userProfileImage/' + response.data.user.image });
         } */
