@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../styles/Home.css";
 import MyAccount from "./MyAccount.js";
 import Trip from "./Trip.js";
+import Footer from "./TrippinPage/footer";
 
 import {
   Alert,
@@ -51,10 +52,9 @@ export class Home extends Component {
         this.setState({ email: response.data.user.email });
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
-        if (response.data.user.image != null) {
-          this.setState({ image: response.data.user.image });
-        }
-
+        /* if (response.data.user.image != null) {
+          this.setState({ image: './uploads/userProfileImage/' + response.data.user.image });
+        } */
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown });
         }
@@ -109,7 +109,7 @@ export class Home extends Component {
 
     app
       .delete("buddy/" + OneTrip._id)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -368,114 +368,134 @@ export class Home extends Component {
   render() {
     const img = this.state.image;
     return (
-      <div
-        className="image-container"
-        style={{
-          height: "91.7%",
-          backgroundImage:
-            "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-          overflow: "auto",
-          display: "flex",
-        }}
-      >
-        <div style={{ height: "100%", display: "flex", width: "100%" }}>
-          <Card
-            style={{
-              height: "60%",
-              margin: "3%",
-              borderRadius: "5px",
-              border: "2px solid gray",
-              boxSizing: "border-box",
-              borderRadius: "20px",
-              boxShadow: "8px 8px 50px #000",
-              color: "#6c757d",
-            }}
-          >
-            <Card.Body>
-              <div style={{ display: "flex", alignContent: "center" }}>
-                <img
-                  alt="profile"
-                  className="responsive"
-                  src={require(`${img}`)}
-                  style={{
-                    display: "block",
-                    margin: "5px auto",
-                    width: "150px",
-                    border: "1px solid black",
-                  }}
-                />
-                {/* <ProfilePicture /> */}
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <div
-                  style={{
-                    margin: "5px auto",
-                  }}
-                >
-                  <label
-                    id="same-line"
+      <div>
+        <div
+          className="image-container"
+          style={{
+            height: "100%",
+            backgroundImage:
+              "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
+            overflow: "auto",
+            display: "flex",
+          }}
+        >
+          <div style={{ height: "100%", display: "flex", width: "100%" }}>
+            <Card
+              style={{
+                height: "60%",
+                margin: "3%",
+                borderRadius: "5px",
+                border: "2px solid gray",
+                boxSizing: "border-box",
+                borderRadius: "20px",
+                boxShadow: "8px 8px 50px #000",
+                color: "#6c757d",
+              }}
+            >
+              <Card.Body>
+                <div style={{ display: "flex", alignContent: "center" }}>
+                  <img
+                    alt="profile"
+                    className="responsive"
+                    src={require(`${img}`)}
                     style={{
-                      marginRight: "5px",
+                      display: "block",
+                      margin: "5px auto",
+                      width: "150px",
+                      border: "1px solid black",
                     }}
-                  >
-                    <strong>NAME: </strong>
-                  </label>
-                  <label>{`  ${this.state.first_name}  ${this.state.last_name}`}</label>
+                  />
+                  {/* <ProfilePicture /> */}
                 </div>
                 <div
                   style={{
-                    margin: "5px auto",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
                 >
-                  <label
-                    id="same-line"
+                  <div
                     style={{
-                      marginRight: "5px",
+                      margin: "5px auto",
                     }}
                   >
-                    <strong>HOMETOWN: </strong>
-                  </label>
-                  <label>{`${this.state.hometown}`}</label>
+                    <label
+                      id="same-line"
+                      style={{
+                        marginRight: "5px",
+                      }}
+                    >
+                      <strong>NAME: </strong>
+                    </label>
+                    <label>{`  ${this.state.first_name}  ${this.state.last_name}`}</label>
+                  </div>
+                  <div
+                    style={{
+                      margin: "5px auto",
+                    }}
+                  >
+                    <label
+                      id="same-line"
+                      style={{
+                        marginRight: "5px",
+                      }}
+                    >
+                      <strong>HOMETOWN: </strong>
+                    </label>
+                    <label>{`${this.state.hometown}`}</label>
+                  </div>
                 </div>
-              </div>
-              <div style={{ display: "flex" }}>
-                <Button
-                  style={{ margin: "5px 5px" }}
-                  variant="outline-success"
-                  id="home-btns"
-                  href="/Friends"
-                >
-                  VIEW FRIENDS
+                <div style={{ display: "flex" }}>
+                  <Button
+                    style={{ margin: "5px 5px" }}
+                    variant="outline-success"
+                    id="home-btns"
+                    href="/Friends"
+                  >
+                    VIEW FRIENDS
                 </Button>
-                <Button
-                  style={{ margin: "5px 5px" }}
-                  variant="outline-primary"
-                  id="home-btns"
-                  href="/Trip"
-                >
-                  CREATE A TRIP
+                  <Button
+                    style={{ margin: "5px 5px" }}
+                    variant="outline-primary"
+                    id="home-btns"
+                    href="/Trip"
+                  >
+                    CREATE A TRIP
                 </Button>
-              </div>
-            </Card.Body>
-          </Card>
-          <div
-            style={{
-              disply: "flex",
-              flexDirection: "column",
-              marginTop: "3%",
-              width: "50%",
-            }}
-          >
-            <Alert show={this.state.showInvitations}>
+                </div>
+              </Card.Body>
+            </Card>
+            <div
+              style={{
+                disply: "flex",
+                flexDirection: "column",
+                marginTop: "3%",
+                width: "50%",
+              }}
+            >
+              <Alert show={this.state.showInvitations}>
+                <Card
+                  style={{
+                    margin: "3%",
+                    borderRadius: "5px",
+                    border: "2px solid gray",
+                    boxSizing: "border-box",
+                    borderRadius: "20px",
+                    boxShadow: "8px 8px 50px #000",
+                    color: "#6c757d",
+                  }}
+                >
+                  <Card.Header as="h3" style={{ padding: "10px" }}>
+                    TRIP INVITATIONS
+                </Card.Header>
+                  <Card.Body>
+                    <div className="row">{this.state.invitation_list}</div>
+                  </Card.Body>
+                </Card>
+              </Alert>
               <Card
                 style={{
                   margin: "3%",
@@ -488,34 +508,18 @@ export class Home extends Component {
                 }}
               >
                 <Card.Header as="h3" style={{ padding: "10px" }}>
-                  TRIP INVITATIONS
-                </Card.Header>
+                  TRIPS
+              </Card.Header>
                 <Card.Body>
-                  <div className="row">{this.state.invitation_list}</div>
+                  {/* <div className="row">{this.state.trip_list}</div> */}
+                  {this.state.trip_list}
                 </Card.Body>
               </Card>
-            </Alert>
-            <Card
-              style={{
-                margin: "3%",
-                borderRadius: "5px",
-                border: "2px solid gray",
-                boxSizing: "border-box",
-                borderRadius: "20px",
-                boxShadow: "8px 8px 50px #000",
-                color: "#6c757d",
-              }}
-            >
-              <Card.Header as="h3" style={{ padding: "10px" }}>
-                TRIPS
-              </Card.Header>
-              <Card.Body>
-                {/* <div className="row">{this.state.trip_list}</div> */}
-                {this.state.trip_list}
-              </Card.Body>
-            </Card>
+            </div>
           </div>
+
         </div>
+        <Footer />
       </div>
     );
   }

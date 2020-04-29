@@ -8,6 +8,8 @@ import InviteBuddy from "./InviteBuddy";
 import InviteDriver from "./InviteDriver";
 import Poll from "react-polls";
 import { app } from "../utils/AxiosConfig";
+import Footer from "./TrippinPage/footer";
+
 class CurrentTrip extends Component {
   constructor(props) {
     super(props);
@@ -46,6 +48,7 @@ class CurrentTrip extends Component {
       option4: "",
       option5: "",
       polls: [],
+      trip_image: './images/tripimage.jpg'
     };
   }
 
@@ -59,6 +62,11 @@ class CurrentTrip extends Component {
         });
         this.setState({ end: result.data.trip[0].end_date.substring(0, 10) });
         this.setState({ trip: result.data.trip[0] });
+        console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
+        if (result.data.trip[0].trip_image !== undefined) {
+          this.setState({ trip_image: result.data.trip[0].trip_image });
+        }
+
         return app.get("user/" + this.state.trip.owner_id);
       })
       .then((response) => {
@@ -198,7 +206,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -211,7 +219,7 @@ class CurrentTrip extends Component {
 
     app
       .put("trip/" + buddyyy.trip_id, newtrip)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => console.log(err));
 
     window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
@@ -229,7 +237,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -378,7 +386,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("comment/" + i._id, comment)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -444,7 +452,7 @@ class CurrentTrip extends Component {
     };
     app
       .post("buddy", buddy)
-      .then((response) => {})
+      .then((response) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -907,38 +915,39 @@ class CurrentTrip extends Component {
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
-      <div style={{ height: "91.7%" }}>
+      <div style={{ height: "100%", }}>
         <div
           className="image-container"
           style={{
-            height: "100%",
+
             backgroundImage:
               "url(https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
-            overflow: "auto",
+
             display: "flex",
           }}
         >
           <div
-            style={{ display: "flex", flexDirection: "column", width: "100%" }}
+            style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}
           >
             <div>{this.state.invitation}</div>
-            <div style={{ display: "flex", width: "100%" }}>
+            <div style={{ display: "flex", height: "100%" }}>
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   width: "35%",
+                  height: "100%"
                 }}
               >
                 <div
                   className="trip-info"
                   style={{
                     borderRadius: "5px",
-
+                    height: "100%",
                     margin: "50px auto",
                     border: "2px solid gray",
                     boxSizing: "border-box",
@@ -957,6 +966,10 @@ class CurrentTrip extends Component {
                     </Card.Header>
 
                     <Card.Body>
+                      <Card.Title><img alt="trip" style={{
+                        width: "240px",
+                        border: "2px solid gray"
+                      }} src={require(`${this.state.trip_image}`)} /></Card.Title>
                       <Card.Title
                         style={{
                           textTransform: "uppercase",
@@ -1018,13 +1031,14 @@ class CurrentTrip extends Component {
                   margin: "50px auto",
                   borderRadius: "20px",
                   color: "#6c757d",
+                  paddingRight: "20px"
                 }}
               >
                 <Card
                   style={{
                     boxShadow: "8px 8px 50px #000",
                     borderRadius: "20px",
-                    width: "90%",
+                    width: "100%",
                   }}
                 >
                   <Card.Header>MAKE A POST</Card.Header>
@@ -1159,6 +1173,9 @@ class CurrentTrip extends Component {
                   margin: "50px auto",
                   borderRadius: "20px",
                   color: "#6c757d",
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "0 20px"
                 }}
               >
                 <Button
@@ -1223,7 +1240,10 @@ class CurrentTrip extends Component {
               </div>
             </div>
           </div>
+
+
         </div>
+        <Footer />
       </div>
     );
   }

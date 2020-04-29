@@ -6,8 +6,14 @@ const USERROUTES = EXPRESS.Router();
 const db = require("../config_url").mongoURL;
 const multer = require('multer');
 var fs = require('fs');
+const path = require('path');
 // var ParamsParser = require('paramsParser');
 var bodyParser = require('body-parser')
+// const PATHS = {
+//     react: path.join(__dirname, 'node_modules/react/dist/react.min.js'),
+//     app: path.join(__dirname, 'src/uploads/'),
+//     build: path.join(__dirname, './dist')
+// };
 
 // const upload = multer({dest:'uploads/'});
 const storage = multer.diskStorage({
@@ -42,7 +48,7 @@ const userStorage = multer.diskStorage({
     destination: function(req, file, cb){
         // let {userId} = req.params;
         // let dir = `./uploads/${userId}/profile/`;
-        cb(null, './uploads/userProfileImage/');
+        cb(null, '../src/components/uploads/userProfileImage/');
         // check if directory exists
         // if (!fs.existsSync(dir)) {
         //     // if not create directory
@@ -81,17 +87,38 @@ const profileImageUpload = multer({
 })
 
 // Routes
-
+UPLOADROUTES.route("/uploads/profile").get(function(req,res){
+    IMAGE.find({imageCate: req.body.imageCate}).then((image) => {
+        if (image != null) {
+          res.status(200).json({
+            image: image,
+          });
+        } else {
+          res.status(400).json({
+            image: null,
+          });
+        }
+    });
+});
 UPLOADROUTES.route("/user/profileImage/:id").post(profileImageUpload.single('imageData'), (req, res, next) => {
     console.log(req.body);
     const newImage = new IMAGE({
         owner_id: req.params.id,
         imageCate: req.body.imageCate,
-        imageName: req.body.imageName,
+        imageName: res.req.file.filename,
         imageData: req.file.path
     });
     newImage.save()
         .then((result) => {
+            USER.updateOne(
+                { _id: req.params.id},
+                {
+                  $set: {image: newImage.imageName}
+                })
+                .then(() => {
+                  console.log("User profile image:id updated");
+                  //res.status(200).send({ message: "Profile image:id updated" });
+            });
             console.log(result);
             res.status(200).json({
                 success: true,
@@ -113,7 +140,7 @@ UPLOADROUTES.route("/userImageUpdate/:id").put(function(req, res){
             console.error("Profile image is not existed.");
             res.status(403).send("User has not upload profile image.");
         }else if(image != null){
-            console.log("Profile image is existed in db");
+            console.log("Profile image is existed in db.");
             // let newImageId = image.id;
             console.log(newImage);
             USER.updateOne(
@@ -122,8 +149,8 @@ UPLOADROUTES.route("/userImageUpdate/:id").put(function(req, res){
                   $set: {image: newImage.id}
                 })
                 .then(() => {
-                  console.log("User profile image updated");
-                  res.status(200).send({ message: "Profile image updated" });
+                  console.log("User profile image:id updated");
+                  res.status(200).send({ message: "Profile image:id updated" });
             });
         } else {
             console.error("No image exists in db to update");
@@ -164,18 +191,46 @@ UPLOADROUTES.route("/user/profile/:id").get(function (req, res) {
       });
 });
 
+// delete by user ID, each user has only one profile image
 UPLOADROUTES.route("/user/profile/:id").delete(function (req, res) {
-    IMAGE.remove({ owner_id: req.params.id }).then((image) => {
+    IMAGE.findOneAndRemove({ owner_id: req.params.id }).then((image) => {
         if (image != null) {
-          res.status(200).json({
-            image: image,
-          });
+            fs.unlinkSync(image.imageData);
+            console.log('successfully deleted user profile image');
+            res.status(200).json({
+                image: image,
+            });
         } else {
           res.status(400).json({
             image: null,
           });
         }
       });
+});
+
+// delete by image.id from image storage
+const DIR = 'uploads/userProfileImage';
+UPLOADROUTES.route('/uploads/profile/delete/:id').delete(function (req, res) {
+    message : "Error! in image upload.";
+    if (!req.params.id) {
+        console.log("No file received");
+        message = "Error! in image delete.";
+        return res.status(500).json('error in delete');
+    } else {
+        console.log('file received');
+        console.log(req.params.id);
+        IMAGE.findById({ _id: req.params.id}).then((image) =>{
+            try {
+                //fs.unlinkSync(DIR+'/'+req.params.imageName+'.png');
+                fs.unlinkSync(image.imageData);
+                console.log('successfully deleted user profile image');
+                return res.status(200).send('Successfully! Image has been Deleted');
+            } catch (err) {
+                // handle the error
+                return res.status(400).send(err);
+            }
+        })
+      }
 });
 
 module.exports = UPLOADROUTES;

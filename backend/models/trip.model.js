@@ -20,7 +20,8 @@ const tripSchema = new Schema({
       option: String,
       votes: Number
     }]
-  }]
+  }],
+  trip_image: String
 });
 
 const TripSchem = mongoose.model("tripchar", tripSchema);

@@ -3,6 +3,7 @@ import "../styles/MyAccount.css";
 import { Button, ButtonToolbar, Alert, Card, Form } from 'react-bootstrap';
 import { EditPhotoModal } from './EditPhotoModal';
 import { app } from '../utils/AxiosConfig';
+import Footer from "./TrippinPage/footer";
 
 //const AXIOS = require("axios").default;
 
@@ -13,6 +14,7 @@ export class MyAccount extends Component {
       editPhotoShow: false,
       option: '2',
       image: "./images/profilepic.png",
+      //image:"",
       id: "",
       email: "",
       first_name: "",
@@ -21,25 +23,31 @@ export class MyAccount extends Component {
       hometown: "",
       updateflag: false,
 
-      multerImage: "./image/placehoder.png",
+      multerImage: "./images/placehoder.png",
     };
-
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.Click = this.onChange.bind(this);
 
     if (JSON.parse(localStorage.getItem('user')).image == null) {
-
       this.state = {
         image: "./images/profilepic.png"
       };
     }
-
+    // else{
+    //   app.get('user/profile/'+ JSON.parse(localStorage.getItem('user'))._id)
+    //     .then(response =>{
+    //       //this.setState({image: response.data.image.imageData});
+    //       this.state = {
+    //         image: "../../backend/" + response.data.image.imageData
+    //       }
+    //   })
+    // }
   };
   setDefaultImage(uploadType) {
     if (uploadType === "multer") {
       this.setState({
-        multerImage: "./image/placeholder.png"
+        multerImage: "./images/placeholder.png"
       });
     }
   }
@@ -52,10 +60,13 @@ export class MyAccount extends Component {
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
         this.setState({ __v: response.data.user.__v });
-        // if (response.data.user.image != null) {
-        //   this.setState({ image: response.data.user.image });
-        // }
-
+        if (response.data.user.image != null) {
+          // app.get('user/profile/'+ JSON.parse(localStorage.getItem('user'))._id )
+          // .then(resImage =>{
+          //   this.setState({image: './uploads/userProfileImage/'+resImage.data.image.imageName});
+          // })
+          this.setState({ image: './uploads/userProfileImage/' + response.data.user.image });
+        }
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown })
         }
@@ -70,7 +81,8 @@ export class MyAccount extends Component {
     let imageObj = {};
     if (method === "multer") {
       let imageFormObj = new FormData();
-      imageFormObj.append("imageName", "multer-image-" + Date.now());
+      //imageFormObj.append("imageName", "multer-image-" + Date.now());
+      imageFormObj.append("imageCate", "profile");
       imageFormObj.append("imageData", e.target.files[0]);
 
       // stores a readable instance of 
@@ -78,30 +90,41 @@ export class MyAccount extends Component {
 
       this.setState({
         multerImage: URL.createObjectURL(e.target.files[0])
+        //image: URL.createObjectURL(e.target.files[0])
       });
+      // delete previous profile image
+      if (JSON.parse(localStorage.getItem('user')).image != null) {
+        app.delete('user/profile/' + JSON.parse(localStorage.getItem('user'))._id).then(res => console.log(res.data))
+          .catch(err => { console.log(err) });
+      }
+      // then upload new profle image
       app.post('user/profileImage/' + JSON.parse(localStorage.getItem('user'))._id, imageFormObj).then((data) => {
         if (data.data.success) {
           alert("Image has been successfully upload using multer");
           this.setDefaultImage("multer");
-          const update = {
-            image: {
-              owner_id: JSON.parse(localStorage.getItem('user'))._id,
-              imageCate: "profile",
-            }
-          }
-          console.log(JSON.stringify(update));
-          app.put('userImageUpdate/' + JSON.parse(localStorage.getItem('user'))._id, update)
-          .then(
-            res => console.log(res.data),
-            alert("Image has been successfully updated in user profile")
-          )
-          .catch(err => { console.log(err) });
         }
-      })
-        .catch((err) => {
-          alert("Error while uploading image using multer");
-          this.setDefaultImage("multer");
-        });
+      }).catch((err) => {
+        alert("Error while uploading image using multer");
+        this.setDefaultImage("multer");
+      });
+      // const update = {
+      //   image: {
+      //     owner_id: JSON.parse(localStorage.getItem('user'))._id,
+      //     imageCate: imageFormObj.imageCate
+      //   }
+      // }
+      // console.log(JSON.stringify(update));
+      // // make Image connects User, user.image = image.id
+      // app.put('userImageUpdate/' + JSON.parse(localStorage.getItem('user'))._id,  
+      // {
+      //   owner_id: JSON.parse(localStorage.getItem('user'))._id,
+      //   imageCate: "profile"
+      // })
+      // .then(
+      //   res => console.log(res.data),
+      //   alert("Image has been successfully updated in user profile")
+      // )
+      // .catch(err => { console.log(err) });
     }
   }
   onChange(event) {
@@ -161,139 +184,140 @@ export class MyAccount extends Component {
     let editModalClose = () => this.setState({ editPhotoShow: false });
 
     return (
-      <div className="image-container" style={{
-        height: "97%",
-        backgroundImage: "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-        overflow: "auto",
-        display: "flex"
-      }}>
-        <div style={{ height: "100%", display: "flex", width: "100%" }}>
-          <Card style={{
-            height: "60%", margin: "3%", borderRadius: "5px",
-            border: "2px solid gray",
-            boxSizing: "border-box",
-            borderRadius: "20px",
-            boxShadow: "8px 8px 50px #000",
-            color: "#6c757d",
-            width: "30%",
-            maxWidth: "350px",
-            minWidth: "250px"
-          }}>
-            <Card.Body>
-              <div style={{ display: "flex", alignContent: "center" }}>
-                <img className="responsive"
-                  src={require(`${this.state.image}`)}
-                  alt="profile" style={{
-                    display: "block",
-                    margin: "5px auto",
-                    width: "200px",
-                    border: "1px solid black"
-                  }} />
-              </div>
-              <div style={{
-                display: "flex",
-                flexDirection: "column"
-              }}>
-                <Button style={{
-                  margin: "5px auto"
-                }} variant="outline-dark" onClick={() => { this.setState({ editPhotoShow: true }) }}>CHANGE PHOTO</Button>
-                <EditPhotoModal
-                  show={this.state.editPhotoShow}
-                  onHide={editModalClose}
-                  handler={this.handler}
-                  size="lg"
-                  style={{ maxWidth: '1600px', width: '80%' }}
-                />
-                <div style={{
-                  margin: "5px auto"
-                }}>
-                  <label id="same-line" style={{
-                    marginRight: "5px"
-                  }}><strong>NAME: </strong></label>
-                  <label>{`  ${this.state.first_name}  ${this.state.last_name}`}</label>
+      <div style={{ height: "100%" }}>
+        <div className="image-container" style={{
+          height: "100%",
+          backgroundImage: "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+          overflow: "auto",
+          display: "flex"
+        }}>
+          <div style={{ height: "100%", display: "flex", width: "100%" }}>
+            <Card style={{
+              height: "60%", margin: "3%", borderRadius: "5px",
+              border: "2px solid gray",
+              boxSizing: "border-box",
+              borderRadius: "20px",
+              boxShadow: "8px 8px 50px #000",
+              color: "#6c757d",
+              width: "30%",
+              maxWidth: "350px",
+              minWidth: "250px"
+            }}>
+              <Card.Body>
+                <div style={{ display: "flex", alignContent: "center" }}>
+                  <img className="responsive"
+                    src={require(`${this.state.image}`)}
+                    alt="profile" style={{
+                      display: "block",
+                      margin: "5px auto",
+                      width: "200px",
+                      border: "1px solid black"
+                    }} />
                 </div>
-                <div style={{
-                  margin: "5px auto"
-                }}>
-                  <label id="same-line" style={{
-                    marginRight: "5px"
-                  }}><strong>HOMETOWN: </strong></label>
-                  <label>{`${this.state.hometown}`}</label>
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-
-          <Card style={{
-            margin: "3%",
-            borderRadius: "5px",
-            border: "2px solid gray",
-            boxSizing: "border-box",
-            borderRadius: "20px",
-            boxShadow: "8px 8px 50px #000",
-            color: "#6c757d",
-            height: "60%",
-            minWidth: "400px"
-          }}>
-            <Card.Header as="h3">UPDATE PROFILE</Card.Header>
-            <Card.Body>
-              <Form>
                 <div style={{
                   display: "flex",
-                  width: "400px",
-                  margin: "5px auto",
-                  alignItems: "center"
+                  flexDirection: "column"
                 }}>
-                  <Form.Label style={{
-                    margin: "0 15px 0 32px"
-                  }}>FIRST NAME:</Form.Label>
-                  <Form.Control id="first-name" type="text" placeholder="ENTER FIRST NAME" style={{
-                    width: "230px"
-                  }} />
-                </div>
-                <div style={{ display: "flex", width: "400px", margin: "5px auto" }}>
-                  <Form.Label style={{
-                    margin: "0 15px 0 35px"
-                  }}>LAST NAME:</Form.Label>
-                  <Form.Control id="last-name" type="text" placeholder="ENTER LAST NAME" style={{
-                    width: "230px"
-                  }} />
-                </div>
-                <div style={{ display: "flex", width: "400px", margin: "5px auto" }}>
-                  <Form.Label style={{
-                    margin: "0 15px 0 28px"
-                  }}>HOMETOWN:</Form.Label>
-                  <Form.Control id="hometown" type="text" placeholder="ENTER HOMETOWN" style={{
-                    width: "230px"
-                  }} />
-                </div>
-                <div style={{ display: "flex" }}>
-                  <Button className="buttons" onClick={this.handleSubmit} variant="outline-success" type="submit"
-                    style={{ margin: "15px auto" }}>
-                    UPDATE</Button>
-                </div>
-
-                <div className="image-container">
-                  <div className="process">
-                    <h4 className="process_heading">Process: Using Multer</h4>
-                    <p className="process_details">Upload image to a node server, connected to a MongoDB database, with the help of multer</p>
-
-                    <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
-                    <img src={this.state.multerImage} alt="upload-image" className="process_image" />
+                  {/* <Button style={{
+                    margin: "5px auto"
+                  }} variant="outline-dark" onClick={() => { this.setState({ editPhotoShow: true }) }}>CHANGE PHOTO</Button>
+                   <EditPhotoModal
+                    show={this.state.editPhotoShow}
+                    onHide={editModalClose}
+                    handler={this.handler}
+                    size="lg"
+                    style={{ maxWidth: '1600px', width: '80%' }}
+                  /> */}
+                  <div style={{
+                    margin: "5px auto"
+                  }}>
+                    <label id="same-line" style={{
+                      marginRight: "5px"
+                    }}><strong>NAME: </strong></label>
+                    <label>{`  ${this.state.first_name}  ${this.state.last_name}`}</label>
+                  </div>
+                  <div style={{
+                    margin: "5px auto"
+                  }}>
+                    <label id="same-line" style={{
+                      marginRight: "5px"
+                    }}><strong>HOMETOWN: </strong></label>
+                    <label>{`${this.state.hometown}`}</label>
                   </div>
                 </div>
-              </Form>
+              </Card.Body>
+            </Card>
 
-            </Card.Body>
+            <Card style={{
+              margin: "3%",
+              borderRadius: "5px",
+              border: "2px solid gray",
+              boxSizing: "border-box",
+              borderRadius: "20px",
+              boxShadow: "8px 8px 50px #000",
+              color: "#6c757d",
+              height: "80%",
+              minWidth: "800px"
+            }}>
+              <Card.Header as="h3">UPDATE PROFILE</Card.Header>
+              <Card.Body>
+                <Form>
+                  <div style={{
+                    display: "flex",
+                    width: "400px",
+                    margin: "5px auto",
+                    alignItems: "center"
+                  }}>
+                    <Form.Label style={{
+                      margin: "0 15px 0 32px"
+                    }}>FIRST NAME:</Form.Label>
+                    <Form.Control id="first-name" type="text" placeholder="ENTER FIRST NAME" style={{
+                      width: "230px"
+                    }} />
+                  </div>
+                  <div style={{ display: "flex", width: "400px", margin: "5px auto" }}>
+                    <Form.Label style={{
+                      margin: "0 15px 0 35px"
+                    }}>LAST NAME:</Form.Label>
+                    <Form.Control id="last-name" type="text" placeholder="ENTER LAST NAME" style={{
+                      width: "230px"
+                    }} />
+                  </div>
+                  <div style={{ display: "flex", width: "400px", margin: "5px auto" }}>
+                    <Form.Label style={{
+                      margin: "0 15px 0 28px"
+                    }}>HOMETOWN:</Form.Label>
+                    <Form.Control id="hometown" type="text" placeholder="ENTER HOMETOWN" style={{
+                      width: "230px"
+                    }} />
+                  </div>
+                  <div style={{ display: "flex" }}>
+                    <Button className="buttons" onClick={this.handleSubmit} variant="outline-success" type="submit"
+                      style={{ margin: "15px auto" }}>
+                      UPDATE</Button>
+                  </div>
 
-          </Card>
-        </div>
+                  <div className="image-container">
+                    <div className="process">
+                      <h4 className="process_heading">Profile Image: </h4>
+                      <p className="process_details">Upload image from your local device</p>
 
-        {/* <div>
+                      <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
+                      <img src={this.state.multerImage} alt="upload-image" className="process_image" />
+                    </div>
+                  </div>
+                </Form>
+
+              </Card.Body>
+
+            </Card>
+          </div>
+
+          {/* <div>
 
 
         <div className='content-container'>
@@ -372,6 +396,8 @@ export class MyAccount extends Component {
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossOrigin="anonymous"></script>
         <script src="auto-complete.js"></script>
       </div> */}
+        </div>
+        <Footer />
       </div>
     );
   }
