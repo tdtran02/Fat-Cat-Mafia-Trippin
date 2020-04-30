@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { app } from '../utils/AxiosConfig';
+import { app } from "../utils/AxiosConfig";
 //import AXIOS from "axios";
 import { Form, Button, ListGroup, Row, ListGroupItem } from "react-bootstrap";
 import "../styles/Spending.css";
@@ -14,13 +14,14 @@ class Schedule extends Component {
       total_miles: 0,
       number_people: 0,
       itemname: "",
-      itemamount: ""
+      itemamount: "",
     };
   }
 
   componentDidMount() {
-    app.get("tripinfo/" + this.state.trip_id)
-      .then(res => {
+    app
+      .get("tripinfo/" + this.state.trip_id)
+      .then((res) => {
         const MILES = res.data.trip.days_miles;
         let total_miles = 0;
         for (let i = 0; i < MILES.length; i++) {
@@ -29,57 +30,62 @@ class Schedule extends Component {
         this.setState({ total_miles: total_miles });
 
         this.setState({ number_people: res.data.trip.buddies.length });
-        this.setState({ number_people: 6 });
-        return app.get(
-          "spending/" + this.state.trip_id
-        );
+
+        return app.get("/buddy/" + this.state.trip_id);
       })
-      .then(r => {
+      .then((r) => {
+        console.log(r.data.tripbuddy.length);
+        this.setState({ number_people: r.data.tripbuddy.length });
+        return app.get("spending/" + this.state.trip_id);
+      })
+      .then((r) => {
         this.setState({ spendings: r.data.spendings });
         this.setState({
-          spendings_elements: this.createSpendingList(this.state.spendings)
+          spendings_elements: this.createSpendingList(this.state.spendings),
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
 
-  change = e => {
+  change = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     this.setState({ [name]: value });
   };
 
   submitItem = () => {
-    app.post("spending/add", {
-      trip_id: this.state.trip_id,
-      itemname: this.state.itemname,
-      itemamount: this.state.itemamount
-    })
-      .then(r => {
+    app
+      .post("spending/add", {
+        trip_id: this.state.trip_id,
+        itemname: this.state.itemname,
+        itemamount: this.state.itemamount,
+      })
+      .then((r) => {
         this.setState({ spendings: r.data.spendings });
         this.setState({
-          spendings_elements: this.createSpendingList(this.state.spendings)
+          spendings_elements: this.createSpendingList(this.state.spendings),
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
   deleteItem(id) {
-    app.post("spending/delete", {
-      trip_id: this.state.trip_id,
-      itemid: id
-    })
-      .then(r => {
+    app
+      .post("spending/delete", {
+        trip_id: this.state.trip_id,
+        itemid: id,
+      })
+      .then((r) => {
         this.setState({ spendings: r.data.spendings });
         this.setState({
-          spendings_elements: this.createSpendingList(this.state.spendings)
+          spendings_elements: this.createSpendingList(this.state.spendings),
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -126,69 +132,83 @@ class Schedule extends Component {
     return elements;
   }
 
+  backToTripPage = () => {
+    window.location = "/trip/" + this.state.trip_id;
+  };
+
   render() {
     return (
-      <div
-        style={{
-          width: "500px",
-          boxShadow: "0px 5px 15px rgba(0,0,0,0.2)",
-          borderRadius: "2px",
-          margin: "0 auto",
-          marginTop: "100px"
-        }}
-      >
-        <Form style={{ width: "90%", margin: "0 auto", paddingTop: "10px" }}>
-          <Form.Group
-            style={{
-              display: "inline-block",
-              width: "150px",
-              marginLeft: "10px",
-              marginRight: "10px"
-            }}
-          >
-            <Form.Label>Item Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Item Name"
-              name="itemname"
-              onChange={this.change}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group style={{ display: "inline-block", width: "150px" }}>
-            <Form.Label>Item Amount</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Item Amount"
-              name="itemamount"
-              onChange={this.change}
-              required
-            />
-          </Form.Group>
-          <Button
-            variant="primary"
-            onClick={this.submitItem}
-            style={{ marginLeft: "10px", height: "40px" }}
-          >
-            Submit
-          </Button>
-        </Form>
-        <div style={{ width: "90%", margin: "0 auto" }}>
-          <div>Milage: {this.state.total_miles.toFixed(2)}</div>
-          <div>Number of People: {this.state.number_people}</div>
-        </div>
-
-        <ListGroup
-          variant="flush"
-          style={{ width: "90%", margin: "0 auto", paddingBottom: "10px" }}
+      <div>
+        <div
+          style={{
+            width: "500px",
+            boxShadow: "0px 5px 15px rgba(0,0,0,0.2)",
+            borderRadius: "2px",
+            margin: "0 auto",
+            marginTop: "100px",
+          }}
         >
-          <ListGroup.Item style={{ fontWeight: "bold" }}>
-            <span>Item</span>
-            <span style={{ float: "right", marginRight: "10px" }}>Amount</span>
-          </ListGroup.Item>
-          {this.state.spendings_elements}
-        </ListGroup>
+          <Form style={{ width: "90%", margin: "0 auto", paddingTop: "10px" }}>
+            <Form.Group
+              style={{
+                display: "inline-block",
+                width: "150px",
+                marginLeft: "10px",
+                marginRight: "10px",
+              }}
+            >
+              <Form.Label>Item Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Item Name"
+                name="itemname"
+                onChange={this.change}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group style={{ display: "inline-block", width: "150px" }}>
+              <Form.Label>Item Amount</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Item Amount"
+                name="itemamount"
+                onChange={this.change}
+                required
+              />
+            </Form.Group>
+            <Button
+              variant="primary"
+              onClick={this.submitItem}
+              style={{ marginLeft: "10px", height: "40px" }}
+            >
+              Submit
+            </Button>
+          </Form>
+          <div style={{ width: "90%", margin: "0 auto" }}>
+            <div>Milage: {this.state.total_miles.toFixed(2)}</div>
+            <div>Number of People: {this.state.number_people}</div>
+          </div>
+
+          <ListGroup
+            variant="flush"
+            style={{ width: "90%", margin: "0 auto", paddingBottom: "10px" }}
+          >
+            <ListGroup.Item style={{ fontWeight: "bold" }}>
+              <span>Item</span>
+              <span style={{ float: "right", marginRight: "10px" }}>
+                Amount
+              </span>
+            </ListGroup.Item>
+            {this.state.spendings_elements}
+          </ListGroup>
+        </div>
+        <div style={{ width: "500px", margin: "0 auto", marginTop: "50px" }}>
+          <Button style={{ width: "100%" }} onClick={this.backToTripPage}>
+            {" "}
+            Back to trip page
+          </Button>
+        </div>
       </div>
     );
   }

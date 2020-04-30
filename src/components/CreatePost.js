@@ -1,19 +1,24 @@
 import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { app } from '../utils/AxiosConfig';
+import { app } from "../utils/AxiosConfig";
 //const AXIOS = require("axios").default;
 
 export class CreatePost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comment: " "
+      i: this.props.match.params.id,
+      comment: " ",
     };
+  }
+
+  componentDidMount() {
+    console.log(this.state.i);
   }
 
   onChangeHandler(event) {
     this.setState({
-      comment: event.te
+      comment: event.te,
     });
   }
 
@@ -35,14 +40,15 @@ export class CreatePost extends Component {
       end_date: trip.end_date,
       trip_name: trip.trip_name,
       days: trip.days,
-      posts: postArr
+      posts: postArr,
     };
-    app.post("trip/", update)
-      .then(res => {
+    app
+      .post("trip/", update)
+      .then((res) => {
         localStorage.setItem("trip", JSON.stringify(res.data.trip));
         this.setState({ addSurveyShow: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -63,13 +69,14 @@ export class CreatePost extends Component {
       user_pic: JSON.parse(localStorage.getItem("user")).image,
       trip_id: JSON.parse(localStorage.getItem("trip"))._id,
       text: document.getElementById("comment").value,
-      date: Date.now()
+      date: Date.now(),
     };
-    app.post("comment", comment)
-      .then(res => {
+    app
+      .post("comment", comment)
+      .then((res) => {
         this.setState({ addSurveyShow: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
     window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;

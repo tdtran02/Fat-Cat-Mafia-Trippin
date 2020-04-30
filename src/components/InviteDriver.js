@@ -56,6 +56,7 @@ export class InviteDriver extends Component {
         this.setState({
           driver_passengers: this.passengers(result.data.drivers),
         });
+        window.location.reload();
       });
   }
 
