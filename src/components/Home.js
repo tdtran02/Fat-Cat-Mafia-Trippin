@@ -32,6 +32,7 @@ export class Home extends Component {
       trip_id: "",
       trip_number: null,
       trip_list: [],
+      all_trip_list: [],
       invite: null,
       invitation_list: [],
       showInvitations: false,
@@ -44,11 +45,9 @@ export class Home extends Component {
     }
   }
   componentDidMount() {
-    console.log(process.env.NODE_ENV);
     app
       .get("user/" + JSON.parse(localStorage.getItem("user"))._id)
       .then((response) => {
-        console.log(response.data.user.email);
         this.setState({ email: response.data.user.email });
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
@@ -58,27 +57,29 @@ export class Home extends Component {
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown });
         }
-        console.log(JSON.stringify(this.state.user));
-        console.log(this.state.hometown);
       })
       .catch(function (error) {
         console.log(error);
       });
 
     app
-      .get("trip/" + JSON.parse(localStorage.getItem("user"))._id)
+      .get("currentdatetrip/" + JSON.parse(localStorage.getItem("user"))._id)
       .then((response) => {
-        console.log(response);
         this.setState({ trip: response.data.trip });
         this.setState({
           trip_list: this.createList(response.data.trip),
+        });
+        return app.get("trip/" + JSON.parse(localStorage.getItem("user"))._id);
+      })
+      .then((r) => {
+        this.setState({
+          all_trip_list: this.createAllList(r.data.trip),
         });
       });
 
     app
       .get("buddypending/" + JSON.parse(localStorage.getItem("user"))._id)
       .then((res) => {
-        console.log(res);
         this.setState({ invite: res.data.tripbuddy });
         this.setState({
           invitation_list: this.createInvitations(res.data.tripbuddy),
@@ -92,11 +93,9 @@ export class Home extends Component {
     // console.log(this.state.trip[i]);
     // console.log(JSON.parse(localStorage.getItem('user')))
     const USER_ID = JSON.parse(localStorage.getItem("user"))._id;
-    console.log(USER_ID);
     app
       .delete("trip/" + OneTrip._id)
       .then((res) => {
-        console.log(res);
         this.setState({ trip: res.data.trip });
         this.setState({
           trip_list: this.createList(res.data.trip),
@@ -109,14 +108,13 @@ export class Home extends Component {
 
     app
       .delete("buddy/" + OneTrip._id)
-      .then((res) => { })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
   }
 
   updateLocalTrip(e, i) {
-    console.log(i);
     localStorage.setItem("trip", JSON.stringify(i));
     window.location = "/trip/" + i._id;
   }
@@ -125,7 +123,6 @@ export class Home extends Component {
     app
       .get("tripid/" + i.trip_id)
       .then((res) => {
-        console.log(res.data.trip[0]);
         localStorage.setItem("trip", JSON.stringify(res.data.trip[0]));
         window.location = "/trip/" + i.trip_id;
       })
@@ -138,7 +135,6 @@ export class Home extends Component {
     app
       .get("user/" + i.owner_id)
       .then((res) => {
-        console.log(res.data.user.email);
         return res.data.user.email;
       })
       .catch((err) => {
@@ -150,7 +146,6 @@ export class Home extends Component {
     let elements = [];
     let trip = {};
     for (let i = 0; i < list.length; i++) {
-      console.log(list[i].trip_id);
       if (list[i].pending == true) {
         this.setState({ status: "PENDING" });
       } else {
@@ -161,7 +156,7 @@ export class Home extends Component {
         }
       }
 
-      if (list[i].denied == false) {
+      if (list[i].pending == true) {
         elements.push(
           <div className="col-md-3 col-sm-6" key={i}>
             <Card style={{ minWidth: "150px" }}>
@@ -235,6 +230,82 @@ export class Home extends Component {
     }
     return elements;
   }
+  createAllList(list) {
+    let temp = [];
+    for (let i = 0; i < list.length; i++) {
+      temp.push(
+        <div className="col-md-4 col-sm-6" key={i}>
+          <Card style={{ border: "2px solid gray" }}>
+            <Card.Img
+              variant="top"
+              style={{ border: "2px solid gray" }}
+              src={require("./images/trip_profile_photo.png")}
+            />
+            <Card.Title as="h5">
+              <Button
+                id="linkbtn"
+                onClick={(e) => {
+                  this.updateLocalTrip(e, list[i]);
+                }}
+                className="trip-fonts"
+                style={{
+                  textDecoration: "none",
+                  backgroundColor: "transparent",
+                  border: "none",
+                  borderRadius: "20px",
+                  color: "black",
+                }}
+              >
+                {list[i].trip_name}
+              </Button>
+            </Card.Title>
+            <Card.Body>
+              <p className="trip_destination">{list[i].destination}</p>
+              <div
+                className="trip-deletion"
+                style={{ paddingBottom: "10px" }}
+              ></div>
+            </Card.Body>
+            <Card.Footer>
+              <Button
+                variant="info"
+                onClick={(e) => {
+                  this.updateLocalTrip(e, list[i]);
+                }}
+                style={{ margin: "10px auto" }}
+              >
+                VIEW
+              </Button>
+              <Button
+                variant="warning"
+                style={{ margin: "10px 5px" }}
+                onClick={(e) => {
+                  this.onDeleteFieldClick(e, i);
+                }}
+              >
+                Delete
+              </Button>
+            </Card.Footer>
+          </Card>
+        </div>
+      );
+    }
+
+    if (list.length > 0) {
+      if (list.length < 4) {
+        for (let i = 0; i < 4 - list.length - 1; i++) {
+          temp.push(
+            <div
+              className="col-md-3 col-sm-6"
+              style={{ minWidth: "200px" }}
+              key={4 - i}
+            ></div>
+          );
+        }
+      }
+    }
+    return temp;
+  }
 
   createList(list) {
     let elements = [];
@@ -244,7 +315,6 @@ export class Home extends Component {
     let twice = false;
 
     let temp = [];
-    console.log("LIST LENGTH: " + list.length);
     for (let i = 0; i < list.length; i++) {
       if (once != true && date_mark < new Date(list[i].start_date)) {
         elements.push(
@@ -368,11 +438,13 @@ export class Home extends Component {
   render() {
     const img = this.state.image;
     return (
-      <div>
+      <div style={{ height: "100%" }}>
         <div
           className="image-container"
           style={{
             height: "100%",
+            // backgroundImage:
+            // "linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%)",
             backgroundImage:
               "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
             backgroundRepeat: "no-repeat",
@@ -456,7 +528,7 @@ export class Home extends Component {
                     href="/Friends"
                   >
                     VIEW FRIENDS
-                </Button>
+                  </Button>
                   <Button
                     style={{ margin: "5px 5px" }}
                     variant="outline-primary"
@@ -464,7 +536,7 @@ export class Home extends Component {
                     href="/Trip"
                   >
                     CREATE A TRIP
-                </Button>
+                  </Button>
                 </div>
               </Card.Body>
             </Card>
@@ -490,34 +562,56 @@ export class Home extends Component {
                 >
                   <Card.Header as="h3" style={{ padding: "10px" }}>
                     TRIP INVITATIONS
-                </Card.Header>
+                  </Card.Header>
                   <Card.Body>
                     <div className="row">{this.state.invitation_list}</div>
                   </Card.Body>
                 </Card>
               </Alert>
-              <Card
-                style={{
-                  margin: "3%",
-                  borderRadius: "5px",
-                  border: "2px solid gray",
-                  boxSizing: "border-box",
-                  borderRadius: "20px",
-                  boxShadow: "8px 8px 50px #000",
-                  color: "#6c757d",
-                }}
-              >
-                <Card.Header as="h3" style={{ padding: "10px" }}>
-                  TRIPS
-              </Card.Header>
-                <Card.Body>
-                  {/* <div className="row">{this.state.trip_list}</div> */}
-                  {this.state.trip_list}
-                </Card.Body>
-              </Card>
+              {this.state.trip_list.length != 0 ? (
+                <Card
+                  style={{
+                    margin: "3%",
+                    borderRadius: "5px",
+                    border: "2px solid gray",
+                    boxSizing: "border-box",
+                    borderRadius: "20px",
+                    boxShadow: "8px 8px 50px #000",
+                    color: "#6c757d",
+                  }}
+                >
+                  <Card.Header as="h3" style={{ padding: "10px" }}>
+                    UPCOMING TRIPS
+                  </Card.Header>
+                  <Card.Body>{this.state.trip_list}</Card.Body>
+                </Card>
+              ) : (
+                ""
+              )}
+              {this.state.all_trip_list.length != 0 ? (
+                <Card
+                  style={{
+                    margin: "3%",
+                    borderRadius: "5px",
+                    border: "2px solid gray",
+                    boxSizing: "border-box",
+                    borderRadius: "20px",
+                    boxShadow: "8px 8px 50px #000",
+                    color: "#6c757d",
+                  }}
+                >
+                  <Card.Header as="h3" style={{ padding: "10px" }}>
+                    ALL MY TRIPS
+                  </Card.Header>
+                  <Card.Body className="row">
+                    {this.state.all_trip_list}
+                  </Card.Body>
+                </Card>
+              ) : (
+                ""
+              )}
             </div>
           </div>
-
         </div>
         <Footer />
       </div>

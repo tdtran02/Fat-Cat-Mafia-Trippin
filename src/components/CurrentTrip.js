@@ -48,7 +48,7 @@ class CurrentTrip extends Component {
       option4: "",
       option5: "",
       polls: [],
-      trip_image: './images/tripimage.jpg'
+      trip_image: "./images/tripimage.jpg",
     };
   }
 
@@ -62,7 +62,7 @@ class CurrentTrip extends Component {
         });
         this.setState({ end: result.data.trip[0].end_date.substring(0, 10) });
         this.setState({ trip: result.data.trip[0] });
-        console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
+        // console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
         if (result.data.trip[0].trip_image !== undefined) {
           this.setState({ trip_image: result.data.trip[0].trip_image });
         }
@@ -206,12 +206,13 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => { })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
 
-    let buddies = JSON.parse(localStorage.getItem("trip")).buddies;
+    // let buddies = JSON.parse(localStorage.getItem("trip")).buddies;
+    let buddies = this.state.trip.buddies;
     buddies.push(buddyyy.buddy_id);
     let newtrip = {
       buddies: buddies,
@@ -219,10 +220,10 @@ class CurrentTrip extends Component {
 
     app
       .put("trip/" + buddyyy.trip_id, newtrip)
-      .then((res) => { })
+      .then((res) => {})
       .catch((err) => console.log(err));
 
-    window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
+    window.location = "/trip/" + this.state.trip_id;
   }
 
   declineInvitation() {
@@ -237,7 +238,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => { })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -364,7 +365,7 @@ class CurrentTrip extends Component {
   }
 
   commentOnPost(e, i) {
-    let trip = JSON.parse(localStorage.getItem("trip"));
+    // let trip = JSON.parse(localStorage.getItem("trip"));
     let postArr = [];
     const commentOnThisPost = {
       owner_id: JSON.parse(localStorage.getItem("user"))._id,
@@ -386,11 +387,11 @@ class CurrentTrip extends Component {
     };
     app
       .put("comment/" + i._id, comment)
-      .then((res) => { })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
-    window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
+    window.location = "/trip/" + this.state.trip_id;
   }
 
   showRecommendations = () => {
@@ -452,7 +453,7 @@ class CurrentTrip extends Component {
     };
     app
       .post("buddy", buddy)
-      .then((response) => { })
+      .then((response) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -462,7 +463,8 @@ class CurrentTrip extends Component {
   }
 
   postComment() {
-    let trip = JSON.parse(localStorage.getItem("trip"));
+    // let trip = JSON.parse(localStorage.getItem("trip"));
+    let trip = this.state.trip;
     let postArr = [];
     if (trip.posts == null) {
       trip.posts = [document.getElementById("comment").value];
@@ -476,7 +478,7 @@ class CurrentTrip extends Component {
       first_name: JSON.parse(localStorage.getItem("user")).first_name,
       last_name: JSON.parse(localStorage.getItem("user")).last_name,
       user_pic: JSON.parse(localStorage.getItem("user")).image,
-      trip_id: JSON.parse(localStorage.getItem("trip"))._id,
+      trip_id: this.state.trip_id,
       text: document.getElementById("comment").value,
       date: Date.now(),
     };
@@ -488,7 +490,7 @@ class CurrentTrip extends Component {
       .catch((err) => {
         console.log(err);
       });
-    window.location = "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
+    window.location = "/trip/" + this.state.trip_id;
   }
 
   showDrivers = () => {
@@ -879,6 +881,7 @@ class CurrentTrip extends Component {
             resolve()
           )
         );
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -915,11 +918,10 @@ class CurrentTrip extends Component {
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
-      <div style={{ height: "100%", }}>
+      <div style={{ height: "100%", minHeight: "100%" }}>
         <div
           className="image-container"
           style={{
-
             backgroundImage:
               "url(https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg)",
             backgroundRepeat: "no-repeat",
@@ -931,16 +933,23 @@ class CurrentTrip extends Component {
           }}
         >
           <div
-            style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+              width: "100%",
+              minHeight: "100%",
+            }}
           >
             <div>{this.state.invitation}</div>
-            <div style={{ display: "flex", height: "100%" }}>
+            <div style={{ display: "flex", height: "100%", minHeight: "100%" }}>
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   width: "35%",
-                  height: "100%"
+                  height: "100%",
+                  minHeight: "100%",
                 }}
               >
                 <div
@@ -966,10 +975,16 @@ class CurrentTrip extends Component {
                     </Card.Header>
 
                     <Card.Body>
-                      <Card.Title><img alt="trip" style={{
-                        width: "240px",
-                        border: "2px solid gray"
-                      }} src={require(`${this.state.trip_image}`)} /></Card.Title>
+                      <Card.Title>
+                        <img
+                          alt="trip"
+                          style={{
+                            width: "240px",
+                            border: "2px solid gray",
+                          }}
+                          src={require(`${this.state.trip_image}`)}
+                        />
+                      </Card.Title>
                       <Card.Title
                         style={{
                           textTransform: "uppercase",
@@ -1017,6 +1032,7 @@ class CurrentTrip extends Component {
                         show={this.state.inviteBuddyShow}
                         onHide={inviteBuddyClose}
                         handler={this.handler}
+                        trip_id={this.state.trip_id}
                         size="lg"
                       />
                     </Card.Body>
@@ -1027,11 +1043,11 @@ class CurrentTrip extends Component {
                 style={{
                   width: "35%",
                   borderRadius: "5px",
-                  height: "395px",
+                  minHeight: "395px",
                   margin: "50px auto",
                   borderRadius: "20px",
                   color: "#6c757d",
-                  paddingRight: "20px"
+                  paddingRight: "20px",
                 }}
               >
                 <Card
@@ -1175,7 +1191,7 @@ class CurrentTrip extends Component {
                   color: "#6c757d",
                   display: "flex",
                   flexDirection: "column",
-                  padding: "0 20px"
+                  padding: "0 20px",
                 }}
               >
                 <Button
@@ -1221,6 +1237,7 @@ class CurrentTrip extends Component {
                     top: 0,
                     right: 0,
                     marginTop: "60px",
+                    // zIndex: "-1",
                   }}
                 >
                   <Toast.Header>
@@ -1240,8 +1257,6 @@ class CurrentTrip extends Component {
               </div>
             </div>
           </div>
-
-
         </div>
         <Footer />
       </div>

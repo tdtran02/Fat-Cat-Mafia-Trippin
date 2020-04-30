@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Modal, Button, ButtonToolbar } from "react-bootstrap";
 /* import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap"; */
-import { app } from '../utils/AxiosConfig';
+import { app } from "../utils/AxiosConfig";
 //const AXIOS = require("axios").default;
 export class Survey extends Component {
   //import Question from './components/Question';
@@ -15,31 +15,31 @@ export class Survey extends Component {
           questionId: 1,
           question:
             "What type of activities do you want to experience on this trip?",
-          answer: ""
+          answer: "",
         },
         {
           questionId: 2,
           question:
             "Which location do you prefer to to explore other than the current location of the trip?",
-          answer: ""
+          answer: "",
         },
         {
           questionId: 3,
           question:
             "What is type of cuisine are you interested in trying for this trip?",
-          answer: ""
+          answer: "",
         },
         {
           questionId: 4,
           question: "What is your price level in term of ($-$$$$) sign?",
-          answer: ""
+          answer: "",
         },
         {
           questionId: 5,
           question: "Is there anything else you'd like us to know?",
-          answer: ""
-        }
-      ]
+          answer: "",
+        },
+      ],
     };
     this.handleChange = this.handleChange.bind(this);
 
@@ -68,7 +68,7 @@ export class Survey extends Component {
     e.preventDefault();
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     let answers = {
       trip_id: JSON.parse(localStorage.getItem("trip"))._id,
       user_id: JSON.parse(localStorage.getItem("user"))._id,
@@ -78,34 +78,35 @@ export class Survey extends Component {
           questionId: 1,
           question:
             "What type of activities do you want to experience on this trip?",
-          answer: document.getElementById("answer1").value
+          answer: document.getElementById("answer1").value,
         },
         {
           questionId: 2,
           question:
             "Which location do you prefer to to explore other than the current location of the trip?",
-          answer: document.getElementById("answer2").value
+          answer: document.getElementById("answer2").value,
         },
         {
           questionId: 3,
           question:
             "What is type of cuisine are you interested in trying for this trip?",
-          answer: document.getElementById("answer3").value
+          answer: document.getElementById("answer3").value,
         },
         {
           questionId: 4,
           question: "What is your price level in term of ($-$$$$) sign?",
-          answer: document.getElementById("answer4").value
+          answer: document.getElementById("answer4").value,
         },
         {
           questionId: 5,
           question: "Is there anything else you'd like us to know?",
-          answer: document.getElementById("answer5").value
-        }
-      ]
+          answer: document.getElementById("answer5").value,
+        },
+      ],
     };
-    app.post("question", answers)
-      .then(response => {
+    app
+      .post("question", answers)
+      .then((response) => {
         console.log(response.data);
         console.log(response.data.recs);
         let tripGET = JSON.parse(localStorage.getItem("trip"));
@@ -117,18 +118,20 @@ export class Survey extends Component {
           destination: tripGET.destination,
           start_date: tripGET.start_date,
           end_date: tripGET.end_date,
-          __v: 0
+          __v: 0,
         };
-        console.log(response.data.survey);
-        localStorage.setItem("survey", JSON.stringify(response.data.survey));
-        console.log(JSON.parse(localStorage.getItem("trip"))._id);
-        window.location =
-          "/trip/" + JSON.parse(localStorage.getItem("trip"))._id;
+        // console.log(this.state.trip_id);
+        // console.log(response.data.survey);
+        // localStorage.setItem("survey", JSON.stringify(response.data.survey));
+        // console.log(JSON.parse(localStorage.getItem("trip"))._id);
+        let iddd = JSON.parse(localStorage.getItem("trip"))._id;
+        localStorage.removeItem("trip");
+        window.location = "/trip/" + iddd;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   render() {
     return (
