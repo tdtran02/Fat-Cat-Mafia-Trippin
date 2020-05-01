@@ -79,36 +79,38 @@ export class Trip extends Component {
     let addSurveyClose = () => this.setState({ addSurveyShow: false });
     return (
       <div
-        className="backgroundContainer"
+        className="iContainer"
         style={{
-          backgroundImage: "url(https://source.unsplash.com/KMn4VEeEPR8)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
           overflow: "auto",
+          height: "100%",
         }}
       >
         <div
+          className="containerBorder"
           style={{
             width: "400px",
-            backgroundColor: "transparent !important",
-            // backgroundColor: "yellow",
-            borderRadius: "5px",
+            // borderRadius: "5px",
             width: "500px",
             margin: "100px auto",
-            border: "1px solid transparent",
-            boxSizing: "border-box",
-            borderRadius: "20px",
-            boxShadow: "8px 8px 50px #000",
-            color: "#6c757d",
+            // border: "1px solid transparent",
+            // boxSizing: "border-box",
+            // borderRadius: "20px",
+            // boxShadow: "8px 8px 50px #000",
+            // color: "#6c757d",
+            color: "#3a3e42",
           }}
         >
           <Card
-            style={{
-              border: "transparent",
-              borderRadius: "20px",
-              // backgroundColor: "white"
-            }}
+            style={
+              {
+                // border: "transparent",
+                // borderRadius: "20px",
+                // backgroundColor: "white"
+              }
+            }
           >
             <Card.Body>
               <Card.Title className="text-center">Create a Trip</Card.Title>
@@ -196,7 +198,12 @@ export class Trip extends Component {
                   <button
                     className="btn btn-lg btn-primary btn-block text-uppercase"
                     type="submit"
-                    style={{ backgroundColor: "transparent", color: "black" }}
+                    style={{
+                      backgroundColor: "transparent",
+                      color: "black",
+                      backgroundColor: "#4a7199",
+                      color: "#fff",
+                    }}
                     // onClick={
                     //     this.onCreateFieldClick();
                     // }
