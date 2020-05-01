@@ -442,30 +442,32 @@ export class Home extends Component {
         <div
           className="image-container"
           style={{
-            height: "100%",
+            minHeight: "100%",
             // backgroundImage:
             // "linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%)",
-            backgroundImage:
-              "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
+            // backgroundImage:
+            //   "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-            overflow: "auto",
-            display: "flex",
+            paddingBottom: "50px",
+            // backgroundPosition: "center",
+            // backgroundAttachment: "fixed",
+            // overflow: "auto",
+            // display: "flex",
           }}
         >
           <div style={{ height: "100%", display: "flex", width: "100%" }}>
             <Card
+              className="containerBorder"
               style={{
                 height: "60%",
                 margin: "3%",
-                borderRadius: "5px",
-                border: "2px solid gray",
+                // borderRadius: "5px",
+                // border: "2px solid gray",
                 boxSizing: "border-box",
-                borderRadius: "20px",
-                boxShadow: "8px 8px 50px #000",
-                color: "#6c757d",
+                // borderRadius: "20px",
+                // boxShadow: "8px 8px 50px #000",
+                // color: "#6c757d",
               }}
             >
               <Card.Body>
@@ -541,6 +543,7 @@ export class Home extends Component {
               </Card.Body>
             </Card>
             <div
+              className="containerBorder"
               style={{
                 disply: "flex",
                 flexDirection: "column",
@@ -550,15 +553,17 @@ export class Home extends Component {
             >
               <Alert show={this.state.showInvitations}>
                 <Card
-                  style={{
-                    margin: "3%",
-                    borderRadius: "5px",
-                    border: "2px solid gray",
-                    boxSizing: "border-box",
-                    borderRadius: "20px",
-                    boxShadow: "8px 8px 50px #000",
-                    color: "#6c757d",
-                  }}
+                  style={
+                    {
+                      // margin: "3%",
+                      // borderRadius: "5px",
+                      // border: "2px solid gray",
+                      // boxSizing: "border-box",
+                      // borderRadius: "20px",
+                      // boxShadow: "8px 8px 50px #000",
+                      // color: "#6c757d",
+                    }
+                  }
                 >
                   <Card.Header as="h3" style={{ padding: "10px" }}>
                     TRIP INVITATIONS
@@ -570,15 +575,17 @@ export class Home extends Component {
               </Alert>
               {this.state.trip_list.length != 0 ? (
                 <Card
-                  style={{
-                    margin: "3%",
-                    borderRadius: "5px",
-                    border: "2px solid gray",
-                    boxSizing: "border-box",
-                    borderRadius: "20px",
-                    boxShadow: "8px 8px 50px #000",
-                    color: "#6c757d",
-                  }}
+                  style={
+                    {
+                      // margin: "3%",
+                      // borderRadius: "5px",
+                      // border: "2px solid gray",
+                      // boxSizing: "border-box",
+                      // borderRadius: "20px",
+                      // boxShadow: "8px 8px 50px #000",
+                      // color: "#6c757d",
+                    }
+                  }
                 >
                   <Card.Header as="h3" style={{ padding: "10px" }}>
                     UPCOMING TRIPS
@@ -590,15 +597,17 @@ export class Home extends Component {
               )}
               {this.state.all_trip_list.length != 0 ? (
                 <Card
-                  style={{
-                    margin: "3%",
-                    borderRadius: "5px",
-                    border: "2px solid gray",
-                    boxSizing: "border-box",
-                    borderRadius: "20px",
-                    boxShadow: "8px 8px 50px #000",
-                    color: "#6c757d",
-                  }}
+                  style={
+                    {
+                      // margin: "3%",
+                      // borderRadius: "5px",
+                      // border: "2px solid gray",
+                      // boxSizing: "border-box",
+                      // borderRadius: "20px",
+                      // boxShadow: "8px 8px 50px #000",
+                      // color: "#6c757d",
+                    }
+                  }
                 >
                   <Card.Header as="h3" style={{ padding: "10px" }}>
                     ALL MY TRIPS

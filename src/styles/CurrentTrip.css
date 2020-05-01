@@ -1,5 +1,6 @@
 .image-container {
-  background-image: url("https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg");
+  /* background-image: url("https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg"); */
+  background-image: url("../components/images/bbb.jpg");
   background-repeat: "no-repeat";
   background-size: "100%";
   background-position: "center";
@@ -8,14 +9,13 @@
   flex-direction: "vertical";
   height: "100%";
 }
-/* .login-icon {
-  display: inline-block;
-  font-size: 40px;
-  line-height: 50px;
-  background-color: black;
-  color: white;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  vertical-align: bottom;
-} */
+
+.iContainer {
+  background-image: url("../components/images/bbb.jpg");
+}
+
+.containerBorder {
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15);
+  min-height: 395;
+}

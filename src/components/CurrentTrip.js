@@ -3,12 +3,14 @@ import { Card, Form, ListGroup, Nav, Tab, Tabs, Toast } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
+import "../styles/CurrentTrip.css";
 import AXIOS from "axios";
 import InviteBuddy from "./InviteBuddy";
 import InviteDriver from "./InviteDriver";
 import Poll from "react-polls";
 import { app } from "../utils/AxiosConfig";
 import Footer from "./TrippinPage/footer";
+import { ReactComponent as Calendar } from "./images/calendar.svg";
 
 class CurrentTrip extends Component {
   constructor(props) {
@@ -293,7 +295,7 @@ class CurrentTrip extends Component {
               backgroundColor: "white",
               borderRadius: "20px",
               margin: "15px 0",
-              boxShadow: "8px 8px 50px #000",
+              // boxShadow: "8px 8px 50px #000",
               width: "90%",
             }}
           >
@@ -918,32 +920,45 @@ class CurrentTrip extends Component {
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
-      <div style={{ height: "100%", minHeight: "100%" }}>
+      <div style={{ width: "100%", height: "100%", minHeight: "100%" }}>
         <div
           className="image-container"
           style={{
-            backgroundImage:
-              "url(https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg)",
+            // backgroundImage:
+            //   "url(https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg)",
+            // backgroundImage: "url('images/bbb.jpg')",
+
             backgroundRepeat: "no-repeat",
+
+            // backgroundImage:
+            //   "linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
 
-            display: "flex",
+            // display: "flex",
           }}
         >
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
+              // display: "flex",
+              // flexDirection: "column",
               height: "100%",
               width: "100%",
               minHeight: "100%",
             }}
           >
             <div>{this.state.invitation}</div>
-            <div style={{ display: "flex", height: "100%", minHeight: "100%" }}>
-              <div
+            {/* <div style={{ display: "flex", height: "100%", minHeight: "100%" }}> */}
+            <div
+              // className="container"
+              style={{
+                height: "100%",
+                minHeight: "100%",
+                width: "100%",
+              }}
+            >
+              {/* <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -951,24 +966,38 @@ class CurrentTrip extends Component {
                   height: "100%",
                   minHeight: "100%",
                 }}
+              > */}
+              <div
+                className="row"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  minHeight: "100%",
+                }}
               >
+                <div className="col-md-1"></div>
                 <div
-                  className="trip-info"
+                  className="col-md-3"
                   style={{
                     borderRadius: "5px",
                     height: "100%",
                     margin: "50px auto",
-                    border: "2px solid gray",
-                    boxSizing: "border-box",
-                    borderRadius: "20px",
-                    boxShadow: "8px 8px 50px #000",
-                    color: "#6c757d",
+                    // border: "2px solid gray",
+                    // boxSizing: "border-box",
+                    // borderRadius: "20px",
+                    // boxShadow: "8px 8px 50px #000",
+                    // border: "1px solid rgba(34,36,38,.15)",
+                    // boxShadow: "0 1px 2px 0 rgba(34,36,38,.15)",
+                    // color: "#6c757d",
                   }}
                 >
                   <Card
-                    style={{
-                      borderRadius: "20px",
-                    }}
+                    className="containerBorder"
+                    style={
+                      {
+                        // borderRadius: "20px",
+                      }
+                    }
                   >
                     <Card.Header as="h3" style={{ textTransform: "uppercase" }}>
                       {this.state.trip.trip_name}
@@ -1038,222 +1067,232 @@ class CurrentTrip extends Component {
                     </Card.Body>
                   </Card>
                 </div>
-              </div>
-              <div
-                style={{
-                  width: "35%",
-                  borderRadius: "5px",
-                  minHeight: "395px",
-                  margin: "50px auto",
-                  borderRadius: "20px",
-                  color: "#6c757d",
-                  paddingRight: "20px",
-                }}
-              >
-                <Card
+
+                <div
+                  className="col-md-5"
                   style={{
-                    boxShadow: "8px 8px 50px #000",
-                    borderRadius: "20px",
-                    width: "100%",
+                    width: "35%",
+                    minHeight: "395px",
+                    // height: "395px",
+                    margin: "50px auto",
+                    // borderRadius: "20px",
+                    // color: "#6c757d",
+                    // paddingRight: "20px",
                   }}
                 >
-                  <Card.Header>MAKE A POST</Card.Header>
-                  <Card.Body>
-                    <Tabs
-                      defaultActiveKey="comment"
-                      id="uncontrolled-tab-example"
-                    >
-                      <Tab
-                        eventKey="comment"
-                        title="Comment"
-                        style={{ marginTop: "20px", padding: "20px" }}
+                  <Card
+                    className="containerBorder"
+                    style={{
+                      // boxShadow: "8px 8px 50px #000",
+                      // borderRadius: "20px",
+                      width: "100%",
+                      // height: "100%",
+                    }}
+                  >
+                    <Card.Header>MAKE A POST</Card.Header>
+                    <Card.Body>
+                      <Tabs
+                        defaultActiveKey="comment"
+                        id="uncontrolled-tab-example"
                       >
-                        <form onSubmit={this.postComment}>
-                          <input
-                            required
-                            id="comment"
-                            type="textarea"
-                            rows="2"
-                            placeholder="Write post..."
-                            className="form-control"
-                            style={{
-                              width: "100%",
-                              // backgroundColor: "white",
-                              border: "1px solid #CED4DA",
-                              backgroundColor: "transparent",
-                              color: "#6c757d",
-                            }}
-                          ></input>
+                        <Tab
+                          eventKey="comment"
+                          title="Comment"
+                          style={{ marginTop: "20px", padding: "20px" }}
+                        >
+                          <form onSubmit={this.postComment}>
+                            <input
+                              required
+                              id="comment"
+                              type="textarea"
+                              rows="2"
+                              placeholder="Write post..."
+                              className="form-control"
+                              style={{
+                                width: "100%",
+                                // backgroundColor: "white",
+                                border: "1px solid #CED4DA",
+                                backgroundColor: "transparent",
+                                color: "#6c757d",
+                              }}
+                            ></input>
 
-                          <Button
-                            type="submit"
-                            variant="outline-warning"
-                            style={{
-                              float: "right",
-                            }}
-                          >
-                            POST
-                          </Button>
-                        </form>
-                      </Tab>
-                      <Tab
-                        eventKey="createpoll"
-                        title="CreatePoll"
-                        style={{ marginTop: "20px", padding: "20px" }}
-                      >
-                        <Form>
-                          <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Question</Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter question"
-                              name="question"
-                              value={this.state.question}
-                              onChange={this.update}
-                            />
-                          </Form.Group>
-                          <Form.Group key="1">
-                            <Form.Label>Option 1</Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter option"
-                              value={this.state.option1}
-                              name="option1"
-                              onChange={this.update}
-                            />
-                          </Form.Group>
-                          <Form.Group key="2">
-                            <Form.Label>Option 2</Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter option"
-                              value={this.state.option2}
-                              name="option2"
-                              onChange={this.update}
-                            />
-                          </Form.Group>
-                          <Form.Group key="3">
-                            <Form.Label>Option 3</Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter option"
-                              value={this.state.option3}
-                              name="option3"
-                              onChange={this.update}
-                            />
-                          </Form.Group>
-                          <Form.Group key="4">
-                            <Form.Label>Option 4</Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter option"
-                              value={this.state.option4}
-                              name="option4"
-                              onChange={this.update}
-                            />
-                          </Form.Group>
-                          <Form.Group>
-                            <Form.Label>Option 5</Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter option"
-                              value={this.state.option5}
-                              name="option5"
-                              onChange={this.update}
-                            />
-                          </Form.Group>
+                            <Button
+                              type="submit"
+                              variant="outline-warning"
+                              style={{
+                                float: "right",
+                                marginTop: "10px",
+                              }}
+                            >
+                              POST
+                            </Button>
+                          </form>
+                        </Tab>
+                        <Tab
+                          eventKey="createpoll"
+                          title="CreatePoll"
+                          style={{ marginTop: "20px", padding: "20px" }}
+                        >
+                          <Form>
+                            <Form.Group controlId="formBasicEmail">
+                              <Form.Label>Question</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter question"
+                                name="question"
+                                value={this.state.question}
+                                onChange={this.update}
+                              />
+                            </Form.Group>
+                            <Form.Group key="1">
+                              <Form.Label>Option 1</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter option"
+                                value={this.state.option1}
+                                name="option1"
+                                onChange={this.update}
+                              />
+                            </Form.Group>
+                            <Form.Group key="2">
+                              <Form.Label>Option 2</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter option"
+                                value={this.state.option2}
+                                name="option2"
+                                onChange={this.update}
+                              />
+                            </Form.Group>
+                            <Form.Group key="3">
+                              <Form.Label>Option 3</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter option"
+                                value={this.state.option3}
+                                name="option3"
+                                onChange={this.update}
+                              />
+                            </Form.Group>
+                            <Form.Group key="4">
+                              <Form.Label>Option 4</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter option"
+                                value={this.state.option4}
+                                name="option4"
+                                onChange={this.update}
+                              />
+                            </Form.Group>
+                            <Form.Group>
+                              <Form.Label>Option 5</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter option"
+                                value={this.state.option5}
+                                name="option5"
+                                onChange={this.update}
+                              />
+                            </Form.Group>
 
-                          <Button variant="primary" onClick={this.addPull}>
-                            Submit
-                          </Button>
-                        </Form>
-                      </Tab>
-                      <Tab
-                        eventKey="polls"
-                        title="Polls"
-                        style={{ marginTop: "20px", padding: "20px" }}
-                        onClick={this.loadPolls}
-                      >
-                        {this.state.polls}
-                      </Tab>
-                    </Tabs>
-                  </Card.Body>
-                </Card>
-                <div>{this.state.posts}</div>
-              </div>
+                            <Button variant="primary" onClick={this.addPull}>
+                              Submit
+                            </Button>
+                          </Form>
+                        </Tab>
+                        <Tab
+                          eventKey="polls"
+                          title="Polls"
+                          style={{ marginTop: "20px", padding: "20px" }}
+                          onClick={this.loadPolls}
+                        >
+                          {this.state.polls}
+                        </Tab>
+                      </Tabs>
+                    </Card.Body>
+                  </Card>
+                  <div>{this.state.posts}</div>
+                </div>
 
-              <div
-                style={{
-                  width: "30%",
-                  borderRadius: "5px",
-                  margin: "50px auto",
-                  borderRadius: "20px",
-                  color: "#6c757d",
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: "0 20px",
-                }}
-              >
-                <Button
-                  variant="info"
+                <div
+                  className="col-md-3"
                   style={{
-                    float: "center",
-                    boxShadow: "8px 8px 20px #000",
-                  }}
-                  onClick={this.showRecommendations}
-                >
-                  Show Recommendations
-                </Button>
-
-                <Button
-                  variant="info"
-                  style={{
-                    float: "center",
-                    boxShadow: "8px 8px 20px #000",
-                    marginTop: "10px",
-                  }}
-                  onClick={this.showSpendings}
-                >
-                  Show Spendings
-                </Button>
-
-                <Button
-                  variant="info"
-                  style={{
-                    float: "center",
-                    boxShadow: "8px 8px 20px #000",
-                    marginTop: "10px",
-                  }}
-                  onClick={this.emailInfo}
-                >
-                  Email Trip Info
-                </Button>
-                <Toast
-                  show={this.state.show_email_notification}
-                  onClose={this.closeEmailInfo}
-                  autohide={true}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    marginTop: "60px",
-                    // zIndex: "-1",
+                    // width: "30%",
+                    // borderRadius: "5px",
+                    margin: "50px auto",
+                    // borderRadius: "20px",
+                    color: "#6c757d",
+                    // padding: "0 20px",
                   }}
                 >
-                  <Toast.Header>
-                    <img
-                      src="holder.js/20x20?text=%20"
-                      className="rounded mr-2"
-                      alt=""
-                    />
-                    <strong className="mr-auto">Email Trip Info</strong>
-                  </Toast.Header>
-                  <Toast.Body>
-                    {this.state.email_success == true
-                      ? "Trip info has been email to the atteendees!"
-                      : "Email failed to send"}
-                  </Toast.Body>
-                </Toast>
+                  <Button
+                    variant="info"
+                    style={{
+                      display: "block",
+                      background: "#4a7199",
+                      width: "250px",
+                      // boxShadow: "8px 8px 20px #000",
+                    }}
+                    onClick={this.showRecommendations}
+                  >
+                    Show Recommendations
+                  </Button>
+
+                  <Button
+                    variant="info"
+                    style={{
+                      display: "block",
+                      background: "#4a7199",
+                      width: "250px",
+                      // boxShadow: "8px 8px 20px #000",
+                      marginTop: "10px",
+                    }}
+                    onClick={this.showSpendings}
+                  >
+                    Show Spendings
+                  </Button>
+
+                  <Button
+                    variant="info"
+                    style={{
+                      display: "block",
+                      background: "#4a7199",
+                      width: "250px",
+                      // boxShadow: "8px 8px 20px #000",
+                      marginTop: "10px",
+                    }}
+                    onClick={this.emailInfo}
+                  >
+                    Email Trip Info
+                  </Button>
+                  <Toast
+                    show={this.state.show_email_notification}
+                    onClose={this.closeEmailInfo}
+                    autohide={true}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      marginTop: "60px",
+                      // zIndex: "-1",
+                    }}
+                  >
+                    <Toast.Header>
+                      <img
+                        src="holder.js/20x20?text=%20"
+                        className="rounded mr-2"
+                        alt=""
+                      />
+                      <strong className="mr-auto">Email Trip Info</strong>
+                    </Toast.Header>
+                    <Toast.Body>
+                      {this.state.email_success == true
+                        ? "Trip info has been email to the atteendees!"
+                        : "Email failed to send"}
+                    </Toast.Body>
+                  </Toast>
+                </div>
               </div>
             </div>
           </div>
