@@ -51,9 +51,9 @@ export class Home extends Component {
         this.setState({ email: response.data.user.email });
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
-        /* if (response.data.user.image != null) {
+        if (response.data.user.image != null) {
           this.setState({ image: './uploads/userProfileImage/' + response.data.user.image });
-        } */
+        }
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown });
         }
@@ -108,7 +108,7 @@ export class Home extends Component {
 
     app
       .delete("buddy/" + OneTrip._id)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -593,8 +593,8 @@ export class Home extends Component {
                   <Card.Body>{this.state.trip_list}</Card.Body>
                 </Card>
               ) : (
-                ""
-              )}
+                  ""
+                )}
               {this.state.all_trip_list.length != 0 ? (
                 <Card
                   style={
@@ -617,8 +617,8 @@ export class Home extends Component {
                   </Card.Body>
                 </Card>
               ) : (
-                ""
-              )}
+                  ""
+                )}
             </div>
           </div>
         </div>

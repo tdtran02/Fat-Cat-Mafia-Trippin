@@ -113,11 +113,18 @@ class CurrentTrip extends Component {
   }
 
   getTripOrganizer(user) {
+    let profile;
+    if (user.image === './images/profile3.jpg') {
+      profile = 'profile3.jpg';
+    }
+    else {
+      profile = user.image;
+    }
     return (
       <Card style={{ margin: "0 auto", border: "transparent" }}>
         <Card.Body>
           <div>
-            <img style={{ width: "50px" }} src={require(`${user.image}`)} />
+            <img style={{ width: "50px" }} src={require(`./uploads/userProfileImage/${profile}`)} />
           </div>
           <div>
             <strong>{user.first_name}</strong>
@@ -135,7 +142,7 @@ class CurrentTrip extends Component {
         if (buddyarray[i].buddy_picture == undefined) {
           bpicture = "./images/profile1.jpg";
         } else {
-          bpicture = buddyarray[i].buddy_picture;
+          bpicture = "./uploads/userProfileImage/" + buddyarray[i].buddy_picture;
         }
         buddycardarray.push(
           <div key={i}>
@@ -208,7 +215,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -222,7 +229,7 @@ class CurrentTrip extends Component {
 
     app
       .put("trip/" + buddyyy.trip_id, newtrip)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => console.log(err));
 
     window.location = "/trip/" + this.state.trip_id;
@@ -240,7 +247,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -389,7 +396,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("comment/" + i._id, comment)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -455,7 +462,7 @@ class CurrentTrip extends Component {
     };
     app
       .post("buddy", buddy)
-      .then((response) => {})
+      .then((response) => { })
       .catch((err) => {
         console.log(err);
       });

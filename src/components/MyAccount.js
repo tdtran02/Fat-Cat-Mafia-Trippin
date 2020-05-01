@@ -13,7 +13,7 @@ export class MyAccount extends Component {
     this.state = {
       editPhotoShow: false,
       option: '2',
-      image: "./images/profilepic.png",
+      image: "./uploads/userProfileImage/placeholder.png",
       //image:"",
       id: "",
       email: "",
@@ -23,7 +23,7 @@ export class MyAccount extends Component {
       hometown: "",
       updateflag: false,
 
-      multerImage: "./images/placehoder.png",
+      multerImage: "./images/placeholder.png",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
