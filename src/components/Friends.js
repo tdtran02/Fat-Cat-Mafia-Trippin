@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Alert, Form } from "react-bootstrap";
-import { app } from '../utils/AxiosConfig';
+import { app } from "../utils/AxiosConfig";
+import Footer from "./TrippinPage/footer";
 //import AXIOS from "axios";
 
 import "../styles/Friends.css";
@@ -18,16 +19,14 @@ class Friends extends Component {
       search_email: "",
       search_message: "",
       search_boolean: false,
-      search_alert_variant: ""
+      search_alert_variant: "",
     };
   }
 
   componentDidMount() {
-    app.get(
-      "friend/" +
-      JSON.parse(localStorage.getItem("user"))._id
-    )
-      .then(res => {
+    app
+      .get("friend/" + JSON.parse(localStorage.getItem("user"))._id)
+      .then((res) => {
         this.setState({ friend: res.data.friend });
         if (res.data.confirmed_friends.length > 0) {
           this.setState({ has_friends: true });
@@ -36,34 +35,35 @@ class Friends extends Component {
           this.setState({ has_friend_requests: true });
         }
         this.setState({
-          friend_list: this.createList(res.data.confirmed_friends)
+          friend_list: this.createList(res.data.confirmed_friends),
         });
 
         this.setState({
           incoming_pending_friends: this.createPendingList(
             res.data.pending_friend_requests
             // res.data.confirmed_friends
-          )
+          ),
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
 
-  emailOnChange = e => {
+  emailOnChange = (e) => {
     this.setState({ search_email: e.target.value });
     this.setState({ search_boolean: false });
   };
 
   onSearchFieldClick = () => {
     const USER = JSON.parse(localStorage.getItem("user"));
-    app.post("friend/add", {
-      user_id: USER._id,
-      user_email: USER.email,
-      adding_friend: this.state.search_email
-    })
-      .then(response => {
+    app
+      .post("friend/add", {
+        user_id: USER._id,
+        user_email: USER.email,
+        adding_friend: this.state.search_email,
+      })
+      .then((response) => {
         this.setState({ search_boolean: true });
         this.setState({ search_message: response.data.respond_message });
         if (response.data.added) {
@@ -72,26 +72,28 @@ class Friends extends Component {
           this.setState({ search_alert_variant: "warning" });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
-  acceptFriend = e => {
+  acceptFriend = (e) => {
     let index = e.target.id.replace("incoming_friends", "");
-    app.post("friend/accept", {
-      user_id: this.state.friend.owner_id,
-      adding_friend: this.state.friend.incoming_pending_friends[index]
-    }).then(response => {
-      this.setState({
-        friend_list: this.createList(response.data.confirmed_friends)
+    app
+      .post("friend/accept", {
+        user_id: this.state.friend.owner_id,
+        adding_friend: this.state.friend.incoming_pending_friends[index],
+      })
+      .then((response) => {
+        this.setState({
+          friend_list: this.createList(response.data.confirmed_friends),
+        });
+        this.setState({
+          incoming_pending_friends: this.createPendingList(
+            response.data.pending_friend_requests
+          ),
+        });
       });
-      this.setState({
-        incoming_pending_friends: this.createPendingList(
-          response.data.pending_friend_requests
-        )
-      });
-    });
   };
 
   createList(list) {
@@ -105,7 +107,7 @@ class Friends extends Component {
               style={{
                 height: "100px",
                 width: "400px",
-                backgroundColor: "#6495ED"
+                backgroundColor: "#6495ED",
               }}
             ></div>
             <div className="card-info">
@@ -116,12 +118,12 @@ class Friends extends Component {
                   className="profile-photo-lg"
                 />
               ) : (
-                  <img
-                    src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                    alt="user"
-                    className="profile-photo-lg"
-                  />
-                )}
+                <img
+                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  alt="user"
+                  className="profile-photo-lg"
+                />
+              )}
 
               <div className="friend-info">
                 <span className="pull-right text-green">My Friend</span>
@@ -162,7 +164,7 @@ class Friends extends Component {
               style={{
                 height: "100px",
                 width: "400px",
-                backgroundColor: "#cd5c5c"
+                backgroundColor: "#cd5c5c",
               }}
             ></div>
             <div className="card-info">
@@ -173,12 +175,12 @@ class Friends extends Component {
                   className="profile-photo-lg"
                 />
               ) : (
-                  <img
-                    src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                    alt="user"
-                    className="profile-photo-lg"
-                  />
-                )}
+                <img
+                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  alt="user"
+                  className="profile-photo-lg"
+                />
+              )}
 
               <div className="friend-info">
                 <span
@@ -218,108 +220,112 @@ class Friends extends Component {
   render() {
     let user = JSON.parse(localStorage.getItem("user"));
     return (
-      <div className="container">
-        <div className="create-post">
-          <div className="row">
-            <div className="col-md-8">
-              <Form
-                style={{
-                  display: "table",
-                  tableLayout: "fixed"
-                }}
-              >
-                {user.image ? (
-                  <img
-                    src={require(`${user.image}`)}
-                    alt=""
-                    className="profile-photo-md"
-                  />
-                ) : (
+      <div style={{ height: "100%" }}>
+        <div className="container">
+          <div className="create-post">
+            <div className="row">
+              <div className="col-md-8">
+                <Form
+                  style={{
+                    display: "table",
+                    tableLayout: "fixed",
+                  }}
+                >
+                  {user.image ? (
+                    <img
+                      src={require(`${user.image}`)}
+                      alt=""
+                      className="profile-photo-md"
+                    />
+                  ) : (
                     <img
                       src="https://bootdey.com/img/Content/avatar/avatar1.png"
                       alt=""
                       className="profile-photo-md"
                     />
                   )}
-                <Form.Group
-                  style={{
-                    display: "table-cell",
-                    verticalAlign: "middle",
-                    textAlign: "center"
-                  }}
-                >
-                  <Form.Control
-                    className="ml-2"
-                    type="email"
-                    placeholder="name@example.com"
-                    onChange={this.emailOnChange}
-                  />
-                </Form.Group>
-                <Button
-                  className="ml-3"
-                  variant="info"
-                  onClick={this.onSearchFieldClick}
-                >
-                  Add
-                </Button>
-              </Form>
-              {this.state.search_boolean ? (
-                <Alert
-                  variant={this.state.search_alert_variant}
-                  style={{ marginBottom: "0", marginTop: "6px" }}
-                >
-                  {this.state.search_message}
-                </Alert>
-              ) : (
+                  <Form.Group
+                    style={{
+                      display: "table-cell",
+                      verticalAlign: "middle",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Form.Control
+                      className="ml-2"
+                      type="email"
+                      placeholder="name@example.com"
+                      onChange={this.emailOnChange}
+                    />
+                  </Form.Group>
+                  <Button
+                    className="ml-3"
+                    // variant="info"
+                    style={{ background: "#4a7199" }}
+                    onClick={this.onSearchFieldClick}
+                  >
+                    Add
+                  </Button>
+                </Form>
+                {this.state.search_boolean ? (
+                  <Alert
+                    variant={this.state.search_alert_variant}
+                    style={{ marginBottom: "0", marginTop: "6px" }}
+                  >
+                    {this.state.search_message}
+                  </Alert>
+                ) : (
                   ""
                 )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="row" style={{ width: "100%" }}>
-          <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
-            {this.state.has_friend_requests ? (
-              <span
-                style={{
-                  fontFamily: "Lemonada, cursive",
-                  fontSize: "14px",
-                  fontWeight: "normal"
-                }}
-              >
-                Pending Friend Requests
-              </span>
-            ) : (
+          <div className="row" style={{ width: "100%" }}>
+            <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
+              {this.state.has_friend_requests ? (
+                <span
+                  style={{
+                    fontFamily: "Lemonada, cursive",
+                    fontSize: "14px",
+                    fontWeight: "normal",
+                  }}
+                >
+                  Pending Friend Requests
+                </span>
+              ) : (
                 <span></span>
               )}
+            </div>
+            <div className="col-md-9"></div>
           </div>
-          <div className="col-md-9"></div>
-        </div>
-        {/* pending friends */}
-        <div className="friend-list">
-          <div className="row">{this.state.incoming_pending_friends}</div>
-        </div>
+          {/* pending friends */}
+          <div className="friend-list">
+            <div className="row">{this.state.incoming_pending_friends}</div>
+          </div>
 
-        <div className="row" style={{ width: "100%" }}>
-          <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
-            {this.state.has_friends ? (
-              <span
-                style={{
-                  fontFamily: "Lemonada, cursive",
-                  fontSize: "14px"
-                }}
-              >
-                My Friends
-              </span>
-            ) : (
+          <div className="row" style={{ width: "100%" }}>
+            <div className="col-md-3" style={{ margin: "0 auto 20px 0" }}>
+              {this.state.has_friends ? (
+                <span
+                  style={{
+                    fontFamily: "Lemonada, cursive",
+                    fontSize: "14px",
+                  }}
+                >
+                  My Friends
+                </span>
+              ) : (
                 <span></span>
               )}
+            </div>
+            <div className="col-md-9"></div>
           </div>
-          <div className="col-md-9"></div>
+          {/* friends */}
+          <div className="friend-list">
+            <div className="row">{this.state.friend_list}</div>
+          </div>
         </div>
-        {/* friends */}
-        <div className="friend-list">
-          <div className="row">{this.state.friend_list}</div>
-        </div>
+        <Footer />
       </div>
     );
   }

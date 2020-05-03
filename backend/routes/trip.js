@@ -19,6 +19,7 @@ TRIPROUTES.route("/trip").post(function (req, res) {
     buddies: req.body.buddies,
     posts: req.body.posts,
     polls: req.body.polls,
+    trip_image: "./images/tripimage.jpg",
   });
   T.save()
     .then((x) => {
@@ -64,6 +65,19 @@ TRIPROUTES.route("/trip/addbuddy").post(function (req, res) {
 });
 
 TRIPROUTES.route("/trip/:id").get(function (req, res) {
+  TRIP.find({ owner_id: req.params.id }).then((trip) => {
+    if (trip != null) {
+      res.status(200).json({
+        trip: trip,
+      });
+    } else {
+      res.status(400).json({
+        trip: null,
+      });
+    }
+  });
+});
+TRIPROUTES.route("/currentdatetrip/:id").get(function (req, res) {
   TRIP.find({ owner_id: req.params.id, start_date: { $gte: new Date() } })
     .sort({ start_date: 1 })
     .then((trip) => {

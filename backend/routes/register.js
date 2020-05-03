@@ -6,7 +6,7 @@ const FRIEND = require("../models/friend.model");
 const BCRYPT = require("bcrypt");
 const SALTROUNDS = 10;
 
-REGISTERROUTES.route("/user/register").post(function(req, res) {
+REGISTERROUTES.route("/user/register").post(function (req, res) {
   USER.findOne({ email: req.body.email }).then(user => {
     if (user != null) {
       res.status(200).json({
@@ -21,7 +21,7 @@ REGISTERROUTES.route("/user/register").post(function(req, res) {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         password: HASH,
-        image: "./images/profile3.jpg",
+        image: "placeholder.png",
         hometown: null
       });
 

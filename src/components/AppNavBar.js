@@ -23,6 +23,7 @@ import Spending from "./Spending";
 import { DropdownButton } from "react-bootstrap";
 import Recommendation from "./Recommendation";
 import ForgotPassword from "./ForgotPassword";
+import FAQ from "./FAQ";
 
 import ResetPassword from "./ResetPassword";
 //import UpdatePasswordViaEmail from "./UpdatePasswordViaEmail";
@@ -103,7 +104,15 @@ class AppNavBar extends Component {
     return (
       <div style={{ height: "100%" }}>
         <Router>
-          <Navbar sticky="top" color="dark" dark expand="sm">
+          {/* <Navbar sticky="top" color="dark" dark expand="sm"> */}
+          <Navbar
+            sticky="top"
+            expand="sm"
+            style={{
+              background: "#242529",
+              boxShadow: "0px 2px 3px rgba(0, 0, 0, 0.04)",
+            }}
+          >
             <Container>
               <NavbarBrand href="/">
                 <img
@@ -113,14 +122,25 @@ class AppNavBar extends Component {
                   className="d-inline-block align-top"
                 />{" "}
               </NavbarBrand>
+              <span
+                style={{
+                  color: "#fff",
+                  fontFamily: "arial",
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  letterSpacing: "1px",
+                }}
+              >
+                Trippin
+              </span>
               <NavbarToggler onClick={this.toggle} />
-              <Collapse className="bg-dark" isOpen={this.state.isOpen} navbar>
+              <Collapse
+                // className="bg-dark"
+                isOpen={this.state.isOpen}
+                navbar
+                style={{ background: "#242529" }}
+              >
                 <Nav className="ml-auto" navbar>
-                  {/*                   <NavItem>
-                    <NavLink tag={RRNavLink} exact to="/email">
-                      Email
-                    </NavLink>
-                  </NavItem> */}
                   {this.state.user ? LOGGED_IN : LOGGED_OUT}
                 </Nav>
               </Collapse>
@@ -146,6 +166,9 @@ class AppNavBar extends Component {
             </Route>
             <Route path="/myAccount">
               <MyAccount />
+            </Route>
+            <Route path="/FAQ">
+              <FAQ />
             </Route>
             <Route path="/email">
               <Email />
