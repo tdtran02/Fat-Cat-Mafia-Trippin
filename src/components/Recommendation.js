@@ -36,7 +36,8 @@ class Recommendation extends React.Component {
       destination: null,
       startDate: null,
       endDate: null,
-      show_event: []
+      show_event: [],
+      eventCopy: []
     };
   }
 
@@ -98,7 +99,7 @@ class Recommendation extends React.Component {
         console.log(err);
       });
 
-
+/*
     app.get("tripinfo/" + this.state.trip_id)
       .then(res => {
         return app.post("question/eventlocation", {
@@ -115,6 +116,7 @@ class Recommendation extends React.Component {
         console.log(err);
       });
 
+*/
 
   }
 
@@ -227,7 +229,8 @@ class Recommendation extends React.Component {
     let event_elements = [];
     // console.log("in createEventList: " + list);
     for (let i = 0; i < list.length; i++) {
-      this.state.show_event.push(
+      //this.state.show_event.push(
+        event_elements.push(
         <div key={i}>
           <Card
             style={{
@@ -326,64 +329,64 @@ class Recommendation extends React.Component {
       );
     }
     //console.log("at the end of createEventList: " + this.state.show_event);
-    this.setState({ event_list: this.state.show_event });
+    //this.setState({ event_list: this.state.show_event });
     return event_elements;
   }
 
   createEvent(key, option) {
-    let eventCopy = [];
     let selectEndDate = null;
     let selectStartDate = null;
     const { startDate, endDate, destination } = this.state;
 
-    console.log("startDate: " + startDate + " endDate: " + endDate);
-    if ((startDate.getMonth() + 1) < 10 || (startDate.getDate() + 1) < 10) {
-      if ((startDate.getMonth() + 1) < 10 && (startDate.getDate() + 1) < 10) {
-        selectStartDate = ((startDate.getFullYear() + "-" + "0" + (startDate.getMonth() + 1) + "-" + "0" + (startDate.getDate() + 1)));
+    if ((startDate.getMonth() + 1) < 10 || (startDate.getDate()) < 10) {
+      if ((startDate.getMonth() + 1) < 10 && (startDate.getDate()) < 10) {
+        selectStartDate = ((startDate.getFullYear() + "-" + "0" + (startDate.getMonth() + 1) + "-" + "0" + (startDate.getDate())));
       }
-      else if ((startDate.getMonth() + 1) < 10 && (startDate.getDate() + 1) >= 10) {
-        selectStartDate = ((startDate.getFullYear() + "-" + "0" + (startDate.getMonth() + 1) + "-" + (startDate.getDate() + 1)));
+      else if ((startDate.getMonth() + 1) < 10 && (startDate.getDate()) >= 10) {
+        selectStartDate = ((startDate.getFullYear() + "-" + "0" + (startDate.getMonth() + 1) + "-" + (startDate.getDate())));
 
       }
-      else if ((startDate.getMonth() + 1) >= 10 && (startDate.getDate() + 1) < 10) {
-        selectStartDate = ((startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + "0" + (startDate.getDate() + 1)));
+      else if ((startDate.getMonth() + 1) >= 10 && (startDate.getDate()) < 10) {
+        selectStartDate = ((startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + "0" + (startDate.getDate())));
       }
     }
     else {
-      selectStartDate = ((startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + (startDate.getDate() + 1)));
+      selectStartDate = ((startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + (startDate.getDate())));
     }
 
-    if ((endDate.getMonth() + 1) < 10 || (endDate.getDate() + 1) < 10) {
-      if ((endDate.getMonth() + 1) < 10 && (endDate.getDate() + 1) < 10) {
-        selectEndDate = ((endDate.getFullYear() + "-" + "0" + (endDate.getMonth() + 1) + "-" + "0" + (endDate.getDate() + 1)));
+    if ((endDate.getMonth() + 1) < 10 || (endDate.getDate()) < 10) {
+      if ((endDate.getMonth() + 1) < 10 && (endDate.getDate()) < 10) {
+        selectEndDate = ((endDate.getFullYear() + "-" + "0" + (endDate.getMonth() + 1) + "-" + "0" + (endDate.getDate())));
       }
-      else if ((endDate.getMonth() + 1) < 10 && (endDate.getDate() + 1) >= 10) {
-        selectEndDate = ((endDate.getFullYear() + "-" + "0" + (endDate.getMonth() + 1) + "-" + (endDate.getDate() + 1)));
+      else if ((endDate.getMonth() + 1) < 10 && (endDate.getDate()) >= 10) {
+        selectEndDate = ((endDate.getFullYear() + "-" + "0" + (endDate.getMonth() + 1) + "-" + (endDate.getDate())));
 
       }
-      else if ((endDate.getMonth() + 1) >= 10 && (endDate.getDate() + 1) < 10) {
-        selectEndDate = ((endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + "0" + (endDate.getDate() + 1)));
+      else if ((endDate.getMonth() + 1) >= 10 && (endDate.getDate()) < 10) {
+        selectEndDate = ((endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + "0" + (endDate.getDate())));
       }
     }
     else {
-      selectEndDate = ((endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + (endDate.getDate() + 1)));
+      selectEndDate = ((endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + (endDate.getDate())));
     }
     fetch("https://app.ticketmaster.com/discovery/v2/events.json?sort=date,asc&startDateTime=" + selectStartDate + "T00:00:00Z&endDateTime=" + selectEndDate + "T00:00:00Z&size=200&radius=75&unit=miles&city=" + destination + "&apikey=" + key)
       .then(res => res.json())
       .then(json => {
         let j = 0;
         for (let i = 0; i < json._embedded.events.length; i++) {
-          eventCopy[j] = (json._embedded.events[i]);
+          this.state.eventCopy[j] = (json._embedded.events[i]);
           j = j + 1;
         }
         // console.log("in create Event: " + eventCopy);
-        this.setState({ event_list: eventCopy });
-        eventCopy = this.createEventList(eventCopy, "add");
+       // this.setState({ event_list: eventCopy });
+      this.setState({
+        location_events: this.createEventList(this.state.eventCopy, "add")
+       });
       })
       .catch(err => {
         console.log(err);
       });
-    return eventCopy;
+    return this.state.location_events;
   }
 
   openLink = (e) => {
@@ -395,6 +398,44 @@ class Recommendation extends React.Component {
     app.post("trip/addtotriplocation", {
       trip_id: this.state.trip_id,
       trip_location: this.state.locations[i],
+      trip_location_events: this.state.eventCopy[i]
+    })
+      .then(res => {
+        return app.post("question/searchlocation", {
+          trip_id: this.state.trip_id,
+          search_term: this.state.search_term
+        });
+      })
+      .then(r => {
+        this.setState({ trip_locations: r.data.user_locations });
+        this.setState({
+          trip_location_elements: this.createList(
+            this.state.trip_locations,
+            "delete"
+          ),
+          trip_event_elements: this.createEventList(
+            this.state.eventCopy,
+            "delete"
+          )
+        });
+
+        this.setState({ locations: r.data.recs });
+        this.setState({
+          location_elements: this.createList(this.state.locations, "add"),
+          event_list: this.createEventList(this.state.eventCopy, "add")
+        });
+        this.setState({ loading: false });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  deleteTripLocation(e, i) {
+    this.setState({ loading: true });
+    app.post("trip/deletefromtriplocations", {
+      trip_id: this.state.trip_id,
+      trip_location: this.state.trip_locations[i],
       trip_location_events: this.state.location_events[i]
     })
       .then(res => {
@@ -410,8 +451,8 @@ class Recommendation extends React.Component {
             this.state.trip_locations,
             "delete"
           ),
-          trip_event_elements: this.createEvent(
-            this.state.trip_location_events,
+          trip_event_elements: this.createEventList(
+            this.state.eventCopy,
             "delete"
           )
         });
@@ -419,41 +460,7 @@ class Recommendation extends React.Component {
         this.setState({ locations: r.data.recs });
         this.setState({
           location_elements: this.createList(this.state.locations, "add"),
-          event_list: this.createEvent(r.data.eventKey, "add")
-        });
-        this.setState({ loading: false });
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-
-  deleteTripLocation(e, i) {
-    this.setState({ loading: true });
-    app.post("trip/deletefromtriplocations", {
-      trip_id: this.state.trip_id,
-      trip_location: this.state.trip_locations[i],
-      trip_location_events: this.state.show_event[i]
-    })
-      .then(res => {
-        return app.post("question/searchlocation", {
-          trip_id: this.state.trip_id,
-          search_term: this.state.search_term
-        });
-      })
-      .then(r => {
-        this.setState({ trip_locations: r.data.user_locations });
-        this.setState({
-          trip_location_elements: this.createList(
-            this.state.trip_locations,
-            "delete"
-          )
-        });
-
-        this.setState({ locations: r.data.recs });
-        this.setState({
-          location_elements: this.createList(this.state.locations, "add"),
-          location_events: this.createEvent(r.data.eventKey, "add")
+          event_list: this.createEventList(this.state.eventCopy, "add")
         });
         this.setState({ loading: false });
       })
@@ -503,7 +510,7 @@ class Recommendation extends React.Component {
           this.setState({ locations: r.data.recs });
           this.setState({
             location_elements: this.createList(this.state.locations, "add"),
-            location_events: this.createEvent(r.data.eventKey, "add")
+            event_list: this.createEventList(this.state.eventCopy, "add")
           });
           this.setState({ loading: false });
         })
@@ -513,7 +520,7 @@ class Recommendation extends React.Component {
     }
   };
   render() {
-    console.log(this.state.show_event.length);
+    console.log(this.state);
     // console.log("location_elements" + this.state.location_elements.length);
     //console.log("eventlist: " + this.state.event_list);
     //this.setState({event_list: this.createEventList(this.state.event_list, "add")});
@@ -651,7 +658,7 @@ class Recommendation extends React.Component {
                     margin: "0 auto"
                   }}
                 >
-                  {this.state.show_event}
+                  {this.state.location_events}
                 </Slider>
 
               ) : (
