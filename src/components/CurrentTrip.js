@@ -1273,6 +1273,7 @@ class CurrentTrip extends Component {
                   >
                     Email Trip Info
                   </Button>
+
                   <Toast
                     show={this.state.show_email_notification}
                     onClose={this.closeEmailInfo}
