@@ -267,7 +267,7 @@ class CurrentTrip extends Component {
         for (let j = 0; j < commentlist.length; j++) {
           let text = commentlist[j].text;
           if (commentlist[j].user_pic != null) {
-            this.setState({ commentuserimg: commentlist[j].user_pic });
+            this.setState({ commentuserimg: "./uploads/userProfileImage/" + commentlist[j].user_pic });
           } else {
             this.setState({ commentuserimg: "./images/profilepic.png" });
           }
@@ -571,7 +571,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={require(`${user.image}`)}
+                src={require("./uploads/userProfileImage/"+`${user.image}`)}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
@@ -640,7 +640,7 @@ class CurrentTrip extends Component {
               >
                 <img
                   style={{ width: "50px" }}
-                  src={require(`${user.image}`)}
+                  src={require("./uploads/userProfileImage/"+`${user.image}`)}
                   alt="userimage"
                 />
                 <div style={{ margin: "15px 5px 0 15px" }}>
@@ -692,7 +692,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={require(`${user.image}`)}
+                src={require("./uploads/userProfileImage/"+`${user.image}`)}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>

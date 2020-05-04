@@ -170,13 +170,14 @@ class Friends extends Component {
             <div className="card-info">
               {list[i].image ? (
                 <img
-                  src={require(`${list[i].image}`)}
+                  src={require('./uploads/userProfileImage/'+`${list[i].image}`)}
                   alt="user"
                   className="profile-photo-lg"
                 />
               ) : (
                 <img
-                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  //src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  src={require('./uploads/userProfileImage/'+`${list[i].image}`)}
                   alt="user"
                   className="profile-photo-lg"
                 />
@@ -233,13 +234,14 @@ class Friends extends Component {
                 >
                   {user.image ? (
                     <img
-                      src={require(`${user.image}`)}
+                      src={require('./uploads/userProfileImage/'+`${user.image}`)}
                       alt=""
                       className="profile-photo-md"
                     />
                   ) : (
                     <img
-                      src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                      //src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                      src={require('./uploads/userProfileImage/'+`${user.image}`)}
                       alt=""
                       className="profile-photo-md"
                     />
