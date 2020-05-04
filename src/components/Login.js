@@ -37,7 +37,7 @@ class Login extends Component {
       .then(response => {
         if (response.data.logged_in) {
           localStorage.setItem("user", JSON.stringify(response.data.user));
-          document.location.href = "/home";
+          document.location.href = "/Home";
         } else {
           this.setState({ show_message: true });
         }

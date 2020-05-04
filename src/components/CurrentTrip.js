@@ -51,6 +51,8 @@ class CurrentTrip extends Component {
       option5: "",
       polls: [],
       trip_image: "./images/tripimage.jpg",
+
+      showInviteButton: true,
     };
   }
 
@@ -67,6 +69,9 @@ class CurrentTrip extends Component {
         // console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
         if (result.data.trip[0].trip_image !== undefined) {
           this.setState({ trip_image: result.data.trip[0].trip_image });
+        }
+        if (result.data.trip[0].owner_id === JSON.parse(localStorage.getItem('user'))._id) {
+          this.setState({ showInviteButton: false });
         }
 
         return app.get("user/" + this.state.trip.owner_id);
@@ -113,11 +118,18 @@ class CurrentTrip extends Component {
   }
 
   getTripOrganizer(user) {
+    let profile;
+    if (user.image === './images/profile3.jpg') {
+      profile = 'profile3.jpg';
+    }
+    else {
+      profile = user.image;
+    }
     return (
       <Card style={{ margin: "0 auto", border: "transparent" }}>
         <Card.Body>
           <div>
-            <img style={{ width: "50px" }} src={require(`${user.image}`)} />
+            <img style={{ width: "50px" }} src={require(`./uploads/userProfileImage/${profile}`)} />
           </div>
           <div>
             <strong>{user.first_name}</strong>
@@ -135,7 +147,7 @@ class CurrentTrip extends Component {
         if (buddyarray[i].buddy_picture == undefined) {
           bpicture = "./images/profile1.jpg";
         } else {
-          bpicture = buddyarray[i].buddy_picture;
+          bpicture = "./uploads/userProfileImage/" + buddyarray[i].buddy_picture;
         }
         buddycardarray.push(
           <div key={i}>
@@ -208,7 +220,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -222,7 +234,7 @@ class CurrentTrip extends Component {
 
     app
       .put("trip/" + buddyyy.trip_id, newtrip)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => console.log(err));
 
     window.location = "/trip/" + this.state.trip_id;
@@ -240,7 +252,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -260,7 +272,7 @@ class CurrentTrip extends Component {
         for (let j = 0; j < commentlist.length; j++) {
           let text = commentlist[j].text;
           if (commentlist[j].user_pic != null) {
-            this.setState({ commentuserimg: commentlist[j].user_pic });
+            this.setState({ commentuserimg: "./uploads/userProfileImage/" + commentlist[j].user_pic });
           } else {
             this.setState({ commentuserimg: "./images/profilepic.png" });
           }
@@ -389,7 +401,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("comment/" + i._id, comment)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -455,7 +467,7 @@ class CurrentTrip extends Component {
     };
     app
       .post("buddy", buddy)
-      .then((response) => {})
+      .then((response) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -564,7 +576,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={require(`${user.image}`)}
+                src={require("./uploads/userProfileImage/" + `${user.image}`)}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
@@ -633,7 +645,7 @@ class CurrentTrip extends Component {
               >
                 <img
                   style={{ width: "50px" }}
-                  src={require(`${user.image}`)}
+                  src={require("./uploads/userProfileImage/" + `${user.image}`)}
                   alt="userimage"
                 />
                 <div style={{ margin: "15px 5px 0 15px" }}>
@@ -685,7 +697,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={require(`${user.image}`)}
+                src={require("./uploads/userProfileImage/" + `${user.image}`)}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
@@ -1053,6 +1065,8 @@ class CurrentTrip extends Component {
                       </Card.Title>
                       <div>{this.state.acceptedInvitations}</div>
                       <Button
+                        disabled={this.state.showInviteButton}
+                        show="false"
                         onClick={() => this.setState({ inviteBuddyShow: true })}
                       >
                         INVITE
@@ -1266,6 +1280,7 @@ class CurrentTrip extends Component {
                   >
                     Email Trip Info
                   </Button>
+
                   <Toast
                     show={this.state.show_email_notification}
                     onClose={this.closeEmailInfo}

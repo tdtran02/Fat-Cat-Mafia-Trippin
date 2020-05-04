@@ -168,4 +168,19 @@ USERROUTES.route("/user/:id/profile/:filename").get(function (req, req) {
   });
 });
 
+USERROUTES.route("/user/delete/:id").delete(function (req, res) {
+  USER.findOneAndDelete({ _id: req.params.id }).then((user) => {
+    if (user != null) {
+      res.status(200).json({
+        response_message: "User deleted!",
+        user: user,
+      });
+    } else {
+      res.status(400).json({
+        user: null,
+      });
+    }
+  });
+});
+
 module.exports = USERROUTES;

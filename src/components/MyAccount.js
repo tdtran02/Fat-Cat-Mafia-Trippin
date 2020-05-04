@@ -13,7 +13,7 @@ export class MyAccount extends Component {
     this.state = {
       editPhotoShow: false,
       option: '2',
-      image: "./images/profilepic.png",
+      image: "./uploads/userProfileImage/placeholder.png",
       //image:"",
       id: "",
       email: "",
@@ -23,7 +23,7 @@ export class MyAccount extends Component {
       hometown: "",
       updateflag: false,
 
-      multerImage: "./images/placehoder.png",
+      multerImage: "./images/placeholder.png",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,7 +31,7 @@ export class MyAccount extends Component {
 
     if (JSON.parse(localStorage.getItem('user')).image == null) {
       this.state = {
-        image: "./images/profilepic.png"
+        image: "./uploads/userProfileImage/placeholder.png"
       };
     }
     // else{
@@ -107,6 +107,15 @@ export class MyAccount extends Component {
         alert("Error while uploading image using multer");
         this.setDefaultImage("multer");
       });
+      /* 
+        then user != tripbuddy 
+        need to update tripbuddy_picture
+        user may in many trips as tripbuddies
+      */
+      app.put('buddy/profile/' + JSON.parse(localStorage.getItem('user'))._id).then(res => console.log(res.data))
+        .catch(err => { console.log(err) 
+      });
+      
       // const update = {
       //   image: {
       //     owner_id: JSON.parse(localStorage.getItem('user'))._id,
@@ -187,7 +196,7 @@ export class MyAccount extends Component {
       <div style={{ height: "100%" }}>
         <div className="image-container" style={{
           height: "100%",
-          backgroundImage: "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
+          //  backgroundImage: "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -301,7 +310,7 @@ export class MyAccount extends Component {
                       UPDATE</Button>
                   </div>
 
-                  <div className="image-container">
+                  <div className="image-container1">
                     <div className="process">
                       <h4 className="process_heading">Profile Image: </h4>
                       <p className="process_details">Upload image from your local device</p>

@@ -91,7 +91,7 @@ export class InviteDriver extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={require(`${user.image}`)}
+                src={require(`./uploads/userProfileImage/${user.image}`)}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>

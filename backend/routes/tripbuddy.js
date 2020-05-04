@@ -174,4 +174,32 @@ TRIPBUDDYROUTES.route("/buddyinvite").put(function (req, res) {
   });
 });
 
+TRIPBUDDYROUTES.route("/buddy/profile/:id").put(function(req, res){
+  let newUser;
+  USER.findOne({
+    _id: req.params.id
+  }).then(user =>{
+      newUser = user;
+      if(user == null){
+          console.error("This user is not existed.");
+          res.status(403).send("User has not found in db.");
+      }else if(user != null){
+          console.log("User is existed in db.");
+          // let newImageId = image.id;
+          console.log(newUser);
+          TRIPBUDDY.updateMany(
+            { buddy_id: req.params.id},
+            {
+              $set: {buddy_picture: newUser.image}
+            }).then(() => {
+                console.log("Buddy profile image: updated");
+                res.status(200).send({ message: "Buddy image:id updated" });
+          });
+      } else {
+          console.error("No user exists in db to update");
+          res.status(401).json("No user exists in db to update");
+      }
+  });
+});
+
 module.exports = TRIPBUDDYROUTES;

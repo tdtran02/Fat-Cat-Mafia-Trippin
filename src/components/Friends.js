@@ -20,10 +20,21 @@ class Friends extends Component {
       search_message: "",
       search_boolean: false,
       search_alert_variant: "",
+      user_profile_image: "./uploads/userProfileImage/placeholder.png",
     };
   }
 
   componentDidMount() {
+    app.get('user/' + JSON.parse(localStorage.getItem('user'))._id)
+      .then(response => {
+        console.log(response.data.user.email);
+        if (response.data.user.image != null) {
+          this.setState({ user_profile_image: './uploads/userProfileImage/' + response.data.user.image });
+        }
+      }).catch(function (error) {
+          console.log(error);
+    });
+
     app
       .get("friend/" + JSON.parse(localStorage.getItem("user"))._id)
       .then((res) => {
@@ -113,7 +124,7 @@ class Friends extends Component {
             <div className="card-info">
               {list[i].image ? (
                 <img
-                  src={require(`${list[i].image}`)}
+                  src={require('./uploads/userProfileImage/'+`${list[i].image}`)}
                   alt="user"
                   className="profile-photo-lg"
                 />
@@ -170,13 +181,14 @@ class Friends extends Component {
             <div className="card-info">
               {list[i].image ? (
                 <img
-                  src={require(`${list[i].image}`)}
+                  src={require('./uploads/userProfileImage/'+`${list[i].image}`)}
                   alt="user"
                   className="profile-photo-lg"
                 />
               ) : (
                 <img
-                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  //src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  src={require('./uploads/userProfileImage/'+`${list[i].image}`)}
                   alt="user"
                   className="profile-photo-lg"
                 />
@@ -218,7 +230,7 @@ class Friends extends Component {
   }
 
   render() {
-    let user = JSON.parse(localStorage.getItem("user"));
+    //let user = JSON.parse(localStorage.getItem("user"));
     return (
       <div style={{ height: "100%" }}>
         <div className="container">
@@ -231,19 +243,25 @@ class Friends extends Component {
                     tableLayout: "fixed",
                   }}
                 >
-                  {user.image ? (
+                  {/* {user.image ? (
                     <img
-                      src={require(`${user.image}`)}
+                      //src={require('./uploads/userProfileImage/'+`${user.image}`)}
                       alt=""
                       className="profile-photo-md"
                     />
                   ) : (
                     <img
-                      src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                      //src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                      src={require('./uploads/userProfileImage/'+`${user.image}`)}
                       alt=""
                       className="profile-photo-md"
                     />
-                  )}
+                  )} */}
+                  {<img
+                      src={require(`${this.state.user_profile_image}`)}
+                      alt=""
+                      className="profile-photo-md"
+                    />}
                   <Form.Group
                     style={{
                       display: "table-cell",
