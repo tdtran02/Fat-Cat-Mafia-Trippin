@@ -311,4 +311,22 @@ UPLOADROUTES.route("/trip/deleteImage/:id").delete(function (req, res) {
       });
 });
 
+// delete by trip ID, each trip has only one profile image
+UPLOADROUTES.route("/trip/profile/:id").delete(function (req, res) {
+    // !!!owner_id = trip_id
+    IMAGE.findOneAndRemove({ owner_id: req.params.id }).then((image) => {
+        if (image != null) {
+            fs.unlinkSync(image.imageData);
+            console.log('successfully deleted trip profile image');
+            res.status(200).json({
+                image: image,
+            });
+        } else {
+          res.status(400).json({
+            image: null,
+          });
+        }
+      });
+});
+
 module.exports = UPLOADROUTES;
