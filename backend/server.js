@@ -28,7 +28,7 @@ const POLLSROUTES = require("./routes/polls");
 const env = process.env.NODE_ENV;
 const PORT =
   env === "production"
-    ? "ec2-3-101-14-234.us-west-1.compute.amazonaws.com/api"
+    ? "trippin.website/api"
     : 4000;
 app.use(cors());
 app.use(bodyParser.json());
