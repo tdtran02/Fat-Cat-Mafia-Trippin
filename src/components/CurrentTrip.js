@@ -51,6 +51,8 @@ class CurrentTrip extends Component {
       option5: "",
       polls: [],
       trip_image: "./images/tripimage.jpg",
+
+      showInviteButton: true,
     };
   }
 
@@ -67,6 +69,9 @@ class CurrentTrip extends Component {
         // console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
         if (result.data.trip[0].trip_image !== undefined) {
           this.setState({ trip_image: result.data.trip[0].trip_image });
+        }
+        if (result.data.trip[0].owner_id === JSON.parse(localStorage.getItem('user'))._id) {
+          this.setState({ showInviteButton: false });
         }
 
         return app.get("user/" + this.state.trip.owner_id);
@@ -571,7 +576,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={require("./uploads/userProfileImage/"+`${user.image}`)}
+                src={require("./uploads/userProfileImage/" + `${user.image}`)}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
@@ -640,7 +645,7 @@ class CurrentTrip extends Component {
               >
                 <img
                   style={{ width: "50px" }}
-                  src={require("./uploads/userProfileImage/"+`${user.image}`)}
+                  src={require("./uploads/userProfileImage/" + `${user.image}`)}
                   alt="userimage"
                 />
                 <div style={{ margin: "15px 5px 0 15px" }}>
@@ -692,7 +697,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={require("./uploads/userProfileImage/"+`${user.image}`)}
+                src={require("./uploads/userProfileImage/" + `${user.image}`)}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
@@ -1060,6 +1065,8 @@ class CurrentTrip extends Component {
                       </Card.Title>
                       <div>{this.state.acceptedInvitations}</div>
                       <Button
+                        disabled={this.state.showInviteButton}
+                        show="false"
                         onClick={() => this.setState({ inviteBuddyShow: true })}
                       >
                         INVITE
