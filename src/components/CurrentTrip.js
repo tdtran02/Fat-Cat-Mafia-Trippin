@@ -70,7 +70,10 @@ class CurrentTrip extends Component {
         if (result.data.trip[0].trip_image !== undefined) {
           this.setState({ trip_image: result.data.trip[0].trip_image });
         }
-        if (result.data.trip[0].owner_id === JSON.parse(localStorage.getItem('user'))._id) {
+        if (
+          result.data.trip[0].owner_id ===
+          JSON.parse(localStorage.getItem("user"))._id
+        ) {
           this.setState({ showInviteButton: false });
         }
 
@@ -119,17 +122,19 @@ class CurrentTrip extends Component {
 
   getTripOrganizer(user) {
     let profile;
-    if (user.image === './images/profile3.jpg') {
-      profile = 'profile3.jpg';
-    }
-    else {
+    if (user.image === "./images/profile3.jpg") {
+      profile = "profile3.jpg";
+    } else {
       profile = user.image;
     }
     return (
       <Card style={{ margin: "0 auto", border: "transparent" }}>
         <Card.Body>
           <div>
-            <img style={{ width: "50px" }} src={require(`./uploads/userProfileImage/${profile}`)} />
+            <img
+              style={{ width: "50px" }}
+              src={require(`./uploads/userProfileImage/${profile}`)}
+            />
           </div>
           <div>
             <strong>{user.first_name}</strong>
@@ -147,7 +152,8 @@ class CurrentTrip extends Component {
         if (buddyarray[i].buddy_picture == undefined) {
           bpicture = "./images/profile1.jpg";
         } else {
-          bpicture = "./uploads/userProfileImage/" + buddyarray[i].buddy_picture;
+          bpicture =
+            "./uploads/userProfileImage/" + buddyarray[i].buddy_picture;
         }
         buddycardarray.push(
           <div key={i}>
@@ -173,7 +179,8 @@ class CurrentTrip extends Component {
     return (
       <Card
         style={{
-          margin: "50px auto 0 auto",
+          // paddingTop: "20px",
+          margin: "0 auto 0 auto",
           width: "500px",
           border: "3px solid gray",
           borderRadius: "20px",
@@ -208,7 +215,7 @@ class CurrentTrip extends Component {
     );
   }
 
-  acceptInvitation() {
+  acceptInvitation = () => {
     let buddyyy = JSON.parse(localStorage.getItem("invitation"));
     let newtripbuddy = {
       owner_id: buddyyy.owner_id,
@@ -218,27 +225,27 @@ class CurrentTrip extends Component {
       denied: false,
       pending: false,
     };
+    let newtrip = {};
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => { })
+      .then((res) => {
+        let buddies = this.state.trip.buddies;
+        buddies.push(buddyyy.buddy_id);
+        newtrip = {
+          buddies: buddies,
+        };
+
+        return app.put("trip/" + buddyyy.trip_id, newtrip);
+      })
+      .then((r1) => {
+        window.location = "/trip/" + this.state.trip_id;
+      })
       .catch((err) => {
         console.log(err);
       });
 
     // let buddies = JSON.parse(localStorage.getItem("trip")).buddies;
-    let buddies = this.state.trip.buddies;
-    buddies.push(buddyyy.buddy_id);
-    let newtrip = {
-      buddies: buddies,
-    };
-
-    app
-      .put("trip/" + buddyyy.trip_id, newtrip)
-      .then((res) => { })
-      .catch((err) => console.log(err));
-
-    window.location = "/trip/" + this.state.trip_id;
-  }
+  };
 
   declineInvitation() {
     let buddyyy = JSON.parse(localStorage.getItem("invitation"));
@@ -252,7 +259,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => { })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -272,7 +279,10 @@ class CurrentTrip extends Component {
         for (let j = 0; j < commentlist.length; j++) {
           let text = commentlist[j].text;
           if (commentlist[j].user_pic != null) {
-            this.setState({ commentuserimg: "./uploads/userProfileImage/" + commentlist[j].user_pic });
+            this.setState({
+              commentuserimg:
+                "./uploads/userProfileImage/" + commentlist[j].user_pic,
+            });
           } else {
             this.setState({ commentuserimg: "./images/profilepic.png" });
           }
@@ -298,80 +308,85 @@ class CurrentTrip extends Component {
         this.setState({ secondaryComments: secondaryComments });
       }
 
+      let pa = "./uploads/userProfileImage/" + list[i].user_pic;
+
       elements.push(
-        <div key={i}>
-          <div
-            className="post-card"
+        // <div key={i}>
+        // {/* <div
+        //   // className="post-card"
+        //   className="containerBorder"
+        //   style={{
+        //     // margin: "0 10px 10px 10px",
+        //     backgroundColor: "white",
+        //     // borderRadius: "20px",
+        //     // margin: "15px 0",
+        //     // boxShadow: "8px 8px 50px #000",
+        //     // width: "90%",
+        //   }}
+        // > */}
+        // {/*<div
+        //   className="img-responsive cover"
+        //   style={{
+        //     height: "100px",
+        //     width: "400px",
+        //     backgroundColor: "#6495ED"
+        //   }}
+        // ></div>*/}
+        <Card
+          key={i}
+          style={{
+            // borderRadius: "20px",
+            marginTop: "20px",
+            // backgroundColor: "transparent",
+          }}
+        >
+          <Card.Header
+            as="h5"
             style={{
-              margin: "0 10px 10px 10px",
-              backgroundColor: "white",
-              borderRadius: "20px",
-              margin: "15px 0",
-              // boxShadow: "8px 8px 50px #000",
-              width: "90%",
+              textTransform: "uppercase",
             }}
           >
-            {/*<div
-              className="img-responsive cover"
+            {" "}
+            <img
+              src={require(`${pa}`)}
               style={{
-                height: "100px",
-                width: "400px",
-                backgroundColor: "#6495ED"
+                width: "40px",
+                height: "40px",
+                marginRight: "20px",
               }}
-            ></div>*/}
-            <Card
-              style={{
-                borderRadius: "20px",
-                backgroundColor: "transparent",
-              }}
-            >
-              <Card.Header
-                as="h5"
+            />
+            {list[i].first_name}
+          </Card.Header>
+
+          <Card.Body>
+            <p>{list[i].text}</p>
+            <ListGroup>
+              <div>{this.state.secondaryComments}</div>
+            </ListGroup>
+          </Card.Body>
+          <Card.Footer>
+            <Form>
+              <Form.Control
+                id="secondary-comment"
+                as="textarea"
+                rows="1"
+                placeholder="Comment on post..."
+              ></Form.Control>
+              <Button
+                variant="outline-warning"
+                onClick={(e) => this.commentOnPost(e, list[i])}
                 style={{
-                  textTransform: "uppercase",
+                  float: "right",
+                  marginTop: "10px",
                 }}
               >
-                {" "}
-                <img
-                  src={require(`${list[i].user_pic}`)}
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    marginRight: "20px",
-                  }}
-                />
-                {list[i].first_name}
-              </Card.Header>
-
-              <Card.Body>
-                <p>{list[i].text}</p>
-                <ListGroup>
-                  <div>{this.state.secondaryComments}</div>
-                </ListGroup>
-              </Card.Body>
-              <Card.Footer>
-                <Form>
-                  <Form.Control
-                    id="secondary-comment"
-                    as="textarea"
-                    rows="1"
-                    placeholder="Comment on post..."
-                  ></Form.Control>
-                  <Button
-                    variant="outline-warning"
-                    onClick={(e) => this.commentOnPost(e, list[i])}
-                    style={{
-                      float: "right",
-                      marginTop: "10px",
-                    }}
-                  >
-                    POST
-                  </Button>
-                </Form>
-              </Card.Footer>
-            </Card>
-          </div>
-        </div>
+                POST
+              </Button>
+            </Form>
+          </Card.Footer>
+        </Card>
+        //   {/* </div>
+        // </div> */}
       );
     }
 
@@ -401,7 +416,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("comment/" + i._id, comment)
-      .then((res) => { })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -467,7 +482,7 @@ class CurrentTrip extends Component {
     };
     app
       .post("buddy", buddy)
-      .then((response) => { })
+      .then((response) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -476,7 +491,9 @@ class CurrentTrip extends Component {
     //send an invite to friend
   }
 
-  postComment() {
+  postComment = (e) => {
+    e.preventDefault();
+    console.log("?????");
     // let trip = JSON.parse(localStorage.getItem("trip"));
     let trip = this.state.trip;
     let postArr = [];
@@ -496,6 +513,7 @@ class CurrentTrip extends Component {
       text: document.getElementById("comment").value,
       date: Date.now(),
     };
+    console.log(comment);
     app
       .post("comment", comment)
       .then((res) => {
@@ -505,7 +523,7 @@ class CurrentTrip extends Component {
         console.log(err);
       });
     window.location = "/trip/" + this.state.trip_id;
-  }
+  };
 
   showDrivers = () => {
     // window.open("/trip/" + this.state.trip_id + "/drivers", "_blank");
@@ -951,6 +969,32 @@ class CurrentTrip extends Component {
             // display: "flex",
           }}
         >
+          <Toast
+            show={this.state.show_email_notification}
+            onClose={this.closeEmailInfo}
+            autohide={true}
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              marginTop: "60px",
+              zIndex: "99",
+            }}
+          >
+            <Toast.Header>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded mr-2"
+                alt=""
+              />
+              <strong className="mr-auto">Email Trip Info</strong>
+            </Toast.Header>
+            <Toast.Body>
+              {this.state.email_success == true
+                ? "Trip info has been email to the atteendees!"
+                : "Email failed to send"}
+            </Toast.Body>
+          </Toast>
           <div
             style={{
               // display: "flex",
@@ -960,7 +1004,7 @@ class CurrentTrip extends Component {
               minHeight: "100%",
             }}
           >
-            <div>{this.state.invitation}</div>
+            <div style={{ paddingTop: "25px" }}>{this.state.invitation}</div>
             {/* <div style={{ display: "flex", height: "100%", minHeight: "100%" }}> */}
             <div
               // className="container"
@@ -1241,10 +1285,11 @@ class CurrentTrip extends Component {
                   }}
                 >
                   <Button
-                    variant="info"
+                    // variant="info"
                     style={{
                       display: "block",
                       background: "#4a7199",
+                      borderColor: "#4a7199",
                       width: "250px",
                       // boxShadow: "8px 8px 20px #000",
                     }}
@@ -1254,10 +1299,11 @@ class CurrentTrip extends Component {
                   </Button>
 
                   <Button
-                    variant="info"
+                    // variant="info"
                     style={{
                       display: "block",
                       background: "#4a7199",
+                      borderColor: "#4a7199",
                       width: "250px",
                       // boxShadow: "8px 8px 20px #000",
                       marginTop: "10px",
@@ -1268,10 +1314,11 @@ class CurrentTrip extends Component {
                   </Button>
 
                   <Button
-                    variant="info"
+                    // variant="info"
                     style={{
                       display: "block",
                       background: "#4a7199",
+                      borderColor: "#4a7199",
                       width: "250px",
                       // boxShadow: "8px 8px 20px #000",
                       marginTop: "10px",
@@ -1280,33 +1327,6 @@ class CurrentTrip extends Component {
                   >
                     Email Trip Info
                   </Button>
-
-                  <Toast
-                    show={this.state.show_email_notification}
-                    onClose={this.closeEmailInfo}
-                    autohide={true}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      right: 0,
-                      marginTop: "60px",
-                      // zIndex: "-1",
-                    }}
-                  >
-                    <Toast.Header>
-                      <img
-                        src="holder.js/20x20?text=%20"
-                        className="rounded mr-2"
-                        alt=""
-                      />
-                      <strong className="mr-auto">Email Trip Info</strong>
-                    </Toast.Header>
-                    <Toast.Body>
-                      {this.state.email_success == true
-                        ? "Trip info has been email to the atteendees!"
-                        : "Email failed to send"}
-                    </Toast.Body>
-                  </Toast>
                 </div>
               </div>
             </div>

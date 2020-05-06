@@ -52,7 +52,9 @@ export class Home extends Component {
         this.setState({ first_name: response.data.user.first_name });
         this.setState({ last_name: response.data.user.last_name });
         if (response.data.user.image != null) {
-          this.setState({ image: './uploads/userProfileImage/' + response.data.user.image });
+          this.setState({
+            image: "./uploads/userProfileImage/" + response.data.user.image,
+          });
         }
         if (response.data.user.hometown != null) {
           this.setState({ hometown: response.data.user.hometown });
@@ -75,6 +77,7 @@ export class Home extends Component {
         this.setState({
           all_trip_list: this.createAllList(r.data.trip),
         });
+        console.log(r.data.trip);
       });
 
     app
@@ -108,7 +111,7 @@ export class Home extends Component {
 
     app
       .delete("buddy/" + OneTrip._id)
-      .then((res) => { })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -233,16 +236,17 @@ export class Home extends Component {
   createAllList(list) {
     let temp = [];
     for (let i = 0; i < list.length; i++) {
+      let d = new Date(list[i].start_date).toDateString();
       temp.push(
-        <div className="col-md-4 col-sm-6" key={i}>
-          <Card style={{ border: "2px solid gray" }}>
+        <div className="col-md-4 col-sm-6 mb-3" key={i}>
+          <Card>
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={require("./images/trip_profile_photo.png")}
+              src={require(`${list[i].trip_image}`)}
             />
-            <Card.Title as="h5">
-              <Button
+            <Card.Header as="h5">
+              {/* <div
                 id="linkbtn"
                 onClick={(e) => {
                   this.updateLocalTrip(e, list[i]);
@@ -254,17 +258,22 @@ export class Home extends Component {
                   border: "none",
                   borderRadius: "20px",
                   color: "black",
+                  fontSize: "40px",
+                  textAlign: "center",
                 }}
-              >
-                {list[i].trip_name}
-              </Button>
-            </Card.Title>
+              > */}
+              {list[i].trip_name}
+              {/* </div> */}
+            </Card.Header>
             <Card.Body>
-              <p className="trip_destination">{list[i].destination}</p>
-              <div
+              <div className="trip_destination">
+                <div>Destination: {list[i].destination}</div>
+                <div>Date: {d}</div>
+              </div>
+              {/* <div
                 className="trip-deletion"
                 style={{ paddingBottom: "10px" }}
-              ></div>
+              ></div> */}
             </Card.Body>
             <Card.Footer>
               <Button
@@ -272,13 +281,13 @@ export class Home extends Component {
                 onClick={(e) => {
                   this.updateLocalTrip(e, list[i]);
                 }}
-                style={{ margin: "10px auto" }}
+                // style={{ margin: "10px auto" }}
               >
                 VIEW
               </Button>
               <Button
                 variant="warning"
-                style={{ margin: "10px 5px" }}
+                style={{ float: "right" }}
                 onClick={(e) => {
                   this.onDeleteFieldClick(e, i);
                 }}
@@ -316,6 +325,15 @@ export class Home extends Component {
 
     let temp = [];
     for (let i = 0; i < list.length; i++) {
+      if (
+        once != true &&
+        date_mark < new Date(list[i].start_date) &&
+        temp.length == 0
+      ) {
+        date_mark.setDate(date_mark.getDate() + 21);
+        once = true;
+        temp = [];
+      }
       if (once != true && date_mark < new Date(list[i].start_date)) {
         elements.push(
           <div className="container" key="once">
@@ -326,6 +344,14 @@ export class Home extends Component {
         date_mark.setDate(date_mark.getDate() + 21);
         once = true;
         temp = [];
+      }
+      if (
+        once == true &&
+        twice != true &&
+        date_mark < new Date(list[i].start_date) &&
+        temp.length == 0
+      ) {
+        twice = true;
       }
       if (
         once == true &&
@@ -341,16 +367,17 @@ export class Home extends Component {
         twice = true;
         temp = [];
       }
+      let d = new Date(list[i].start_date).toDateString();
       temp.push(
-        <div className="col-md-4 col-sm-6" key={i}>
-          <Card style={{ border: "2px solid gray" }}>
+        <div className="col-md-4 col-sm-6 mb-3" key={i}>
+          <Card>
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={require("./images/trip_profile_photo.png")}
+              src={require(`${list[i].trip_image}`)}
             />
-            <Card.Title as="h5">
-              <Button
+            <Card.Header as="h5">
+              {/* <div
                 id="linkbtn"
                 onClick={(e) => {
                   this.updateLocalTrip(e, list[i]);
@@ -362,17 +389,22 @@ export class Home extends Component {
                   border: "none",
                   borderRadius: "20px",
                   color: "black",
+                  fontSize: "40px",
+                  textAlign: "center",
                 }}
-              >
-                {list[i].trip_name}
-              </Button>
-            </Card.Title>
+              > */}
+              {list[i].trip_name}
+              {/* </div> */}
+            </Card.Header>
             <Card.Body>
-              <p className="trip_destination">{list[i].destination}</p>
-              <div
+              <div className="trip_destination">
+                <div>Destination: {list[i].destination}</div>
+                <div>Date: {d}</div>
+              </div>
+              {/* <div
                 className="trip-deletion"
                 style={{ paddingBottom: "10px" }}
-              ></div>
+              ></div> */}
             </Card.Body>
             <Card.Footer>
               <Button
@@ -458,7 +490,6 @@ export class Home extends Component {
         >
           <div style={{ height: "100%", display: "flex", width: "100%" }}>
             <Card
-              className="containerBorder"
               style={{
                 height: "60%",
                 margin: "3%",
@@ -543,7 +574,6 @@ export class Home extends Component {
               </Card.Body>
             </Card>
             <div
-              className="containerBorder"
               style={{
                 disply: "flex",
                 flexDirection: "column",
@@ -551,21 +581,35 @@ export class Home extends Component {
                 width: "50%",
               }}
             >
+              {this.state.invitation_list.length == 0 &&
+              this.state.trip_list.length == 0 &&
+              this.state.all_trip_list.length == 0 ? (
+                <Card
+                  className="tripContainerBorder"
+                  style={{ height: "400px" }}
+                >
+                  <h3 style={{ margin: "0 auto", paddingTop: "175px" }}>
+                    No trips yet!
+                  </h3>
+                </Card>
+              ) : (
+                ""
+              )}
               <Alert show={this.state.showInvitations}>
                 <Card
-                  style={
-                    {
-                      // margin: "3%",
-                      // borderRadius: "5px",
-                      // border: "2px solid gray",
-                      // boxSizing: "border-box",
-                      // borderRadius: "20px",
-                      // boxShadow: "8px 8px 50px #000",
-                      // color: "#6c757d",
-                    }
-                  }
+                  className="tripContainerBorder"
+                  style={{
+                    marginBottom: "20px",
+                    // margin: "3%",
+                    // borderRadius: "5px",
+                    // border: "2px solid gray",
+                    // boxSizing: "border-box",
+                    // borderRadius: "20px",
+                    // boxShadow: "8px 8px 50px #000",
+                    // color: "#6c757d",
+                  }}
                 >
-                  <Card.Header as="h3" style={{ padding: "10px" }}>
+                  <Card.Header as="h4" style={{ padding: "20px" }}>
                     TRIP INVITATIONS
                   </Card.Header>
                   <Card.Body>
@@ -575,28 +619,27 @@ export class Home extends Component {
               </Alert>
               {this.state.trip_list.length != 0 ? (
                 <Card
-                  style={
-                    {
-                      // margin: "3%",
-                      // borderRadius: "5px",
-                      // border: "2px solid gray",
-                      // boxSizing: "border-box",
-                      // borderRadius: "20px",
-                      // boxShadow: "8px 8px 50px #000",
-                      // color: "#6c757d",
-                    }
-                  }
+                  className="tripContainerBorder"
+                  style={{
+                    marginBottom: "50px",
+                    // margin: "3%",
+                    // borderRadius: "5px",
+                    // border: "2px solid gray",
+                    // boxSizing: "border-box",
+                    // borderRadius: "20px",
+                    // boxShadow: "8px 8px 50px #000",
+                    // color: "#6c757d",
+                  }}
                 >
-                  <Card.Header as="h3" style={{ padding: "10px" }}>
-                    UPCOMING TRIPS
-                  </Card.Header>
-                  <Card.Body>{this.state.trip_list}</Card.Body>
+                  <Card.Header as="h4">UPCOMING TRIPS</Card.Header>
+                  <Card.Body className="row">{this.state.trip_list}</Card.Body>
                 </Card>
               ) : (
-                  ""
-                )}
+                ""
+              )}
               {this.state.all_trip_list.length != 0 ? (
                 <Card
+                  className="tripContainerBorder"
                   style={
                     {
                       // margin: "3%",
@@ -609,16 +652,14 @@ export class Home extends Component {
                     }
                   }
                 >
-                  <Card.Header as="h3" style={{ padding: "10px" }}>
-                    ALL MY TRIPS
-                  </Card.Header>
+                  <Card.Header as="h4">ALL MY TRIPS</Card.Header>
                   <Card.Body className="row">
                     {this.state.all_trip_list}
                   </Card.Body>
                 </Card>
               ) : (
-                  ""
-                )}
+                ""
+              )}
             </div>
           </div>
         </div>
