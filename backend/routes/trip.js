@@ -16,7 +16,7 @@ TRIPROUTES.route("/trip").post(function (req, res) {
     start_date: req.body.start_date,
     end_date: req.body.end_date,
     days: req.body.days,
-    buddies: req.body.buddies,
+    buddies: [req.body.owner_id],
     posts: req.body.posts,
     polls: req.body.polls,
     trip_image: "./images/tripimage.jpg",

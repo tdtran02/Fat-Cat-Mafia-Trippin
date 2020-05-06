@@ -143,9 +143,12 @@ export class InviteDriver extends Component {
 
         for (let j = 0; j < r.data.users.length; j++) {
           user = r.data.users[j];
+          let image = "";
           if (user == null) continue;
           if (user.image == null) {
-            user.image = "./images/profilepic.png";
+            image = "./images/profilepic.png";
+          } else {
+            image = "./uploads/userProfileImage/" + user.image;
           }
           elements.push(
             <Nav.Item key={j} onClick={() => this.changeDriverNumber(j)}>
@@ -161,7 +164,7 @@ export class InviteDriver extends Component {
               >
                 <img
                   style={{ width: "50px" }}
-                  src={require(`${user.image}`)}
+                  src={require(`${image}`)}
                   alt="userimage"
                 />
                 <div style={{ margin: "15px 5px 0 15px" }}>

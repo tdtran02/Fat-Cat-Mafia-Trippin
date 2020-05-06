@@ -12,6 +12,7 @@ EMAILTRIPINFOROUTE.route("/emailtripinfo/:trip_id").get(function (req, res) {
   let trip;
   TRIP.findById(req.params.trip_id)
     .then((t) => {
+      // console.log(t);
       trip = t;
       return USER.find({ _id: { $in: t.buddies } });
     })
