@@ -20,12 +20,12 @@ class Header extends Component {
     return (
       <header>
         <div className="head">
-          <h1>
+          <h1 style={{ textShadow: "1px 1px white" }}>
             We Design,
             <br /> You Travel
           </h1>
           <div>
-            <p>
+            <p style={{ textShadow: "1px 1px white" }}>
               We help you plan and schedule your perfect trip. So you can spend
               and enjoy your vacation time with friends and family
             </p>

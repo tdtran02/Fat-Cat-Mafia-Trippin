@@ -66,7 +66,8 @@ class Footer extends Component {
             textShadow: "0.25px 0.25px rgb(200,200,200)"
           }}>SUPPORT</h5>
           <a href='/FAQ'>FAQ</a>
-          <p>CONTACT</p>
+          <p style={{ margin: "15px 0 0 0 " }}>CONTACT US:</p>
+          <p>trippin.app.fatcat@gmail.com</p>
         </div>
 
         {/* <p>Support <br /> trippinwebapp@gmail.com</p> */}
