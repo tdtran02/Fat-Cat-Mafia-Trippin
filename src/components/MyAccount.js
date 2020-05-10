@@ -23,7 +23,7 @@ export class MyAccount extends Component {
       hometown: "",
       updateflag: false,
 
-      multerImage: "./images/placeholder.png",
+      multerImage: "./uploads/userProfileImage/placeholder.png",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,7 +47,7 @@ export class MyAccount extends Component {
   setDefaultImage(uploadType) {
     if (uploadType === "multer") {
       this.setState({
-        multerImage: "./images/placeholder.png"
+        multerImage: "./uploads/userProfileImage/placeholder.png"
       });
     }
   }
@@ -108,7 +108,7 @@ export class MyAccount extends Component {
         this.setDefaultImage("multer");
       });
       /* 
-        then user != tripbuddy 
+        the user != tripbuddy 
         need to update tripbuddy_picture
         user may in many trips as tripbuddies
       */

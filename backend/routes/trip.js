@@ -19,7 +19,7 @@ TRIPROUTES.route("/trip").post(function (req, res) {
     buddies: [req.body.owner_id],
     posts: req.body.posts,
     polls: req.body.polls,
-    trip_image: "./images/tripimage.jpg",
+    trip_image: "tripimage.jpg",
   });
   T.save()
     .then((x) => {

@@ -50,7 +50,7 @@ class CurrentTrip extends Component {
       option4: "",
       option5: "",
       polls: [],
-      trip_image: "./images/tripimage.jpg",
+      trip_image: './uploads/tripProfileImage/' + "tripimage.jpg",
 
       showInviteButton: true,
     };
@@ -68,7 +68,9 @@ class CurrentTrip extends Component {
         this.setState({ trip: result.data.trip[0] });
         // console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
         if (result.data.trip[0].trip_image !== undefined) {
-          this.setState({ trip_image: result.data.trip[0].trip_image });
+          this.setState({ trip_image: './uploads/tripProfileImage/' + result.data.trip[0].trip_image });
+        }else{
+          this.setState({ trip_image: './uploads/tripProfileImage/' + "tripimage.jpg" });
         }
         if (
           result.data.trip[0].owner_id ===
@@ -946,7 +948,45 @@ class CurrentTrip extends Component {
     }
     return elements;
   }
+  setDefaultImage(uploadType) {
+    if (uploadType === "multer") {
+      this.setState({
+        trip_image: './uploads/tripProfileImage/' + "tripimage.jpg"
+      });
+    }
+  }
+  uploadImage(e, method) {
+    let imageObj = {};
+    if (method === "multer") {
+      let imageFormObj = new FormData();
+      //imageFormObj.append("imageName", "multer-image-" + Date.now());
+      imageFormObj.append("imageCate", "trip");
+      imageFormObj.append("imageData", e.target.files[0]);
 
+      // stores a readable instance of 
+      // the image being uploaded using multer
+
+      this.setState({
+        trip_image: URL.createObjectURL(e.target.files[0])
+        //image: URL.createObjectURL(e.target.files[0])
+      });
+      // delete previous profile image
+      //if (JSON.parse(localStorage.getItem('trip')).trip_image != null) {
+        app.delete('trip/profile/' + JSON.parse(localStorage.getItem('trip'))._id).then(res => console.log(res.data))
+          .catch(err => { console.log(err) });
+      //}
+      // then upload new profle image
+      app.post('trip/image/' + JSON.parse(localStorage.getItem('trip'))._id, imageFormObj).then((data) => {
+        if (data.data.success) {
+          alert("Image has been successfully upload using multer");
+          //this.setDefaultImage("multer");
+        }
+      }).catch((err) => {
+        alert("Error while uploading image using multer");
+        this.setDefaultImage("multer");
+      });
+    }
+  }
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
@@ -1327,6 +1367,28 @@ class CurrentTrip extends Component {
                   >
                     Email Trip Info
                   </Button>
+                  <Button
+                    // variant="info"
+                    style={{
+                      display: "block",
+                      background: "#4a7199",
+                      borderColor: "#4a7199",
+                      width: "250px",
+                      // boxShadow: "8px 8px 20px #000",
+                      marginTop: "10px",
+                    }}
+                    //onClick={(e) => this.uploadImage(e, "multer")}
+                  >
+                    Edit Trip Cover Photo
+                  </Button>
+                  <div className="image-container1">
+                    <div className="process">
+                      {/* <h4 className="process_heading">Trip Image: </h4>
+                      <p className="process_details">Upload image from your local device</p> */}
+                      <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
+                      <img src={this.state.trip_image} alt="upload-image" className="process_image" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
