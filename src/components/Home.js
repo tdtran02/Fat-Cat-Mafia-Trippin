@@ -243,7 +243,7 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={require(`${list[i].trip_image}`)}
+              src={require('./uploads/tripProfileImage/'+`${list[i].trip_image}`)}
             />
             <Card.Header as="h5">
               {/* <div
@@ -374,7 +374,7 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={require(`${list[i].trip_image}`)}
+              src={require('./uploads/tripProfileImage/'+`${list[i].trip_image}`)}
             />
             <Card.Header as="h5">
               {/* <div
