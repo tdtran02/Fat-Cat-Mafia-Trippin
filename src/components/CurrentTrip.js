@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Card, Form, ListGroup, Nav, Tab, Tabs, Toast } from "react-bootstrap";
+import { Collapse } from 'reactstrap';
 import Button from "react-bootstrap/Button";
 import "../styles/Friends.css";
 import "../styles/Trip.css";
@@ -53,6 +54,7 @@ class CurrentTrip extends Component {
       trip_image: './uploads/tripProfileImage/' + "tripimage.jpg",
 
       showInviteButton: true,
+      showMulterPanel: false
     };
   }
 
@@ -988,6 +990,10 @@ class CurrentTrip extends Component {
       });
     }
   }
+
+
+
+
   render() {
     let inviteBuddyClose = () => this.setState({ inviteBuddyShow: false });
     return (
@@ -1330,8 +1336,9 @@ class CurrentTrip extends Component {
                     style={{
                       display: "block",
                       background: "#4a7199",
-                      borderColor: "#4a7199",
+                      border: "1px solid black",
                       width: "250px",
+                      textShadow: "1.25px 1.25px black"
                       // boxShadow: "8px 8px 20px #000",
                     }}
                     onClick={this.showRecommendations}
@@ -1344,8 +1351,9 @@ class CurrentTrip extends Component {
                     style={{
                       display: "block",
                       background: "#4a7199",
-                      borderColor: "#4a7199",
+                      border: "1px solid black",
                       width: "250px",
+                      textShadow: "1.25px 1.25px black",
                       // boxShadow: "8px 8px 20px #000",
                       marginTop: "10px",
                     }}
@@ -1359,8 +1367,9 @@ class CurrentTrip extends Component {
                     style={{
                       display: "block",
                       background: "#4a7199",
-                      borderColor: "#4a7199",
+                      border: "1px solid black",
                       width: "250px",
+                      textShadow: "1.25px 1.25px black",
                       // boxShadow: "8px 8px 20px #000",
                       marginTop: "10px",
                     }}
@@ -1373,23 +1382,32 @@ class CurrentTrip extends Component {
                     style={{
                       display: "block",
                       background: "#4a7199",
-                      borderColor: "#4a7199",
+                      border: "1px solid black",
                       width: "250px",
+                      textShadow: "1.25px 1.25px black",
                       // boxShadow: "8px 8px 20px #000",
                       marginTop: "10px",
                     }}
-                  //onClick={(e) => this.uploadImage(e, "multer")}
+                    onClick={(e) => this.setState({ showMulterPanel: !(this.state.showMulterPanel) })}
                   >
                     Edit Trip Cover Photo
                   </Button>
-                  <div className="image-container1">
-                    <div className="process">
-                      {/* <h4 className="process_heading">Trip Image: </h4>
+                  <Collapse isOpen={this.state.showMulterPanel}>
+                    <Card style={{ width: "250px" }}>
+                      <Card.Body>
+                        <div className="image-container1" >
+                          <div className="process">
+                            {/* <h4 className="process_heading">Trip Image: </h4>
                       <p className="process_details">Upload image from your local device</p> */}
-                      <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
-                      <img src={this.state.trip_image} alt="upload-image" className="process_image" />
-                    </div>
-                  </div>
+                            <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
+                            <img src={this.state.trip_image} alt="upload-image" className="process_image" />
+                          </div>
+                        </div>
+                      </Card.Body>
+                    </Card>
+
+                  </Collapse>
+
                 </div>
               </div>
             </div>

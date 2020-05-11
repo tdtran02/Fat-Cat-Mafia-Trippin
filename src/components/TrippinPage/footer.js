@@ -10,7 +10,8 @@ class Footer extends Component {
         borderTop: "1px solid black",
         display: "flex",
         justifyContent: "space-around",
-        marginTop: "0"
+        marginTop: "0",
+        padding: "0"
       }}>
         <div style={{
           display: "flex",
