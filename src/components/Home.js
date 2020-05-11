@@ -111,7 +111,7 @@ export class Home extends Component {
 
     app
       .delete("buddy/" + OneTrip._id)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -236,6 +236,9 @@ export class Home extends Component {
   createAllList(list) {
     let temp = [];
     for (let i = 0; i < list.length; i++) {
+      if (list[i].trip_image.includes("./images")) {
+        list[i].trip_image = "tripimage.jpg"
+      }
       let d = new Date(list[i].start_date).toDateString();
       temp.push(
         <div className="col-md-4 col-sm-6 mb-3" key={i}>
@@ -243,7 +246,7 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={require('./uploads/tripProfileImage/'+`${list[i].trip_image}`)}
+              src={require('./uploads/tripProfileImage/' + `${list[i].trip_image}`)}
             />
             <Card.Header as="h5">
               {/* <div
@@ -281,7 +284,7 @@ export class Home extends Component {
                 onClick={(e) => {
                   this.updateLocalTrip(e, list[i]);
                 }}
-                // style={{ margin: "10px auto" }}
+              // style={{ margin: "10px auto" }}
               >
                 VIEW
               </Button>
@@ -325,6 +328,10 @@ export class Home extends Component {
 
     let temp = [];
     for (let i = 0; i < list.length; i++) {
+      let str = list[i].trip_image;
+      if (str.includes("./images")) {
+        list[i].trip_image = "tripimage.jpg"
+      }
       if (
         once != true &&
         date_mark < new Date(list[i].start_date) &&
@@ -374,7 +381,7 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={require('./uploads/tripProfileImage/'+`${list[i].trip_image}`)}
+              src={require('./uploads/tripProfileImage/' + `${list[i].trip_image}`)}
             />
             <Card.Header as="h5">
               {/* <div
@@ -582,19 +589,19 @@ export class Home extends Component {
               }}
             >
               {this.state.invitation_list.length == 0 &&
-              this.state.trip_list.length == 0 &&
-              this.state.all_trip_list.length == 0 ? (
-                <Card
-                  className="tripContainerBorder"
-                  style={{ height: "400px" }}
-                >
-                  <h3 style={{ margin: "0 auto", paddingTop: "175px" }}>
-                    No trips yet!
+                this.state.trip_list.length == 0 &&
+                this.state.all_trip_list.length == 0 ? (
+                  <Card
+                    className="tripContainerBorder"
+                    style={{ height: "400px" }}
+                  >
+                    <h3 style={{ margin: "0 auto", paddingTop: "175px" }}>
+                      No trips yet!
                   </h3>
-                </Card>
-              ) : (
-                ""
-              )}
+                  </Card>
+                ) : (
+                  ""
+                )}
               <Alert show={this.state.showInvitations}>
                 <Card
                   className="tripContainerBorder"
@@ -635,8 +642,8 @@ export class Home extends Component {
                   <Card.Body className="row">{this.state.trip_list}</Card.Body>
                 </Card>
               ) : (
-                ""
-              )}
+                  ""
+                )}
               {this.state.all_trip_list.length != 0 ? (
                 <Card
                   className="tripContainerBorder"
@@ -658,8 +665,8 @@ export class Home extends Component {
                   </Card.Body>
                 </Card>
               ) : (
-                ""
-              )}
+                  ""
+                )}
             </div>
           </div>
         </div>

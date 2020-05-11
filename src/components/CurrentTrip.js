@@ -67,9 +67,10 @@ class CurrentTrip extends Component {
         this.setState({ end: result.data.trip[0].end_date.substring(0, 10) });
         this.setState({ trip: result.data.trip[0] });
         // console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
-        if (result.data.trip[0].trip_image !== undefined) {
+        if (result.data.trip[0].trip_image !== undefined && !(result.data.trip[0].trip_image.includes("./images"))) {
           this.setState({ trip_image: './uploads/tripProfileImage/' + result.data.trip[0].trip_image });
-        }else{
+        }
+        else {
           this.setState({ trip_image: './uploads/tripProfileImage/' + "tripimage.jpg" });
         }
         if (
@@ -261,7 +262,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("buddypending/" + buddyyy._id, newtripbuddy)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -418,7 +419,7 @@ class CurrentTrip extends Component {
     };
     app
       .put("comment/" + i._id, comment)
-      .then((res) => {})
+      .then((res) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -484,7 +485,7 @@ class CurrentTrip extends Component {
     };
     app
       .post("buddy", buddy)
-      .then((response) => {})
+      .then((response) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -972,8 +973,8 @@ class CurrentTrip extends Component {
       });
       // delete previous profile image
       //if (JSON.parse(localStorage.getItem('trip')).trip_image != null) {
-        app.delete('trip/profile/' + JSON.parse(localStorage.getItem('trip'))._id).then(res => console.log(res.data))
-          .catch(err => { console.log(err) });
+      app.delete('trip/profile/' + JSON.parse(localStorage.getItem('trip'))._id).then(res => console.log(res.data))
+        .catch(err => { console.log(err) });
       //}
       // then upload new profle image
       app.post('trip/image/' + JSON.parse(localStorage.getItem('trip'))._id, imageFormObj).then((data) => {
@@ -1377,7 +1378,7 @@ class CurrentTrip extends Component {
                       // boxShadow: "8px 8px 20px #000",
                       marginTop: "10px",
                     }}
-                    //onClick={(e) => this.uploadImage(e, "multer")}
+                  //onClick={(e) => this.uploadImage(e, "multer")}
                   >
                     Edit Trip Cover Photo
                   </Button>
