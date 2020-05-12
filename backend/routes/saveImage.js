@@ -1,6 +1,7 @@
 const EXPRESS = require('express');
 const IMAGE = require('../models/image.model');
 const USER = require("../models/user.model");
+const TRIP = require("../models/trip.model");
 const UPLOADROUTES = EXPRESS.Router();
 const USERROUTES = EXPRESS.Router();
 const db = require("../config_url").mongoURL;
@@ -71,7 +72,7 @@ const userStorage = multer.diskStorage({
 
 const profileFileFilter = (req, file, cb) => {
     if(file.mimetype === 'image/jpeg' ||
-    file.mimetype === 'image/png'){
+    file.mimetype === 'image/png'|| file.mimetype === 'image/jpg'){
         cb(null, true);
     }else{
         cb(null, false);
@@ -84,6 +85,34 @@ const profileImageUpload = multer({
         fileSize: 1024 * 1024 * 5
     },
     fileFilter: profileFileFilter
+})
+
+// upload trip photo
+
+const tripStorage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, '../src/components/uploads/tripProfileImage/');
+    },
+    filename: function(req, file, cb){
+        cb(null, `trip-${Date.now()}` + file.originalname);
+    }
+})
+
+const tripFileFilter = (req, file, cb) => {
+    if(file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/png'|| file.mimetype === 'image/jpg'){
+        cb(null, true);
+    }else{
+        cb(null, false);
+    }
+}
+
+const tripImageUpload = multer({
+    storage: tripStorage,
+    limits:{
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: tripFileFilter
 })
 
 // Routes
@@ -231,6 +260,73 @@ UPLOADROUTES.route('/uploads/profile/delete/:id').delete(function (req, res) {
             }
         })
       }
+});
+
+// Trip image upload route
+
+UPLOADROUTES.route("/trip/image/:id").post(tripImageUpload.single('imageData'), (req, res, next) => {
+    console.log(req.body);
+    const newImage = new IMAGE({
+        // !!!!HERE:owner_id means trip_id for trip image
+        owner_id: req.params.id,
+        imageCate: req.body.imageCate, // imageCate: "trip", category
+        imageName: res.req.file.filename,
+        imageData: req.file.path
+    });
+    newImage.save()
+        .then((result) => {
+            TRIP.updateOne(
+                { _id: req.params.id},
+                {
+                  $set: {trip_image: newImage.imageName}
+                })
+                .then(() => {
+                  console.log("Trip image: updated");
+                  //res.status(200).send({ message: "Profile image:id updated" });
+            });
+            console.log(result);
+            res.status(200).json({
+                success: true,
+                document: result
+            });
+        })
+        .catch((err) => next(err)); 
+});
+
+// delete trip image by trip ID, each trip has only one image
+UPLOADROUTES.route("/trip/deleteImage/:id").delete(function (req, res) {
+    // owner_id is trip_id!!
+    IMAGE.findOneAndRemove({ owner_id: req.params.id }).then((image) => {
+        if (image != null) {
+            fs.unlinkSync(image.imageData);
+            console.log('successfully deleted trip image');
+            res.status(200).json({
+                image: image,
+            });
+        } else {
+          res.status(400).json({
+            image: null,
+          });
+        }
+      });
+});
+
+// delete by trip ID, each trip has only one profile image
+UPLOADROUTES.route("/trip/profile/:id").delete(function (req, res) {
+    // !!!owner_id = trip_id
+    IMAGE.findOneAndRemove({ owner_id: req.params.id }).then((image) => {
+        if (image != null) {
+            fs.unlinkSync(image.imageData);
+            console.log('successfully deleted trip profile image');
+            res.status(200).json({
+                image: image,
+            });
+        } else {
+          res.status(400).json({
+            image: null,
+          });
+        }
+      });
 });
 
 module.exports = UPLOADROUTES;

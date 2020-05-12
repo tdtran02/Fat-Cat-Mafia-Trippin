@@ -882,9 +882,37 @@ class Schedule extends Component {
       <div>
         {!this.state.loading ? (
           <DragDropContext onDragEnd={this.onDragEnd}>
-            <div style={{ width: "100%", height: "60px" }}>
+            <div style={{ width: "100%", height: "60px", display: "flex", justifyContent: "space-around", padding: "10px" }}>
               <Button
-                className="b"
+                style={{
+                  textShadow: "1px 1px black",
+                  borderRadius: "3px",
+                  backgroundColor: "#4a7199",
+                  border: "1px solid black"
+                }}
+                onClick={() => { window.location.href = "/trip/" + this.state.trip_id }}>
+                Trip Page
+              </Button>
+              <Button
+                style={{
+                  textShadow: "1px 1px black",
+                  borderRadius: "3px",
+                  backgroundColor: "#4a7199",
+                  border: "1px solid black"
+                }}
+
+                onClick={() => { window.location.href = "/trip/" + this.state.trip_id + "/recommendations" }}
+              >
+                Recommendations
+              </Button>
+              <Button
+
+                style={{
+                  textShadow: "1px 1px black",
+                  borderRadius: "3px",
+
+                  border: "1px solid black"
+                }}
                 variant="info"
                 onClick={this.updateSchedule}
               >

@@ -138,14 +138,36 @@ class Schedule extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        className="image-container"
+        style={{
+          // backgroundImage:
+          //   "url(https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg)",
+          // backgroundImage: "url('images/bbb.jpg')",
+
+          backgroundRepeat: "no-repeat",
+
+          // backgroundImage:
+          //   "linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+          height: "100%",
+          paddingTop: "200px",
+
+          // display: "flex",
+        }}
+      >
         <div
           style={{
             width: "500px",
             boxShadow: "0px 5px 15px rgba(0,0,0,0.2)",
             borderRadius: "2px",
             margin: "0 auto",
-            marginTop: "100px",
+            backgroundColor: "#fff",
+            padding: "20px",
+            // marginTop: "100px",
+            // paddingTop: "100px",
           }}
         >
           <Form style={{ width: "90%", margin: "0 auto", paddingTop: "10px" }}>
@@ -202,12 +224,19 @@ class Schedule extends Component {
             </ListGroup.Item>
             {this.state.spendings_elements}
           </ListGroup>
-        </div>
-        <div style={{ width: "500px", margin: "0 auto", marginTop: "50px" }}>
-          <Button style={{ width: "100%" }} onClick={this.backToTripPage}>
-            {" "}
-            Back to trip page
-          </Button>
+          <div style={{ height: "20px" }}>
+            <a
+              style={{
+                fontSize: "14px",
+
+                marginTop: "10px",
+                float: "right",
+              }}
+              href="./"
+            >
+              Back to trip page
+            </a>
+          </div>
         </div>
       </div>
     );

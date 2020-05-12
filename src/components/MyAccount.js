@@ -23,7 +23,7 @@ export class MyAccount extends Component {
       hometown: "",
       updateflag: false,
 
-      multerImage: "./images/placeholder.png",
+      multerImage: "./uploads/userProfileImage/placeholder.png",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,7 +47,7 @@ export class MyAccount extends Component {
   setDefaultImage(uploadType) {
     if (uploadType === "multer") {
       this.setState({
-        multerImage: "./images/placeholder.png"
+        multerImage: "./uploads/userProfileImage/placeholder.png"
       });
     }
   }
@@ -107,6 +107,15 @@ export class MyAccount extends Component {
         alert("Error while uploading image using multer");
         this.setDefaultImage("multer");
       });
+      /* 
+        the user != tripbuddy 
+        need to update tripbuddy_picture
+        user may in many trips as tripbuddies
+      */
+      app.put('buddy/profile/' + JSON.parse(localStorage.getItem('user'))._id).then(res => console.log(res.data))
+        .catch(err => { console.log(err) 
+      });
+      
       // const update = {
       //   image: {
       //     owner_id: JSON.parse(localStorage.getItem('user'))._id,
