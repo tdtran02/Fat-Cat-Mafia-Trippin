@@ -289,7 +289,7 @@ class CurrentTrip extends Component {
           if (commentlist[j].user_pic != null) {
             this.setState({
               commentuserimg:
-                "./uploads/userProfileImage/" + commentlist[j].user_pic,
+                commentlist[j].user_pic,
             });
           } else {
             this.setState({ commentuserimg: "./images/profilepic.png" });
@@ -317,7 +317,7 @@ class CurrentTrip extends Component {
         this.setState({ secondaryComments: secondaryComments });
       }
 
-      let pa = "./uploads/userProfileImage/" + list[i].user_pic;
+      let pa = list[i].user_pic;
 
       elements.push(
         // <div key={i}>
