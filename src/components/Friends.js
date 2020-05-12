@@ -20,7 +20,7 @@ class Friends extends Component {
       search_message: "",
       search_boolean: false,
       search_alert_variant: "",
-      user_profile_image: "./uploads/userProfileImage/placeholder.png",
+      user_profile_image: "placeholder.png",
     };
   }
 
@@ -29,7 +29,7 @@ class Friends extends Component {
       .then(response => {
         console.log(response.data.user.email);
         if (response.data.user.image != null) {
-          this.setState({ user_profile_image: './uploads/userProfileImage/' + response.data.user.image });
+          this.setState({ user_profile_image: response.data.user.image });
         }
       }).catch(function (error) {
         console.log(error);
