@@ -8,7 +8,6 @@ const db = require("../config_url").mongoURL;
 const multer = require('multer');
 var multerS3 = require('multer-s3');
 var fs = require('fs');
-const path = require('path');
 var AWS = require("aws-sdk");
 var s3 = new AWS.S3();
 const DOCUMENT = require("../models/document.model");
@@ -212,6 +211,7 @@ UPLOADROUTES.post("/upload", upload.single("file"), function (req, res) {
             var document = new DOCUMENT(newFileUploaded);
             document.save(function (error, newFile) {
                 if (error) {
+                    console.log(error);
                     throw error;
                 }
             });
