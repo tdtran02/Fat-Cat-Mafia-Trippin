@@ -60,9 +60,9 @@ class Recommendation extends React.Component {
           event_locations: res.data.trip.event_locations
         });
 
-        console.log("upon dismount");
-        console.log(res.data.trip.trip_locations);
-        console.log(res.data.trip.event_locations);
+       // console.log("upon dismount");
+       // console.log(res.data.trip.trip_locations);
+       // console.log(res.data.trip.event_locations);
         // this.setState({ days: res.data.trip.days });
         // this.setState({ daylist: this.getDays() });
         return app.post("question/searchlocation", {
@@ -341,7 +341,7 @@ class Recommendation extends React.Component {
     let selectEndDate = null;
     let selectStartDate = null;
     const { startDate, endDate, destination } = this.state;
-    console.log("in createEvent date: " + startDate.getDate());
+    //console.log("in createEvent date: " + startDate.getDate());
 
     if ((startDate.getMonth() + 1) < 10 || (startDate.getDate()) < 10) {
       if ((startDate.getMonth() + 1) < 10 && (startDate.getDate()) < 10) {
@@ -415,12 +415,12 @@ class Recommendation extends React.Component {
         this.setState(prevState => ({ trip_location_events: [...prevState.trip_location_events, this.state.eventCopy[i] ]}))
         this.setState({ trip_locations: r.data.user_locations, 
           event_locations: r.data.add_events });
-        console.log("in add to trip: ");
-        console.log(this.state.trip_locations);
-        console.log(r.data.user_locations);
-        console.log("event: ");
-        console.log(this.state.event_locations);
-        console.log(r.data.add_events);
+      //  console.log("in add to trip: ");
+      //  console.log(this.state.trip_locations);
+      //  console.log(r.data.user_locations);
+      //  console.log("event: ");
+      //  console.log(this.state.event_locations);
+      //  console.log(r.data.add_events);
         this.setState({
           trip_location_elements: this.createList(
             this.state.trip_locations,
