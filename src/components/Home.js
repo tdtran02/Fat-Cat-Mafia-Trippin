@@ -25,7 +25,7 @@ export class Home extends Component {
       email: "",
       first_name: "",
       last_name: "",
-      image: "./images/empty.jpg",
+      image: "placeholder.png",
       _v: "",
       hometown: "",
       trip: null,
@@ -40,7 +40,7 @@ export class Home extends Component {
 
     if (JSON.parse(localStorage.getItem("user")).image == null) {
       this.state = {
-        image: "./images/profilepic.png",
+        image: "placeholder.png",
       };
     }
   }
@@ -53,7 +53,7 @@ export class Home extends Component {
         this.setState({ last_name: response.data.user.last_name });
         if (response.data.user.image != null) {
           this.setState({
-            image: "./uploads/userProfileImage/" + response.data.user.image,
+            image: response.data.user.image,
           });
         }
         if (response.data.user.hometown != null) {
@@ -246,7 +246,8 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={require('./uploads/tripProfileImage/' + `${list[i].trip_image}`)}
+              src={`http://trippinbucket.s3.amazonaws.com/${list[i].trip_image}`}
+
             />
             <Card.Header as="h5">
               {/* <div
@@ -381,7 +382,8 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={require('./uploads/tripProfileImage/' + `${list[i].trip_image}`)}
+              src={`http://trippinbucket.s3.amazonaws.com/${list[i].trip_image}`}
+
             />
             <Card.Header as="h5">
               {/* <div
@@ -513,7 +515,7 @@ export class Home extends Component {
                   <img
                     alt="profile"
                     className="responsive"
-                    src={require(`${img}`)}
+                    src={`http://trippinbucket.s3.amazonaws.com/${this.state.image}`}
                     style={{
                       display: "block",
                       margin: "5px auto",

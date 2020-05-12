@@ -51,7 +51,7 @@ class CurrentTrip extends Component {
       option4: "",
       option5: "",
       polls: [],
-      trip_image: './uploads/tripProfileImage/' + "tripimage.jpg",
+      trip_image: "tripimage.jpg",
 
       showInviteButton: true,
       showMulterPanel: false
@@ -70,10 +70,10 @@ class CurrentTrip extends Component {
         this.setState({ trip: result.data.trip[0] });
         // console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
         if (result.data.trip[0].trip_image !== undefined && !(result.data.trip[0].trip_image.includes("./images"))) {
-          this.setState({ trip_image: './uploads/tripProfileImage/' + result.data.trip[0].trip_image });
+          this.setState({ trip_image: result.data.trip[0].trip_image });
         }
         else {
-          this.setState({ trip_image: './uploads/tripProfileImage/' + "tripimage.jpg" });
+          this.setState({ trip_image: "tripimage.jpg" });
         }
         if (
           result.data.trip[0].owner_id ===
@@ -138,7 +138,8 @@ class CurrentTrip extends Component {
           <div>
             <img
               style={{ width: "50px" }}
-              src={require(`./uploads/userProfileImage/${profile}`)}
+              src={`http://trippinbucket.s3.amazonaws.com/${profile}`}
+
             />
           </div>
           <div>
@@ -155,17 +156,18 @@ class CurrentTrip extends Component {
       if (buddyarray[i].accepted == true) {
         let bpicture;
         if (buddyarray[i].buddy_picture == undefined) {
-          bpicture = "./images/profile1.jpg";
+          bpicture = "placeholder.png";
         } else {
-          bpicture =
-            "./uploads/userProfileImage/" + buddyarray[i].buddy_picture;
+          bpicture = buddyarray[i].buddy_picture;
         }
         buddycardarray.push(
           <div key={i}>
             <Card style={{ margin: "0 auto", border: "transparent" }}>
               <Card.Body>
                 <div>
-                  <img style={{ width: "50px" }} src={require(`${bpicture}`)} />
+                  <img style={{ width: "50px" }}
+
+                    src={`http://trippinbucket.s3.amazonaws.com/${bpicture}`} />
                 </div>
                 <div>
                   <strong>{buddyarray[i].buddy_first_name}</strong>
@@ -303,7 +305,8 @@ class CurrentTrip extends Component {
                     height: "25px",
                     border: "1px solid black",
                   }}
-                  src={require(`${this.state.commentuserimg}`)}
+                  src={`http://trippinbucket.s3.amazonaws.com/${this.state.commentuserimg}`}
+
                 />
                 <strong> {this.state.userfirstname}: </strong> {this.state.text}
               </ListGroup.Item>
@@ -353,7 +356,8 @@ class CurrentTrip extends Component {
           >
             {" "}
             <img
-              src={require(`${pa}`)}
+              src={`http://trippinbucket.s3.amazonaws.com/${pa}`}
+
               style={{
                 width: "40px",
                 height: "40px",
@@ -599,7 +603,8 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={require("./uploads/userProfileImage/" + `${user.image}`)}
+                src={`http://trippinbucket.s3.amazonaws.com/${user.image}`}
+
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
@@ -668,7 +673,8 @@ class CurrentTrip extends Component {
               >
                 <img
                   style={{ width: "50px" }}
-                  src={require("./uploads/userProfileImage/" + `${user.image}`)}
+                  src={`http://trippinbucket.s3.amazonaws.com/${user.image}`}
+
                   alt="userimage"
                 />
                 <div style={{ margin: "15px 5px 0 15px" }}>
@@ -720,7 +726,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={require("./uploads/userProfileImage/" + `${user.image}`)}
+                src={`http://trippinbucket.s3.amazonaws.com/${user.image}`}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
@@ -1114,7 +1120,8 @@ class CurrentTrip extends Component {
                             width: "240px",
                             border: "2px solid gray",
                           }}
-                          src={require(`${this.state.trip_image}`)}
+                          src={`http://trippinbucket.s3.amazonaws.com/${this.state.trip_image}`}
+
                         />
                       </Card.Title>
                       <Card.Title
@@ -1400,7 +1407,8 @@ class CurrentTrip extends Component {
                             {/* <h4 className="process_heading">Trip Image: </h4>
                       <p className="process_details">Upload image from your local device</p> */}
                             <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
-                            <img src={this.state.trip_image} alt="upload-image" className="process_image" />
+                            src={`http://trippinbucket.s3.amazonaws.com/${this.state.trip_image}`}
+                             alt="upload-image" className="process_image" />
                           </div>
                         </div>
                       </Card.Body>
