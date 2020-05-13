@@ -17,7 +17,8 @@ backend/config_s3.js
 
 # production
 /build
-
+/aws
+awscliv2.zip
 # misc
 .DS_Store
 .env.local
