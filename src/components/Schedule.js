@@ -122,6 +122,7 @@ class Schedule extends Component {
   createList(list) {
     let elements = [];
     for (let i = 0; i < list.length; i++) {
+      if (list[i] != null){
       elements.push(
         <Draggable draggableId={i.toString()} index={i} key={i}>
           {provided => (
@@ -209,6 +210,7 @@ class Schedule extends Component {
         </Draggable>
       );
     }
+    }
     return elements;
   }
 
@@ -216,6 +218,7 @@ class Schedule extends Component {
   createEvent(list) {
     let elements = [];
     for (let i = 0; i < list.length; i++) {
+      if (list[i] != null){
       elements.push(
         <Draggable draggableId={i.toString()} index={i} key={i}>
           {provided => (
@@ -317,6 +320,7 @@ class Schedule extends Component {
           )}
         </Draggable>
       );
+    }
     }
     return elements;
   }

@@ -123,6 +123,7 @@ class Recommendation extends React.Component {
     //console.log("in createList: " + list);
     let elements = [];
     for (let i = 0; i < list.length; i++) {
+      if (list[i] != null){
       elements.push(
         <div key={i}>
           <Card
@@ -221,6 +222,7 @@ class Recommendation extends React.Component {
         </div>
       );
     }
+    }
     return elements;
   }
 
@@ -301,7 +303,7 @@ class Recommendation extends React.Component {
                         fontSize: "20px"
                       }}
                       onClick={e => {
-                        this.addToTripLocations(e, i);
+                        this.addToEventLocations(e, i);
                       }}
                     ></i>
 
@@ -314,7 +316,7 @@ class Recommendation extends React.Component {
                           cursor: "pointer"
                         }}
                         onClick={e => {
-                          this.deleteTripLocation(e, i);
+                          this.deleteEventLocation(e, i);
                         }}
                       ></i>
                     )}
@@ -395,11 +397,12 @@ class Recommendation extends React.Component {
   }
 
   addToTripLocations(e, i) {
+    
     this.setState({ loading: true });
     app.post("trip/addtotriplocation", {
       trip_id: this.state.trip_id,
       trip_location: this.state.locations[i],
-      trip_location_events: this.state.eventCopy[i]
+ //     trip_location_events: this.state.eventCopy[i]
     })
       .then(res => {
         return app.post("question/searchlocation", {
@@ -408,10 +411,12 @@ class Recommendation extends React.Component {
         });
       })
       .then(r => {
-        this.setState(prevState => ({ trip_location_events: [...prevState.trip_location_events, this.state.eventCopy[i]] }))
+        console.log("in addtotrip: ");
+        console.log(r.data.user_locations);
+   //     this.setState(prevState => ({ trip_location_events: [...prevState.trip_location_events, this.state.eventCopy[i]] }))
         this.setState({
           trip_locations: r.data.user_locations,
-          event_locations: r.data.add_events
+       //   event_locations: r.data.add_events
         });
         //  console.log("in add to trip: ");
         //  console.log(this.state.trip_locations);
@@ -423,11 +428,11 @@ class Recommendation extends React.Component {
           trip_location_elements: this.createList(
             this.state.trip_locations,
             "delete"
-          ),
-          event_list: this.createEventList(
-            this.state.event_locations,
-            "delete"
-          )
+          )//,
+     //     event_list: this.createEventList(
+     //       this.state.event_locations,
+     //       "delete"
+     //     )
         });
 
 
@@ -435,7 +440,7 @@ class Recommendation extends React.Component {
         this.setState({ locations: r.data.recs });
         this.setState({
           location_elements: this.createList(this.state.locations, "add"),
-          location_events: this.createEventList(this.state.eventCopy, "add")
+    //      location_events: this.createEventList(this.state.eventCopy, "add")
         });
         this.setState({ loading: false });
 
@@ -450,6 +455,87 @@ class Recommendation extends React.Component {
     app.post("trip/deletefromtriplocations", {
       trip_id: this.state.trip_id,
       trip_location: this.state.trip_locations[i],
+    //  trip_location_events: this.state.event_locations[i]
+    })
+      .then(res => {
+        return app.post("question/searchlocation", {
+          trip_id: this.state.trip_id,
+          search_term: this.state.search_term
+        });
+      })
+      .then(r => {
+      //  var checked = this.state.trip_location_events;
+      //  checked.splice(i, 1);
+      //  this.setState({ trip_location_events: checked });
+        this.setState({ trip_locations: r.data.user_locations, event_locations: r.data.add_events });
+        this.setState({
+          trip_location_elements: this.createList(
+            this.state.trip_locations,
+            "delete"
+          ),
+         // event_list: this.createEventList(
+         //   this.state.event_locations,
+         //   "delete"
+       //   )
+        });
+
+        this.setState({ locations: r.data.recs });
+        this.setState({
+          location_elements: this.createList(this.state.locations, "add"),
+        //  location_events: this.createEventList(this.state.eventCopy, "add")
+        });
+        this.setState({ loading: false });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  addToEventLocations(e, i) {
+    this.setState({ loading: true });
+    app.post("trip/addtotriplocation", {
+      trip_id: this.state.trip_id,
+      trip_location_events: this.state.eventCopy[i]
+    })
+      .then(res => {
+        return app.post("question/searchlocation", {
+          trip_id: this.state.trip_id,
+          search_term: this.state.search_term
+        });
+      })
+      .then(r => {
+        this.setState(prevState => ({ trip_location_events: [...prevState.trip_location_events, this.state.eventCopy[i]] }))
+        this.setState({
+          event_locations: r.data.add_events
+        });
+        //  console.log("in add to trip: ");
+        //  console.log(this.state.trip_locations);
+        //  console.log(r.data.user_locations);
+        //  console.log("event: ");
+        //  console.log(this.state.event_locations);
+        //  console.log(r.data.add_events);
+        this.setState({
+          event_list: this.createEventList(
+            this.state.event_locations,
+            "delete"
+          )
+        });
+
+        this.setState({
+          location_events: this.createEventList(this.state.eventCopy, "add")
+        });
+        this.setState({ loading: false });
+
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  deleteEventLocation(e, i) {
+    this.setState({ loading: true });
+    app.post("trip/deletefromtriplocations", {
+      trip_id: this.state.trip_id,
       trip_location_events: this.state.event_locations[i]
     })
       .then(res => {
@@ -462,21 +548,14 @@ class Recommendation extends React.Component {
         var checked = this.state.trip_location_events;
         checked.splice(i, 1);
         this.setState({ trip_location_events: checked });
-        this.setState({ trip_locations: r.data.user_locations, event_locations: r.data.add_events });
+        this.setState({ event_locations: r.data.add_events });
         this.setState({
-          trip_location_elements: this.createList(
-            this.state.trip_locations,
-            "delete"
-          ),
           event_list: this.createEventList(
             this.state.event_locations,
             "delete"
           )
         });
-
-        this.setState({ locations: r.data.recs });
         this.setState({
-          location_elements: this.createList(this.state.locations, "add"),
           location_events: this.createEventList(this.state.eventCopy, "add")
         });
         this.setState({ loading: false });
