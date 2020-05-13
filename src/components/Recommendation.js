@@ -1,11 +1,6 @@
 import React from "react";
 import {
-  /* Container,
-  Col,
-  Row,
-  Dropdown,
-  Form,
-  Button, */
+  Button,
   Card
 } from "react-bootstrap";
 import { app } from '../utils/AxiosConfig';
@@ -60,9 +55,9 @@ class Recommendation extends React.Component {
           event_locations: res.data.trip.event_locations
         });
 
-       // console.log("upon dismount");
-       // console.log(res.data.trip.trip_locations);
-       // console.log(res.data.trip.event_locations);
+        // console.log("upon dismount");
+        // console.log(res.data.trip.trip_locations);
+        // console.log(res.data.trip.event_locations);
         // this.setState({ days: res.data.trip.days });
         // this.setState({ daylist: this.getDays() });
         return app.post("question/searchlocation", {
@@ -103,24 +98,24 @@ class Recommendation extends React.Component {
         console.log(err);
       });
 
-/*
-    app.get("tripinfo/" + this.state.trip_id)
-      .then(res => {
-        return app.post("question/eventlocation", {
-          trip_id: this.state.trip_id
-        });
-      })
-      .then(res => {
-        this.setState({ event_list: res.data.event_list });
-        //  this.setState({event_list: this.createEventList(this.state.event_list, "add"),
-        //  });
-        console.log("in didmount after get eventlocation trip id: " + res.data.event_list + " apikey: " + res.data.trip_id + " destination: " + res.data.destination + " start: " + res.data.start_date + " end: " + res.data.end_date);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-*/
+    /*
+        app.get("tripinfo/" + this.state.trip_id)
+          .then(res => {
+            return app.post("question/eventlocation", {
+              trip_id: this.state.trip_id
+            });
+          })
+          .then(res => {
+            this.setState({ event_list: res.data.event_list });
+            //  this.setState({event_list: this.createEventList(this.state.event_list, "add"),
+            //  });
+            console.log("in didmount after get eventlocation trip id: " + res.data.event_list + " apikey: " + res.data.trip_id + " destination: " + res.data.destination + " start: " + res.data.start_date + " end: " + res.data.end_date);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    
+    */
 
   }
 
@@ -234,103 +229,103 @@ class Recommendation extends React.Component {
     // console.log("in createEventList: " + list);
     for (let i = 0; i < list.length; i++) {
       //this.state.show_event.push(
-        if (list[i] != null){
+      if (list[i] != null) {
         event_elements.push(
-        <div key={i}>
-          <Card
-            style={{
-              overflowY: "auto",
-              margin: "0 auto",
-              marginBottom: "5px",
-              width: "300px",
-              minHeight: "300px",
-              borderRadius: "0px",
-              boxShadow:
-                "0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12)"
-            }}
-          >
-            <Card.Img
-              style={{ width: "300px", height: "200px", borderRadius: "0px" }}
-              variant="top"
-              src={list[i].images[0].url}
-              onClick={() => this.openLink(list[i].url)}
-            />
-            <Card.Body
+          <div key={i}>
+            <Card
               style={{
-                overflow: "hidden",
-                whiteSpace: "nowrap"
+                overflowY: "auto",
+                margin: "0 auto",
+                marginBottom: "5px",
+                width: "300px",
+                minHeight: "300px",
+                borderRadius: "0px",
+                boxShadow:
+                  "0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12)"
               }}
             >
-              <Card.Title
+              <Card.Img
+                style={{ width: "300px", height: "200px", borderRadius: "0px" }}
+                variant="top"
+                src={list[i].images[0].url}
+                onClick={() => this.openLink(list[i].url)}
+              />
+              <Card.Body
                 style={{
-                  fontSize: "20px",
-                  fontFamily: "Roboto, sans-serif",
-                  color: "#212529",
-                  textOverflow: "ellipsis"
+                  overflow: "hidden",
+                  whiteSpace: "nowrap"
                 }}
               >
-                <span>{list[i].name}</span>
-                <div>
-                  <button className="ticket-button"
-                    onClick={() => this.openLink(list[i].url)}>find tickets
+                <Card.Title
+                  style={{
+                    fontSize: "20px",
+                    fontFamily: "Roboto, sans-serif",
+                    color: "#212529",
+                    textOverflow: "ellipsis"
+                  }}
+                >
+                  <span>{list[i].name}</span>
+                  <div>
+                    <button className="ticket-button"
+                      onClick={() => this.openLink(list[i].url)}>find tickets
                  </button>
-                </div>
-              </Card.Title>
-              <Card.Subtitle style={{ marginBottom: "16px" }}>
-                <ul className="list-unstyled list-inline rating mb-0">
-                  <span
-                    style={{
-                      fontSize: "11px",
-                      color: "#6c757d"
-                    }}
-                  >
-                    {list[i]._embedded.venues[0].name}
-                  </span>
-                </ul>
-              </Card.Subtitle>
-              <Card.Subtitle
-                style={{
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: "16px",
-                  marginBottom: "16px"
-                }}
-              >
-                {list[i].dates.start.localDate}  {list[i].dates.start.localTime}
-                {option === "add" ? (
-                  <i
-                    className="fas fa-plus-circle"
-                    style={{
-                      color: "#8dc63f",
-                      marginLeft: "10px",
-                      cursor: "pointer",
-                      fontSize: "20px"
-                    }}
-                    onClick={e => {
-                      this.addToTripLocations(e, i);
-                    }}
-                  ></i>
-
-                ) : (
-                    <i
-                      className="fas fa-minus-circle"
+                  </div>
+                </Card.Title>
+                <Card.Subtitle style={{ marginBottom: "16px" }}>
+                  <ul className="list-unstyled list-inline rating mb-0">
+                    <span
                       style={{
-                        color: "#cd5c5c",
-                        marginLeft: "5px",
-                        cursor: "pointer"
+                        fontSize: "11px",
+                        color: "#6c757d"
+                      }}
+                    >
+                      {list[i]._embedded.venues[0].name}
+                    </span>
+                  </ul>
+                </Card.Subtitle>
+                <Card.Subtitle
+                  style={{
+                    fontFamily: "Roboto, sans-serif",
+                    fontSize: "16px",
+                    marginBottom: "16px"
+                  }}
+                >
+                  {list[i].dates.start.localDate}  {list[i].dates.start.localTime}
+                  {option === "add" ? (
+                    <i
+                      className="fas fa-plus-circle"
+                      style={{
+                        color: "#8dc63f",
+                        marginLeft: "10px",
+                        cursor: "pointer",
+                        fontSize: "20px"
                       }}
                       onClick={e => {
-                        this.deleteTripLocation(e, i);
+                        this.addToTripLocations(e, i);
                       }}
                     ></i>
-                  )}
-              </Card.Subtitle>
-              <Card.Text style={{ fontSize: "12px" }}>
-                {list[i]._embedded.venues[0].city.name}, {list[i]._embedded.venues[0].state.stateCode}
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
-      );
+
+                  ) : (
+                      <i
+                        className="fas fa-minus-circle"
+                        style={{
+                          color: "#cd5c5c",
+                          marginLeft: "5px",
+                          cursor: "pointer"
+                        }}
+                        onClick={e => {
+                          this.deleteTripLocation(e, i);
+                        }}
+                      ></i>
+                    )}
+                </Card.Subtitle>
+                <Card.Text style={{ fontSize: "12px" }}>
+                  {list[i]._embedded.venues[0].city.name}, {list[i]._embedded.venues[0].state.stateCode}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </div>
+        );
       }
     }
     //console.log("at the end of createEventList: " + this.state.show_event);
@@ -384,10 +379,10 @@ class Recommendation extends React.Component {
           j = j + 1;
         }
         // console.log("in create Event: " + eventCopy);
-       // this.setState({ event_list: eventCopy });
-      this.setState({
-        location_events: this.createEventList(this.state.eventCopy, "add")
-       });
+        // this.setState({ event_list: eventCopy });
+        this.setState({
+          location_events: this.createEventList(this.state.eventCopy, "add")
+        });
       })
       .catch(err => {
         console.log(err);
@@ -407,21 +402,23 @@ class Recommendation extends React.Component {
       trip_location_events: this.state.eventCopy[i]
     })
       .then(res => {
-       return app.post("question/searchlocation", {
+        return app.post("question/searchlocation", {
           trip_id: this.state.trip_id,
           search_term: this.state.search_term
         });
       })
       .then(r => {
-        this.setState(prevState => ({ trip_location_events: [...prevState.trip_location_events, this.state.eventCopy[i] ]}))
-        this.setState({ trip_locations: r.data.user_locations, 
-          event_locations: r.data.add_events });
-      //  console.log("in add to trip: ");
-      //  console.log(this.state.trip_locations);
-      //  console.log(r.data.user_locations);
-      //  console.log("event: ");
-      //  console.log(this.state.event_locations);
-      //  console.log(r.data.add_events);
+        this.setState(prevState => ({ trip_location_events: [...prevState.trip_location_events, this.state.eventCopy[i]] }))
+        this.setState({
+          trip_locations: r.data.user_locations,
+          event_locations: r.data.add_events
+        });
+        //  console.log("in add to trip: ");
+        //  console.log(this.state.trip_locations);
+        //  console.log(r.data.user_locations);
+        //  console.log("event: ");
+        //  console.log(this.state.event_locations);
+        //  console.log(r.data.add_events);
         this.setState({
           trip_location_elements: this.createList(
             this.state.trip_locations,
@@ -434,7 +431,7 @@ class Recommendation extends React.Component {
         });
 
 
-        
+
         this.setState({ locations: r.data.recs });
         this.setState({
           location_elements: this.createList(this.state.locations, "add"),
@@ -442,7 +439,7 @@ class Recommendation extends React.Component {
         });
         this.setState({ loading: false });
 
-      }) 
+      })
       .catch(err => {
         console.error(err);
       });
@@ -605,7 +602,7 @@ class Recommendation extends React.Component {
         ) : (
             // not loading
             <span>
-              <div className="searchbar">
+              <div className="searchbar" style={{}}>
                 <input
                   type="text"
                   placeholder="Search..."
@@ -643,14 +640,14 @@ class Recommendation extends React.Component {
               ) : (
                   ""
                 )}
-              <div class="searchbar">
+              <div className="searchbar">
                 <input
                   type="text"
                   placeholder="Search..."
                   onKeyDown={this.searchLocation}
                   onChange={this.onChangeSearch}
                 />
-                <div class="search"></div>
+                <div className="search"></div>
               </div>
 
               {this.state.location_events.length != 0 ? (
@@ -694,39 +691,40 @@ class Recommendation extends React.Component {
                   width: "80%"
                 }}
               >
-                {this.state.trip_location_elements.length !== 0 || 
-                this.state.event_list.length !==0 ? (
-                  <span>My Trip Locations</span>
-                ) : (
+                {this.state.trip_location_elements.length !== 0 ||
+                  this.state.event_list.length !== 0 ? (
+                    <span>My Trip Locations</span>
+                  ) : (
                     ""
                   )}
-                <a
+                <Button
+                  variant="info"
                   style={{
                     fontSize: "12px",
 
                     marginTop: "10px",
                     float: "right"
                   }}
-                  href="./schedule"
-                >
+                  href="./schedule">
                   Arrange Trip Schedule
-              </a>
+                  </Button>
+
               </div>
 
-              {this.state.trip_location_elements.length !== 0 || 
-              this.state.event_list.length !==0 ? (
-                <Slider
-                  className="placeholderhere"
-                  {...settings}
-                  style={{
-                    width: "80%",
-                    margin: "0 auto"
-                  }}
-                >
-                  {this.state.trip_location_elements}
-                  {this.state.event_list}
-                </Slider>
-              ) : (
+              {this.state.trip_location_elements.length !== 0 ||
+                this.state.event_list.length !== 0 ? (
+                  <Slider
+                    className="placeholderhere"
+                    {...settings}
+                    style={{
+                      width: "80%",
+                      margin: "0 auto"
+                    }}
+                  >
+                    {this.state.trip_location_elements}
+                    {this.state.event_list}
+                  </Slider>
+                ) : (
                   ""
                 )}
             </span>
