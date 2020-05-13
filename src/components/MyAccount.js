@@ -95,10 +95,11 @@ export class MyAccount extends Component {
 
     e.preventDefault();
     //let imageObj = {};
-    console.log(this.state.selectedFile);
-    // if (method === "multer") {
-    //  console.log(e.target.files[0])
+
+
     const imageFormObj = new FormData(e.target);
+    console.log(imageFormObj);
+    imageFormObj.set("name", e.target.name + Date.now());
     imageFormObj.append("file", this.state.selectedFile)
     //imageFormObj.append("imageName", "multer-image-" + Date.now());
     /* imageFormObj.append("imageCate", "profile");
@@ -174,20 +175,38 @@ export class MyAccount extends Component {
           first_name: JSON.parse(localStorage.getItem('user')).first_name,
           last_name: JSON.parse(localStorage.getItem('user')).last_name,
           hometown: JSON.parse(localStorage.getItem('user')).hometown,
-          image: flag.data.data.key
+          image: flag.data.data.Key
         }
       }
       app.put("user/" + JSON.parse(localStorage.getItem('user'))._id, {
         first_name: JSON.parse(localStorage.getItem('user')).first_name,
         last_name: JSON.parse(localStorage.getItem('user')).last_name,
         hometown: JSON.parse(localStorage.getItem('user')).hometown,
-        image: flag.data.data.key
+        image: flag.data.data.Key
       }).then(r => {
         console.log(r);
       }).catch(err => {
         console.log(err);
       });
+
+      //update buddy profile
+      app.put('buddy/profile/' + JSON.parse(localStorage.getItem('user'))._id).
+        then(res => console.log(res.data))
+        .catch(err => {
+          console.log(err)
+        });
+
+      app.put("comment/images/" + JSON.parse(localStorage.getItem('user'))._id, {
+        image: flag.data.data.Key
+      }).then(resp => {
+        console.log(resp);
+      }).catch(err => {
+        console.log(err);
+      })
       window.location.href = "/MyAccount";
+    }
+    else {
+      alert("Image Upload not available");
     }
   }
   onChange(event) {
@@ -274,7 +293,7 @@ export class MyAccount extends Component {
               <Card.Body>
                 <div style={{ display: "flex", alignContent: "center" }}>
                   <img className="responsive"
-                    src={`http://trippinbucket.s3.amazonaws.com/${this.state.image}`}
+                    src={`http://fatcatimages.s3.amazonaws.com/${this.state.image}`}
                     alt="profile" style={{
                       display: "block",
                       margin: "5px auto",

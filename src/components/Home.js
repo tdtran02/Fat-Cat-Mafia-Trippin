@@ -149,6 +149,7 @@ export class Home extends Component {
     let elements = [];
     let trip = {};
     for (let i = 0; i < list.length; i++) {
+
       if (list[i].pending == true) {
         this.setState({ status: "PENDING" });
       } else {
@@ -159,7 +160,7 @@ export class Home extends Component {
         }
       }
 
-      if (list[i].pending == true) {
+      if (list[i].pending == true || list[i].accepted == true) {
         elements.push(
           <div className="col-md-3 col-sm-6" key={i}>
             <Card style={{ minWidth: "150px" }}>
@@ -246,7 +247,7 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={`http://trippinbucket.s3.amazonaws.com/${list[i].trip_image}`}
+              src={`http://fatcatimages.s3.amazonaws.com/${list[i].trip_image}`}
 
             />
             <Card.Header as="h5">
@@ -382,7 +383,7 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={`http://trippinbucket.s3.amazonaws.com/${list[i].trip_image}`}
+              src={`http://fatcatimages.s3.amazonaws.com/${list[i].trip_image}`}
 
             />
             <Card.Header as="h5">
@@ -515,7 +516,7 @@ export class Home extends Component {
                   <img
                     alt="profile"
                     className="responsive"
-                    src={`http://trippinbucket.s3.amazonaws.com/${this.state.image}`}
+                    src={`http://fatcatimages.s3.amazonaws.com/${this.state.image}`}
                     style={{
                       display: "block",
                       margin: "5px auto",

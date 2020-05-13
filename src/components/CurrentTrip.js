@@ -16,7 +16,8 @@ import { ReactComponent as Calendar } from "./images/calendar.svg";
 class CurrentTrip extends Component {
   constructor(props) {
     super(props);
-
+    this.handleSelectedFile = this.handleSelectedFile.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
     this.state = {
       trip_id: this.props.match.params.id,
       start: null,
@@ -138,7 +139,7 @@ class CurrentTrip extends Component {
           <div>
             <img
               style={{ width: "50px" }}
-              src={`http://trippinbucket.s3.amazonaws.com/${profile}`}
+              src={`http://fatcatimages.s3.amazonaws.com/${profile}`}
 
             />
           </div>
@@ -167,7 +168,7 @@ class CurrentTrip extends Component {
                 <div>
                   <img style={{ width: "50px" }}
 
-                    src={`http://trippinbucket.s3.amazonaws.com/${bpicture}`} />
+                    src={`http://fatcatimages.s3.amazonaws.com/${bpicture}`} />
                 </div>
                 <div>
                   <strong>{buddyarray[i].buddy_first_name}</strong>
@@ -288,7 +289,7 @@ class CurrentTrip extends Component {
           if (commentlist[j].user_pic != null) {
             this.setState({
               commentuserimg:
-                "./uploads/userProfileImage/" + commentlist[j].user_pic,
+                commentlist[j].user_pic,
             });
           } else {
             this.setState({ commentuserimg: "./images/profilepic.png" });
@@ -305,7 +306,7 @@ class CurrentTrip extends Component {
                     height: "25px",
                     border: "1px solid black",
                   }}
-                  src={`http://trippinbucket.s3.amazonaws.com/${this.state.commentuserimg}`}
+                  src={`http://fatcatimages.s3.amazonaws.com/${this.state.commentuserimg}`}
 
                 />
                 <strong> {this.state.userfirstname}: </strong> {this.state.text}
@@ -316,7 +317,7 @@ class CurrentTrip extends Component {
         this.setState({ secondaryComments: secondaryComments });
       }
 
-      let pa = "./uploads/userProfileImage/" + list[i].user_pic;
+      let pa = list[i].user_pic;
 
       elements.push(
         // <div key={i}>
@@ -356,7 +357,7 @@ class CurrentTrip extends Component {
           >
             {" "}
             <img
-              src={`http://trippinbucket.s3.amazonaws.com/${pa}`}
+              src={`http://fatcatimages.s3.amazonaws.com/${pa}`}
 
               style={{
                 width: "40px",
@@ -603,7 +604,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={`http://trippinbucket.s3.amazonaws.com/${user.image}`}
+                src={`http://fatcatimages.s3.amazonaws.com/${user.image}`}
 
                 alt="userimage"
               />
@@ -673,7 +674,7 @@ class CurrentTrip extends Component {
               >
                 <img
                   style={{ width: "50px" }}
-                  src={`http://trippinbucket.s3.amazonaws.com/${user.image}`}
+                  src={`http://fatcatimages.s3.amazonaws.com/${user.image}`}
 
                   alt="userimage"
                 />
@@ -726,7 +727,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={`http://trippinbucket.s3.amazonaws.com/${user.image}`}
+                src={`http://fatcatimages.s3.amazonaws.com/${user.image}`}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
@@ -964,38 +965,74 @@ class CurrentTrip extends Component {
       });
     }
   }
-  uploadImage(e, method) {
-    let imageObj = {};
-    if (method === "multer") {
-      let imageFormObj = new FormData();
-      //imageFormObj.append("imageName", "multer-image-" + Date.now());
-      imageFormObj.append("imageCate", "trip");
-      imageFormObj.append("imageData", e.target.files[0]);
 
-      // stores a readable instance of 
-      // the image being uploaded using multer
+  handleSelectedFile = e => {
+    e.preventDefault();
+    this.setState({
+      selectedFile: e.target.files[0]
+    }, () => {
+      console.log(this.state.selectedFile);
+    });
+  };
 
-      this.setState({
-        trip_image: URL.createObjectURL(e.target.files[0])
-        //image: URL.createObjectURL(e.target.files[0])
-      });
-      // delete previous profile image
-      //if (JSON.parse(localStorage.getItem('trip')).trip_image != null) {
-      app.delete('trip/profile/' + JSON.parse(localStorage.getItem('trip'))._id).then(res => console.log(res.data))
-        .catch(err => { console.log(err) });
-      //}
-      // then upload new profle image
-      app.post('trip/image/' + JSON.parse(localStorage.getItem('trip'))._id, imageFormObj).then((data) => {
-        if (data.data.success) {
-          alert("Image has been successfully upload using multer");
-          //this.setDefaultImage("multer");
-        }
-      }).catch((err) => {
-        alert("Error while uploading image using multer");
-        this.setDefaultImage("multer");
-      });
+  handleUpload(e) {
+    e.preventDefault();
+    const imageFormObj = new FormData(e.target);
+    imageFormObj.append("file", this.state.selectedFile);
+
+    app.post("upload", imageFormObj)
+      .then((response) => {
+        console.log(response.data.data.key);
+        this.updateDB(response);
+      }).catch(err => {
+        console.log(err);
+      })
+  }
+
+  updateDB(response) {
+    if (response.status === 200) {
+      app.put("tripimage/" + JSON.parse(localStorage.getItem('trip'))._id, {
+        image: response.data.data.Key
+      }).then(resp => {
+        console.log(resp);
+      }).catch(err => {
+        console.log(err);
+      })
+      window.location.href = "/trip/" + JSON.parse(localStorage.getItem('trip'))._id;
     }
   }
+  /*  uploadImage(e, method) {
+     let imageObj = {};
+     if (method === "multer") {
+       let imageFormObj = new FormData();
+       //imageFormObj.append("imageName", "multer-image-" + Date.now());
+       imageFormObj.append("imageCate", "trip");
+       imageFormObj.append("imageData", e.target.files[0]);
+ 
+       // stores a readable instance of 
+       // the image being uploaded using multer
+ 
+       this.setState({
+         trip_image: URL.createObjectURL(e.target.files[0])
+         //image: URL.createObjectURL(e.target.files[0])
+       });
+       // delete previous profile image
+       //if (JSON.parse(localStorage.getItem('trip')).trip_image != null) {
+       app.delete('trip/profile/' + JSON.parse(localStorage.getItem('trip'))._id).then(res => console.log(res.data))
+         .catch(err => { console.log(err) });
+       //}
+       // then upload new profle image
+       app.post('trip/image/' + JSON.parse(localStorage.getItem('trip'))._id, imageFormObj).then((data) => {
+         if (data.data.success) {
+           alert("Image has been successfully upload using multer");
+           //this.setDefaultImage("multer");
+         }
+       }).catch((err) => {
+         alert("Error while uploading image using multer");
+         this.setDefaultImage("multer");
+       });
+     }
+   } */
 
 
 
@@ -1120,7 +1157,7 @@ class CurrentTrip extends Component {
                             width: "240px",
                             border: "2px solid gray",
                           }}
-                          src={`http://trippinbucket.s3.amazonaws.com/${this.state.trip_image}`}
+                          src={`http://fatcatimages.s3.amazonaws.com/${this.state.trip_image}`}
 
                         />
                       </Card.Title>
@@ -1402,15 +1439,15 @@ class CurrentTrip extends Component {
                   <Collapse isOpen={this.state.showMulterPanel}>
                     <Card style={{ width: "250px" }}>
                       <Card.Body>
-                        <div className="image-container1" >
-                          <div className="process">
-                            {/* <h4 className="process_heading">Trip Image: </h4>
-                      <p className="process_details">Upload image from your local device</p> */}
-                            <input type="file" className="process_upload-btn" onChange={(e) => this.uploadImage(e, "multer")} />
-                            src={`http://trippinbucket.s3.amazonaws.com/${this.state.trip_image}`}
-                             alt="upload-image" className="process_image" />
+                        <form onSubmit={this.handleUpload}>
+                          <div className="form-group">
+                            <h4 className="process_heading">Profile Image: </h4>
+                            <p className="process_details">Upload image from your local device</p>
+                            <input type="file" name="" id="" onChange={this.handleSelectedFile} />
                           </div>
-                        </div>
+                          <button className="btn btn-primary" type="submit">Update Photo</button>
+                        </form>
+
                       </Card.Body>
                     </Card>
 
