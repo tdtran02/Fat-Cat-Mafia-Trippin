@@ -276,6 +276,7 @@ class CurrentTrip extends Component {
 
   createPostCards(list) {
     let elements = [];
+    console.log(list);
     for (let i = list.length - 1; i >= 0; i--) {
       this.setState({ secondaryComments: [] });
       let secondaryComments = [];
@@ -298,7 +299,7 @@ class CurrentTrip extends Component {
           this.setState({ userfirstname: commentlist[j].first_name });
           secondaryComments.push(
             <div key={j}>
-              <ListGroup.Item>
+              <ListGroup.Item style={{ textAlign: "left" }}>
                 <img
                   alt="?"
                   style={{
@@ -320,27 +321,7 @@ class CurrentTrip extends Component {
       let pa = list[i].user_pic;
 
       elements.push(
-        // <div key={i}>
-        // {/* <div
-        //   // className="post-card"
-        //   className="containerBorder"
-        //   style={{
-        //     // margin: "0 10px 10px 10px",
-        //     backgroundColor: "white",
-        //     // borderRadius: "20px",
-        //     // margin: "15px 0",
-        //     // boxShadow: "8px 8px 50px #000",
-        //     // width: "90%",
-        //   }}
-        // > */}
-        // {/*<div
-        //   className="img-responsive cover"
-        //   style={{
-        //     height: "100px",
-        //     width: "400px",
-        //     backgroundColor: "#6495ED"
-        //   }}
-        // ></div>*/}
+
         <Card
           key={i}
           style={{
@@ -353,6 +334,7 @@ class CurrentTrip extends Component {
             as="h5"
             style={{
               textTransform: "uppercase",
+              textAlign: "left"
             }}
           >
             {" "}
@@ -369,7 +351,7 @@ class CurrentTrip extends Component {
           </Card.Header>
 
           <Card.Body>
-            <p>{list[i].text}</p>
+            <p style={{ textAlign: "left" }}>{list[i].text}</p>
             <ListGroup>
               <div>{this.state.secondaryComments}</div>
             </ListGroup>
