@@ -192,7 +192,7 @@ UPLOADROUTES.post("/upload", upload.single("file"), function (req, res) {
 
     var params = {
         Bucket: 'trippinbucket',
-        Key: file.originalname,
+        Key: Date.now() + file.originalname,
         Body: file.buffer,
         ContentType: file.mimetype,
         ACL: "public-read"
@@ -205,7 +205,7 @@ UPLOADROUTES.post("/upload", upload.single("file"), function (req, res) {
             res.send({ data });
             var newFileUploaded = {
                 description: req.body.description,
-                fileLink: s3FileURL + file.originalname,
+                fileLink: s3FileURL + Date.now() + file.originalname,
                 s3_key: params.Key
             };
             var document = new DOCUMENT(newFileUploaded);
