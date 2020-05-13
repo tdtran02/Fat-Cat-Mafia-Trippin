@@ -124,7 +124,7 @@ class Friends extends Component {
             <div className="card-info">
               {list[i].image ? (
                 <img
-                  src={`http://trippinbucket.s3.amazonaws.com/${list[i].image}`}
+                  src={`http://fatcatimages.s3.amazonaws.com/${list[i].image}`}
 
                   alt="user"
                   className="profile-photo-lg"
@@ -182,7 +182,7 @@ class Friends extends Component {
             <div className="card-info">
               {list[i].image ? (
                 <img
-                  src={`http://trippinbucket.s3.amazonaws.com/${list[i].image}`}
+                  src={`http://fatcatimages.s3.amazonaws.com/${list[i].image}`}
 
                   alt="user"
                   className="profile-photo-lg"
@@ -190,7 +190,7 @@ class Friends extends Component {
               ) : (
                   <img
                     //src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                    src={`http://trippinbucket.s3.amazonaws.com/${list[i].image}`}
+                    src={`http://fatcatimages.s3.amazonaws.com/${list[i].image}`}
 
                     alt="user"
                     className="profile-photo-lg"
@@ -261,7 +261,7 @@ class Friends extends Component {
                     />
                   )} */}
                   {<img
-                    src={`http://trippinbucket.s3.amazonaws.com/${this.state.user_profile_image}`}
+                    src={`http://fatcatimages.s3.amazonaws.com/${this.state.user_profile_image}`}
 
                     alt=""
                     className="profile-photo-md"

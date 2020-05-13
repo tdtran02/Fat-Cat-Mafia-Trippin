@@ -247,7 +247,7 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={`http://trippinbucket.s3.amazonaws.com/${list[i].trip_image}`}
+              src={`http://fatcatimages.s3.amazonaws.com/${list[i].trip_image}`}
 
             />
             <Card.Header as="h5">
@@ -383,7 +383,7 @@ export class Home extends Component {
             <Card.Img
               variant="top"
               style={{ border: "2px solid gray" }}
-              src={`http://trippinbucket.s3.amazonaws.com/${list[i].trip_image}`}
+              src={`http://fatcatimages.s3.amazonaws.com/${list[i].trip_image}`}
 
             />
             <Card.Header as="h5">
@@ -516,7 +516,7 @@ export class Home extends Component {
                   <img
                     alt="profile"
                     className="responsive"
-                    src={`http://trippinbucket.s3.amazonaws.com/${this.state.image}`}
+                    src={`http://fatcatimages.s3.amazonaws.com/${this.state.image}`}
                     style={{
                       display: "block",
                       margin: "5px auto",

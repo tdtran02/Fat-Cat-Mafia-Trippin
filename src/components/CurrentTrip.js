@@ -139,7 +139,7 @@ class CurrentTrip extends Component {
           <div>
             <img
               style={{ width: "50px" }}
-              src={`http://trippinbucket.s3.amazonaws.com/${profile}`}
+              src={`http://fatcatimages.s3.amazonaws.com/${profile}`}
 
             />
           </div>
@@ -168,7 +168,7 @@ class CurrentTrip extends Component {
                 <div>
                   <img style={{ width: "50px" }}
 
-                    src={`http://trippinbucket.s3.amazonaws.com/${bpicture}`} />
+                    src={`http://fatcatimages.s3.amazonaws.com/${bpicture}`} />
                 </div>
                 <div>
                   <strong>{buddyarray[i].buddy_first_name}</strong>
@@ -306,7 +306,7 @@ class CurrentTrip extends Component {
                     height: "25px",
                     border: "1px solid black",
                   }}
-                  src={`http://trippinbucket.s3.amazonaws.com/${this.state.commentuserimg}`}
+                  src={`http://fatcatimages.s3.amazonaws.com/${this.state.commentuserimg}`}
 
                 />
                 <strong> {this.state.userfirstname}: </strong> {this.state.text}
@@ -357,7 +357,7 @@ class CurrentTrip extends Component {
           >
             {" "}
             <img
-              src={`http://trippinbucket.s3.amazonaws.com/${pa}`}
+              src={`http://fatcatimages.s3.amazonaws.com/${pa}`}
 
               style={{
                 width: "40px",
@@ -604,7 +604,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={`http://trippinbucket.s3.amazonaws.com/${user.image}`}
+                src={`http://fatcatimages.s3.amazonaws.com/${user.image}`}
 
                 alt="userimage"
               />
@@ -674,7 +674,7 @@ class CurrentTrip extends Component {
               >
                 <img
                   style={{ width: "50px" }}
-                  src={`http://trippinbucket.s3.amazonaws.com/${user.image}`}
+                  src={`http://fatcatimages.s3.amazonaws.com/${user.image}`}
 
                   alt="userimage"
                 />
@@ -727,7 +727,7 @@ class CurrentTrip extends Component {
             >
               <img
                 style={{ width: "50px" }}
-                src={`http://trippinbucket.s3.amazonaws.com/${user.image}`}
+                src={`http://fatcatimages.s3.amazonaws.com/${user.image}`}
                 alt="userimage"
               />
               <div style={{ margin: "15px 5px 0 15px" }}>{user.first_name}</div>
@@ -1157,7 +1157,7 @@ class CurrentTrip extends Component {
                             width: "240px",
                             border: "2px solid gray",
                           }}
-                          src={`http://trippinbucket.s3.amazonaws.com/${this.state.trip_image}`}
+                          src={`http://fatcatimages.s3.amazonaws.com/${this.state.trip_image}`}
 
                         />
                       </Card.Title>

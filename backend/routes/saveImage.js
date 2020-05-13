@@ -185,13 +185,13 @@ UPLOADROUTES.post("/upload", upload.single("file"), function (req, res) {
     let s3bucket = new AWS.S3({
         accessKeyId: AWS_KEY.AWS_ACCESS_KEY_ID,
         secretAccessKey: AWS_KEY.AWS_SECRET_ACCESS_KEY,
-        region: 'us-east-1'
+        region: 'us-west-1'
     });
 
     //Where you want to store your file
 
     var params = {
-        Bucket: 'trippinbucket',
+        Bucket: 'fatcatimages',
         Key: Date.now() + file.originalname,
         Body: file.buffer,
         ContentType: file.mimetype,
