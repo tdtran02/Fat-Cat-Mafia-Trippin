@@ -999,7 +999,7 @@ class CurrentTrip extends Component {
       }).catch(err => {
         console.log(err);
       })
-      window.location.href = "/trip/" + JSON.parse(localStorage.getItem('trip'))._id;
+      window.location.href = "/trip/" + window.location.href.substr(-24);
     }
   }
   /*  uploadImage(e, method) {
