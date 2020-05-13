@@ -534,7 +534,7 @@ export class Home extends Component {
                 >
                   <div
                     style={{
-                      margin: "5px auto",
+                      margin: "5px ",
                     }}
                   >
                     <label
@@ -549,7 +549,7 @@ export class Home extends Component {
                   </div>
                   <div
                     style={{
-                      margin: "5px auto",
+                      margin: "5px ",
                     }}
                   >
                     <label
