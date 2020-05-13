@@ -24,6 +24,7 @@ import { DropdownButton } from "react-bootstrap";
 import Recommendation from "./Recommendation";
 import ForgotPassword from "./ForgotPassword";
 import FAQ from "./FAQ";
+import Survey from "./Survey";
 
 import ResetPassword from "./ResetPassword";
 //import UpdatePasswordViaEmail from "./UpdatePasswordViaEmail";
@@ -167,6 +168,9 @@ class AppNavBar extends Component {
             </Route>
             <Route path="/myAccount">
               <MyAccount />
+            </Route>
+            <Route path="/survey">
+              <Survey />
             </Route>
             <Route path="/FAQ">
               <FAQ />

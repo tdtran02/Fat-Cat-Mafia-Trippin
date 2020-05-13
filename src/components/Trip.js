@@ -74,6 +74,7 @@ export class Trip extends Component {
         console.log(err);
       });
     // e.preventDefault();
+    window.location = "Survey";
   };
   render() {
     let addSurveyClose = () => this.setState({ addSurveyShow: false });
@@ -205,16 +206,16 @@ export class Trip extends Component {
                       color: "#fff",
                     }}
                     // onClick={
-                    //     this.onCreateFieldClick();
+                     // this.onCreateFieldClick()
                     // }
                   >
                     Create
                   </button>
-                  <Survey
-                    show={this.state.addSurveyShow}
-                    onHide={addSurveyClose}
-                    handler={this.handler}
-                  />
+                  {/*<Survey
+                  //  show={this.state.addSurveyShow}
+                  //  onHide={addSurveyClose}
+                  //  handler={this.handler}
+                  />*/}
                 </ButtonToolbar>
 
                 {/* <button

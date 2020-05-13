@@ -490,4 +490,14 @@ footer ul li a {
   footer ul li a {
     font-size: 1.8rem;
   }
+
+  /* Quiz Component */
+  .answerOptions {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 }
+
+
+
