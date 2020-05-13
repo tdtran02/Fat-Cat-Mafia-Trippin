@@ -187,6 +187,13 @@ export class MyAccount extends Component {
       }).catch(err => {
         console.log(err);
       });
+
+      //update buddy profile
+      app.put('buddy/profile/' + JSON.parse(localStorage.getItem('user'))._id).
+        then(res => console.log(res.data))
+        .catch(err => {
+          console.log(err)
+        });
       window.location.href = "/MyAccount";
     }
   }
