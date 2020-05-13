@@ -293,7 +293,7 @@ export class MyAccount extends Component {
               <Card.Body>
                 <div style={{ display: "flex", alignContent: "center" }}>
                   <img className="responsive"
-                    src={`http://trippinbucket.s3.amazonaws.com/${this.state.image}`}
+                    src={`http://fatcatimages.s3.amazonaws.com/${this.state.image}`}
                     alt="profile" style={{
                       display: "block",
                       margin: "5px auto",
