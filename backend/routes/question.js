@@ -22,31 +22,13 @@ QUESTIONROUTES.route("/question").post(function(req, res) {
   });
   Questions.save()
     .then(response => {
-      /*  client.search({
-                term: 'Coffee',
-                location: Questions.destination,
-            }).then(resp => { */
-      // console.log(resp.jsonBody.businesses[0]);
-      //TODO: save data to localStorage
-      //let recommendations = []
-
-      // for (let i = 0; i < resp.jsonBody.businesses.length; i++) {
-      //     console.log("Name: " + resp.jsonBody.businesses[i].name);
-      //     console.log("URL: " + resp.jsonBody.businesses[i].url);
-      //     console.log("Price: " + resp.jsonBody.businesses[i].price);
-      // }
-      //  recs = resp.jsonBody.businesses;
       res.status(200).json({
         saved: true,
         response_message: "Question is saved.",
         recs: recs,
         event_list: event_list,
         survey: response
-        //   })
       });
-      /* .catch(e => {
-                console.log(e);
-            }); */
     })
     .catch(error => {
       res.status(401).json({
@@ -108,10 +90,7 @@ QUESTIONROUTES.route("/question/searchlocation").post((req, res) => {
               questions: questions,
               recs: b,
               eventKey: tmApiKey,
-             // startDate: res1.start_date,
-             // endDate: res1.end_date,
-             // destination: res1.destination,
-             trip_id: res1.start_date,
+              trip_id: res1.start_date,
               user_locations: res1.trip_locations,
               add_events: res1.event_locations
             });

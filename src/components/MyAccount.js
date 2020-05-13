@@ -312,16 +312,7 @@ export class MyAccount extends Component {
                   display: "flex",
                   flexDirection: "column"
                 }}>
-                  {/* <Button style={{
-                    margin: "5px auto"
-                  }} variant="outline-dark" onClick={() => { this.setState({ editPhotoShow: true }) }}>CHANGE PHOTO</Button>
-                   <EditPhotoModal
-                    show={this.state.editPhotoShow}
-                    onHide={editModalClose}
-                    handler={this.handler}
-                    size="lg"
-                    style={{ maxWidth: '1600px', width: '80%' }}
-                  /> */}
+                  
                   <div style={{
                     margin: "5px "
                   }}>
@@ -425,86 +416,6 @@ export class MyAccount extends Component {
 
             </Card>
           </div>
-
-          {/* <div>
-
-
-        <div className='content-container'>
-          <div className='content-grid-myA'>
-            <div className=' main-myA'>
-              <div className="profile-container-myA">
-                <div className="profile-pic-buffer-myA">
-                  <div className="profilepic">
-                    <img className="responsive" id="profile-pic-myA" src={require(`${this.state.image}`)} alt="city" width="100" height="80" />
-                  </div>
-                  <div className="edit-pic">
-                    <ButtonToolbar >
-                      <Button variant="outline-light" onClick={() => this.setState({ editPhotoShow: true, option: '3' })}>
-                        Change Photo
-                      </Button>
-                      <EditPhotoModal
-                        show={this.state.editPhotoShow}
-                        onHide={editModalClose}
-                        handler={this.handler}
-                        size="lg"
-                        style={{ maxWidth: '1600px', width: '80%' }}
-                      />
-                    </ButtonToolbar>
-                  </div>
-                </div>
-                <div className="buffer"></div>
-                <div className="profile-text-buffer">
-                  <div className="profile-text">
-
-                    <form id="update" onSubmit={this.handleSubmit}>
-                      <h2>EDIT PROFILE</h2>
-                      <label htmlFor="full-name">FIRST NAME</label>
-                      <input type="text" className="myA" id="myA-firstname" style={{ height: "25px" }} />
-                      <label htmlFor="full-name">LAST NAME</label>
-                      <input type="text" className="myA" id="myA-lastname" style={{ height: "25px" }} />
-                      <label htmlFor="full-name">HOMETOWN</label>
-                      <input type="text" className="myA" id="myA-hometown" style={{ height: "25px" }} />
-                     
-                      <div id="update-div">
-
-                        <ButtonToolbar id="btntb">
-                          <Button className="buttons" variant="primary" type="submit">
-                            UPDATE
-                      </Button>
-                          <Button className="buttons" href="/Home" type="submit" variant="secondary" >
-                            BACK
-                      </Button>
-                        </ButtonToolbar>
-
-                      </div>
-
-                    </form>
-                  
-                  </div>
-                  <ButtonToolbar className="done-btn">
-
-                  </ButtonToolbar>
-                </div>
-              </div>
-            </div>
-            <div className="side-pic-container">
-              <img
-                className="responsive side-pic"
-                src={require("./images/city.png")}
-                alt="city"
-                width="100"
-                height="80"
-              />
-            </div>
-          </div>
-        </div>
-     
-
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete" async defer></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossOrigin="anonymous"></script>
-        <script src="auto-complete.js"></script>
-      </div> */}
         </div>
         <Footer />
       </div>

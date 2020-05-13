@@ -3,7 +3,6 @@ import { Modal, Button } from 'react-bootstrap';
 import "../styles/EditModal.css";
 import { app } from '../utils/AxiosConfig';
 
-//const AXIOS = require("axios").default;
 
 export class EditPhotoModal extends Component {
     constructor(props) {
@@ -50,10 +49,6 @@ export class EditPhotoModal extends Component {
         console.log(localStorage.getItem('user'));
         x.image = this.state.image;
 
-
-        //localStorage.setItem("user", JSON.stringify(x));
-
-        //console.log(`You chose the ${this.state.option} pizza.`); 
         let update = {
             user: {
                 _id: JSON.parse(localStorage.getItem('user'))._id,

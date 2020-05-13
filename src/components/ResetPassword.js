@@ -4,9 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { Alert } from "react-bootstrap";
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-//import { HashRouter, Route } from 'react-router-dom';
-//import axios from 'axios';
-//import TextField from '@material-ui/core/TextField';
+
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import {
   BrowserRouter as Router,
@@ -16,11 +14,7 @@ import {
 } from "react-router-dom";
 import "../styles/ResetPassword.css"
 import { app } from '../utils/AxiosConfig';
-//const AXIOS = require("axios").default;
 
-// import {
-//   SubmitButtons,
-// } from '../components';
 
 const loading = {
   margin: '1em',
@@ -45,31 +39,7 @@ class ResetPassword extends Component {
     };
     console.log(this.props.match.params.token)
   }
-  // <Router>
-  //   <App>
-  //       <Switch>
-  //               <Route exact path='/resetPassword/:param' component={ResetPassword} />
-  //       </Switch>         
-  //   </App>
-  // </Router>
-  //<Route exact path='/resetPassword/:param' component={Data} />
   componentDidMount() {
-    //const token = queryString.parse(this.props.location.search);
-    //<Route path="/resetPassword/:token" /> 
-    //const token = this.props.match.params.token;
-    //console.log(this.props.match.params.token);
-    // const {
-    //   match: {
-    //     params: { token },
-    //   },
-    // } = this.props;
-    // try {
-    //   const response = await 
-    // AXIOS.get('http://localhost:4000/resetPassword', {
-    //   params: {
-    //     resetPasswordToken: this.token,
-    //   },
-    // }).then(response =>{
     console.log(this.state.token)
     app.get('resetPassword/' + this.state.token)
       .then(response => {
@@ -82,7 +52,6 @@ class ResetPassword extends Component {
             error: false,
           });
         } else {
-          //console.log(error.response.data);
           this.setState({
             updated: false,
             isLoading: false,
@@ -102,21 +71,12 @@ class ResetPassword extends Component {
 
   updatePassword = async (e) => {
     e.preventDefault();
-    // const { username, password } = this.state;
-    // const {
-    //   match: {
-    //     params: { token },
-    //   },
-    // } = this.props;
-    // try {
-    //   const response = await 
     app.put(
       "updatePasswordViaEmail",
       {
         email: this.state.email,
         password: this.state.password,
         resetPasswordToken: this.state.token
-        //resetPasswordToken: token,
       }).then(response => {
         console.log(response.data);
         if (response.data.message === "password updated") {

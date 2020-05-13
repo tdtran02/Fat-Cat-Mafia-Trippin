@@ -129,35 +129,6 @@ class Login extends Component {
           </form>
         </div>
       </div>
-      // <div className="login">
-      //   <form onSubmit={this.displayLogin}>
-      //     <h2>Login</h2>
-      //     <div className="username">
-      //       <input
-      //         type="text"
-      //         placeholder="Username..."
-      //         value={this.state.email}
-      //         onChange={this.update}
-      //         name="email"
-      //       />
-      //     </div>
-
-      //     <div className="password">
-      //       <input
-      //         type="password"
-      //         placeholder="Password..."
-      //         value={this.state.password}
-      //         onChange={this.update}
-      //         name="password"
-      //       />
-      //     </div>
-
-      //     <input type="submit" value="Login" />
-      //   </form>
-      //   {this.state.show_message ? ERROR_MESSAGE : ""}
-
-      //   <Link to="/register">Create an account</Link>
-      // </div>
     );
   }
 }

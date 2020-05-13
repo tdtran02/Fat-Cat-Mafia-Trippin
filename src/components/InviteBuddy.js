@@ -101,17 +101,8 @@ export class InviteBuddy extends Component {
       this.setState({ selectedFriends: selected });
       console.log(this.state.selectedFriends);
     }
-    // console.log(selected);
   }
 
-  /* handleSubmit(event) {
-          event.preventDefault();
-          console.log(this.state.selectedFriends);
-          for (let i = 0; i < this.state.selectedFriends; i++) {
-              console.log(this.state.selectedFriends[i])
-              this.inviteBuddy(this.state.selectedFriends[i])
-          }
-      } */
 
   inviteBuddy() {
     //get the selected buddies
@@ -162,54 +153,6 @@ export class InviteBuddy extends Component {
       }
     }
   }
-
-  /* getBuddyId() {
-    //let self = this;
-    console.log(document.getElementById("buddyemail").value);
-    AXIOS.get(
-      "http://localhost:4000/useremail/" +
-        document.getElementById("buddyemail").value
-    )
-      .then((response) => {
-        let buddy = response.data.user;
-        console.log(response);
-        const buddyinfo = {
-          owner_id: JSON.parse(localStorage.getItem("user"))._id,
-          trip_id: JSON.parse(localStorage.getItem("trip"))._id,
-          buddy_id: buddy._id,
-          buddy_first_name: buddy.first_name,
-          buddy_last_name: buddy.last_name,
-          buddy_picture: buddy.image,
-          accepted: false,
-          denied: false,
-          pending: true,
-        };
-        AXIOS.post("http://localhost:4000/buddy", buddyinfo)
-          .then((response) => {
-            console.log(response);
-            this.setState({ invitation_boolean: true });
-            console.log(this.state.invitation_boolean);
-            if (response.data.saved) {
-              this.setState({
-                invitation_sent: true,
-                invitation_variant: "success",
-                invitation_sent_msg: "Invitation was sent!",
-              });
-            } else {
-              this.setState({
-                invitation_variant: "warning",
-                invitation_sent_msg: "Error occured",
-              });
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } */
 
   sendEmail() {
     console.log(document.getElementById("email").value);

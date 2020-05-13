@@ -12,13 +12,7 @@ var AWS = require("aws-sdk");
 var s3 = new AWS.S3();
 const DOCUMENT = require("../models/document.model");
 const AWS_KEY = require("../config_s3");
-// var ParamsParser = require('paramsParser');
 var bodyParser = require('body-parser')
-// const PATHS = {
-//     react: path.join(__dirname, 'node_modules/react/dist/react.min.js'),
-//     app: path.join(__dirname, 'src/uploads/'),
-//     build: path.join(__dirname, './dist')
-// };
 
 AWS.config.update({
     secretAccessKey: AWS_KEY.SECRET_ACCESS_KEY,
@@ -26,15 +20,6 @@ AWS.config.update({
     region: 'us-east-1'
 });
 
-// const upload = multer({dest:'uploads/'});
-/* const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + file.originalname);
-    }
-}) */
 var storage = multer.memoryStorage();
 var upload = multer({ storage: storage });
 
@@ -46,50 +31,6 @@ const fileFilter = (req, file, cb) => {
         cb(null, false);
     }
 }
-
-/* const upload = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: 'trippinbucket',
-        key: function (req, file, cb) {
-            console.log(file);
-            cb(null, file.originalname);
-        }
-    }),
-    limits: {
-        fileSize: 1024 * 1024 * 5
-    },
-    fileFilter: fileFilter
-}) */
-
-
-
-// upload for profile image
-
-/* const userStorage = multer.diskStorage({
-    destination: function(req, file, cb){
-        // let {userId} = req.params;
-        // let dir = `./uploads/${userId}/profile/`;
-        cb(null, '../src/components/uploads/userProfileImage/');
-        // check if directory exists
-        // if (!fs.existsSync(dir)) {
-        //     // if not create directory
-        //     fs.mkdirSync(dir);
-        //     // fs.exist(dir, exist =>{
-        //     //     if(!exist){
-        //     //         return fs.mkdir(dir, error => cb(error, dir))
-        //     //     }
-        //     //     return cb(null, dir)
-        //     // })
-        // }
-        // cb(null, dir);
-    },
-    filename: function(req, file, cb){
-        //cb(null, Date.now() + file.originalname);
-        // let {userId} = req.params.id;
-        cb(null, `profile-${Date.now()}` + file.originalname);
-    }
-}) */
 
 const profileFileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/jpeg' ||
@@ -218,34 +159,6 @@ UPLOADROUTES.post("/upload", upload.single("file"), function (req, res) {
         }
     })
 });
-
-/* UPLOADROUTES.route("/user/profileImage/:id").post(profileImageUpload.single('imageData'), (req, res, next) => {
-    console.log(req.body);
-    const newImage = new IMAGE({
-        owner_id: req.params.id,
-        imageCate: req.body.imageCate,
-        imageName: res.req.file.filename,
-        imageData: req.file.path
-    });
-    newImage.save()
-        .then((result) => {
-            /*  USER.updateOne(
-                  { _id: req.params.id },
-                  {
-                      $set: { image: newImage.imageName }
-                  })
-                  .then(() => {
-                      console.log("User profile image:id updated");
-                      //res.status(200).send({ message: "Profile image:id updated" });
-                  });
-              console.log(result);
-              res.status(200).json({
-                  success: true,
-                  document: result
-              }); 
-        })
-        .catch((err) => next(err));
-}); */
 
 UPLOADROUTES.route("/userImageUpdate/:id").put(function (req, res) {
     let newImage;

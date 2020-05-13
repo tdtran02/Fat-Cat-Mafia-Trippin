@@ -7,13 +7,6 @@ const BCRYPT = require("bcrypt");
 const BCRYPT_SALT_ROUNDS = 12;
 UPDATEPASSWORDVIAEMAILROUTES.route("/updatePasswordViaEmail").put(function (req, res){
     USER.findOne({
-    //   where: {
-    //     email: req.body.email,
-    //     resetPasswordToken: req.body.resetPasswordToken,
-    //     resetPasswordExpires: {
-    //       $gt: Date.now(),
-    //     },
-    //   },
     $and:[
         {email: req.body.email},
         { resetPasswordToken: req.body.resetPasswordToken }, 
@@ -25,9 +18,6 @@ UPDATEPASSWORDVIAEMAILROUTES.route("/updatePasswordViaEmail").put(function (req,
       } else if (user != null) {
         console.log("user exists in db");
         let hashedPassword = BCRYPT.hashSync(req.body.password, BCRYPT_SALT_ROUNDS);
-        // BCRYPT
-        //   .hash(req.body.password, BCRYPT_SALT_ROUNDS)
-        //   .then(hashedPassword => {
         USER.findOneAndUpdate(
           {email: req.body.email},
           {

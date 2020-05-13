@@ -246,20 +246,7 @@ class Friends extends Component {
                     tableLayout: "fixed",
                   }}
                 >
-                  {/* {user.image ? (
-                    <img
-                      //src={require('./uploads/userProfileImage/'+`${user.image}`)}
-                      alt=""
-                      className="profile-photo-md"
-                    />
-                  ) : (
-                    <img
-                      //src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                      src={require('./uploads/userProfileImage/'+`${user.image}`)}
-                      alt=""
-                      className="profile-photo-md"
-                    />
-                  )} */}
+                 
                   {<img
                     src={`http://fatcatimages.s3.amazonaws.com/${this.state.user_profile_image}`}
 

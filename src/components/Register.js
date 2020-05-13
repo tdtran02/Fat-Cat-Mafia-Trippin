@@ -159,62 +159,6 @@ class Register extends Component {
           </form>
         </div>
       </div>
-      // <div className="register">
-      //   <form onSubmit={this.displayRegister}>
-      //     <h2>Register</h2>
-
-      //     <div className="name">
-      //       <input
-      //         type="text"
-      //         placeholder="First Name"
-      //         name="first_name"
-      //         value={this.state.first_name}
-      //         onChange={this.update}
-      //       />
-      //     </div>
-      //     <div className="name">
-      //       <input
-      //         type="text"
-      //         placeholder="Last Name"
-      //         name="last_name"
-      //         value={this.state.last_name}
-      //         onChange={this.update}
-      //       />
-      //     </div>
-
-      //     <div className="email">
-      //       <input
-      //         type="email"
-      //         placeholder="Enter your email"
-      //         name="email"
-      //         value={this.state.email}
-      //         onChange={this.update}
-      //       />
-      //     </div>
-
-      //     <div className="pasword">
-      //       <input
-      //         type="password"
-      //         placeholder="Password"
-      //         name="password"
-      //         value={this.state.password}
-      //         onChange={this.update}
-      //       />
-      //     </div>
-
-      //     <div className="password">
-      //       <input
-      //         type="password"
-      //         placeholder="Confirm Password"
-      //         name="password1"
-      //       />
-      //     </div>
-
-      //     <input type="submit" value="Register" />
-      //   </form>
-
-      //   <Link to="/login">Login Here</Link>
-      // </div>
     );
   }
 }

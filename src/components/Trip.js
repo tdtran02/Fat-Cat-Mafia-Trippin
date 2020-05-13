@@ -93,23 +93,14 @@ export class Trip extends Component {
           className="containerBorder"
           style={{
             width: "400px",
-            // borderRadius: "5px",
             width: "500px",
             margin: "100px auto",
-            // border: "1px solid transparent",
-            // boxSizing: "border-box",
-            // borderRadius: "20px",
-            // boxShadow: "8px 8px 50px #000",
-            // color: "#6c757d",
             color: "#3a3e42",
           }}
         >
           <Card
             style={
               {
-                // border: "transparent",
-                // borderRadius: "20px",
-                // backgroundColor: "white"
               }
             }
           >
@@ -211,20 +202,9 @@ export class Trip extends Component {
                   >
                     Create
                   </button>
-                  {/*<Survey
-                  //  show={this.state.addSurveyShow}
-                  //  onHide={addSurveyClose}
-                  //  handler={this.handler}
-                  />*/}
+                 
                 </ButtonToolbar>
 
-                {/* <button
-                  className="btn btn-lg btn-primary btn-block text-uppercase"
-                  type="submit"
-                  style={{ backgroundColor: "transparent" }}
-                >
-                  Create
-                </button> */}
               </form>
             </Card.Body>
           </Card>

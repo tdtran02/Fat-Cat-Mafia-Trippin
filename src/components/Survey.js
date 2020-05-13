@@ -220,10 +220,7 @@ class Survey extends Component {
           end_date: tripGET.end_date,
           __v: 0,
         };
-        // console.log(this.state.trip_id);
-        // console.log(response.data.survey);
-        // localStorage.setItem("survey", JSON.stringify(response.data.survey));
-        // console.log(JSON.parse(localStorage.getItem("trip"))._id);
+        
         let iddd = JSON.parse(localStorage.getItem("trip"))._id;
         localStorage.removeItem("trip");
         window.location = "/trip/" + iddd;

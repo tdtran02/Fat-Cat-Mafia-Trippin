@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { app } from "../utils/AxiosConfig";
-//const AXIOS = require("axios").default;
 
 export class CreatePost extends Component {
   constructor(props) {

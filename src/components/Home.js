@@ -92,11 +92,7 @@ export class Home extends Component {
       });
   }
   onDeleteFieldClick(e, i) {
-    //console.log(i);
     const OneTrip = this.state.trip[i];
-    // console.log(OneTrip);
-    // console.log(this.state.trip[i]);
-    // console.log(JSON.parse(localStorage.getItem('user')))
     const USER_ID = JSON.parse(localStorage.getItem("user"))._id;
     app
       .delete("trip/" + OneTrip._id)
@@ -283,22 +279,7 @@ export class Home extends Component {
 
             />
             <Card.Header as="h5">
-              {/* <div
-                id="linkbtn"
-                onClick={(e) => {
-                  this.updateLocalTrip(e, list[i]);
-                }}
-                className="trip-fonts"
-                style={{
-                  textDecoration: "none",
-                  backgroundColor: "transparent",
-                  border: "none",
-                  borderRadius: "20px",
-                  color: "black",
-                  fontSize: "40px",
-                  textAlign: "center",
-                }}
-              > */}
+            
               {list[i].trip_name}
               {/* </div> */}
             </Card.Header>
@@ -307,10 +288,7 @@ export class Home extends Component {
                 <div>Destination: {list[i].destination}</div>
                 <div>Date: {d}</div>
               </div>
-              {/* <div
-                className="trip-deletion"
-                style={{ paddingBottom: "10px" }}
-              ></div> */}
+             
             </Card.Body>
             <Card.Footer>
               <Button
@@ -318,7 +296,6 @@ export class Home extends Component {
                 onClick={(e) => {
                   this.updateLocalTrip(e, list[i]);
                 }}
-              // style={{ margin: "10px auto" }}
               >
                 VIEW
               </Button>
@@ -419,22 +396,7 @@ export class Home extends Component {
 
             />
             <Card.Header as="h5">
-              {/* <div
-                id="linkbtn"
-                onClick={(e) => {
-                  this.updateLocalTrip(e, list[i]);
-                }}
-                className="trip-fonts"
-                style={{
-                  textDecoration: "none",
-                  backgroundColor: "transparent",
-                  border: "none",
-                  borderRadius: "20px",
-                  color: "black",
-                  fontSize: "40px",
-                  textAlign: "center",
-                }}
-              > */}
+              
               {list[i].trip_name}
               {/* </div> */}
             </Card.Header>
@@ -443,10 +405,7 @@ export class Home extends Component {
                 <div>Destination: {list[i].destination}</div>
                 <div>Date: {d}</div>
               </div>
-              {/* <div
-                className="trip-deletion"
-                style={{ paddingBottom: "10px" }}
-              ></div> */}
+              
             </Card.Body>
             <Card.Footer>
               <Button
@@ -517,17 +476,10 @@ export class Home extends Component {
           className="image-container"
           style={{
             minHeight: "100%",
-            // backgroundImage:
-            // "linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%)",
-            // backgroundImage:
-            //   "url(https://wallpaperscute.com/wp-content/uploads/2019/05/Sunset-Wallpaper-For-Desktop.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            paddingBottom: "50px",
-            // backgroundPosition: "center",
-            // backgroundAttachment: "fixed",
-            // overflow: "auto",
-            // display: "flex",
+            paddingBottom: "50px"
+           
           }}
         >
           <div style={{ height: "100%", display: "flex", width: "100%" }}>
@@ -535,12 +487,7 @@ export class Home extends Component {
               style={{
                 height: "60%",
                 margin: "3%",
-                // borderRadius: "5px",
-                // border: "2px solid gray",
-                boxSizing: "border-box",
-                // borderRadius: "20px",
-                // boxShadow: "8px 8px 50px #000",
-                // color: "#6c757d",
+                boxSizing: "border-box"
               }}
             >
               <Card.Body>
@@ -641,14 +588,7 @@ export class Home extends Component {
                 <Card
                   className="tripContainerBorder"
                   style={{
-                    marginBottom: "20px",
-                    // margin: "3%",
-                    // borderRadius: "5px",
-                    // border: "2px solid gray",
-                    // boxSizing: "border-box",
-                    // borderRadius: "20px",
-                    // boxShadow: "8px 8px 50px #000",
-                    // color: "#6c757d",
+                    marginBottom: "20px"
                   }}
                 >
                   <Card.Header as="h4" style={{ padding: "20px" }}>
@@ -663,14 +603,7 @@ export class Home extends Component {
                 <Card
                   className="tripContainerBorder"
                   style={{
-                    marginBottom: "50px",
-                    // margin: "3%",
-                    // borderRadius: "5px",
-                    // border: "2px solid gray",
-                    // boxSizing: "border-box",
-                    // borderRadius: "20px",
-                    // boxShadow: "8px 8px 50px #000",
-                    // color: "#6c757d",
+                    marginBottom: "50px"
                   }}
                 >
                   <Card.Header as="h4">UPCOMING TRIPS</Card.Header>
@@ -684,13 +617,6 @@ export class Home extends Component {
                   className="tripContainerBorder"
                   style={
                     {
-                      // margin: "3%",
-                      // borderRadius: "5px",
-                      // border: "2px solid gray",
-                      // boxSizing: "border-box",
-                      // borderRadius: "20px",
-                      // boxShadow: "8px 8px 50px #000",
-                      // color: "#6c757d",
                     }
                   }
                 >

@@ -82,9 +82,6 @@ class AppNavBar extends Component {
           </DropdownMenu>
         </UncontrolledDropdown>
 
-        {/*         <NavItem style={{ cursor: "pointer" }}>
-          <NavLink>Logged in!</NavLink>
-        </NavItem> */}
       </Fragment>
     );
 
@@ -105,7 +102,6 @@ class AppNavBar extends Component {
     return (
       <div style={{ height: "100%" }}>
         <Router>
-          {/* <Navbar sticky="top" color="dark" dark expand="sm"> */}
           <Navbar
             sticky="top"
             expand="sm"
@@ -137,7 +133,6 @@ class AppNavBar extends Component {
               </span>
               <NavbarToggler onClick={this.toggle} />
               <Collapse
-                // className="bg-dark"
                 isOpen={this.state.isOpen}
                 navbar
                 style={{ background: "#242529" }}
@@ -184,9 +179,6 @@ class AppNavBar extends Component {
             <Route path="/forgotPassword">
               <ForgotPassword />
             </Route>
-            {/* <Route path="/resetPassword/:token">
-              <ResetPassword />
-            </Route> */}
             <Route
               exact
               path="/resetPassword/:token"

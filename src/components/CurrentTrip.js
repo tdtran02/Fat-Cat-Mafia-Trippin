@@ -63,13 +63,11 @@ class CurrentTrip extends Component {
     app
       .get("tripid/" + this.state.trip_id)
       .then((result) => {
-        // if (result.data.trip.start_date != null)
         this.setState({
           start: result.data.trip[0].start_date.substring(0, 10),
         });
         this.setState({ end: result.data.trip[0].end_date.substring(0, 10) });
         this.setState({ trip: result.data.trip[0] });
-        // console.log(JSON.parse(localStorage.getItem('trip')).trip_image)
         if (result.data.trip[0].trip_image !== undefined && !(result.data.trip[0].trip_image.includes("./images"))) {
           this.setState({ trip_image: result.data.trip[0].trip_image });
         }
@@ -88,7 +86,6 @@ class CurrentTrip extends Component {
       .then((response) => {
         this.setState({ organizer: this.getTripOrganizer(response.data.user) });
       });
-    // get trip info
     app.get("comment/" + this.state.trip_id).then((response) => {
       if (response !== undefined && response.data.comment.length != 0) {
         this.setState({ comment_id: response.data.comment[0]._id });
@@ -98,7 +95,6 @@ class CurrentTrip extends Component {
       }
     });
 
-    //check if any pending invitations
     app.get("buddy/" + this.state.trip_id).then((respo) => {
       let invitations = respo.data.tripbuddy;
       this.getTripBuddies(invitations);
@@ -187,7 +183,6 @@ class CurrentTrip extends Component {
     return (
       <Card
         style={{
-          // paddingTop: "20px",
           margin: "0 auto 0 auto",
           width: "500px",
           border: "3px solid gray",
@@ -252,7 +247,6 @@ class CurrentTrip extends Component {
         console.log(err);
       });
 
-    // let buddies = JSON.parse(localStorage.getItem("trip")).buddies;
   };
 
   declineInvitation() {
@@ -280,8 +274,6 @@ class CurrentTrip extends Component {
       this.setState({ secondaryComments: [] });
       let secondaryComments = [];
       if (list[i].commentsOnThisPost != "") {
-        //secondaryComments = this.showCommentsOnPost(list[i].commentsOnThisPost);
-        // console.log("*** " + secondaryComments.length);
 
         let commentlist = list[i].commentsOnThisPost;
         for (let j = 0; j < commentlist.length; j++) {
@@ -320,33 +312,10 @@ class CurrentTrip extends Component {
       let pa = list[i].user_pic;
 
       elements.push(
-        // <div key={i}>
-        // {/* <div
-        //   // className="post-card"
-        //   className="containerBorder"
-        //   style={{
-        //     // margin: "0 10px 10px 10px",
-        //     backgroundColor: "white",
-        //     // borderRadius: "20px",
-        //     // margin: "15px 0",
-        //     // boxShadow: "8px 8px 50px #000",
-        //     // width: "90%",
-        //   }}
-        // > */}
-        // {/*<div
-        //   className="img-responsive cover"
-        //   style={{
-        //     height: "100px",
-        //     width: "400px",
-        //     backgroundColor: "#6495ED"
-        //   }}
-        // ></div>*/}
         <Card
           key={i}
           style={{
-            // borderRadius: "20px",
             marginTop: "20px",
-            // backgroundColor: "transparent",
           }}
         >
           <Card.Header
@@ -395,8 +364,7 @@ class CurrentTrip extends Component {
             </Form>
           </Card.Footer>
         </Card>
-        //   {/* </div>
-        // </div> */}
+        
       );
     }
 
@@ -404,7 +372,6 @@ class CurrentTrip extends Component {
   }
 
   commentOnPost(e, i) {
-    // let trip = JSON.parse(localStorage.getItem("trip"));
     let postArr = [];
     const commentOnThisPost = {
       owner_id: JSON.parse(localStorage.getItem("user"))._id,
@@ -496,15 +463,12 @@ class CurrentTrip extends Component {
       .catch((err) => {
         console.log(err);
       });
-    //TODO: see if user and buddy are already friends
-    // if they are, add friend to trip
-    //send an invite to friend
+   
   }
 
   postComment = (e) => {
     e.preventDefault();
     console.log("?????");
-    // let trip = JSON.parse(localStorage.getItem("trip"));
     let trip = this.state.trip;
     let postArr = [];
     if (trip.posts == null) {
@@ -536,7 +500,6 @@ class CurrentTrip extends Component {
   };
 
   showDrivers = () => {
-    // window.open("/trip/" + this.state.trip_id + "/drivers", "_blank");
     this.setState({ show_drivers: true });
     app
       .get("driver/friends/" + this.state.trip_id)
@@ -1002,40 +965,6 @@ class CurrentTrip extends Component {
       window.location.href = "/trip/" + window.location.href.substr(-24);
     }
   }
-  /*  uploadImage(e, method) {
-     let imageObj = {};
-     if (method === "multer") {
-       let imageFormObj = new FormData();
-       //imageFormObj.append("imageName", "multer-image-" + Date.now());
-       imageFormObj.append("imageCate", "trip");
-       imageFormObj.append("imageData", e.target.files[0]);
- 
-       // stores a readable instance of 
-       // the image being uploaded using multer
- 
-       this.setState({
-         trip_image: URL.createObjectURL(e.target.files[0])
-         //image: URL.createObjectURL(e.target.files[0])
-       });
-       // delete previous profile image
-       //if (JSON.parse(localStorage.getItem('trip')).trip_image != null) {
-       app.delete('trip/profile/' + JSON.parse(localStorage.getItem('trip'))._id).then(res => console.log(res.data))
-         .catch(err => { console.log(err) });
-       //}
-       // then upload new profle image
-       app.post('trip/image/' + JSON.parse(localStorage.getItem('trip'))._id, imageFormObj).then((data) => {
-         if (data.data.success) {
-           alert("Image has been successfully upload using multer");
-           //this.setDefaultImage("multer");
-         }
-       }).catch((err) => {
-         alert("Error while uploading image using multer");
-         this.setDefaultImage("multer");
-       });
-     }
-   } */
-
-
 
 
   render() {
@@ -1045,19 +974,10 @@ class CurrentTrip extends Component {
         <div
           className="image-container"
           style={{
-            // backgroundImage:
-            //   "url(https://www.diabetes.co.uk/wp-content/uploads/2019/01/iStock-1001927840-1.jpg)",
-            // backgroundImage: "url('images/bbb.jpg')",
-
             backgroundRepeat: "no-repeat",
-
-            // backgroundImage:
-            //   "linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-
-            // display: "flex",
+            backgroundAttachment: "fixed"
           }}
         >
           <Toast
@@ -1088,32 +1008,21 @@ class CurrentTrip extends Component {
           </Toast>
           <div
             style={{
-              // display: "flex",
-              // flexDirection: "column",
+             
               height: "100%",
               width: "100%",
               minHeight: "100%",
             }}
           >
             <div style={{ paddingTop: "25px" }}>{this.state.invitation}</div>
-            {/* <div style={{ display: "flex", height: "100%", minHeight: "100%" }}> */}
             <div
-              // className="container"
               style={{
                 height: "100%",
                 minHeight: "100%",
                 width: "100%",
               }}
             >
-              {/* <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "35%",
-                  height: "100%",
-                  minHeight: "100%",
-                }}
-              > */}
+            
               <div
                 className="row"
                 style={{
@@ -1129,13 +1038,7 @@ class CurrentTrip extends Component {
                     borderRadius: "5px",
                     height: "100%",
                     margin: "50px auto",
-                    // border: "2px solid gray",
-                    // boxSizing: "border-box",
-                    // borderRadius: "20px",
-                    // boxShadow: "8px 8px 50px #000",
-                    // border: "1px solid rgba(34,36,38,.15)",
-                    // boxShadow: "0 1px 2px 0 rgba(34,36,38,.15)",
-                    // color: "#6c757d",
+                   
                   }}
                 >
                   <Card
@@ -1225,18 +1128,13 @@ class CurrentTrip extends Component {
                     minHeight: "395px",
                     // height: "395px",
                     margin: "50px auto",
-                    // borderRadius: "20px",
-                    // color: "#6c757d",
-                    // paddingRight: "20px",
+                    
                   }}
                 >
                   <Card
                     className="containerBorder"
                     style={{
-                      // boxShadow: "8px 8px 50px #000",
-                      // borderRadius: "20px",
-                      width: "100%",
-                      // height: "100%",
+                      width: "100%"
                     }}
                   >
                     <Card.Header>MAKE A POST</Card.Header>

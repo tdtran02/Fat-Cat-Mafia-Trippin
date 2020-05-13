@@ -3,9 +3,6 @@ const Schema = mongoose.Schema;
 
 //Creating Schema and Model for trip
 const questionSchema = new Schema({
-   // questionId: Number,
-   // question: String,
-   // answer: String
    trip_id: String,
    user_id: String,
    destination: String,
