@@ -990,15 +990,16 @@ class CurrentTrip extends Component {
   }
 
   updateDB(response) {
+
     if (response.status === 200) {
-      app.put("tripimage/" + JSON.parse(localStorage.getItem('trip'))._id, {
+      app.put("tripimage/" + window.location.href.substr(-24), {
         image: response.data.data.Key
       }).then(resp => {
         console.log(resp);
       }).catch(err => {
         console.log(err);
       })
-      window.location.href = "/trip/" + JSON.parse(localStorage.getItem('trip'))._id;
+      window.location.href = "/trip/" + window.location.href.substr(-24);
     }
   }
   /*  uploadImage(e, method) {

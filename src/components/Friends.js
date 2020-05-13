@@ -235,7 +235,7 @@ class Friends extends Component {
   render() {
     //let user = JSON.parse(localStorage.getItem("user"));
     return (
-      <div style={{ height: "100%" }}>
+      <div >
         <div className="container">
           <div className="create-post">
             <div className="row">
@@ -347,6 +347,7 @@ class Friends extends Component {
             <div className="row">{this.state.friend_list}</div>
           </div>
         </div>
+        <div style={{ height: "65px" }}></div>
         <Footer />
       </div>
     );
