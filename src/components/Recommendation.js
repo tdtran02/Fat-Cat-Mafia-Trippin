@@ -200,7 +200,6 @@ class Recommendation extends React.Component {
                       fontSize: "20px"
                     }}
                     onClick={e => {
-                      console.log("in createList add function");
                       this.addToTripLocations(e, i);
                     }}
                   ></i>
@@ -235,6 +234,7 @@ class Recommendation extends React.Component {
     // console.log("in createEventList: " + list);
     for (let i = 0; i < list.length; i++) {
       //this.state.show_event.push(
+        if (list[i] != null){
         event_elements.push(
         <div key={i}>
           <Card
@@ -331,6 +331,7 @@ class Recommendation extends React.Component {
           </Card>
         </div>
       );
+      }
     }
     //console.log("at the end of createEventList: " + this.state.show_event);
     //this.setState({ event_list: this.state.show_event });
@@ -486,8 +487,6 @@ class Recommendation extends React.Component {
       .catch(err => {
         console.error(err);
       });
-      console.log("in delete");
-      console.log(this.state.event_list);
   }
 
   getRatingStar(num) {
