@@ -252,7 +252,14 @@ export class MyAccount extends Component {
 
     }
     console.log(JSON.stringify(update));
-    app.put('user/' + JSON.parse(localStorage.getItem('user'))._id, update)
+    app.put('user/' + JSON.parse(localStorage.getItem('user'))._id, {
+      _id: JSON.parse(localStorage.getItem('user'))._id,
+      first_name: x,
+      last_name: y,
+      image: this.state.image,
+      __v: this.state.__v,
+      hometown: z
+    })
       .then(res => console.log(res.data))
       .catch(err => { console.log(err) });
 
