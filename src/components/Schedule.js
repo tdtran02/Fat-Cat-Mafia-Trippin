@@ -462,7 +462,8 @@ class Schedule extends Component {
                   {this.state.event_locations.map((event, k) => (
                    
                      <div className="card">
-                      {(get_date+i) == (new Date(event.dates.start.localDate).getDate() + 1) ? (
+                      
+                      {event != null && (get_date+i) == (new Date(event.dates.start.localDate).getDate() + 1) ? (
                       <div className="row no-gutters">
                         <div
                           className="col-auto"
