@@ -270,6 +270,7 @@ class CurrentTrip extends Component {
 
   createPostCards(list) {
     let elements = [];
+    console.log(list);
     for (let i = list.length - 1; i >= 0; i--) {
       this.setState({ secondaryComments: [] });
       let secondaryComments = [];
@@ -290,7 +291,7 @@ class CurrentTrip extends Component {
           this.setState({ userfirstname: commentlist[j].first_name });
           secondaryComments.push(
             <div key={j}>
-              <ListGroup.Item>
+              <ListGroup.Item style={{ textAlign: "left" }}>
                 <img
                   alt="?"
                   style={{
@@ -322,6 +323,7 @@ class CurrentTrip extends Component {
             as="h5"
             style={{
               textTransform: "uppercase",
+              textAlign: "left"
             }}
           >
             {" "}
@@ -338,7 +340,7 @@ class CurrentTrip extends Component {
           </Card.Header>
 
           <Card.Body>
-            <p>{list[i].text}</p>
+            <p style={{ textAlign: "left" }}>{list[i].text}</p>
             <ListGroup>
               <div>{this.state.secondaryComments}</div>
             </ListGroup>

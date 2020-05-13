@@ -122,146 +122,61 @@ class Schedule extends Component {
   createList(list) {
     let elements = [];
     for (let i = 0; i < list.length; i++) {
-      if (list[i] != null){
-      elements.push(
-        <Draggable draggableId={i.toString()} index={i} key={i}>
-          {provided => (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              className="draggable"
-            >
-              <div className="card">
-                <div className="row no-gutters">
-                  <div
-                    className="col-auto"
-                    style={{
-                      marginTop: "8px",
-                      marginLeft: "8px"
-                    }}
-                  >
-                    <img
-                      src={list[i].image_url}
-                      className="img-fluid"
-                      alt=""
+      if (list[i] != null) {
+        elements.push(
+          <Draggable draggableId={i.toString()} index={i} key={i}>
+            {provided => (
+              <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                className="draggable"
+              >
+                <div className="card">
+                  <div className="row no-gutters">
+                    <div
+                      className="col-auto"
                       style={{
-                        height: "40px",
-                        width: "40px",
-                        borderRadius: "50%"
+                        marginTop: "8px",
+                        marginLeft: "8px"
                       }}
-                    />
-                  </div>
-                  <div className="col">
-                    <div className="card-block px-2">
-                      <div
-                        className="card-text"
+                    >
+                      <img
+                        src={list[i].image_url}
+                        className="img-fluid"
+                        alt=""
                         style={{
-                          // fontSize: "18px",
-                          textOverflow: "ellipsis"
+                          height: "40px",
+                          width: "40px",
+                          borderRadius: "50%"
                         }}
-                      >
-                        <b><span>{list[i].name}</span></b>
-                      </div>
-                      <ul className="list-unstyled list-inline rating mb-0">
-                        {this.getRatingStar(list[i].rating)}
-                        <span
+                      />
+                    </div>
+                    <div className="col">
+                      <div className="card-block px-2">
+                        <div
+                          className="card-text"
                           style={{
-                            fontSize: "10px",
-                            color: "#6c757d",
-                            marginLeft: "10px"
+                            // fontSize: "18px",
+                            textOverflow: "ellipsis"
                           }}
                         >
-                          {list[i].rating} {"("}
-                          {list[i].review_count}
-                          {")"}
-                        </span>
-                      </ul>
-                      <span
-                        className="card-text"
-                        style={{
-                          display: "inline-block",
-                          float: "left",
-                          clear: "left",
-                          fontSize: "10px"
-                        }}
-                      >
-                        {list[i].price} • {list[i].categories[0].title}
-                      </span>
-                      <span
-                        className="card-text"
-                        style={{
-                          display: "inline-block",
-                          float: "left",
-                          clear: "left",
-                          fontSize: "10px"
-                        }}
-                      >
-                        {list[i].location.display_address[0]}
-                        {", "} {list[i].location.display_address[1]}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {provided.placeholder}
-            </div>
-          )}
-        </Draggable>
-      );
-    }
-    }
-    return elements;
-  }
-
-  /*--------------------------------------------------------------------------------------------------*/
-  createEvent(list) {
-    let elements = [];
-    for (let i = 0; i < list.length; i++) {
-      if (list[i] != null){
-      elements.push(
-        <Draggable draggableId={i.toString()} index={i} key={i}>
-          {provided => (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              className="draggable"
-            >
-              <div className="card">
-                <div className="row no-gutters">
-                  <div
-                    className="col-auto"
-                    style={{
-                      marginTop: "8px",
-                      marginLeft: "8px"
-                    }}
-                  >
-                    <img
-                      src={list[i].images[0].url}
-                      className="img-fluid"
-                      alt=""
-                      style={{
-                        height: "40px",
-                        width: "40px",
-                        borderRadius: "50%"
-                      }}
-                    />
-                  </div>
-                  <div className="col">
-                    <div className="card-block px-2">
-                      <div
-                        className="card-text"
-                        style={{
-                          // fontSize: "18px",
-                          textOverflow: "ellipsis",
-                          color: "blue"
-                        }}
-                      >
-                        <b><span>{list[i].name}</span></b>
-                      </div>
-
-                      <b>
+                          <b><span>{list[i].name}</span></b>
+                        </div>
+                        <ul className="list-unstyled list-inline rating mb-0">
+                          {this.getRatingStar(list[i].rating)}
+                          <span
+                            style={{
+                              fontSize: "10px",
+                              color: "#6c757d",
+                              marginLeft: "10px"
+                            }}
+                          >
+                            {list[i].rating} {"("}
+                            {list[i].review_count}
+                            {")"}
+                          </span>
+                        </ul>
                         <span
                           className="card-text"
                           style={{
@@ -271,56 +186,141 @@ class Schedule extends Component {
                             fontSize: "10px"
                           }}
                         >
-                          {list[i].dates.start.localDate} • {list[i].dates.start.localTime}
+                          {list[i].price} • {list[i].categories[0].title}
                         </span>
-                      </b>
-                      <span
-                        className="card-text"
-                        style={{
-                          display: "inline-block",
-                          float: "left",
-                          clear: "left",
-                          fontSize: "10px"
-                        }}
-                      >
-                        {list[i]._embedded.venues[0].name}
-                      </span>
-
-                      <span
-                        className="card-text"
-                        style={{
-                          display: "inline-block",
-                          float: "left",
-                          clear: "left",
-                          fontSize: "10px"
-                        }}
-                      >
-                        {list[i]._embedded.venues[0].address.line1}
-                      </span>
-
-                      <span
-                        className="card-text"
-                        style={{
-                          display: "inline-block",
-                          float: "left",
-                          clear: "left",
-                          fontSize: "10px"
-                        }}
-                      >
-                        {list[i]._embedded.venues[0].city.name} {", "} {list[i]._embedded.venues[0].state.stateCode}
-                        {" "} {list[i]._embedded.venues[0].postalCode}
-                      </span>
-
+                        <span
+                          className="card-text"
+                          style={{
+                            display: "inline-block",
+                            float: "left",
+                            clear: "left",
+                            fontSize: "10px"
+                          }}
+                        >
+                          {list[i].location.display_address[0]}
+                          {", "} {list[i].location.display_address[1]}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
+                {provided.placeholder}
               </div>
-              {provided.placeholder}
-            </div>
-          )}
-        </Draggable>
-      );
+            )}
+          </Draggable>
+        );
+      }
     }
+    return elements;
+  }
+
+  /*--------------------------------------------------------------------------------------------------*/
+  createEvent(list) {
+    let elements = [];
+    for (let i = 0; i < list.length; i++) {
+      if (list[i] != null) {
+        elements.push(
+          <Draggable draggableId={i.toString()} index={i} key={i}>
+            {provided => (
+              <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                className="draggable"
+              >
+                <div className="card">
+                  <div className="row no-gutters">
+                    <div
+                      className="col-auto"
+                      style={{
+                        marginTop: "8px",
+                        marginLeft: "8px"
+                      }}
+                    >
+                      <img
+                        src={list[i].images[0].url}
+                        className="img-fluid"
+                        alt=""
+                        style={{
+                          height: "40px",
+                          width: "40px",
+                          borderRadius: "50%"
+                        }}
+                      />
+                    </div>
+                    <div className="col">
+                      <div className="card-block px-2">
+                        <div
+                          className="card-text"
+                          style={{
+                            // fontSize: "18px",
+                            textOverflow: "ellipsis",
+                            color: "blue"
+                          }}
+                        >
+                          <b><span>{list[i].name}</span></b>
+                        </div>
+
+                        <b>
+                          <span
+                            className="card-text"
+                            style={{
+                              display: "inline-block",
+                              float: "left",
+                              clear: "left",
+                              fontSize: "10px"
+                            }}
+                          >
+                            {list[i].dates.start.localDate} • {list[i].dates.start.localTime}
+                          </span>
+                        </b>
+                        <span
+                          className="card-text"
+                          style={{
+                            display: "inline-block",
+                            float: "left",
+                            clear: "left",
+                            fontSize: "10px"
+                          }}
+                        >
+                          {list[i]._embedded.venues[0].name}
+                        </span>
+
+                        <span
+                          className="card-text"
+                          style={{
+                            display: "inline-block",
+                            float: "left",
+                            clear: "left",
+                            fontSize: "10px"
+                          }}
+                        >
+                          {list[i]._embedded.venues[0].address.line1}
+                        </span>
+
+                        <span
+                          className="card-text"
+                          style={{
+                            display: "inline-block",
+                            float: "left",
+                            clear: "left",
+                            fontSize: "10px"
+                          }}
+                        >
+                          {list[i]._embedded.venues[0].city.name} {", "} {list[i]._embedded.venues[0].state.stateCode}
+                          {" "} {list[i]._embedded.venues[0].postalCode}
+                        </span>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {provided.placeholder}
+              </div>
+            )}
+          </Draggable>
+        );
+      }
     }
     return elements;
   }
@@ -813,7 +813,7 @@ class Schedule extends Component {
         ) : (
             LoadingBar
           )}
-        <Footer style={{ marginTop: "10px" }} />
+
       </div>
     );
   }

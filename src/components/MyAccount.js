@@ -285,6 +285,12 @@ export class MyAccount extends Component {
           overflow: "auto",
           display: "flex"
         }}>
+          <Button href="/home" className="fas fa-arrow-left" variant="outline-dark" style={{
+            height: "40px",
+            margin: "35px 0 0 20px",
+            border: "1px solid black",
+            paddingTop: "10px"
+          }}></Button>
           <div style={{ height: "100%", display: "flex", width: "100%" }}>
             <Card style={{
               height: "60%", margin: "3%", borderRadius: "5px",
