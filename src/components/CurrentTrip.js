@@ -990,8 +990,9 @@ class CurrentTrip extends Component {
   }
 
   updateDB(response) {
+
     if (response.status === 200) {
-      app.put("tripimage/" + JSON.parse(localStorage.getItem('trip'))._id, {
+      app.put("tripimage/" + window.location.href.substr(-24), {
         image: response.data.data.Key
       }).then(resp => {
         console.log(resp);
